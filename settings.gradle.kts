@@ -22,4 +22,3 @@ dependencyResolutionManagement {
 rootProject.name = "What's in Pvot"
 include(":app")
 include(":design-system")
- 

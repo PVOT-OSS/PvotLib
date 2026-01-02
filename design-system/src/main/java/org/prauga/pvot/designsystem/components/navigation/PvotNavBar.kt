@@ -86,14 +86,16 @@ fun PvotNavBar(
     val navBarColors = PvotTheme.navBarColors
 
     Box(
-        modifier = modifier
+        modifier =
+        modifier
             .fillMaxWidth()
             .navigationBarsPadding()
             .padding(horizontal = 16.dp, vertical = 12.dp),
-        contentAlignment = Alignment.BottomCenter
+        contentAlignment = Alignment.BottomCenter,
     ) {
         Surface(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .wrapContentWidth()
                 .height(barHeight)
                 .clip(RoundedCornerShape(cornerRadius))
@@ -101,14 +103,15 @@ fun PvotNavBar(
             shape = RoundedCornerShape(cornerRadius),
             color = containerColor,
             tonalElevation = 0.dp,
-            shadowElevation = 0.dp
+            shadowElevation = 0.dp,
         ) {
             Row(
-                modifier = Modifier
+                modifier =
+                Modifier
                     .height(barHeight)
                     .padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
             ) {
                 tabs.forEachIndexed { index, tab ->
                     PillNavItem(
@@ -124,7 +127,7 @@ fun PvotNavBar(
                         gradient = gradient,
                         collapsedChipColor = collapsedChipColor,
                         iconSelectedColor = navBarColors.iconSelectedColor,
-                        iconUnselectedColor = navBarColors.iconUnselectedColor
+                        iconUnselectedColor = navBarColors.iconUnselectedColor,
                     )
                 }
             }
@@ -146,19 +149,19 @@ private fun PillNavItem(
     gradient: Brush,
     collapsedChipColor: Color,
     iconSelectedColor: Color,
-    iconUnselectedColor: Color
+    iconUnselectedColor: Color,
 ) {
     val width by animateDpAsState(
         targetValue = if (selected) expandedItemWidth else collapsedItemSize,
         animationSpec = tween(240, easing = FastOutSlowInEasing),
-        label = "itemWidth"
+        label = "itemWidth",
     )
     val height = collapsedItemSize
 
     val scale by animateFloatAsState(
         targetValue = if (selected) 1f else 0.98f,
         animationSpec = tween(200),
-        label = "scale"
+        label = "scale",
     )
     val iconTint = if (selected) iconSelectedColor else iconUnselectedColor
     val interaction = remember { MutableInteractionSource() }
@@ -168,7 +171,8 @@ private fun PillNavItem(
         if (selected) expandedContentDescriptionRes else contentDescriptionRes
 
     Box(
-        modifier = Modifier
+        modifier =
+        Modifier
             .width(width)
             .height(height)
             .clip(if (selected) RoundedCornerShape(22.dp) else CircleShape)
@@ -177,37 +181,36 @@ private fun PillNavItem(
             .clickable(
                 interactionSource = interaction,
                 indication = null,
-                onClick = onClick
-            )
-            .indication(
+                onClick = onClick,
+            ).indication(
                 interactionSource = interaction,
-                indication = ripple(
+                indication =
+                ripple(
                     bounded = true,
-                    color = Color.White.copy(alpha = 0.25f)
-                )
-            )
-            .graphicsLayer {
+                    color = Color.White.copy(alpha = 0.25f),
+                ),
+            ).graphicsLayer {
                 scaleX = scale
                 scaleY = scale
             },
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Row(
             modifier = Modifier.padding(horizontal = if (selected) 14.dp else 0.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             Icon(
                 painter = painterResource(id = displayedIconRes),
                 contentDescription = stringResource(id = displayedContentDescriptionRes),
                 modifier = Modifier.size(20.dp),
-                tint = iconTint
+                tint = iconTint,
             )
 
             AnimatedVisibility(
                 visible = selected,
                 enter = fadeIn() + expandHorizontally(),
-                exit = fadeOut() + shrinkHorizontally()
+                exit = fadeOut() + shrinkHorizontally(),
             ) {
                 Text(
                     text = stringResource(id = labelRes),
@@ -216,7 +219,7 @@ private fun PillNavItem(
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 13.sp,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
         }
@@ -233,5 +236,5 @@ private fun PillNavItem(
 data class TabItem(
     @DrawableRes val iconRes: Int,
     @StringRes val labelRes: Int,
-    @StringRes val contentDescriptionRes: Int
+    @StringRes val contentDescriptionRes: Int,
 )

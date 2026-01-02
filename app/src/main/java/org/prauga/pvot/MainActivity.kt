@@ -39,18 +39,19 @@ class MainActivity : ComponentActivity() {
 fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
 
-    val tabs = listOf(
-        TabItem(
-            iconRes = R.drawable.ic_home,
-            labelRes = R.string.tab_home,
-            contentDescriptionRes = R.string.cd_home
-        ),
-        TabItem(
-            iconRes = R.drawable.ic_settings,
-            labelRes = R.string.tab_settings,
-            contentDescriptionRes = R.string.cd_settings
+    val tabs =
+        listOf(
+            TabItem(
+                iconRes = R.drawable.ic_home,
+                labelRes = R.string.tab_home,
+                contentDescriptionRes = R.string.cd_home,
+            ),
+            TabItem(
+                iconRes = R.drawable.ic_settings,
+                labelRes = R.string.tab_settings,
+                contentDescriptionRes = R.string.cd_settings,
+            ),
         )
-    )
 
     val screenNames = listOf("Home", "Settings")
 
@@ -60,21 +61,22 @@ fun DesignSystemShowcase() {
             PvotNavBar(
                 selectedTab = selectedTab,
                 onTabClick = { selectedTab = it },
-                tabs = tabs
+                tabs = tabs,
             )
-        }
+        },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
+            modifier =
+            Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .background(MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = screenNames[selectedTab],
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
         }
     }

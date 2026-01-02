@@ -1,7 +1,6 @@
 package org.prauga.pvot.designsystem.components.navigation
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -13,22 +12,22 @@ import org.prauga.pvot.designsystem.test.R
 import org.prauga.pvot.designsystem.theme.PvotAppTheme
 
 class PvotNavBarTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val testTabs = listOf(
-        TabItem(
-            iconRes = R.drawable.ic_test_home,
-            labelRes = R.string.test_tab_home,
-            contentDescriptionRes = R.string.test_cd_home
-        ),
-        TabItem(
-            iconRes = R.drawable.ic_test_settings,
-            labelRes = R.string.test_tab_settings,
-            contentDescriptionRes = R.string.test_cd_settings
+    private val testTabs =
+        listOf(
+            TabItem(
+                iconRes = R.drawable.ic_test_home,
+                labelRes = R.string.test_tab_home,
+                contentDescriptionRes = R.string.test_cd_home,
+            ),
+            TabItem(
+                iconRes = R.drawable.ic_test_settings,
+                labelRes = R.string.test_tab_settings,
+                contentDescriptionRes = R.string.test_cd_settings,
+            ),
         )
-    )
 
     @Test
     fun navBar_displaysAllTabs() {
@@ -37,7 +36,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = {},
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -53,7 +52,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = {},
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -70,7 +69,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = { clickedIndex = it },
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -89,7 +88,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 1,
                     onTabClick = { clickedIndex = it },
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -106,7 +105,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 1,
                     onTabClick = {},
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -121,7 +120,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = {},
-                    tabs = emptyList()
+                    tabs = emptyList(),
                 )
             }
         }
@@ -138,7 +137,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = {},
-                    tabs = singleTab
+                    tabs = singleTab,
                 )
             }
         }

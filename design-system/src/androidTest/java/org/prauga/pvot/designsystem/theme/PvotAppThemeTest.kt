@@ -2,7 +2,6 @@ package org.prauga.pvot.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -12,7 +11,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class PvotAppThemeTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -62,13 +60,14 @@ class PvotAppThemeTest {
 
         composeTestRule.setContent {
             PvotAppTheme(
-                navBarColors = PvotNavBarColors(
+                navBarColors =
+                PvotNavBarColors(
                     gradient = Brush.horizontalGradient(listOf(Color.Red, Color.Blue)),
                     collapsedChipColor = customChipColor,
                     containerColor = Color.Black,
                     iconSelectedColor = customIconColor,
-                    iconUnselectedColor = Color.Gray
-                )
+                    iconUnselectedColor = Color.Gray,
+                ),
             ) {
                 appliedChipColor = PvotTheme.navBarColors.collapsedChipColor
                 appliedIconColor = PvotTheme.navBarColors.iconSelectedColor
