@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">What\'s in Pvot</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_settings">Settings</string>
+    <string name="cd_home">Navigate to home</string>
+    <string name="cd_settings">Navigate to settings</string>
 </resources>
