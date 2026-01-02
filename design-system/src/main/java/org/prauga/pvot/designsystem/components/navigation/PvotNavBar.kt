@@ -78,7 +78,7 @@ fun PvotNavBar(
     barHeight: Dp = 64.dp,
     collapsedItemSize: Dp = 44.dp,
     expandedItemWidth: Dp = 120.dp,
-    cornerRadius: Dp = 28.dp,
+    cornerRadius: Dp = 32.dp,
     gradient: Brush = PvotTheme.navBarColors.gradient,
     collapsedChipColor: Color = PvotTheme.navBarColors.collapsedChipColor,
     containerColor: Color = PvotTheme.navBarColors.containerColor,
@@ -108,7 +108,7 @@ fun PvotNavBar(
                     .height(barHeight)
                     .padding(horizontal = 10.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally)
             ) {
                 tabs.forEachIndexed { index, tab ->
                     PillNavItem(
