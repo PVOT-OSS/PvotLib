@@ -2,6 +2,11 @@
 
 A Jetpack Compose design system library for building consistent Android applications.
 
+<p align="center">
+  <img src="assets/1.png" width="300" alt="PvotNavBar Home"/>
+  <img src="assets/2.png" width="300" alt="PvotNavBar Settings"/>
+</p>
+
 ## Project Structure
 
 ```
