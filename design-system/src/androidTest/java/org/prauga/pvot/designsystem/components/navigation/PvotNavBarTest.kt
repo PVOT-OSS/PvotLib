@@ -4,7 +4,6 @@
 package org.prauga.pvot.designsystem.components.navigation
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -21,12 +20,12 @@ class PvotNavBarTest {
     val composeTestRule = createComposeRule()
 
     private val testTabs = listOf(
-        TabItem(
+        PvotTabItem(
             iconRes = R.drawable.ic_test_home,
             labelRes = R.string.test_tab_home,
             contentDescriptionRes = R.string.test_cd_home
         ),
-        TabItem(
+        PvotTabItem(
             iconRes = R.drawable.ic_test_settings,
             labelRes = R.string.test_tab_settings,
             contentDescriptionRes = R.string.test_cd_settings

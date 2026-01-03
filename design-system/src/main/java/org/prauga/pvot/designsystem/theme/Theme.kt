@@ -12,11 +12,11 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import org.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarColors
+import org.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
+import org.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
+import org.prauga.pvot.designsystem.components.navigation.PvotNavBarSizes
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -30,42 +30,20 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Pink40
 )
 
-@Immutable
-data class PvotNavBarColors(
-    val gradient: Brush,
-    val collapsedChipColor: Color,
-    val containerColor: Color,
-    val iconSelectedColor: Color,
-    val iconUnselectedColor: Color
-)
-
-val LocalPvotNavBarColors = staticCompositionLocalOf {
-    PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(NavBarGradientStart, NavBarGradientEnd)),
-        collapsedChipColor = NavBarCollapsedChip,
-        containerColor = NavBarContainer,
-        iconSelectedColor = NavBarIconSelected,
-        iconUnselectedColor = NavBarIconUnselected
-    )
-}
-
 object PvotTheme {
     val navBarColors: PvotNavBarColors
-        @Composable
-        get() = LocalPvotNavBarColors.current
+        @Composable get() = LocalPvotNavBarColors.current
+
+    val navBarSizes: PvotNavBarSizes
+        @Composable get() = LocalPvotNavBarSizes.current
 }
 
 @Composable
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
-    navBarColors: PvotNavBarColors = PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(NavBarGradientStart, NavBarGradientEnd)),
-        collapsedChipColor = NavBarCollapsedChip,
-        containerColor = NavBarContainer,
-        iconSelectedColor = NavBarIconSelected,
-        iconUnselectedColor = NavBarIconUnselected
-    ),
+    navBarColors: PvotNavBarColors = LocalPvotNavBarColors.current,
+    navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -78,7 +56,8 @@ fun PvotAppTheme(
     }
 
     CompositionLocalProvider(
-        LocalPvotNavBarColors provides navBarColors
+        LocalPvotNavBarColors provides navBarColors,
+        LocalPvotNavBarSizes provides navBarSizes
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
