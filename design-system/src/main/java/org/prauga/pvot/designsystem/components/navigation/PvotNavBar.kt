@@ -49,6 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.prauga.pvot.designsystem.theme.PvotTheme
@@ -84,6 +85,9 @@ fun PvotNavBar(
     expandedItemWidth: Dp = 169.dp,
     cornerRadius: Dp = 100.dp,
     itemCornerRadius: Dp = 28.dp,
+    collapsedIconSize: Dp = 22.dp,
+    expandedIconSize: Dp = 22.dp,
+    expandedFontSize: TextUnit = 16.sp,
     horizontalPadding: Dp = 22.dp,
     contentPaddingHorizontal: Dp = 9.dp,
     itemSpacing: Dp = 4.dp,
@@ -145,6 +149,9 @@ fun PvotNavBar(
                         collapsedItemSize = collapsedItemSize,
                         expandedItemWidth = expandedItemWidth,
                         itemCornerRadius = itemCornerRadius,
+                        collapsedIconSize = collapsedIconSize,
+                        expandedIconSize = expandedIconSize,
+                        expandedFontSize = expandedFontSize,
                         gradient = gradient,
                         collapsedChipColor = collapsedChipColor,
                         iconSelectedColor = navBarColors.iconSelectedColor,
@@ -169,6 +176,9 @@ private fun PillNavItem(
     collapsedItemSize: Dp,
     expandedItemWidth: Dp,
     itemCornerRadius: Dp,
+    collapsedIconSize: Dp,
+    expandedIconSize: Dp,
+    expandedFontSize: TextUnit,
     gradient: Brush,
     collapsedChipColor: Color,
     iconSelectedColor: Color,
@@ -226,7 +236,7 @@ private fun PillNavItem(
             Icon(
                 painter = painterResource(id = displayedIconRes),
                 contentDescription = stringResource(id = displayedContentDescriptionRes),
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(if (selected) expandedIconSize else collapsedIconSize),
                 tint = iconTint
             )
 
@@ -241,7 +251,7 @@ private fun PillNavItem(
                     color = iconSelectedColor,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 13.sp,
+                    fontSize = expandedFontSize,
                     maxLines = 1
                 )
             }
