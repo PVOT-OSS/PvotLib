@@ -79,9 +79,15 @@ fun PvotNavBar(
     @DrawableRes expandedIconRes: Int? = null,
     @StringRes expandedContentDescriptionRes: Int? = null,
     barHeight: Dp = 64.dp,
+    barWidth: Dp? = null,
     collapsedItemSize: Dp = 44.dp,
     expandedItemWidth: Dp = 120.dp,
     cornerRadius: Dp = 32.dp,
+    itemCornerRadius: Dp = 22.dp,
+    horizontalPadding: Dp = 16.dp,
+    contentPaddingHorizontal: Dp = 10.dp,
+    itemSpacing: Dp = 6.dp,
+    fillWidth: Boolean = false,
     gradient: Brush = PvotTheme.navBarColors.gradient,
     collapsedChipColor: Color = PvotTheme.navBarColors.collapsedChipColor,
     containerColor: Color = PvotTheme.navBarColors.containerColor,
@@ -92,12 +98,18 @@ fun PvotNavBar(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = horizontalPadding, vertical = 12.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         Surface(
             modifier = Modifier
-                .wrapContentWidth()
+                .then(
+                    when {
+                        barWidth != null -> Modifier.width(barWidth)
+                        fillWidth -> Modifier.fillMaxWidth()
+                        else -> Modifier.wrapContentWidth()
+                    }
+                )
                 .height(barHeight)
                 .clip(RoundedCornerShape(cornerRadius))
                 .shadow(18.dp, RoundedCornerShape(cornerRadius), clip = false),
@@ -108,10 +120,17 @@ fun PvotNavBar(
         ) {
             Row(
                 modifier = Modifier
+                    .then(
+                        when {
+                            barWidth != null -> Modifier.fillMaxWidth()
+                            fillWidth -> Modifier.fillMaxWidth()
+                            else -> Modifier.wrapContentWidth()
+                        }
+                    )
                     .height(barHeight)
-                    .padding(horizontal = 10.dp),
+                    .padding(horizontal = contentPaddingHorizontal),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.spacedBy(itemSpacing, Alignment.CenterHorizontally)
             ) {
                 tabs.forEachIndexed { index, tab ->
                     PillNavItem(
@@ -124,6 +143,7 @@ fun PvotNavBar(
                         onClick = { onTabClick(index) },
                         collapsedItemSize = collapsedItemSize,
                         expandedItemWidth = expandedItemWidth,
+                        itemCornerRadius = itemCornerRadius,
                         gradient = gradient,
                         collapsedChipColor = collapsedChipColor,
                         iconSelectedColor = navBarColors.iconSelectedColor,
@@ -146,6 +166,7 @@ private fun PillNavItem(
     onClick: () -> Unit,
     collapsedItemSize: Dp,
     expandedItemWidth: Dp,
+    itemCornerRadius: Dp,
     gradient: Brush,
     collapsedChipColor: Color,
     iconSelectedColor: Color,
@@ -174,7 +195,7 @@ private fun PillNavItem(
         modifier = Modifier
             .width(width)
             .height(height)
-            .clip(if (selected) RoundedCornerShape(22.dp) else CircleShape)
+            .clip(if (selected) RoundedCornerShape(itemCornerRadius) else CircleShape)
             .background(if (selected) Color.Transparent else collapsedChipColor)
             .then(if (selected) Modifier.background(brush = gradient) else Modifier)
             .clickable(
