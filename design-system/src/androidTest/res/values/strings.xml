@@ -1,6 +1,24 @@
 <resources>
+    <!-- Basic tabs -->
     <string name="test_tab_home">Home</string>
     <string name="test_tab_settings">Settings</string>
     <string name="test_cd_home">Navigate to home</string>
     <string name="test_cd_settings">Navigate to settings</string>
+
+    <!-- DeskClock-style tabs -->
+    <string name="test_tab_alarm">Alarm</string>
+    <string name="test_tab_clock">Clock</string>
+    <string name="test_tab_timer">Timer</string>
+    <string name="test_tab_stopwatch">Stopwatch</string>
+    <string name="test_cd_alarm">Alarm tab</string>
+    <string name="test_cd_clock">Clock tab</string>
+    <string name="test_cd_timer">Timer tab</string>
+    <string name="test_cd_stopwatch">Stopwatch tab</string>
+
+    <!-- Expanded label overrides -->
+    <string name="test_tab_add_new">Add New</string>
+    <string name="test_tab_add_alarm">Add Alarm</string>
+    <string name="test_tab_add_timer">Add Timer</string>
+    <string name="test_tab_start">Start</string>
+    <string name="test_tab_pause">Pause</string>
 </resources>

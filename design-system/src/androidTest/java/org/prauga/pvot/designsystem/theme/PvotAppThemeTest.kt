@@ -13,6 +13,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
+import org.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChip
+import org.prauga.pvot.designsystem.components.navigation.NavBarIconSelected
+import org.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
 
 class PvotAppThemeTest {
 
