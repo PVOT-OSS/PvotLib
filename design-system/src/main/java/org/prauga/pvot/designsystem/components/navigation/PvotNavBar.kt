@@ -137,7 +137,8 @@ fun PvotNavBar(
                         iconRes = tab.iconRes,
                         labelRes = tab.labelRes,
                         contentDescriptionRes = tab.contentDescriptionRes,
-                        expandedIconRes = expandedIconRes ?: tab.iconRes,
+                        expandedIconRes = expandedIconRes ?: tab.expandedIconRes ?: tab.iconRes,
+                        expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
                         expandedContentDescriptionRes = expandedContentDescriptionRes ?: tab.contentDescriptionRes,
                         selected = index == selectedTab,
                         onClick = { onTabClick(index) },
@@ -161,6 +162,7 @@ private fun PillNavItem(
     @StringRes labelRes: Int,
     @StringRes contentDescriptionRes: Int,
     @DrawableRes expandedIconRes: Int,
+    @StringRes expandedLabelRes: Int,
     @StringRes expandedContentDescriptionRes: Int,
     selected: Boolean,
     onClick: () -> Unit,
@@ -234,7 +236,7 @@ private fun PillNavItem(
                 exit = fadeOut() + shrinkHorizontally()
             ) {
                 Text(
-                    text = stringResource(id = labelRes),
+                    text = stringResource(id = expandedLabelRes),
                     modifier = Modifier.padding(start = 8.dp),
                     color = iconSelectedColor,
                     style = MaterialTheme.typography.labelMedium,
@@ -250,12 +252,16 @@ private fun PillNavItem(
 /**
  * Represents a navigation tab item.
  *
- * @param iconRes Drawable resource for the tab icon.
+ * @param iconRes Drawable resource for the tab icon (collapsed state).
  * @param labelRes String resource for the tab label.
  * @param contentDescriptionRes String resource for accessibility content description.
+ * @param expandedIconRes Optional drawable resource for the icon when expanded/selected. If null, uses iconRes.
+ * @param expandedLabelRes Optional string resource for the label when expanded/selected. If null, uses labelRes.
  */
 data class TabItem(
     @DrawableRes val iconRes: Int,
     @StringRes val labelRes: Int,
-    @StringRes val contentDescriptionRes: Int
+    @StringRes val contentDescriptionRes: Int,
+    @DrawableRes val expandedIconRes: Int? = null,
+    @StringRes val expandedLabelRes: Int? = null
 )
