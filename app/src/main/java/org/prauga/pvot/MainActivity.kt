@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.prauga.pvot.designsystem.components.navigation.PvotNavBar
-import org.prauga.pvot.designsystem.components.navigation.TabItem
+import org.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import org.prauga.pvot.designsystem.theme.PvotAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -43,12 +43,12 @@ fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
 
     val tabs = listOf(
-        TabItem(
+        PvotTabItem(
             iconRes = R.drawable.ic_home,
             labelRes = R.string.tab_home,
             contentDescriptionRes = R.string.cd_home
         ),
-        TabItem(
+        PvotTabItem(
             iconRes = R.drawable.ic_settings,
             labelRes = R.string.tab_settings,
             contentDescriptionRes = R.string.cd_settings
