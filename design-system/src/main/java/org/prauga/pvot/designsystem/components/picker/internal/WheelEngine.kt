@@ -21,9 +21,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,11 +55,17 @@ internal fun WheelEngine(
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = config.initialIndex)
     val flingBehavior = rememberSnapFlingBehavior(listState)
     val centerIndex = visibleItemsCount / 2
+    val hapticFeedback = LocalHapticFeedback.current
+    var lastSelectedIndex by remember { mutableIntStateOf(config.initialIndex) }
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
                 val selected = (index + centerIndex).coerceIn(config.values.indices)
+                if (selected != lastSelectedIndex) {
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    lastSelectedIndex = selected
+                }
                 onValueSelected(config.values[selected])
             }
     }
