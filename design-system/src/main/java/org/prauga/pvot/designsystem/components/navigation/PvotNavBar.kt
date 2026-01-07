@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.prauga.pvot.designsystem.theme.PvotTheme
 
-val ItemHorizontalPadding = 14.dp
+val ItemHorizontalPadding = 16.dp
 val IconTextGap = 8.dp
 
 /**
