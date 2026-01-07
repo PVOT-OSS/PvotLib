@@ -13,7 +13,7 @@ A Jetpack Compose design system library for building consistent Android applicat
 PvotLib/
 ├── app/              # Showcase app demonstrating components
 ├── design-system/    # Reusable library module
-│   └── src/main/java/org/prauga/pvot/designsystem/
+│   └── src/main/java/com/prauga/pvot/designsystem/
 │       ├── components/
 │       │   ├── navigation/
 │       │   │   └── PvotNavBar.kt
@@ -44,7 +44,7 @@ dependencies {
 
 Or (not now):
 ```kotlin
-implementation("org.prauga.pvot:design-system:0.1.0")
+implementation("com.prauga.pvot:design-system:0.1.0")
 ```
 
 ## Quick Start

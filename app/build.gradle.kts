@@ -8,13 +8,13 @@ plugins {
 }
 
 android {
-    namespace = "org.prauga.pvot"
+    namespace = "com.prauga.pvot"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "org.prauga.pvot"
+        applicationId = "com.prauga.pvot"
         minSdk = 29
         targetSdk = 36
         versionCode = 1

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "org.prauga.pvot.designsystem"
+    namespace = "com.prauga.pvot.designsystem"
     compileSdk {
         version = release(36)
     }
