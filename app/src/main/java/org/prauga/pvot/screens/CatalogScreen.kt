@@ -5,6 +5,7 @@ package org.prauga.pvot.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import org.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import org.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import org.prauga.pvot.designsystem.components.picker.PvotDurationPicker
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -90,19 +92,43 @@ fun CatalogScreen(
 
         item {
             CatalogCard(title = "PvotClockPicker") {
-                PvotClockPicker(
-                    time = selectedTime,
-                    onTimeChange = { selectedTime = it }
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    PvotClockPicker(
+                        time = selectedTime,
+                        onTimeChange = { selectedTime = it }
+                    )
+                    Text(
+                        text = "Selected: ${selectedTime.format(DateTimeFormatter.ofPattern("HH:mm"))}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+                }
             }
         }
 
         item {
             CatalogCard(title = "PvotDurationPicker") {
-                PvotDurationPicker(
-                    duration = selectedDuration,
-                    onDurationChange = { selectedDuration = it }
-                )
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    PvotDurationPicker(
+                        duration = selectedDuration,
+                        onDurationChange = { selectedDuration = it }
+                    )
+                    Text(
+                        text = "Selected: ${
+                            selectedDuration.toComponents { h, m, s, _ ->
+                                "%02d:%02d:%02d".format(
+                                    h,
+                                    m,
+                                    s
+                                )
+                            }
+                        }",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 12.dp)
+                    )
+                }
             }
         }
     }
