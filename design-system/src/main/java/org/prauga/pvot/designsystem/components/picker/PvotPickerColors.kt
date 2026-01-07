@@ -3,8 +3,6 @@
 
 package org.prauga.pvot.designsystem.components.picker
 
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -29,14 +27,3 @@ val LocalPvotPickerColors = staticCompositionLocalOf {
 val PickerTextColor = Color.White
 val PickerTextSecondaryColor = Color.White.copy(alpha = 0.7f)
 val PickerSelectionBackground = Color.White.copy(alpha = 0.08f)
-
-@Composable
-fun pvotPickerColors(
-    textColor: Color = MaterialTheme.colorScheme.onBackground,
-    textSecondaryColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
-    selectionBackgroundColor: Color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f)
-): PvotPickerColors = PvotPickerColors(
-    textColor = textColor,
-    textSecondaryColor = textSecondaryColor,
-    selectionBackgroundColor = selectionBackgroundColor
-)

@@ -14,8 +14,14 @@ PvotLib/
 ├── app/              # Showcase app demonstrating components
 ├── design-system/    # Reusable library module
 │   └── src/main/java/org/prauga/pvot/designsystem/
-│       ├── components/navigation/
-│       │   └── PvotNavBar.kt
+│       ├── components/
+│       │   ├── navigation/
+│       │   │   └── PvotNavBar.kt
+│       │   └── picker/
+│       │       ├── PvotClockPicker.kt
+│       │       ├── PvotDurationPicker.kt
+│       │       ├── PvotPickerColors.kt
+│       │       └── internal/
 │       └── theme/
 │           ├── Color.kt
 │           ├── Theme.kt
@@ -86,6 +92,11 @@ PvotTheme.navBarColors.collapsedChipColor
 PvotTheme.navBarColors.containerColor
 PvotTheme.navBarColors.iconSelectedColor
 PvotTheme.navBarColors.iconUnselectedColor
+
+// Picker colors
+PvotTheme.pickerColors.textColor
+PvotTheme.pickerColors.textSecondaryColor
+PvotTheme.pickerColors.selectionBackgroundColor
 ```
 
 ### Customizing Colors
@@ -168,6 +179,70 @@ Scaffold(
 - Handles navigation bar padding automatically
 - Fully customizable colors via theme or parameters
 
+### PvotClockPicker
+
+A wheel-based time picker for selecting a time of day.
+
+```kotlin
+@Composable
+fun PvotClockPicker(
+    time: LocalTime,
+    onTimeChange: (LocalTime) -> Unit,
+    modifier: Modifier = Modifier
+)
+```
+
+#### Usage
+
+```kotlin
+var selectedTime by remember { mutableStateOf(LocalTime.of(0, 0)) }
+
+PvotClockPicker(
+    time = selectedTime,
+    onTimeChange = { selectedTime = it }
+)
+```
+
+#### Features
+
+- Clean domain-focused API using `java.time.LocalTime`
+- Smooth wheel scrolling with snap behavior
+- Adapts to light/dark theme automatically
+- No implementation details exposed (no LazyColumn, itemHeight, etc.)
+
+### PvotDurationPicker
+
+A wheel-based picker for selecting a time duration.
+
+```kotlin
+@Composable
+fun PvotDurationPicker(
+    duration: Duration,
+    onDurationChange: (Duration) -> Unit,
+    modifier: Modifier = Modifier
+)
+```
+
+#### Usage
+
+```kotlin
+import kotlin.time.Duration.Companion.minutes
+
+var selectedDuration by remember { mutableStateOf(30.minutes) }
+
+DurationPicker(
+    duration = selectedDuration,
+    onDurationChange = { selectedDuration = it }
+)
+```
+
+#### Features
+
+- Clean domain-focused API using `kotlin.time.Duration`
+- Hours, minutes, and seconds wheels
+- Smooth wheel scrolling with snap behavior
+- Adapts to light/dark theme automatically
+
 ## Roadmap
 
 ### Components (Planned)
@@ -175,6 +250,8 @@ Scaffold(
 | Component | Description | Status |
 |-----------|-------------|--------|
 | PvotNavBar | Floating bottom navigation | Done |
+| PvotClockPicker | Wheel-based time picker | Done |
+| PvotDurationPicker | Wheel-based duration picker | Done |
 | PvotTopBar | Collapsible top app bar | Planned |
 | PvotCard | Styled card with elevation variants | Planned |
 | PvotButton | Primary/Secondary/Tertiary buttons | Planned |

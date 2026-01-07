@@ -10,46 +10,47 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.prauga.pvot.designsystem.components.picker.internal.MultiWheelEngine
 import org.prauga.pvot.designsystem.components.picker.internal.toWheelConfigs
-import org.prauga.pvot.designsystem.components.picker.internal.wheelValuesToLocalTime
+import org.prauga.pvot.designsystem.components.picker.internal.wheelValuesToDuration
 import org.prauga.pvot.designsystem.theme.PvotAppTheme
-import java.time.LocalTime
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 
 /**
- * A time picker for selecting a time of day (hours and minutes).
+ * A duration picker for selecting a time duration (hours, minutes, and seconds).
  *
- * @param time The currently selected time
- * @param onTimeChange Called when the user selects a new time
+ * @param duration The currently selected duration
+ * @param onDurationChange Called when the user selects a new duration
  * @param modifier Modifier for the picker container
  */
 @Composable
-fun ClockTimePicker(
-    time: LocalTime,
-    onTimeChange: (LocalTime) -> Unit,
+fun PvotDurationPicker(
+    duration: Duration,
+    onDurationChange: (Duration) -> Unit,
     modifier: Modifier = Modifier
 ) {
     MultiWheelEngine(
-        configs = time.toWheelConfigs(),
+        configs = duration.toWheelConfigs(),
         onValuesSelected = { values ->
-            onTimeChange(wheelValuesToLocalTime(values))
+            onDurationChange(wheelValuesToDuration(values))
         },
         modifier = modifier
     )
 }
 
 @Preview(
-    name = "Clock Time Picker",
+    name = "Pvot Duration Picker",
     showBackground = true,
-    backgroundColor = 0xFF121212,
-    widthDp = 360,
-    heightDp = 200
+    backgroundColor = 0xFF000000,
+    widthDp = 390,
+    heightDp = 240
 )
 @Composable
-private fun ClockTimePickerPreview() {
+private fun PvotDurationPickerPreview() {
     PvotAppTheme {
         Surface(modifier = Modifier.fillMaxWidth()) {
-            ClockTimePicker(
-                time = LocalTime.of(0, 0),
-                onTimeChange = {}
+            PvotDurationPicker(
+                duration = 30.minutes,
+                onDurationChange = {}
             )
         }
     }
