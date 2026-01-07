@@ -8,23 +8,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import org.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import org.prauga.pvot.designsystem.theme.PvotAppTheme
+import org.prauga.pvot.screens.EmptyScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,13 +47,21 @@ fun DesignSystemShowcase() {
             contentDescriptionRes = R.string.cd_home
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_settings,
-            labelRes = R.string.tab_settings,
-            contentDescriptionRes = R.string.cd_settings
+            iconRes = R.drawable.ic_apps,
+            labelRes = R.string.tab_apps,
+            contentDescriptionRes = R.string.cd_apps
+        ),
+        PvotTabItem(
+            iconRes = R.drawable.ic_catalog,
+            labelRes = R.string.tab_catalog,
+            contentDescriptionRes = R.string.cd_catalog
+        ),
+        PvotTabItem(
+            iconRes = R.drawable.ic_about,
+            labelRes = R.string.tab_about,
+            contentDescriptionRes = R.string.cd_about
         )
     )
-
-    val screenNames = listOf("Home", "Settings")
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -67,17 +73,35 @@ fun DesignSystemShowcase() {
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .background(MaterialTheme.colorScheme.background),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = screenNames[selectedTab],
-                style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onBackground
+        val containerModifer = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .background(MaterialTheme.colorScheme.background)
+
+        when (selectedTab) {
+            0 -> EmptyScreen(
+                label = "Home",
+                modifier = containerModifer
+            )
+
+            1 -> EmptyScreen(
+                label = "Apps",
+                modifier = containerModifer
+            )
+
+            2 -> EmptyScreen(
+                label = "Catalog",
+                modifier = containerModifer
+            )
+
+            3 -> EmptyScreen(
+                label = "About",
+                modifier = containerModifer
+            )
+
+            else -> EmptyScreen(
+                label = "None",
+                modifier = containerModifer
             )
         }
     }
