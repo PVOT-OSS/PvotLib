@@ -91,7 +91,7 @@ fun DesignSystemShowcase() {
             )
 
             2 -> CatalogScreen(
-                label = "Catalog",
+                label = "Design Catalog",
                 modifier = containerModifer
             )
 

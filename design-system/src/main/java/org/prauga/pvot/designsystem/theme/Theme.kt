@@ -17,6 +17,8 @@ import org.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarColors
 import org.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
 import org.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
 import org.prauga.pvot.designsystem.components.navigation.PvotNavBarSizes
+import org.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
+import org.prauga.pvot.designsystem.components.picker.PvotPickerColors
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -36,6 +38,9 @@ object PvotTheme {
 
     val navBarSizes: PvotNavBarSizes
         @Composable get() = LocalPvotNavBarSizes.current
+
+    val pickerColors: PvotPickerColors
+        @Composable get() = LocalPvotPickerColors.current
 }
 
 @Composable
@@ -44,6 +49,7 @@ fun PvotAppTheme(
     dynamicColor: Boolean = true,
     navBarColors: PvotNavBarColors = LocalPvotNavBarColors.current,
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
+    pickerColors: PvotPickerColors? = null,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -55,9 +61,16 @@ fun PvotAppTheme(
         else -> LightColorScheme
     }
 
+    val resolvedPickerColors = pickerColors ?: PvotPickerColors(
+        textColor = colorScheme.onBackground,
+        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
+        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
+    )
+
     CompositionLocalProvider(
         LocalPvotNavBarColors provides navBarColors,
-        LocalPvotNavBarSizes provides navBarSizes
+        LocalPvotNavBarSizes provides navBarSizes,
+        LocalPvotPickerColors provides resolvedPickerColors
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

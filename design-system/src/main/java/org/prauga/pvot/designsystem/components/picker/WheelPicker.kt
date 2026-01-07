@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,11 +24,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.prauga.pvot.designsystem.theme.PvotAppTheme
 
 @Composable
 fun WheelPicker(
@@ -37,6 +36,7 @@ fun WheelPicker(
     suffix: String,
     visibleItemsCount: Int = 5,
     itemHeight: Dp = 40.dp,
+    colors: PvotPickerColors = LocalPvotPickerColors.current,
     onItemSelected: (Int) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -74,13 +74,13 @@ fun WheelPicker(
                         Text(
                             text = items[index].toString(),
                             fontSize = 28.sp,
-                            color = Color.White
+                            color = colors.textColor
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
                             text = suffix,
                             fontSize = 16.sp,
-                            color = Color.White.copy(alpha = 0.7f)
+                            color = colors.textSecondaryColor
                         )
                     }
                 }
@@ -93,7 +93,7 @@ fun WheelPicker(
                 .height(itemHeight)
                 .fillMaxWidth()
                 .background(
-                    Color.White.copy(alpha = 0.08f),
+                    colors.selectionBackgroundColor,
                     RoundedCornerShape(20.dp)
                 )
         )
@@ -109,11 +109,12 @@ fun WheelPicker(
 )
 @Composable
 fun WheelPickerPreview() {
-    MaterialTheme {
-        Surface(color = Color(0xFF121212)) {
+    PvotAppTheme {
+        Surface {
             WheelPicker(
                 items = (0..23).toList(),
-                suffix = "hours"
+                suffix = "hours",
+                colors = pvotPickerColors()
             ) {}
         }
     }
