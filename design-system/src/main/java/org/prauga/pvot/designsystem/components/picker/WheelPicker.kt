@@ -1,9 +1,14 @@
+// SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+
 package org.prauga.pvot.designsystem.components.picker
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,27 +33,29 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun WheelPicker(
-    items: List<String>,
+    items: List<Int>,
+    suffix: String,
     visibleItemsCount: Int = 5,
     itemHeight: Dp = 40.dp,
     onItemSelected: (Int) -> Unit
 ) {
     val listState = rememberLazyListState()
     val flingBehavior = rememberSnapFlingBehavior(listState)
-
     val centerIndex = visibleItemsCount / 2
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
-                onItemSelected(index + centerIndex)
+                val selected = (index + centerIndex)
+                    .coerceIn(items.indices)
+                onItemSelected(items[selected])
             }
     }
 
     Box(
         modifier = Modifier
             .height(itemHeight * visibleItemsCount)
-            .width(80.dp)
+            .width(110.dp)
     ) {
         LazyColumn(
             state = listState,
@@ -63,11 +70,19 @@ fun WheelPicker(
                         .fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = item,
-                        fontSize = 22.sp,
-                        color = Color.White
-                    )
+                    Row(verticalAlignment = Alignment.Bottom) {
+                        Text(
+                            text = items[index].toString(),
+                            fontSize = 28.sp,
+                            color = Color.White
+                        )
+                        Spacer(Modifier.width(4.dp))
+                        Text(
+                            text = suffix,
+                            fontSize = 16.sp,
+                            color = Color.White.copy(alpha = 0.7f)
+                        )
+                    }
                 }
             }
         }
@@ -79,7 +94,7 @@ fun WheelPicker(
                 .fillMaxWidth()
                 .background(
                     Color.White.copy(alpha = 0.08f),
-                    RoundedCornerShape(12.dp)
+                    RoundedCornerShape(20.dp)
                 )
         )
     }
@@ -97,7 +112,8 @@ fun WheelPickerPreview() {
     MaterialTheme {
         Surface(color = Color(0xFF121212)) {
             WheelPicker(
-                items = (0..23).map { "%02d".format(it) }
+                items = (0..23).toList(),
+                suffix = "hours"
             ) {}
         }
     }
