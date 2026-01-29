@@ -99,7 +99,7 @@ fun PvotNavBar(
     }
 }
 
-private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = then(
+private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.then(
     when {
         sizes.barWidth != null -> Modifier.width(sizes.barWidth)
         sizes.fillWidth -> Modifier.fillMaxWidth()
