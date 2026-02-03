@@ -26,6 +26,7 @@ import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import com.prauga.pvot.screens.AppsScreen
 import com.prauga.pvot.screens.CatalogScreen
 import com.prauga.pvot.screens.EmptyScreen
+import com.prauga.pvot.screens.HomeScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,7 +84,7 @@ fun DesignSystemShowcase() {
             .padding(top = innerPadding.calculateTopPadding())
 
         when (selectedTab) {
-            0 -> EmptyScreen(
+            0 -> HomeScreen(
                 label = "Home",
                 modifier = containerModifer
             )
