@@ -21,15 +21,65 @@ import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = PvotPrimaryDark,
+    onPrimary = PvotOnPrimaryDark,
+    primaryContainer = PvotPrimaryContainerDark,
+    onPrimaryContainer = PvotOnPrimaryContainerDark,
+    secondary = PvotSecondaryDark,
+    onSecondary = PvotOnSecondaryDark,
+    secondaryContainer = PvotSecondaryContainerDark,
+    onSecondaryContainer = PvotOnSecondaryContainerDark,
+    tertiary = PvotTertiaryDark,
+    onTertiary = PvotOnTertiaryDark,
+    tertiaryContainer = PvotTertiaryContainerDark,
+    onTertiaryContainer = PvotOnTertiaryContainerDark,
+    error = PvotErrorDark,
+    onError = PvotOnErrorDark,
+    errorContainer = PvotErrorContainerDark,
+    onErrorContainer = PvotOnErrorContainerDark,
+    background = PvotBackgroundDark,
+    onBackground = PvotOnBackgroundDark,
+    surface = PvotSurfaceDark,
+    onSurface = PvotOnSurfaceDark,
+    surfaceVariant = PvotSurfaceVariantDark,
+    onSurfaceVariant = PvotOnSurfaceVariantDark,
+    outline = PvotOutlineDark,
+    outlineVariant = PvotOutlineVariantDark,
+    inverseSurface = PvotInverseSurfaceDark,
+    inverseOnSurface = PvotInverseOnSurfaceDark,
+    inversePrimary = PvotInversePrimaryDark,
+    scrim = PvotScrim
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = PvotPrimaryLight,
+    onPrimary = PvotOnPrimaryLight,
+    primaryContainer = PvotPrimaryContainerLight,
+    onPrimaryContainer = PvotOnPrimaryContainerLight,
+    secondary = PvotSecondaryLight,
+    onSecondary = PvotOnSecondaryLight,
+    secondaryContainer = PvotSecondaryContainerLight,
+    onSecondaryContainer = PvotOnSecondaryContainerLight,
+    tertiary = PvotTertiaryLight,
+    onTertiary = PvotOnTertiaryLight,
+    tertiaryContainer = PvotTertiaryContainerLight,
+    onTertiaryContainer = PvotOnTertiaryContainerLight,
+    error = PvotErrorLight,
+    onError = PvotOnErrorLight,
+    errorContainer = PvotErrorContainerLight,
+    onErrorContainer = PvotOnErrorContainerLight,
+    background = PvotBackgroundLight,
+    onBackground = PvotOnBackgroundLight,
+    surface = PvotSurfaceLight,
+    onSurface = PvotOnSurfaceLight,
+    surfaceVariant = PvotSurfaceVariantLight,
+    onSurfaceVariant = PvotOnSurfaceVariantLight,
+    outline = PvotOutlineLight,
+    outlineVariant = PvotOutlineVariantLight,
+    inverseSurface = PvotInverseSurfaceLight,
+    inverseOnSurface = PvotInverseOnSurfaceLight,
+    inversePrimary = PvotInversePrimaryLight,
+    scrim = PvotScrim
 )
 
 object PvotTheme {
@@ -46,7 +96,7 @@ object PvotTheme {
 @Composable
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     navBarColors: PvotNavBarColors = LocalPvotNavBarColors.current,
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
     pickerColors: PvotPickerColors? = null,
