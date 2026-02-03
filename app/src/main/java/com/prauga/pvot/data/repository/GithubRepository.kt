@@ -4,6 +4,7 @@
 package com.prauga.pvot.data.repository
 
 import com.prauga.pvot.data.model.GithubRepo
+import com.prauga.pvot.data.model.GithubUser
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
@@ -27,6 +28,15 @@ object GithubRepository {
             val repos: List<GithubRepo> = client.get("https://api.github.com/orgs/PVOT-OSS/repos").body()
             val appsRepos = repos.filter { "apps" in it.topics }
             Result.success(appsRepos)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getUser(username: String): Result<GithubUser> {
+        return try {
+            val user: GithubUser = client.get("https://api.github.com/users/$username").body()
+            Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
         }
