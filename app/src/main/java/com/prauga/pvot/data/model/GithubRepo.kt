@@ -7,10 +7,19 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class GithubOwner(
+    val login: String
+)
+
+@Serializable
 data class GithubRepo(
     val name: String,
     val description: String?,
     @SerialName("html_url") val htmlUrl: String,
     val topics: List<String>,
-    @SerialName("stargazers_count") val stars: Int
-)
+    @SerialName("stargazers_count") val stars: Int,
+    val owner: GithubOwner
+) {
+    val socialPreviewUrl: String
+        get() = "https://opengraph.githubassets.com/1/${owner.login}/$name"
+}
