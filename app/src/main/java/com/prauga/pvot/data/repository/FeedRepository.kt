@@ -7,9 +7,13 @@ import com.prauga.pvot.data.model.FeedEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserException
 import org.xmlpull.v1.XmlPullParserFactory
+import java.io.IOException
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.net.URL
+import java.net.UnknownHostException
 
 object FeedRepository {
     private const val FEED_URL = "https://squadri.me/feed.xml"
@@ -98,7 +102,13 @@ object FeedRepository {
             }
 
             Result.success(entries)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            Result.failure(e)
+        } catch (e: SocketTimeoutException) {
+            Result.failure(e)
+        } catch (e: UnknownHostException) {
+            Result.failure(e)
+        } catch (e: XmlPullParserException) {
             Result.failure(e)
         }
     }

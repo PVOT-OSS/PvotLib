@@ -8,10 +8,16 @@ import com.prauga.pvot.data.model.GithubUser
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpRequestTimeoutException
+import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import java.io.IOException
+import java.nio.channels.UnresolvedAddressException
 
 object GithubRepository {
     private val client = HttpClient(Android) {
@@ -28,7 +34,17 @@ object GithubRepository {
             val repos: List<GithubRepo> = client.get("https://api.github.com/orgs/PVOT-OSS/repos").body()
             val appsRepos = repos.filter { "apps" in it.topics }
             Result.success(appsRepos)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            Result.failure(e)
+        } catch (e: UnresolvedAddressException) {
+            Result.failure(e)
+        } catch (e: HttpRequestTimeoutException) {
+            Result.failure(e)
+        } catch (e: ClientRequestException) {
+            Result.failure(e)
+        } catch (e: ServerResponseException) {
+            Result.failure(e)
+        } catch (e: SerializationException) {
             Result.failure(e)
         }
     }
@@ -37,7 +53,17 @@ object GithubRepository {
         return try {
             val user: GithubUser = client.get("https://api.github.com/users/$username").body()
             Result.success(user)
-        } catch (e: Exception) {
+        } catch (e: IOException) {
+            Result.failure(e)
+        } catch (e: UnresolvedAddressException) {
+            Result.failure(e)
+        } catch (e: HttpRequestTimeoutException) {
+            Result.failure(e)
+        } catch (e: ClientRequestException) {
+            Result.failure(e)
+        } catch (e: ServerResponseException) {
+            Result.failure(e)
+        } catch (e: SerializationException) {
             Result.failure(e)
         }
     }
