@@ -111,7 +111,7 @@ class PvotAppThemeTest {
             }
         }
 
-        assertEquals(Purple80, primaryColor)
+        assertEquals(PvotPrimaryDark, primaryColor)
     }
 
     @Test
@@ -125,6 +125,6 @@ class PvotAppThemeTest {
             }
         }
 
-        assertEquals(Purple40, primaryColor)
+        assertEquals(PvotPrimaryLight, primaryColor)
     }
 }
