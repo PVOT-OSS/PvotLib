@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
+import com.prauga.pvot.screens.AppsScreen
 import com.prauga.pvot.screens.CatalogScreen
 import com.prauga.pvot.screens.EmptyScreen
 
@@ -85,7 +86,7 @@ fun DesignSystemShowcase() {
                 modifier = containerModifer
             )
 
-            1 -> EmptyScreen(
+            1 -> AppsScreen(
                 label = "Apps",
                 modifier = containerModifer
             )
