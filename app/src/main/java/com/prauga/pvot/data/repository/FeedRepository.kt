@@ -4,6 +4,7 @@
 package com.prauga.pvot.data.repository
 
 import com.prauga.pvot.data.model.FeedEntry
+import com.prauga.pvot.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser
@@ -16,11 +17,9 @@ import java.net.URL
 import java.net.UnknownHostException
 
 object FeedRepository {
-    private const val FEED_URL = "https://squadri.me/feed.xml"
-
     suspend fun getFeedEntries(): Result<List<FeedEntry>> = withContext(Dispatchers.IO) {
         try {
-            val url = URL(FEED_URL)
+            val url = URL(Constants.FEED_URL)
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 10000

@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.data.model
 
+import com.prauga.pvot.utils.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -21,5 +22,5 @@ data class GithubRepo(
     val owner: GithubOwner
 ) {
     val socialPreviewUrl: String
-        get() = "https://opengraph.githubassets.com/1/${owner.login}/$name"
+        get() = Constants.githubSocialPreviewUrl(owner.login, name)
 }

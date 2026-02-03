@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.BuildConfig
 import com.prauga.pvot.R
+import com.prauga.pvot.utils.Constants
 import com.prauga.pvot.components.DeveloperCard
 import com.prauga.pvot.data.model.GithubUser
 import com.prauga.pvot.data.repository.GithubRepository
@@ -59,9 +60,9 @@ data class ProjectLink(
 )
 
 private val projectLinks = listOf(
-    ProjectLink("GitHub Repository", "https://github.com/PVOT-OSS/PvotLib", R.drawable.ic_github),
-    ProjectLink("PVOT-OSS Organization", "https://github.com/PVOT-OSS", R.drawable.ic_github),
-    ProjectLink("Website", "https://squadri.me", R.drawable.ic_link)
+    ProjectLink("GitHub Repository", Constants.GITHUB_REPO_URL, R.drawable.ic_github),
+    ProjectLink("PVOT-OSS Organization", Constants.GITHUB_ORG_URL, R.drawable.ic_github),
+    ProjectLink("Website", Constants.WEBSITE_URL, R.drawable.ic_link)
 )
 
 @Composable
