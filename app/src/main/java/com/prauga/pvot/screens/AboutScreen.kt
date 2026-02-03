@@ -23,9 +23,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,11 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.BuildConfig
 import com.prauga.pvot.R
 import com.prauga.pvot.utils.Constants
+import com.prauga.pvot.utils.PreferencesManager
 import com.prauga.pvot.components.DeveloperCard
 import com.prauga.pvot.data.model.GithubUser
 import com.prauga.pvot.data.repository.GithubRepository
@@ -54,15 +58,15 @@ private val teamMembers = listOf(
 )
 
 data class ProjectLink(
-    val title: String,
+    val titleRes: Int,
     val url: String,
     val iconRes: Int
 )
 
 private val projectLinks = listOf(
-    ProjectLink("GitHub Repository", Constants.GITHUB_REPO_URL, R.drawable.ic_github),
-    ProjectLink("PVOT-OSS Organization", Constants.GITHUB_ORG_URL, R.drawable.ic_github),
-    ProjectLink("Website", Constants.WEBSITE_URL, R.drawable.ic_link)
+    ProjectLink(R.string.about_link_github_repo, Constants.GITHUB_REPO_URL, R.drawable.ic_github),
+    ProjectLink(R.string.about_link_github_org, Constants.GITHUB_ORG_URL, R.drawable.ic_github),
+    ProjectLink(R.string.about_link_website, Constants.WEBSITE_URL, R.drawable.ic_link)
 )
 
 @Composable
@@ -121,18 +125,18 @@ fun AboutScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "PVOT",
+                        text = stringResource(R.string.about_app_name),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "Version ${BuildConfig.VERSION_NAME}",
+                        text = stringResource(R.string.about_version, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 4.dp)
                     )
                     Text(
-                        text = "A showcase app for the PVOT Design System library, featuring custom components built with Jetpack Compose.",
+                        text = stringResource(R.string.about_description),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
@@ -145,7 +149,7 @@ fun AboutScreen(
         // Team Section Header
         item {
             Text(
-                text = "Team",
+                text = stringResource(R.string.about_section_team),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -184,7 +188,7 @@ fun AboutScreen(
         // Project Links Section Header
         item {
             Text(
-                text = "Project Links",
+                text = stringResource(R.string.about_section_links),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -220,10 +224,60 @@ fun AboutScreen(
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = link.title,
+                        text = stringResource(link.titleRes),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.padding(start = 16.dp)
+                    )
+                }
+            }
+        }
+
+        // Settings Section Header
+        item {
+            Text(
+                text = stringResource(R.string.about_section_settings),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
+        }
+
+        item {
+            val dynamicColorEnabled by PreferencesManager.dynamicColorEnabled.collectAsState()
+
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                )
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.about_dynamic_colors_title),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = stringResource(R.string.about_dynamic_colors_subtitle),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                    Switch(
+                        checked = dynamicColorEnabled,
+                        onCheckedChange = { PreferencesManager.setDynamicColorEnabled(it) }
                     )
                 }
             }

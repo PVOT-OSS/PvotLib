@@ -21,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.R
 import com.prauga.pvot.components.CatalogCard
@@ -80,7 +81,7 @@ fun CatalogScreen(
         }
 
         item {
-            CatalogCard(title = "PvotNavBar") {
+            CatalogCard(title = stringResource(R.string.catalog_navbar)) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -96,14 +97,17 @@ fun CatalogScreen(
         }
 
         item {
-            CatalogCard(title = "PvotClockPicker") {
+            CatalogCard(title = stringResource(R.string.catalog_clock_picker)) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     PvotClockPicker(
                         time = selectedTime,
                         onTimeChange = { selectedTime = it }
                     )
                     Text(
-                        text = "Selected: ${selectedTime.format(DateTimeFormatter.ofPattern("HH:mm"))}",
+                        text = stringResource(
+                            R.string.catalog_selected_time,
+                            selectedTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+                        ),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 12.dp)
@@ -113,22 +117,19 @@ fun CatalogScreen(
         }
 
         item {
-            CatalogCard(title = "PvotDurationPicker") {
+            CatalogCard(title = stringResource(R.string.catalog_duration_picker)) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     PvotDurationPicker(
                         duration = selectedDuration,
                         onDurationChange = { selectedDuration = it }
                     )
                     Text(
-                        text = "Selected: ${
+                        text = stringResource(
+                            R.string.catalog_selected_duration,
                             selectedDuration.toComponents { h, m, s, _ ->
-                                "%02d:%02d:%02d".format(
-                                    h,
-                                    m,
-                                    s
-                                )
+                                "%02d:%02d:%02d".format(h, m, s)
                             }
-                        }",
+                        ),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.padding(top = 12.dp)

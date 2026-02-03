@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.R
 import coil3.compose.AsyncImage
 import com.prauga.pvot.data.model.GithubUser
 
@@ -49,7 +51,7 @@ fun DeveloperCard(
         ) {
             AsyncImage(
                 model = user.avatarUrl,
-                contentDescription = "${user.name ?: user.login} avatar",
+                contentDescription = stringResource(R.string.cd_avatar, user.name ?: user.login),
                 modifier = Modifier
                     .size(64.dp)
                     .clip(CircleShape),

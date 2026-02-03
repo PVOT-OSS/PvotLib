@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">What\'s in Pvot</string>
+
+    <!-- Navigation -->
     <string name="tab_home">Home</string>
     <string name="tab_apps">Apps</string>
     <string name="tab_catalog">Catalog</string>
@@ -8,4 +10,41 @@
     <string name="cd_apps">Navigate to apps</string>
     <string name="cd_catalog">Navigate to catalog</string>
     <string name="cd_about">Navigate to about</string>
+
+    <!-- Common -->
+    <string name="retry">Retry</string>
+    <string name="stars">Stars</string>
+
+    <!-- Home Screen -->
+    <string name="home_error_title">Failed to load feed</string>
+    <string name="home_empty_title">No posts found</string>
+
+    <!-- Apps Screen -->
+    <string name="apps_error_title">Failed to load apps</string>
+    <string name="apps_empty_title">No apps found</string>
+    <string name="apps_empty_subtitle">Repositories with \'apps\' topic will appear here</string>
+
+    <!-- Catalog Screen -->
+    <string name="catalog_navbar">PvotNavBar</string>
+    <string name="catalog_clock_picker">PvotClockPicker</string>
+    <string name="catalog_duration_picker">PvotDurationPicker</string>
+    <string name="catalog_selected_time">Selected: %1$s</string>
+    <string name="catalog_selected_duration">Selected: %1$s</string>
+
+    <!-- About Screen -->
+    <string name="about_app_name">PVOT</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_description">A showcase app for the PVOT Design System library, featuring custom components built with Jetpack Compose.</string>
+    <string name="about_section_team">Team</string>
+    <string name="about_section_links">Project Links</string>
+    <string name="about_section_settings">Settings</string>
+    <string name="about_link_github_repo">GitHub Repository</string>
+    <string name="about_link_github_org">PVOT-OSS Organization</string>
+    <string name="about_link_website">Website</string>
+    <string name="about_dynamic_colors_title">Dynamic Colors</string>
+    <string name="about_dynamic_colors_subtitle">Use Material You colors (Android 12+)</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_avatar">%1$s avatar</string>
+    <string name="cd_preview">%1$s preview</string>
 </resources>

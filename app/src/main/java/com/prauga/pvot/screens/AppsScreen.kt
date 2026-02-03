@@ -26,7 +26,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.R
 import com.prauga.pvot.components.AppCard
 import com.prauga.pvot.data.model.GithubRepo
 import com.prauga.pvot.data.repository.GithubRepository
@@ -74,7 +76,7 @@ fun AppsScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        text = "Failed to load apps",
+                        text = stringResource(R.string.apps_error_title),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.error
                     )
@@ -84,7 +86,7 @@ fun AppsScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Button(onClick = { loadRepos() }) {
-                        Text("Retry")
+                        Text(stringResource(R.string.retry))
                     }
                 }
             }
@@ -96,12 +98,12 @@ fun AppsScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "No apps found",
+                            text = stringResource(R.string.apps_empty_title),
                             style = MaterialTheme.typography.bodyLarge,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = "Repositories with 'apps' topic will appear here",
+                            text = stringResource(R.string.apps_empty_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.padding(top = 8.dp)

@@ -12,6 +12,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarColors
 import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
@@ -97,7 +98,7 @@ object PvotTheme {
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    navBarColors: PvotNavBarColors = LocalPvotNavBarColors.current,
+    navBarColors: PvotNavBarColors? = null,
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
     pickerColors: PvotPickerColors? = null,
     content: @Composable () -> Unit
@@ -111,6 +112,20 @@ fun PvotAppTheme(
         else -> LightColorScheme
     }
 
+    val resolvedNavBarColors = navBarColors ?: if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        PvotNavBarColors(
+            gradient = Brush.horizontalGradient(
+                listOf(colorScheme.primary, colorScheme.tertiary)
+            ),
+            collapsedChipColor = colorScheme.surfaceVariant,
+            containerColor = colorScheme.surface.copy(alpha = 0.1f),
+            iconSelectedColor = colorScheme.onPrimary,
+            iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f)
+        )
+    } else {
+        LocalPvotNavBarColors.current
+    }
+
     val resolvedPickerColors = pickerColors ?: PvotPickerColors(
         textColor = colorScheme.onBackground,
         textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
@@ -118,7 +133,7 @@ fun PvotAppTheme(
     )
 
     CompositionLocalProvider(
-        LocalPvotNavBarColors provides navBarColors,
+        LocalPvotNavBarColors provides resolvedNavBarColors,
         LocalPvotNavBarSizes provides navBarSizes,
         LocalPvotPickerColors provides resolvedPickerColors
     ) {
