@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-FileCopyrightText: 2026 Vishnu R <vishnurajesh45@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
 package com.prauga.pvot.designsystem.components.navigation
@@ -28,6 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.domain.animation.AnimationCoordinator
+import com.prauga.pvot.designsystem.domain.animation.IAnimationCoordinator
+import com.prauga.pvot.designsystem.domain.cache.ITextMeasurementCache
+import com.prauga.pvot.designsystem.domain.cache.TextMeasurementCache
+import com.prauga.pvot.designsystem.domain.validation.IValidationEngine
+import com.prauga.pvot.designsystem.domain.validation.ValidationEngine
+import com.prauga.pvot.designsystem.domain.validation.ValidationResult
 import com.prauga.pvot.designsystem.theme.PvotTheme
 
 val ItemHorizontalPadding = 16.dp
@@ -36,11 +44,102 @@ val IconTextGap = 8.dp
 /**
  * A floating bottom navigation bar with animated pill-style items.
  *
- * When a tab is expanded, icons and content descriptions resolve in order:
- * 1. Nav bar level ([expandedIconRes]/[expandedContentDescriptionRes])
- * 2. Tab level ([TabItem.expandedIconRes])
- * 3. Fallback to collapsed values ([TabItem.iconRes]/[TabItem.contentDescriptionRes])
+ * This is the new optimized version that uses NavBarConfig for simplified configuration.
  */
+@Composable
+fun PvotNavBar(
+    config: NavBarConfig,
+    onTabClick: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    textCache: ITextMeasurementCache = remember { TextMeasurementCache() },
+    animationCoordinator: IAnimationCoordinator = remember { AnimationCoordinator() },
+    validationEngine: IValidationEngine = remember { ValidationEngine() }
+) {
+    // Validate configuration at component entry
+    val validationResult = remember(config) {
+        validationEngine.validateNavBarConfig(config.tabs, config.selectedTab)
+    }
+    
+    when (validationResult) {
+        is ValidationResult.Invalid -> {
+            val errorMessage = validationResult.errors.joinToString("\n") { error ->
+                "${error.parameter}: ${error.message}" +
+                    (error.expectedValue?.let { " (expected: $it)" } ?: "")
+            }
+            throw IllegalArgumentException("Invalid NavBarConfig:\n$errorMessage")
+        }
+        ValidationResult.Valid -> Unit
+    }
+    
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .navigationBarsPadding()
+            .padding(
+                horizontal = config.appearance.sizes.horizontalPadding,
+                vertical = 12.dp
+            ),
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        Surface(
+            modifier = Modifier
+                .barWidthModifier(config.appearance.sizes)
+                .height(config.appearance.sizes.barHeight)
+                .clip(RoundedCornerShape(config.appearance.sizes.cornerRadius))
+                .shadow(
+                    18.dp,
+                    RoundedCornerShape(config.appearance.sizes.cornerRadius),
+                    clip = false
+                ),
+            shape = RoundedCornerShape(config.appearance.sizes.cornerRadius),
+            color = config.appearance.colors.containerColor,
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp
+        ) {
+            Row(
+                modifier = Modifier
+                    .barWidthModifier(config.appearance.sizes)
+                    .height(config.appearance.sizes.barHeight)
+                    .padding(horizontal = config.appearance.sizes.contentPaddingHorizontal),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(
+                    config.appearance.sizes.itemSpacing,
+                    Alignment.CenterHorizontally
+                )
+            ) {
+                config.tabs.forEachIndexed { index, tab ->
+                    val animationId = "nav_item_$index"
+                    
+                    PillNavItem(
+                        tab = tab,
+                        selected = index == config.selectedTab,
+                        onClick = { onTabClick(index) },
+                        sizes = config.appearance.sizes,
+                        colors = config.appearance.colors,
+                        textCache = textCache,
+                        shouldAnimate = animationCoordinator.shouldAnimate(animationId),
+                        onAnimationStart = { animationCoordinator.registerAnimation(animationId) },
+                        onAnimationEnd = { animationCoordinator.unregisterAnimation(animationId) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Legacy version of PvotNavBar for backward compatibility.
+ * 
+ * @deprecated Use the version that accepts NavBarConfig instead.
+ * This overload will be removed in a future version.
+ */
+@Deprecated(
+    message = "Use PvotNavBar(config: NavBarConfig, ...) instead",
+    replaceWith = ReplaceWith(
+        "PvotNavBar(config = NavBarConfig(tabs = tabs, selectedTab = selectedTab, " +
+            "appearance = NavBarAppearance(sizes = sizes, colors = colors)), onTabClick = onTabClick, modifier = modifier)"
+    )
+)
 @Composable
 fun PvotNavBar(
     selectedTab: Int,
@@ -52,51 +151,19 @@ fun PvotNavBar(
     sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
     colors: PvotNavBarColors = PvotTheme.navBarColors,
 ) {
-    Box(
+    // Convert old parameters to NavBarConfig and delegate to new implementation
+    val config = NavBarConfig(
+        tabs = tabs,
+        selectedTab = selectedTab,
+        appearance = NavBarAppearance(sizes = sizes, colors = colors)
+    )
+    
+    // Call the new optimized version
+    PvotNavBar(
+        config = config,
+        onTabClick = onTabClick,
         modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = sizes.horizontalPadding, vertical = 12.dp),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Surface(
-            modifier = Modifier
-                .barWidthModifier(sizes)
-                .height(sizes.barHeight)
-                .clip(RoundedCornerShape(sizes.cornerRadius))
-                .shadow(18.dp, RoundedCornerShape(sizes.cornerRadius), clip = false),
-            shape = RoundedCornerShape(sizes.cornerRadius),
-            color = colors.containerColor,
-            tonalElevation = 0.dp,
-            shadowElevation = 0.dp
-        ) {
-            Row(
-                modifier = Modifier
-                    .barWidthModifier(sizes)
-                    .height(sizes.barHeight)
-                    .padding(horizontal = sizes.contentPaddingHorizontal),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(
-                    sizes.itemSpacing,
-                    Alignment.CenterHorizontally
-                )
-            ) {
-                tabs.forEachIndexed { index, tab ->
-                    PillNavItem(
-                        tab = tab,
-                        selected = index == selectedTab,
-                        onClick = { onTabClick(index) },
-                        expandedIconRes = expandedIconRes ?: tab.expandedIconRes ?: tab.iconRes,
-                        expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
-                        expandedContentDescriptionRes = expandedContentDescriptionRes
-                            ?: tab.contentDescriptionRes,
-                        sizes = sizes,
-                        colors = colors
-                    )
-                }
-            }
-        }
-    }
+    )
 }
 
 private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.then(
@@ -108,7 +175,11 @@ private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.t
 )
 
 @Composable
-fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): Dp {
+fun calculateExpandedWidth(
+    labelText: String,
+    sizes: PvotNavBarSizes,
+    textCache: ITextMeasurementCache
+): Dp {
     if (sizes.expandedWidth != Dp.Unspecified) {
         return sizes.expandedWidth
     }
@@ -118,8 +189,10 @@ fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): Dp {
         fontWeight = FontWeight.SemiBold,
         fontSize = sizes.labelFontSize
     )
+    
+    // Use cache for text measurement
     val textLayoutResult = remember(labelText, textStyle) {
-        textMeasurer.measure(labelText, textStyle)
+        textCache.measure(labelText, textStyle, textMeasurer)
     }
 
     val density = LocalDensity.current
