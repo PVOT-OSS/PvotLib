@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-FileCopyrightText: 2026 Vishnu R <vishnurajesh45@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
 package com.prauga.pvot.designsystem.components.picker.internal
@@ -38,7 +39,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
-import kotlin.math.abs
+import com.prauga.pvot.designsystem.domain.monitoring.IPerformanceMonitor
+import com.prauga.pvot.designsystem.domain.scroll.IScrollCalculator
+import com.prauga.pvot.designsystem.domain.scroll.ScrollCalculator
+import com.prauga.pvot.designsystem.domain.transform.ITransformEngine
+import com.prauga.pvot.designsystem.domain.transform.ItemTransform
+import com.prauga.pvot.designsystem.domain.transform.TransformEngine
 
 private val DefaultItemHeight = 40.dp
 private val DefaultVisibleItems = 5
@@ -51,6 +57,7 @@ private const val MIN_ALPHA = 0.3f
 
 /**
  * Wheel engine that handles scrolling, snapping, and rendering with 3D cylindrical effect.
+ * Optimized version using domain layer components for better performance and testability.
  */
 @Composable
 internal fun WheelEngine(
@@ -59,27 +66,56 @@ internal fun WheelEngine(
     modifier: Modifier = Modifier,
     colors: PvotPickerColors = LocalPvotPickerColors.current,
     itemHeight: Dp = DefaultItemHeight,
-    visibleItemsCount: Int = DefaultVisibleItems
+    visibleItemsCount: Int = DefaultVisibleItems,
+    transformEngine: ITransformEngine = remember { TransformEngine() },
+    scrollCalculator: IScrollCalculator = remember { ScrollCalculator() },
+    performanceMonitor: IPerformanceMonitor? = null
 ) {
+    performanceMonitor?.recordRecomposition("WheelEngine")
+    
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = config.initialIndex)
     val flingBehavior = rememberSnapFlingBehavior(listState)
     val hapticFeedback = LocalHapticFeedback.current
     var lastSelectedIndex by remember { mutableIntStateOf(config.initialIndex) }
 
     val density = LocalDensity.current
-    val itemHeightPx = with(density) { itemHeight.toPx() }
-    val halfVisibleItems = visibleItemsCount / 2f
+    
+    // Pre-calculate constants using remember
+    val itemHeightPx = remember(itemHeight, density) {
+        with(density) { itemHeight.toPx() }
+    }
+    val halfVisibleItems = remember(visibleItemsCount) {
+        visibleItemsCount / 2f
+    }
 
-    // Track scroll position
-    val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-    val scrollOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
+    // Use derivedStateOf for scroll position
+    val firstVisibleIndex by remember {
+        derivedStateOf { listState.firstVisibleItemIndex }
+    }
+    val scrollOffset by remember {
+        derivedStateOf { listState.firstVisibleItemScrollOffset.toFloat() }
+    }
+    
+    // Calculate visible range once per scroll
+    val visibleRange by remember {
+        derivedStateOf {
+            scrollCalculator.calculateVisibleRange(
+                firstVisibleIndex,
+                scrollOffset,
+                itemHeightPx,
+                visibleItemsCount
+            )
+        }
+    }
 
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
                 val selected = index.coerceIn(config.values.indices)
                 if (selected != lastSelectedIndex) {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    if (config.behavior.enableHapticFeedback) {
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    }
                     lastSelectedIndex = selected
                 }
                 onValueSelected(config.values[selected])
@@ -89,7 +125,7 @@ internal fun WheelEngine(
     Box(
         modifier = modifier
             .height(itemHeight * visibleItemsCount)
-            .width(DefaultWheelWidth)
+            .width(config.appearance.wheelWidth)
     ) {
         LazyColumn(
             state = listState,
@@ -97,27 +133,40 @@ internal fun WheelEngine(
             contentPadding = PaddingValues(vertical = itemHeight * (visibleItemsCount / 2)),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(config.values.size) { index ->
-                // Calculate distance from center
-                val distanceFromCenter = (index - firstVisibleIndex) - (scrollOffset / itemHeightPx)
+            items(
+                count = config.values.size,
+                key = { index -> config.values[index] }  // Stable keys for efficiency
+            ) { index ->
+                // Only calculate transforms for visible items
+                if (scrollCalculator.isItemVisible(index, visibleRange)) {
+                    val transform = remember(
+                        index,
+                        firstVisibleIndex,
+                        scrollOffset,
+                        itemHeightPx,
+                        halfVisibleItems
+                    ) {
+                        transformEngine.calculateTransform(
+                            index,
+                            firstVisibleIndex,
+                            scrollOffset,
+                            itemHeightPx,
+                            halfVisibleItems
+                        )
+                    }
 
-                // Normalize distance
-                val normalizedDistance = (distanceFromCenter / halfVisibleItems).coerceIn(-1f, 1f)
-
-                // Calculate 3D transformations
-                val rotationX = normalizedDistance * MAX_ROTATION_DEGREES
-                val scale = 1f - (abs(normalizedDistance) * (1f - MIN_SCALE))
-                val alpha = 1f - (abs(normalizedDistance) * (1f - MIN_ALPHA))
-
-                WheelItem(
-                    text = config.label(config.values[index]),
-                    suffix = config.suffix,
-                    colors = colors,
-                    rotationX = rotationX,
-                    scale = scale,
-                    alpha = alpha,
-                    modifier = Modifier.height(itemHeight)
-                )
+                    WheelItem(
+                        text = config.label(config.values[index]),
+                        suffix = config.suffix,
+                        colors = colors,
+                        transform = transform,
+                        enable3D = config.behavior.enable3DEffect,
+                        modifier = Modifier.height(itemHeight)
+                    )
+                } else {
+                    // Placeholder for off-screen items
+                    Spacer(modifier = Modifier.height(itemHeight))
+                }
             }
         }
 
@@ -140,22 +189,29 @@ private fun WheelItem(
     text: String,
     suffix: String,
     colors: PvotPickerColors,
-    rotationX: Float,
-    scale: Float,
-    alpha: Float,
+    transform: ItemTransform,
+    enable3D: Boolean,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .graphicsLayer {
-                this.rotationX = rotationX
-                this.scaleX = scale
-                this.scaleY = scale
-                this.alpha = alpha
-                this.transformOrigin = TransformOrigin.Center
-                this.cameraDistance = 12f * density
-            },
+            .then(
+                if (enable3D) {
+                    Modifier.graphicsLayer {
+                        rotationX = transform.rotationX
+                        scaleX = transform.scale
+                        scaleY = transform.scale
+                        alpha = transform.alpha
+                        transformOrigin = TransformOrigin.Center
+                        cameraDistance = 12f * density
+                    }
+                } else {
+                    Modifier.graphicsLayer {
+                        alpha = transform.alpha
+                    }
+                }
+            ),
         contentAlignment = Alignment.Center
     ) {
         Row(verticalAlignment = Alignment.Bottom) {
@@ -178,13 +234,17 @@ private fun WheelItem(
 
 /**
  * Composable that renders multiple wheels in a row.
+ * Updated to use new WheelEngine signature with backward compatibility.
  */
 @Composable
 internal fun MultiWheelEngine(
     configs: List<WheelConfig>,
     onValuesSelected: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = LocalPvotPickerColors.current
+    colors: PvotPickerColors = LocalPvotPickerColors.current,
+    transformEngine: ITransformEngine = remember { TransformEngine() },
+    scrollCalculator: IScrollCalculator = remember { ScrollCalculator() },
+    performanceMonitor: IPerformanceMonitor? = null
 ) {
     val selectedValues = configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()
 
@@ -199,7 +259,10 @@ internal fun MultiWheelEngine(
                     selectedValues[index] = value
                     onValuesSelected(selectedValues.toList())
                 },
-                colors = colors
+                colors = colors,
+                transformEngine = transformEngine,
+                scrollCalculator = scrollCalculator,
+                performanceMonitor = performanceMonitor
             )
         }
     }
