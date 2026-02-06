@@ -233,6 +233,66 @@ private fun WheelItem(
 }
 
 /**
+ * Legacy version of WheelEngine for backward compatibility.
+ * 
+ * @deprecated Use the version that accepts WheelConfig instead.
+ * This overload will be removed in a future version.
+ */
+@Deprecated(
+    message = "Use WheelEngine(config: WheelConfig, ...) instead",
+    replaceWith = ReplaceWith(
+        "WheelEngine(config = WheelConfig(values = values, label = label, suffix = suffix, " +
+            "initialIndex = initialIndex, appearance = WheelAppearance(itemHeight = itemHeight, " +
+            "visibleItemsCount = visibleItemsCount, wheelWidth = wheelWidth, colors = colors), " +
+            "behavior = WheelBehavior(enableHapticFeedback = enableHapticFeedback, enable3DEffect = enable3DEffect)), " +
+            "onValueSelected = onValueSelected, modifier = modifier)"
+    )
+)
+@Composable
+internal fun WheelEngine(
+    values: List<Int>,
+    onValueSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    label: (Int) -> String = { it.toString() },
+    suffix: String = "",
+    initialIndex: Int = 0,
+    colors: PvotPickerColors = LocalPvotPickerColors.current,
+    itemHeight: Dp = DefaultItemHeight,
+    visibleItemsCount: Int = DefaultVisibleItems,
+    wheelWidth: Dp = DefaultWheelWidth,
+    enableHapticFeedback: Boolean = true,
+    enable3DEffect: Boolean = true
+) {
+    // Convert old parameters to WheelConfig and delegate to new implementation
+    val config = WheelConfig(
+        values = values,
+        label = label,
+        suffix = suffix,
+        initialIndex = initialIndex,
+        appearance = WheelAppearance(
+            itemHeight = itemHeight,
+            visibleItemsCount = visibleItemsCount,
+            wheelWidth = wheelWidth,
+            colors = colors
+        ),
+        behavior = WheelBehavior(
+            enableHapticFeedback = enableHapticFeedback,
+            enable3DEffect = enable3DEffect
+        )
+    )
+    
+    // Call the new optimized version
+    WheelEngine(
+        config = config,
+        onValueSelected = onValueSelected,
+        modifier = modifier,
+        colors = colors,
+        itemHeight = itemHeight,
+        visibleItemsCount = visibleItemsCount
+    )
+}
+
+/**
  * Composable that renders multiple wheels in a row.
  * Updated to use new WheelEngine signature with backward compatibility.
  */
