@@ -3,6 +3,8 @@
 
 package com.prauga.pvot.designsystem.domain.validation
 
+import android.util.Log
+
 /**
  * Implementation of validation engine for component configuration.
  * Validates parameters and provides clear error messages.
@@ -34,6 +36,12 @@ class ValidationEngine : IValidationEngine {
             ))
         }
         
+        // Log validation errors
+        if (errors.isNotEmpty()) {
+            val errorMessage = errors.joinToString(", ") { "${it.parameter}: ${it.message}" }
+            Log.e("DesignSystem", "NavBarConfig validation failed: $errorMessage")
+        }
+        
         return if (errors.isEmpty()) ValidationResult.Valid
         else ValidationResult.Invalid(errors)
     }
@@ -61,6 +69,12 @@ class ValidationEngine : IValidationEngine {
                 message = "Initial index out of bounds",
                 expectedValue = "0 to ${values.size - 1}"
             ))
+        }
+        
+        // Log validation errors
+        if (errors.isNotEmpty()) {
+            val errorMessage = errors.joinToString(", ") { "${it.parameter}: ${it.message}" }
+            Log.e("DesignSystem", "WheelConfig validation failed: $errorMessage")
         }
         
         return if (errors.isEmpty()) ValidationResult.Valid

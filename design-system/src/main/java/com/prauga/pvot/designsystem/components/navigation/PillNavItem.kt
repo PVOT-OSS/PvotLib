@@ -46,9 +46,44 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.domain.cache.ITextMeasurementCache
 import com.prauga.pvot.designsystem.domain.cache.TextMeasurementCache
+import com.prauga.pvot.designsystem.components.navigation.PillNavItemConstants.RIPPLE_ALPHA
+import com.prauga.pvot.designsystem.components.navigation.PillNavItemConstants.SCALE_ANIMATION_DURATION_MS
+import com.prauga.pvot.designsystem.components.navigation.PillNavItemConstants.SELECTED_SCALE
+import com.prauga.pvot.designsystem.components.navigation.PillNavItemConstants.UNSELECTED_SCALE
+import com.prauga.pvot.designsystem.components.navigation.PillNavItemConstants.WIDTH_ANIMATION_DURATION_MS
 
 /**
  * Optimized PillNavItem with animation coordination and text caching.
+ *
+ * A single navigation tab item that expands to show its label when selected
+ * and collapses to show only the icon when unselected. Animations are coordinated
+ * to prevent performance degradation when multiple items animate simultaneously.
+ *
+ * ## Performance Characteristics
+ * - Text measurements are cached to avoid repeated calculations
+ * - Animations can be disabled via shouldAnimate parameter
+ * - Animation lifecycle is tracked via onAnimationStart/End callbacks
+ * - Uses graphicsLayer for hardware-accelerated transformations
+ *
+ * ## State Management
+ * - Width and scale are animated using animateDpAsState and animateFloatAsState
+ * - Text measurement cache is passed from parent for consistency
+ * - Selection state is controlled by parent component
+ *
+ * @param tab The tab item configuration including icon and label resources
+ * @param selected Whether this tab is currently selected
+ * @param onClick Callback invoked when the tab is clicked
+ * @param sizes Size configuration for the tab item
+ * @param colors Color configuration for the tab item
+ * @param textCache Cache for text measurements
+ * @param shouldAnimate Whether animations should be enabled for this item
+ * @param onAnimationStart Callback invoked when animation starts
+ * @param onAnimationEnd Callback invoked when animation completes
+ *
+ * @see PvotTabItem
+ * @see PvotNavBarSizes
+ * @see PvotNavBarColors
+ * @see TextMeasurementCache
  */
 @Composable
 fun PillNavItem(
@@ -68,7 +103,7 @@ fun PillNavItem(
     val width by animateDpAsState(
         targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
         animationSpec = if (shouldAnimate) {
-            tween(240, easing = FastOutSlowInEasing)
+            tween(WIDTH_ANIMATION_DURATION_MS, easing = FastOutSlowInEasing)
         } else {
             tween(0)
         },
@@ -77,9 +112,9 @@ fun PillNavItem(
     )
 
     val scale by animateFloatAsState(
-        targetValue = if (selected) 1f else 0.98f,
+        targetValue = if (selected) SELECTED_SCALE else UNSELECTED_SCALE,
         animationSpec = if (shouldAnimate) {
-            tween(200)
+            tween(SCALE_ANIMATION_DURATION_MS)
         } else {
             tween(0)
         },
@@ -114,7 +149,7 @@ fun PillNavItem(
             )
             .indication(
                 interactionSource = interactionSource,
-                indication = ripple(bounded = true, color = Color.White.copy(alpha = 0.25f))
+                indication = ripple(bounded = true, color = Color.White.copy(alpha = RIPPLE_ALPHA))
             )
             .graphicsLayer {
                 scaleX = scale
@@ -179,13 +214,13 @@ fun PillNavItem(
 
     val width by animateDpAsState(
         targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
-        animationSpec = tween(240, easing = FastOutSlowInEasing),
+        animationSpec = tween(WIDTH_ANIMATION_DURATION_MS, easing = FastOutSlowInEasing),
         label = "itemWidth"
     )
 
     val scale by animateFloatAsState(
-        targetValue = if (selected) 1f else 0.98f,
-        animationSpec = tween(200),
+        targetValue = if (selected) SELECTED_SCALE else UNSELECTED_SCALE,
+        animationSpec = tween(SCALE_ANIMATION_DURATION_MS),
         label = "scale"
     )
 
@@ -209,7 +244,7 @@ fun PillNavItem(
             )
             .indication(
                 interactionSource = interactionSource,
-                indication = ripple(bounded = true, color = Color.White.copy(alpha = 0.25f))
+                indication = ripple(bounded = true, color = Color.White.copy(alpha = RIPPLE_ALPHA))
             )
             .graphicsLayer {
                 scaleX = scale

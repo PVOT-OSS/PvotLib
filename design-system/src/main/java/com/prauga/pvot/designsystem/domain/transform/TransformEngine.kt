@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.designsystem.domain.transform
 
+import android.util.Log
 import kotlin.math.abs
 
 /**
@@ -12,11 +13,13 @@ import kotlin.math.abs
  * @property maxRotationDegrees Maximum rotation angle in degrees (default: 60°)
  * @property minScale Minimum scale factor for items far from center (default: 0.7)
  * @property minAlpha Minimum alpha/opacity for items far from center (default: 0.3)
+ * @property enableDebugLogging Whether to enable debug logging for calculations
  */
 class TransformEngine(
     private val maxRotationDegrees: Float = 60f,
     private val minScale: Float = 0.7f,
-    private val minAlpha: Float = 0.3f
+    private val minAlpha: Float = 0.3f,
+    private val enableDebugLogging: Boolean = false
 ) : ITransformEngine {
     
     // Pre-calculated constants to avoid repeated calculations
@@ -53,10 +56,21 @@ class TransformEngine(
         // Use absolute distance for scale and alpha (symmetric effect)
         val absDistance = abs(normalizedDistance)
         
-        return ItemTransform(
+        val transform = ItemTransform(
             rotationX = normalizedDistance * maxRotationDegrees,
             scale = 1f - (absDistance * scaleRange),
             alpha = 1f - (absDistance * alphaRange)
         )
+        
+        // Debug logging when enabled
+        if (enableDebugLogging) {
+            Log.d(
+                "DesignSystem",
+                "Transform calculated for item $itemIndex: " +
+                "rotation=${transform.rotationX}, scale=${transform.scale}, alpha=${transform.alpha}"
+            )
+        }
+        
+        return transform
     }
 }

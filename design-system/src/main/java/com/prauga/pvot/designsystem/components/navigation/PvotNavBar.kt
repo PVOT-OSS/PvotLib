@@ -4,6 +4,7 @@
 
 package com.prauga.pvot.designsystem.components.navigation
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -37,6 +38,10 @@ import com.prauga.pvot.designsystem.domain.validation.IValidationEngine
 import com.prauga.pvot.designsystem.domain.validation.ValidationEngine
 import com.prauga.pvot.designsystem.domain.validation.ValidationResult
 import com.prauga.pvot.designsystem.theme.PvotTheme
+import com.prauga.pvot.designsystem.components.navigation.NavBarConstants.CONTAINER_VERTICAL_PADDING
+import com.prauga.pvot.designsystem.components.navigation.NavBarConstants.SURFACE_SHADOW_ELEVATION
+import com.prauga.pvot.designsystem.components.navigation.NavBarConstants.SURFACE_SHADOW_ELEVATION_M3
+import com.prauga.pvot.designsystem.components.navigation.NavBarConstants.SURFACE_TONAL_ELEVATION
 
 val ItemHorizontalPadding = 16.dp
 val IconTextGap = 8.dp
@@ -44,7 +49,33 @@ val IconTextGap = 8.dp
 /**
  * A floating bottom navigation bar with animated pill-style items.
  *
- * This is the new optimized version that uses NavBarConfig for simplified configuration.
+ * This is the optimized version that uses NavBarConfig for simplified configuration,
+ * text measurement caching for performance, and animation coordination to prevent
+ * frame drops when multiple tabs animate simultaneously.
+ *
+ * ## Performance Characteristics
+ * - Text measurements are cached to avoid repeated calculations
+ * - Animations are coordinated to maintain smooth 60fps performance
+ * - Configuration is validated at component entry to catch errors early
+ * - Optional performance monitoring tracks recomposition counts
+ *
+ * ## State Management
+ * - Uses remember for text measurement cache (persists across recompositions)
+ * - Uses LaunchedEffect for performance monitoring side effects
+ * - Tab selection state is hoisted to parent component
+ *
+ * @param config Navigation bar configuration including tabs, selection, appearance, and behavior
+ * @param onTabClick Callback invoked when a tab is clicked, receives the tab index
+ * @param modifier Modifier to be applied to the navigation bar container
+ * @param textCache Cache for text measurements (default: new TextMeasurementCache)
+ * @param animationCoordinator Coordinator for managing concurrent animations (default: new AnimationCoordinator)
+ * @param validationEngine Engine for validating configuration (default: new ValidationEngine)
+ * @param performanceMonitor Optional monitor for tracking performance metrics
+ * @throws IllegalArgumentException if config validation fails
+ *
+ * @see NavBarConfig
+ * @see TextMeasurementCache
+ * @see AnimationCoordinator
  */
 @Composable
 fun PvotNavBar(
@@ -53,8 +84,17 @@ fun PvotNavBar(
     modifier: Modifier = Modifier,
     textCache: ITextMeasurementCache = remember { TextMeasurementCache() },
     animationCoordinator: IAnimationCoordinator = remember { AnimationCoordinator() },
-    validationEngine: IValidationEngine = remember { ValidationEngine() }
+    validationEngine: IValidationEngine = remember { ValidationEngine() },
+    performanceMonitor: com.prauga.pvot.designsystem.domain.monitoring.IPerformanceMonitor? = null
 ) {
+    // Record recomposition for performance monitoring
+    try {
+        performanceMonitor?.recordRecomposition("PvotNavBar")
+    } catch (e: Exception) {
+        Log.e("DesignSystem", "Failed to record recomposition for PvotNavBar", e)
+        // Continue with basic functionality
+    }
+    
     // Validate configuration at component entry
     val validationResult = remember(config) {
         validationEngine.validateNavBarConfig(config.tabs, config.selectedTab)
@@ -71,13 +111,18 @@ fun PvotNavBar(
         ValidationResult.Valid -> Unit
     }
     
+    // Log performance warnings when thresholds are exceeded
+    androidx.compose.runtime.LaunchedEffect(performanceMonitor) {
+        performanceMonitor?.logWarnings()
+    }
+    
     Box(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
             .padding(
                 horizontal = config.appearance.sizes.horizontalPadding,
-                vertical = 12.dp
+                vertical = CONTAINER_VERTICAL_PADDING
             ),
         contentAlignment = Alignment.BottomCenter
     ) {
@@ -87,14 +132,14 @@ fun PvotNavBar(
                 .height(config.appearance.sizes.barHeight)
                 .clip(RoundedCornerShape(config.appearance.sizes.cornerRadius))
                 .shadow(
-                    18.dp,
+                    SURFACE_SHADOW_ELEVATION,
                     RoundedCornerShape(config.appearance.sizes.cornerRadius),
                     clip = false
                 ),
             shape = RoundedCornerShape(config.appearance.sizes.cornerRadius),
             color = config.appearance.colors.containerColor,
-            tonalElevation = 0.dp,
-            shadowElevation = 0.dp
+            tonalElevation = SURFACE_TONAL_ELEVATION,
+            shadowElevation = SURFACE_SHADOW_ELEVATION_M3
         ) {
             Row(
                 modifier = Modifier
@@ -174,6 +219,26 @@ private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.t
     }
 )
 
+/**
+ * Calculates the expanded width for a navigation tab item.
+ *
+ * Uses text measurement caching to avoid repeated calculations for the same label.
+ * The width is calculated based on icon size, text width, and padding, then clamped
+ * to the configured min/max bounds.
+ *
+ * ## Performance Optimization
+ * - Text measurements are cached using the provided textCache
+ * - Results are memoized using remember with appropriate keys
+ * - Only recalculates when label text or text style changes
+ *
+ * @param labelText The text label to measure
+ * @param sizes Size configuration containing icon sizes, padding, and width constraints
+ * @param textCache Cache for storing text measurement results
+ * @return The calculated width for the expanded tab item
+ *
+ * @see TextMeasurementCache
+ * @see PvotNavBarSizes
+ */
 @Composable
 fun calculateExpandedWidth(
     labelText: String,

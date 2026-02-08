@@ -3,6 +3,9 @@
 
 package com.prauga.pvot.designsystem.domain.scroll
 
+import com.prauga.pvot.designsystem.domain.scroll.ScrollConstants.VISIBLE_RANGE_BUFFER_AFTER
+import com.prauga.pvot.designsystem.domain.scroll.ScrollConstants.VISIBLE_RANGE_BUFFER_BEFORE
+
 /**
  * Calculates scroll-related metrics for lazy lists.
  * Pure Kotlin implementation for visibility calculations.
@@ -28,9 +31,9 @@ class ScrollCalculator : IScrollCalculator {
         itemHeightPx: Float,
         visibleItemsCount: Int
     ): IntRange {
-        // Add buffer of 1 item before and after visible range
-        val startIndex = (firstVisibleIndex - 1).coerceAtLeast(0)
-        val endIndex = firstVisibleIndex + visibleItemsCount + 1
+        // Add buffer before and after visible range
+        val startIndex = (firstVisibleIndex - VISIBLE_RANGE_BUFFER_BEFORE).coerceAtLeast(0)
+        val endIndex = firstVisibleIndex + visibleItemsCount + VISIBLE_RANGE_BUFFER_AFTER
         return startIndex..endIndex
     }
     

@@ -4,10 +4,13 @@
 
 package com.prauga.pvot.designsystem.components.picker.internal
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -31,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -45,6 +50,11 @@ import com.prauga.pvot.designsystem.domain.scroll.ScrollCalculator
 import com.prauga.pvot.designsystem.domain.transform.ITransformEngine
 import com.prauga.pvot.designsystem.domain.transform.ItemTransform
 import com.prauga.pvot.designsystem.domain.transform.TransformEngine
+import com.prauga.pvot.designsystem.components.picker.internal.WheelConstants.CAMERA_DISTANCE_MULTIPLIER
+import com.prauga.pvot.designsystem.components.picker.internal.WheelConstants.ITEM_TEXT_SIZE
+import com.prauga.pvot.designsystem.components.picker.internal.WheelConstants.SELECTION_INDICATOR_CORNER_RADIUS
+import com.prauga.pvot.designsystem.components.picker.internal.WheelConstants.SUFFIX_TEXT_SIZE
+import com.prauga.pvot.designsystem.components.picker.internal.WheelConstants.TEXT_SUFFIX_SPACING
 
 private val DefaultItemHeight = 40.dp
 private val DefaultVisibleItems = 5
@@ -57,7 +67,44 @@ private const val MIN_ALPHA = 0.3f
 
 /**
  * Wheel engine that handles scrolling, snapping, and rendering with 3D cylindrical effect.
- * Optimized version using domain layer components for better performance and testability.
+ *
+ * This is the optimized version using domain layer components for better performance
+ * and testability. The wheel displays a vertical list of values with a 3D perspective
+ * effect, where items closer to the center are larger and more opaque.
+ *
+ * ## Performance Optimizations
+ * - Only visible items are rendered with 3D transformations
+ * - Off-screen items use simple Spacer placeholders
+ * - Constants are pre-calculated using remember
+ * - Scroll position uses derivedStateOf for efficient updates
+ * - Visible range is calculated once per scroll
+ * - Stable keys prevent unnecessary recompositions
+ *
+ * ## State Management
+ * - Scroll state is managed by LazyListState
+ * - Selected value is tracked and reported via onValueSelected callback
+ * - Haptic feedback is triggered on value changes
+ * - Performance monitoring is optional via performanceMonitor parameter
+ *
+ * ## Error Handling
+ * - Gracefully handles haptic feedback failures
+ * - Gracefully handles performance monitoring failures
+ * - Continues with basic functionality if optional features fail
+ *
+ * @param config Wheel configuration including values, labels, and appearance
+ * @param onValueSelected Callback invoked when the selected value changes
+ * @param modifier Modifier to be applied to the wheel container
+ * @param colors Color configuration for the wheel items
+ * @param itemHeight Height of each item in the wheel
+ * @param visibleItemsCount Number of items visible at once (should be odd for centered selection)
+ * @param transformEngine Engine for calculating 3D transformations (injectable for testing)
+ * @param scrollCalculator Calculator for determining visible item range (injectable for testing)
+ * @param performanceMonitor Optional monitor for tracking performance metrics
+ *
+ * @see WheelConfig
+ * @see TransformEngine
+ * @see ScrollCalculator
+ * @see PerformanceMonitor
  */
 @Composable
 internal fun WheelEngine(
@@ -71,7 +118,13 @@ internal fun WheelEngine(
     scrollCalculator: IScrollCalculator = remember { ScrollCalculator() },
     performanceMonitor: IPerformanceMonitor? = null
 ) {
-    performanceMonitor?.recordRecomposition("WheelEngine")
+    // Gracefully handle performance monitoring errors
+    try {
+        performanceMonitor?.recordRecomposition("WheelEngine")
+    } catch (e: Exception) {
+        Log.e("DesignSystem", "Failed to record recomposition for WheelEngine", e)
+        // Continue with basic functionality
+    }
     
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = config.initialIndex)
     val flingBehavior = rememberSnapFlingBehavior(listState)
@@ -109,17 +162,19 @@ internal fun WheelEngine(
     }
 
     LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemIndex }
-            .collect { index ->
-                val selected = index.coerceIn(config.values.indices)
-                if (selected != lastSelectedIndex) {
-                    if (config.behavior.enableHapticFeedback) {
-                        hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    }
-                    lastSelectedIndex = selected
-                }
-                onValueSelected(config.values[selected])
-            }
+        handleWheelSelection(
+            listState = listState,
+            config = config,
+            hapticFeedback = hapticFeedback,
+            lastSelectedIndex = lastSelectedIndex,
+            onIndexChanged = { newIndex -> lastSelectedIndex = newIndex },
+            onValueSelected = onValueSelected
+        )
+    }
+    
+    // Log performance warnings when thresholds are exceeded
+    LaunchedEffect(performanceMonitor) {
+        performanceMonitor?.logWarnings()
     }
 
     Box(
@@ -127,61 +182,142 @@ internal fun WheelEngine(
             .height(itemHeight * visibleItemsCount)
             .width(config.appearance.wheelWidth)
     ) {
-        LazyColumn(
-            state = listState,
+        WheelScrollList(
+            config = config,
+            listState = listState,
             flingBehavior = flingBehavior,
-            contentPadding = PaddingValues(vertical = itemHeight * (visibleItemsCount / 2)),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(
-                count = config.values.size,
-                key = { index -> config.values[index] }  // Stable keys for efficiency
-            ) { index ->
-                // Only calculate transforms for visible items
-                if (scrollCalculator.isItemVisible(index, visibleRange)) {
-                    val transform = remember(
+            itemHeight = itemHeight,
+            visibleItemsCount = visibleItemsCount,
+            colors = colors,
+            scrollCalculator = scrollCalculator,
+            transformEngine = transformEngine,
+            visibleRange = visibleRange,
+            firstVisibleIndex = firstVisibleIndex,
+            scrollOffset = scrollOffset,
+            itemHeightPx = itemHeightPx,
+            halfVisibleItems = halfVisibleItems
+        )
+
+        WheelSelectionIndicator(
+            itemHeight = itemHeight,
+            colors = colors
+        )
+    }
+}
+
+/**
+ * Handles wheel selection changes with haptic feedback.
+ */
+private suspend fun handleWheelSelection(
+    listState: LazyListState,
+    config: WheelConfig,
+    hapticFeedback: HapticFeedback,
+    lastSelectedIndex: Int,
+    onIndexChanged: (Int) -> Unit,
+    onValueSelected: (Int) -> Unit
+) {
+    var currentLastIndex = lastSelectedIndex
+    snapshotFlow { listState.firstVisibleItemIndex }
+        .collect { index ->
+            val selected = index.coerceIn(config.values.indices)
+            if (selected != currentLastIndex) {
+                // Gracefully handle haptic feedback errors
+                if (config.behavior.enableHapticFeedback) {
+                    try {
+                        hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    } catch (e: Exception) {
+                        Log.e("DesignSystem", "Failed to perform haptic feedback", e)
+                        // Continue without haptic feedback
+                    }
+                }
+                currentLastIndex = selected
+                onIndexChanged(selected)
+            }
+            onValueSelected(config.values[selected])
+        }
+}
+
+/**
+ * Renders the scrollable list of wheel items.
+ */
+@Composable
+private fun WheelScrollList(
+    config: WheelConfig,
+    listState: LazyListState,
+    flingBehavior: FlingBehavior,
+    itemHeight: Dp,
+    visibleItemsCount: Int,
+    colors: PvotPickerColors,
+    scrollCalculator: IScrollCalculator,
+    transformEngine: ITransformEngine,
+    visibleRange: IntRange,
+    firstVisibleIndex: Int,
+    scrollOffset: Float,
+    itemHeightPx: Float,
+    halfVisibleItems: Float
+) {
+    LazyColumn(
+        state = listState,
+        flingBehavior = flingBehavior,
+        contentPadding = PaddingValues(vertical = itemHeight * (visibleItemsCount / 2)),
+        modifier = Modifier.fillMaxSize()
+    ) {
+        items(
+            count = config.values.size,
+            key = { index -> config.values[index] }  // Stable keys for efficiency
+        ) { index ->
+            // Only calculate transforms for visible items
+            if (scrollCalculator.isItemVisible(index, visibleRange)) {
+                val transform = remember(
+                    index,
+                    firstVisibleIndex,
+                    scrollOffset,
+                    itemHeightPx,
+                    halfVisibleItems
+                ) {
+                    transformEngine.calculateTransform(
                         index,
                         firstVisibleIndex,
                         scrollOffset,
                         itemHeightPx,
                         halfVisibleItems
-                    ) {
-                        transformEngine.calculateTransform(
-                            index,
-                            firstVisibleIndex,
-                            scrollOffset,
-                            itemHeightPx,
-                            halfVisibleItems
-                        )
-                    }
-
-                    WheelItem(
-                        text = config.label(config.values[index]),
-                        suffix = config.suffix,
-                        colors = colors,
-                        transform = transform,
-                        enable3D = config.behavior.enable3DEffect,
-                        modifier = Modifier.height(itemHeight)
                     )
-                } else {
-                    // Placeholder for off-screen items
-                    Spacer(modifier = Modifier.height(itemHeight))
                 }
+
+                WheelItem(
+                    text = config.label(config.values[index]),
+                    suffix = config.suffix,
+                    colors = colors,
+                    transform = transform,
+                    enable3D = config.behavior.enable3DEffect,
+                    modifier = Modifier.height(itemHeight)
+                )
+            } else {
+                // Placeholder for off-screen items
+                Spacer(modifier = Modifier.height(itemHeight))
             }
         }
-
-        // Selection indicator
-        Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .height(itemHeight)
-                .fillMaxWidth()
-                .background(
-                    colors.selectionBackgroundColor,
-                    RoundedCornerShape(20.dp)
-                )
-        )
     }
+}
+
+/**
+ * Renders the selection indicator overlay.
+ */
+@Composable
+private fun BoxScope.WheelSelectionIndicator(
+    itemHeight: Dp,
+    colors: PvotPickerColors
+) {
+    Box(
+        modifier = Modifier
+            .align(Alignment.Center)
+            .height(itemHeight)
+            .fillMaxWidth()
+            .background(
+                colors.selectionBackgroundColor,
+                RoundedCornerShape(SELECTION_INDICATOR_CORNER_RADIUS)
+            )
+    )
 }
 
 @Composable
@@ -204,7 +340,7 @@ private fun WheelItem(
                         scaleY = transform.scale
                         alpha = transform.alpha
                         transformOrigin = TransformOrigin.Center
-                        cameraDistance = 12f * density
+                        cameraDistance = CAMERA_DISTANCE_MULTIPLIER * density
                     }
                 } else {
                     Modifier.graphicsLayer {
@@ -217,14 +353,14 @@ private fun WheelItem(
         Row(verticalAlignment = Alignment.Bottom) {
             Text(
                 text = text,
-                fontSize = 28.sp,
+                fontSize = ITEM_TEXT_SIZE,
                 color = colors.textColor
             )
             if (suffix.isNotEmpty()) {
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(TEXT_SUFFIX_SPACING))
                 Text(
                     text = suffix,
-                    fontSize = 16.sp,
+                    fontSize = SUFFIX_TEXT_SIZE,
                     color = colors.textSecondaryColor
                 )
             }
