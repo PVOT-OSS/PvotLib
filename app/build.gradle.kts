@@ -64,6 +64,11 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
+    // Kotest for property-based testing
+    testImplementation("io.kotest:kotest-property:5.8.0")
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+
     // Ktor client
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.content.negotiation)
