@@ -37,6 +37,9 @@ android {
     testOptions {
         unitTests.all {
             it.useJUnitPlatform()
+
+            // Exclude example tests from test runs
+            it.exclude("**/examples/**")
         }
     }
 }
