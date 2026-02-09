@@ -46,6 +46,9 @@ object PerformanceTestUtils {
             appendLine("recompositionCount=${metrics.recompositionCount}")
             appendLine("averageCalculationTime=${metrics.averageCalculationTime}")
             appendLine("maxCalculationTime=${metrics.maxCalculationTime}")
+            appendLine("averageFrameTimeMs=${metrics.averageFrameTimeMs}")
+            appendLine("maxFrameTimeMs=${metrics.maxFrameTimeMs}")
+            appendLine("droppedFrameCount=${metrics.droppedFrameCount}")
         }
         file.writeText(content)
     }
@@ -72,7 +75,10 @@ object PerformanceTestUtils {
             averageCalculationTime = data["averageCalculationTime"]?.toLongOrNull()
                 ?: throw IllegalArgumentException("Missing or invalid averageCalculationTime"),
             maxCalculationTime = data["maxCalculationTime"]?.toLongOrNull()
-                ?: throw IllegalArgumentException("Missing or invalid maxCalculationTime")
+                ?: throw IllegalArgumentException("Missing or invalid maxCalculationTime"),
+            averageFrameTimeMs = data["averageFrameTimeMs"]?.toDoubleOrNull() ?: 0.0,
+            maxFrameTimeMs = data["maxFrameTimeMs"]?.toLongOrNull() ?: 0L,
+            droppedFrameCount = data["droppedFrameCount"]?.toIntOrNull() ?: 0
         )
     }
     

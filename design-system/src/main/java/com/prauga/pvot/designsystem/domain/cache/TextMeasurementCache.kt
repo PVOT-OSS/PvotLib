@@ -17,10 +17,12 @@ import androidx.compose.ui.text.TextStyle
  * 
  * @param maxSize Maximum number of entries to cache (default: 100)
  * @param enableDebugLogging Whether to enable debug logging for cache operations
+ * @param performanceMonitor Optional monitor for tracking measurement performance
  */
 class TextMeasurementCache(
     private val maxSize: Int = 100,
-    private val enableDebugLogging: Boolean = false
+    private val enableDebugLogging: Boolean = false,
+    private val performanceMonitor: com.prauga.pvot.designsystem.domain.monitoring.IPerformanceMonitor? = null
 ) : ITextMeasurementCache {
     
     private val cache = LruCache<CacheKey, TextLayoutResult>(maxSize)
@@ -42,6 +44,8 @@ class TextMeasurementCache(
             if (enableDebugLogging) {
                 Log.d("DesignSystem", "Text measurement cache hit for: $text")
             }
+            // Cache hit - no measurement time
+            performanceMonitor?.recordCalculation("textMeasurement", 0L)
             return cached
         }
         
@@ -49,7 +53,14 @@ class TextMeasurementCache(
             Log.d("DesignSystem", "Text measurement cache miss for: $text, measuring...")
         }
         
+        // Measure the time taken for text measurement
+        val startTime = System.nanoTime()
         val result = measurer.measure(text, textStyle)
+        val durationMs = (System.nanoTime() - startTime) / 1_000_000
+        
+        // Record the measurement time
+        performanceMonitor?.recordCalculation("textMeasurement", durationMs)
+        
         cache.put(key, result)
         return result
     }
