@@ -121,3 +121,66 @@ Or view them directly in logcat:
 ```bash
 adb logcat -d | grep "Performance Metrics" -A 10
 ```
+
+
+## Benchmark Thresholds
+
+The benchmark tests use **externalized thresholds** that automatically adjust based on device type:
+
+### Automatic Device Detection
+- **Physical Devices**: Stricter thresholds (better performance expected)
+  - Max Recomposition Count: 120
+  - Max Average Frame Time: 16.0ms (60fps)
+  - Max Frame Time: 33ms (30fps minimum)
+  - Max Dropped Frames: 10
+
+- **Emulators**: More lenient thresholds (accounts for virtualization overhead)
+  - Max Recomposition Count: 150
+  - Max Average Frame Time: 20.0ms (~50fps)
+  - Max Frame Time: 100ms (allows occasional spikes)
+  - Max Dropped Frames: 40
+
+### Custom Thresholds via System Properties
+
+You can override the default thresholds using system properties:
+
+```bash
+# Set custom recomposition count threshold
+adb shell setprop benchmark.threshold.recomposition.count 100
+
+# Set custom average frame time threshold (in milliseconds)
+adb shell setprop benchmark.threshold.avg.frame.time 18.0
+
+# Set custom max frame time threshold (in milliseconds)
+adb shell setprop benchmark.threshold.max.frame.time 50
+
+# Set custom dropped frames threshold
+adb shell setprop benchmark.threshold.dropped.frames 20
+
+# Run the benchmark with custom thresholds
+./gradlew :app:connectedDebugAndroidTest --tests "com.prauga.pvot.performance.NavigationPerformanceBenchmark"
+```
+
+### CI/CD Configuration
+
+For CI/CD pipelines, you can explicitly specify device type in your test code:
+
+```kotlin
+// Use physical device thresholds (stricter)
+val thresholds = BenchmarkThresholds.forPhysicalDevice()
+
+// Use emulator thresholds (more lenient)
+val thresholds = BenchmarkThresholds.forEmulator()
+
+// Auto-detect device type (recommended)
+val thresholds = BenchmarkThresholds.forCurrentDevice()
+```
+
+## Performance Regression Detection
+
+If benchmarks start failing after code changes:
+1. Review the specific metrics that exceeded thresholds in the test output
+2. Check if the changes introduced performance issues
+3. Consider if threshold adjustments are needed (test with system properties first)
+4. Run tests multiple times to rule out environmental factors
+5. Compare with baseline metrics to identify the regression source
