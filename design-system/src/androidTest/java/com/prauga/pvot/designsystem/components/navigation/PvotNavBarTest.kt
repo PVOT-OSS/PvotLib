@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-FileCopyrightText: 2026 Vishnu R <vishnurajesh45@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
 package com.prauga.pvot.designsystem.components.navigation
@@ -71,15 +72,28 @@ class PvotNavBarTest {
     }
 
     @Test
-    fun navBar_emptyTabs_doesNotCrash() {
-        composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = emptyList()
-                )
+    fun navBar_emptyTabs_throwsException() {
+        var exceptionThrown = false
+        var exceptionMessage = ""
+        
+        try {
+            composeTestRule.setContent {
+                PvotAppTheme {
+                    PvotNavBar(
+                        selectedTab = 0,
+                        onTabClick = {},
+                        tabs = emptyList()
+                    )
+                }
             }
+        } catch (e: IllegalArgumentException) {
+            exceptionThrown = true
+            exceptionMessage = e.message ?: ""
+        }
+        
+        assert(exceptionThrown) { "Expected IllegalArgumentException to be thrown" }
+        assert(exceptionMessage.contains("Tab list cannot be empty")) {
+            "Expected error message about empty tabs, got: $exceptionMessage"
         }
     }
 
@@ -618,32 +632,54 @@ class PvotNavBarTest {
     }
 
     @Test
-    fun navBar_outOfBoundsSelectedTab_doesNotCrash() {
-        composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 999,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
+    fun navBar_outOfBoundsSelectedTab_throwsException() {
+        var exceptionThrown = false
+        var exceptionMessage = ""
+        
+        try {
+            composeTestRule.setContent {
+                PvotAppTheme {
+                    PvotNavBar(
+                        selectedTab = 999,
+                        onTabClick = {},
+                        tabs = testTabs
+                    )
+                }
             }
+        } catch (e: IllegalArgumentException) {
+            exceptionThrown = true
+            exceptionMessage = e.message ?: ""
         }
-
-        composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
+        
+        assert(exceptionThrown) { "Expected IllegalArgumentException to be thrown" }
+        assert(exceptionMessage.contains("Selected tab index out of bounds")) {
+            "Expected error message about out of bounds index, got: $exceptionMessage"
+        }
     }
 
     @Test
-    fun navBar_negativeSelectedTab_doesNotCrash() {
-        composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = -1,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
+    fun navBar_negativeSelectedTab_throwsException() {
+        var exceptionThrown = false
+        var exceptionMessage = ""
+        
+        try {
+            composeTestRule.setContent {
+                PvotAppTheme {
+                    PvotNavBar(
+                        selectedTab = -1,
+                        onTabClick = {},
+                        tabs = testTabs
+                    )
+                }
             }
+        } catch (e: IllegalArgumentException) {
+            exceptionThrown = true
+            exceptionMessage = e.message ?: ""
         }
-
-        composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
+        
+        assert(exceptionThrown) { "Expected IllegalArgumentException to be thrown" }
+        assert(exceptionMessage.contains("Selected tab index out of bounds")) {
+            "Expected error message about out of bounds index, got: $exceptionMessage"
+        }
     }
 }
