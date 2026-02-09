@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.prauga.pvot.utils.PreferencesManager
+import com.prauga.pvot.designsystem.components.navigation.NavBarConfig
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
@@ -76,10 +77,16 @@ fun DesignSystemShowcase() {
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         bottomBar = {
+            // Create NavBarConfig with tabs and selectedTab grouped together
+            // Uses default NavBarAppearance and NavBarBehavior for optimized performance
+            val config = NavBarConfig(
+                tabs = tabs,
+                selectedTab = selectedTab
+            )
+            
             PvotNavBar(
-                selectedTab = selectedTab,
-                onTabClick = { selectedTab = it },
-                tabs = tabs
+                config = config,
+                onTabClick = { selectedTab = it }
             )
         }
     ) { innerPadding ->
