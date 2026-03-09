@@ -5,6 +5,8 @@ package com.prauga.pvot.designsystem.components.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -74,7 +76,8 @@ fun PvotNavBar(
                 modifier = Modifier
                     .barWidthModifier(sizes)
                     .height(sizes.barHeight)
-                    .padding(horizontal = sizes.contentPaddingHorizontal),
+                    .padding(horizontal = sizes.contentPaddingHorizontal)
+                    .horizontalScroll(rememberScrollState()),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
                     sizes.itemSpacing,
