@@ -3,15 +3,12 @@
 
 package com.prauga.pvot.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,8 +18,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.prauga.pvot.R
 import com.prauga.pvot.components.CatalogCard
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
@@ -36,7 +36,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun CatalogScreen(
     label: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     var selectedTime by remember { mutableStateOf(LocalTime.of(0, 0)) }
     var selectedDuration by remember { mutableStateOf(30.minutes) }
@@ -60,80 +60,110 @@ fun CatalogScreen(
         )
     )
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            start = 16.dp,
-            end = 16.dp,
-            top = 16.dp,
-            bottom = 100.dp
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 8.dp)
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f),
+                        MaterialTheme.colorScheme.background
+                    ),
+                    startY = 0f,
+                    endY = 800f
+                )
             )
-        }
-
-        item {
-            CatalogCard(title = stringResource(R.string.catalog_navbar)) {
-                Box(
+    ) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(top = 16.dp, bottom = 140.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
+        ) {
+            // Editorial Header
+            item {
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                        .fillMaxWidth()
+                        .padding(horizontal = 24.dp, vertical = 8.dp)
                 ) {
-                    PvotNavBar(
-                        selectedTab = demoNavTab,
-                        onTabClick = { demoNavTab = it },
-                        tabs = previewTabs
+                    Text(
+                        text = "Visual",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "Design Catalog",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        letterSpacing = (-0.5).sp
                     )
                 }
             }
-        }
 
-        item {
-            CatalogCard(title = stringResource(R.string.catalog_clock_picker)) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    PvotClockPicker(
-                        time = selectedTime,
-                        onTimeChange = { selectedTime = it }
-                    )
-                    Text(
-                        text = stringResource(
-                            R.string.catalog_selected_time,
-                            selectedTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-                        ),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 12.dp)
-                    )
+            item {
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    CatalogCard(title = stringResource(R.string.catalog_navbar)) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            PvotNavBar(
+                                selectedTab = demoNavTab,
+                                onTabClick = { demoNavTab = it },
+                                tabs = previewTabs
+                            )
+                        }
+                    }
                 }
             }
-        }
 
-        item {
-            CatalogCard(title = stringResource(R.string.catalog_duration_picker)) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    PvotDurationPicker(
-                        duration = selectedDuration,
-                        onDurationChange = { selectedDuration = it }
-                    )
-                    Text(
-                        text = stringResource(
-                            R.string.catalog_selected_duration,
-                            selectedDuration.toComponents { h, m, s, _ ->
-                                "%02d:%02d:%02d".format(h, m, s)
-                            }
-                        ),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(top = 12.dp)
-                    )
+            item {
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    CatalogCard(title = stringResource(R.string.catalog_clock_picker)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            PvotClockPicker(
+                                time = selectedTime,
+                                onTimeChange = { selectedTime = it }
+                            )
+                            Text(
+                                text = stringResource(
+                                    R.string.catalog_selected_time,
+                                    selectedTime.format(DateTimeFormatter.ofPattern("HH:mm"))
+                                ),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(top = 16.dp)
+                            )
+                        }
+                    }
+                }
+            }
+
+            item {
+                Box(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    CatalogCard(title = stringResource(R.string.catalog_duration_picker)) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            PvotDurationPicker(
+                                duration = selectedDuration,
+                                onDurationChange = { selectedDuration = it }
+                            )
+                            Text(
+                                text = stringResource(
+                                    R.string.catalog_selected_duration,
+                                    selectedDuration.toComponents { h, m, s, _ ->
+                                        "%02d:%02d:%02d".format(h, m, s)
+                                    }
+                                ),
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(top = 16.dp)
+                            )
+                        }
+                    }
                 }
             }
         }

@@ -12,28 +12,24 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Size configuration for [PvotNavBar].
- *
- * For expanded item width, use either:
- * - [expandedWidth] for fixed width (bypasses measurement)
- * - [minExpandedWidth]/[maxExpandedWidth] for intrinsic sizing with constraints
  */
 @Immutable
 data class PvotNavBarSizes(
-    val barHeight: Dp = 72.dp,
+    val barHeight: Dp = 64.dp,
     val barWidth: Dp? = null,
     val fillWidth: Boolean = false,
-    val collapsedItemSize: Dp = 56.dp,
+    val collapsedItemSize: Dp = 48.dp,
     val expandedWidth: Dp = Dp.Unspecified,
     val minExpandedWidth: Dp = Dp.Unspecified,
     val maxExpandedWidth: Dp = 200.dp,
-    val cornerRadius: Dp = 100.dp,
-    val itemCornerRadius: Dp = 28.dp,
-    val collapsedIconSize: Dp = 22.dp,
-    val expandedIconSize: Dp = 22.dp,
-    val labelFontSize: TextUnit = 16.sp,
-    val horizontalPadding: Dp = 22.dp,
-    val contentPaddingHorizontal: Dp = 9.dp,
-    val itemSpacing: Dp = 4.dp
+    val cornerRadius: Dp = 32.dp,
+    val itemCornerRadius: Dp = 24.dp,
+    val collapsedIconSize: Dp = 20.dp,
+    val expandedIconSize: Dp = 20.dp,
+    val labelFontSize: TextUnit = 14.sp,
+    val horizontalPadding: Dp = 16.dp,
+    val contentPaddingHorizontal: Dp = 8.dp,
+    val itemSpacing: Dp = 8.dp
 )
 
 val LocalPvotNavBarSizes = staticCompositionLocalOf { PvotNavBarSizes() }

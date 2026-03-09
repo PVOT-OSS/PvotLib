@@ -5,16 +5,14 @@ package com.prauga.pvot.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import com.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChip
-import com.prauga.pvot.designsystem.components.navigation.NavBarIconSelected
+import com.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChipDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarIconSelectedDark
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
 
 class PvotAppThemeTest {
@@ -27,14 +25,14 @@ class PvotAppThemeTest {
         var navBarColors: PvotNavBarColors? = null
 
         composeTestRule.setContent {
-            PvotAppTheme {
+            PvotAppTheme(darkTheme = true) {
                 navBarColors = PvotTheme.navBarColors
                 Text("Test")
             }
         }
 
         assertNotNull(navBarColors)
-        assertNotNull(navBarColors?.gradient)
+        assertNotNull(navBarColors?.selectedChipColor)
         assertNotNull(navBarColors?.collapsedChipColor)
         assertNotNull(navBarColors?.containerColor)
         assertNotNull(navBarColors?.iconSelectedColor)
@@ -47,41 +45,45 @@ class PvotAppThemeTest {
         var iconSelectedColor: Color? = null
 
         composeTestRule.setContent {
-            PvotAppTheme {
+            PvotAppTheme(darkTheme = true) {
                 collapsedChipColor = PvotTheme.navBarColors.collapsedChipColor
                 iconSelectedColor = PvotTheme.navBarColors.iconSelectedColor
                 Text("Test")
             }
         }
 
-        assertEquals(NavBarCollapsedChip, collapsedChipColor)
-        assertEquals(NavBarIconSelected, iconSelectedColor)
+        assertEquals(NavBarCollapsedChipDark, collapsedChipColor)
+        assertEquals(NavBarIconSelectedDark, iconSelectedColor)
     }
 
     @Test
     fun theme_customNavBarColors_areApplied() {
+        val customSelectedChipColor = Color.Green
         val customChipColor = Color.Red
         val customIconColor = Color.Blue
 
+        var appliedSelectedChipColor: Color? = null
         var appliedChipColor: Color? = null
         var appliedIconColor: Color? = null
 
         composeTestRule.setContent {
             PvotAppTheme(
                 navBarColors = PvotNavBarColors(
-                    gradient = Brush.horizontalGradient(listOf(Color.Red, Color.Blue)),
+                    selectedChipColor = customSelectedChipColor,
                     collapsedChipColor = customChipColor,
                     containerColor = Color.Black,
                     iconSelectedColor = customIconColor,
                     iconUnselectedColor = Color.Gray
                 )
             ) {
+                appliedSelectedChipColor = PvotTheme.navBarColors.selectedChipColor
                 appliedChipColor = PvotTheme.navBarColors.collapsedChipColor
                 appliedIconColor = PvotTheme.navBarColors.iconSelectedColor
                 Text("Test")
             }
         }
 
+        assertEquals(customSelectedChipColor, appliedSelectedChipColor)
         assertEquals(customChipColor, appliedChipColor)
         assertEquals(customIconColor, appliedIconColor)
     }
