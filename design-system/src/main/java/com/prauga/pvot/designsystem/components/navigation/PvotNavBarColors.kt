@@ -5,33 +5,38 @@ package com.prauga.pvot.designsystem.components.navigation
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 /** Color configuration for [PvotNavBar]. */
 @Immutable
 data class PvotNavBarColors(
-    val gradient: Brush,
+    val selectedChipColor: Color,
     val collapsedChipColor: Color,
     val containerColor: Color,
     val iconSelectedColor: Color,
     val iconUnselectedColor: Color
 )
 
+// Dark Theme Palette
+val NavBarSelectedChipDark = Color(0xFF8A79FF)
+val NavBarCollapsedChipDark = Color(0xFF434247)
+val NavBarContainerDark = Color(0xFF2B2931)
+val NavBarIconSelectedDark = Color.White
+val NavBarIconUnselectedDark = Color(0xFFECECEC)
+
+// Light Theme Palette
+val NavBarSelectedChipLight = Color(0xFF8A79FF)
+val NavBarCollapsedChipLight = Color(0xFFE0E0E0)
+val NavBarContainerLight = Color(0xFFF3F3F7)
+val NavBarIconSelectedLight = Color.White
+val NavBarIconUnselectedLight = Color(0xFF424242)
+
 val LocalPvotNavBarColors = staticCompositionLocalOf {
     PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(NavBarGradientStart, NavBarGradientEnd)),
-        collapsedChipColor = NavBarCollapsedChip,
-        containerColor = NavBarContainer,
-        iconSelectedColor = NavBarIconSelected,
-        iconUnselectedColor = NavBarIconUnselected
+        selectedChipColor = NavBarSelectedChipDark,
+        collapsedChipColor = NavBarCollapsedChipDark,
+        containerColor = NavBarContainerDark,
+        iconSelectedColor = NavBarIconSelectedDark,
+        iconUnselectedColor = NavBarIconUnselectedDark
     )
 }
-
-// Navigation bar colors
-val NavBarGradientStart = Color(0xFF9B84FF)
-val NavBarGradientEnd = Color(0xFF6B66FF)
-val NavBarCollapsedChip = Color(0xFF4D4D4F)
-val NavBarContainer = Color(0x1AFFFFFF)
-val NavBarIconSelected = Color.White
-val NavBarIconUnselected = Color(0xFFECECEC)

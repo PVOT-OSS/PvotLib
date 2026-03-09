@@ -12,10 +12,19 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarColors
 import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
+import com.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChipDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChipLight
+import com.prauga.pvot.designsystem.components.navigation.NavBarContainerDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarContainerLight
+import com.prauga.pvot.designsystem.components.navigation.NavBarIconSelectedDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarIconSelectedLight
+import com.prauga.pvot.designsystem.components.navigation.NavBarIconUnselectedDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarIconUnselectedLight
+import com.prauga.pvot.designsystem.components.navigation.NavBarSelectedChipDark
+import com.prauga.pvot.designsystem.components.navigation.NavBarSelectedChipLight
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBarSizes
 import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
@@ -112,18 +121,35 @@ fun PvotAppTheme(
         else -> LightColorScheme
     }
 
-    val resolvedNavBarColors = navBarColors ?: if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        PvotNavBarColors(
-            gradient = Brush.horizontalGradient(
-                listOf(colorScheme.primary, colorScheme.tertiary)
-            ),
-            collapsedChipColor = colorScheme.surfaceVariant,
-            containerColor = colorScheme.surface.copy(alpha = 0.1f),
-            iconSelectedColor = colorScheme.onPrimary,
-            iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f)
-        )
-    } else {
-        LocalPvotNavBarColors.current
+    val resolvedNavBarColors = when {
+        navBarColors != null -> navBarColors
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            PvotNavBarColors(
+                selectedChipColor = colorScheme.primary,
+                collapsedChipColor = colorScheme.surfaceVariant,
+                containerColor = colorScheme.surface,
+                iconSelectedColor = colorScheme.onPrimary,
+                iconUnselectedColor = colorScheme.onSurfaceVariant
+            )
+        }
+        darkTheme -> {
+            PvotNavBarColors(
+                selectedChipColor = NavBarSelectedChipDark,
+                collapsedChipColor = NavBarCollapsedChipDark,
+                containerColor = NavBarContainerDark,
+                iconSelectedColor = NavBarIconSelectedDark,
+                iconUnselectedColor = NavBarIconUnselectedDark
+            )
+        }
+        else -> {
+            PvotNavBarColors(
+                selectedChipColor = NavBarSelectedChipLight,
+                collapsedChipColor = NavBarCollapsedChipLight,
+                containerColor = NavBarContainerLight,
+                iconSelectedColor = NavBarIconSelectedLight,
+                iconUnselectedColor = NavBarIconUnselectedLight
+            )
+        }
     }
 
     val resolvedPickerColors = pickerColors ?: PvotPickerColors(

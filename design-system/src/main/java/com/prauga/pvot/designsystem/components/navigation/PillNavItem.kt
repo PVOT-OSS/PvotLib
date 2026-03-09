@@ -81,8 +81,7 @@ fun PillNavItem(
             .width(width)
             .height(sizes.collapsedItemSize)
             .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else CircleShape)
-            .background(if (selected) Color.Transparent else colors.collapsedChipColor)
-            .then(if (selected) Modifier.background(brush = colors.gradient) else Modifier)
+            .background(if (selected) colors.selectedChipColor else colors.collapsedChipColor)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,

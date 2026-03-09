@@ -8,6 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.prauga.pvot.utils.PreferencesManager
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
@@ -74,44 +77,47 @@ fun DesignSystemShowcase() {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Transparent,
-        bottomBar = {
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { innerPadding ->
+        Box(modifier = Modifier.fillMaxSize()) {
+            // Main Content Area (Full Screen)
+            val screenModifier = Modifier
+                .fillMaxSize()
+                .padding(top = innerPadding.calculateTopPadding()) // Respect status bar
+
+            when (selectedTab) {
+                0 -> HomeScreen(
+                    label = "Home",
+                    modifier = screenModifier
+                )
+
+                1 -> AppsScreen(
+                    label = "Apps",
+                    modifier = screenModifier
+                )
+
+                2 -> CatalogScreen(
+                    label = "Design Catalog",
+                    modifier = screenModifier
+                )
+
+                3 -> AboutScreen(
+                    label = "About",
+                    modifier = screenModifier
+                )
+
+                else -> EmptyScreen(
+                    label = "None",
+                    modifier = screenModifier
+                )
+            }
+
+            // Floating Navigation Bar (On Top)
             PvotNavBar(
                 selectedTab = selectedTab,
                 onTabClick = { selectedTab = it },
-                tabs = tabs
-            )
-        }
-    ) { innerPadding ->
-        val containerModifer = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(top = innerPadding.calculateTopPadding())
-
-        when (selectedTab) {
-            0 -> HomeScreen(
-                label = "Home",
-                modifier = containerModifer
-            )
-
-            1 -> AppsScreen(
-                label = "Apps",
-                modifier = containerModifer
-            )
-
-            2 -> CatalogScreen(
-                label = "Design Catalog",
-                modifier = containerModifer
-            )
-
-            3 -> AboutScreen(
-                label = "About",
-                modifier = containerModifer
-            )
-
-            else -> EmptyScreen(
-                label = "None",
-                modifier = containerModifer
+                tabs = tabs,
+                modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 16.dp)
             )
         }
     }

@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -35,11 +34,6 @@ val IconTextGap = 8.dp
 
 /**
  * A floating bottom navigation bar with animated pill-style items.
- *
- * When a tab is expanded, icons and content descriptions resolve in order:
- * 1. Nav bar level ([expandedIconRes]/[expandedContentDescriptionRes])
- * 2. Tab level ([TabItem.expandedIconRes])
- * 3. Fallback to collapsed values ([TabItem.iconRes]/[TabItem.contentDescriptionRes])
  */
 @Composable
 fun PvotNavBar(
@@ -56,19 +50,18 @@ fun PvotNavBar(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = sizes.horizontalPadding, vertical = 12.dp),
+            .padding(horizontal = sizes.horizontalPadding, vertical = 16.dp),
         contentAlignment = Alignment.BottomCenter
     ) {
         Surface(
             modifier = Modifier
                 .barWidthModifier(sizes)
                 .height(sizes.barHeight)
-                .clip(RoundedCornerShape(sizes.cornerRadius))
-                .shadow(18.dp, RoundedCornerShape(sizes.cornerRadius), clip = false),
+                .clip(RoundedCornerShape(sizes.cornerRadius)),
             shape = RoundedCornerShape(sizes.cornerRadius),
             color = colors.containerColor,
-            tonalElevation = 0.dp,
-            shadowElevation = 0.dp
+            tonalElevation = 6.dp,
+            shadowElevation = 8.dp
         ) {
             Row(
                 modifier = Modifier
