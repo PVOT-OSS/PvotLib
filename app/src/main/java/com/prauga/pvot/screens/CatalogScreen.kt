@@ -6,11 +6,8 @@ package com.prauga.pvot.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.R
 import com.prauga.pvot.components.CatalogCard
+import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
@@ -60,15 +58,8 @@ fun CatalogScreen(
         )
     )
 
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(
-            start = 16.dp,
-            end = 16.dp,
-            top = 16.dp,
-            bottom = 100.dp
-        ),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    PvotScreen(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         item {
@@ -83,8 +74,7 @@ fun CatalogScreen(
         item {
             CatalogCard(title = stringResource(R.string.catalog_navbar)) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     PvotNavBar(

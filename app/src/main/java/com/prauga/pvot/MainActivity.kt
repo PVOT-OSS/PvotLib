@@ -4,9 +4,6 @@
 package com.prauga.pvot
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.prauga.pvot.utils.PreferencesManager
+import com.prauga.pvot.designsystem.PvotBaseActivity
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
@@ -30,13 +27,13 @@ import com.prauga.pvot.screens.AppsScreen
 import com.prauga.pvot.screens.CatalogScreen
 import com.prauga.pvot.screens.EmptyScreen
 import com.prauga.pvot.screens.HomeScreen
+import com.prauga.pvot.utils.PreferencesManager
 
-class MainActivity : ComponentActivity() {
+class MainActivity : PvotBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferencesManager.init(applicationContext)
-        enableEdgeToEdge()
-        setContent {
+        setPvotContent {
             val dynamicColor by PreferencesManager.dynamicColorEnabled.collectAsState()
             PvotAppTheme(dynamicColor = dynamicColor) {
                 DesignSystemShowcase()
@@ -83,36 +80,17 @@ fun DesignSystemShowcase() {
             )
         }
     ) { innerPadding ->
-        val containerModifer = Modifier
+        val containerModifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .padding(top = innerPadding.calculateTopPadding())
 
         when (selectedTab) {
-            0 -> HomeScreen(
-                label = "Home",
-                modifier = containerModifer
-            )
-
-            1 -> AppsScreen(
-                label = "Apps",
-                modifier = containerModifer
-            )
-
-            2 -> CatalogScreen(
-                label = "Design Catalog",
-                modifier = containerModifer
-            )
-
-            3 -> AboutScreen(
-                label = "About",
-                modifier = containerModifer
-            )
-
-            else -> EmptyScreen(
-                label = "None",
-                modifier = containerModifer
-            )
+            0 -> HomeScreen(label = "Home", modifier = containerModifier)
+            1 -> AppsScreen(label = "Apps", modifier = containerModifier)
+            2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+            3 -> AboutScreen(label = "About", modifier = containerModifier)
+            else -> EmptyScreen(label = "None", modifier = containerModifier)
         }
     }
 }

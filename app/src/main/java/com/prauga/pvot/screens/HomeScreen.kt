@@ -5,12 +5,9 @@ package com.prauga.pvot.screens
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,14 +22,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.R
-import com.prauga.pvot.components.FeedCard
-import com.prauga.pvot.data.model.FeedEntry
-import com.prauga.pvot.data.repository.FeedRepository
 import com.prauga.coreui.PvotEmptyContent
 import com.prauga.coreui.PvotErrorContent
 import com.prauga.coreui.PvotLoadingContent
 import com.prauga.coreui.UiState
+import com.prauga.pvot.R
+import com.prauga.pvot.components.FeedCard
+import com.prauga.pvot.data.model.FeedEntry
+import com.prauga.pvot.data.repository.FeedRepository
+import com.prauga.pvot.designsystem.components.PvotScreen
 
 @Composable
 fun HomeScreen(
@@ -78,17 +76,7 @@ fun HomeScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(
-                            start = 16.dp,
-                            end = 16.dp,
-                            top = 16.dp,
-                            bottom = 100.dp
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
+                    PvotScreen {
                         item {
                             Text(
                                 text = label,
