@@ -51,17 +51,17 @@ val PvotErrorContainerDark = Color(0xFF93000A)
 val PvotOnErrorContainerDark = Color(0xFFFFDAD6)
 
 // Background & Surface - Light
-val PvotBackgroundLight = Color(0xFFFFFBFF)
+val PvotBackgroundLight = Color(0xFFFFFFFF)
 val PvotOnBackgroundLight = Color(0xFF1C1B1F)
-val PvotSurfaceLight = Color(0xFFFFFBFF)
+val PvotSurfaceLight = Color(0xFFFFFFFF)
 val PvotOnSurfaceLight = Color(0xFF1C1B1F)
 val PvotSurfaceVariantLight = Color(0xFFE7E0EC)
 val PvotOnSurfaceVariantLight = Color(0xFF49454E)
 
 // Background & Surface - Dark
-val PvotBackgroundDark = Color(0xFF1C1B1F)
+val PvotBackgroundDark = Color(0xFF000000)
 val PvotOnBackgroundDark = Color(0xFFE6E1E6)
-val PvotSurfaceDark = Color(0xFF1C1B1F)
+val PvotSurfaceDark = Color(0xFF000000)
 val PvotOnSurfaceDark = Color(0xFFE6E1E6)
 val PvotSurfaceVariantDark = Color(0xFF49454E)
 val PvotOnSurfaceVariantDark = Color(0xFFCAC4CF)
