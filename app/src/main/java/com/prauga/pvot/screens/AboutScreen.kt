@@ -5,7 +5,6 @@ package com.prauga.pvot.screens
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -41,11 +37,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.BuildConfig
 import com.prauga.pvot.R
-import com.prauga.pvot.utils.Constants
-import com.prauga.pvot.utils.PreferencesManager
 import com.prauga.pvot.components.DeveloperCard
+import com.prauga.pvot.designsystem.components.PvotCard
+import com.prauga.coreui.PvotSectionHeader
 import com.prauga.pvot.data.model.GithubUser
 import com.prauga.pvot.data.repository.GithubRepository
+import com.prauga.pvot.utils.Constants
+import com.prauga.pvot.utils.PreferencesManager
 
 data class TeamMember(
     val username: String,
@@ -111,13 +109,7 @@ fun AboutScreen(
 
         // App Info Section
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                )
-            ) {
+            PvotCard {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -148,14 +140,7 @@ fun AboutScreen(
 
         // Team Section Header
         item {
-            Text(
-                text = stringResource(R.string.about_section_team),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
+            PvotSectionHeader(title = stringResource(R.string.about_section_team))
         }
 
         // Team Members
@@ -187,29 +172,16 @@ fun AboutScreen(
 
         // Project Links Section Header
         item {
-            Text(
-                text = stringResource(R.string.about_section_links),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
+            PvotSectionHeader(title = stringResource(R.string.about_section_links))
         }
 
         // Project Links
         items(projectLinks) { link ->
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link.url))
-                        context.startActivity(intent)
-                    },
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                )
+            PvotCard(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link.url))
+                    context.startActivity(intent)
+                }
             ) {
                 Row(
                     modifier = Modifier
@@ -235,26 +207,13 @@ fun AboutScreen(
 
         // Settings Section Header
         item {
-            Text(
-                text = stringResource(R.string.about_section_settings),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
+            PvotSectionHeader(title = stringResource(R.string.about_section_settings))
         }
 
         item {
             val dynamicColorEnabled by PreferencesManager.dynamicColorEnabled.collectAsState()
 
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                )
-            ) {
+            PvotCard {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

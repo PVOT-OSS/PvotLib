@@ -7,14 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,77 +29,54 @@ import com.prauga.pvot.R
 import com.prauga.pvot.components.FeedCard
 import com.prauga.pvot.data.model.FeedEntry
 import com.prauga.pvot.data.repository.FeedRepository
-
-sealed class HomeUiState {
-    data object Loading : HomeUiState()
-    data class Success(val entries: List<FeedEntry>) : HomeUiState()
-    data class Error(val message: String) : HomeUiState()
-}
+import com.prauga.coreui.PvotEmptyContent
+import com.prauga.coreui.PvotErrorContent
+import com.prauga.coreui.PvotLoadingContent
+import com.prauga.coreui.UiState
 
 @Composable
 fun HomeScreen(
     label: String,
     modifier: Modifier = Modifier
 ) {
-    var uiState by remember { mutableStateOf<HomeUiState>(HomeUiState.Loading) }
+    var uiState by remember { mutableStateOf<UiState<List<FeedEntry>>>(UiState.Loading) }
     val context = LocalContext.current
 
     fun loadFeed() {
-        uiState = HomeUiState.Loading
+        uiState = UiState.Loading
     }
 
     LaunchedEffect(uiState) {
-        if (uiState is HomeUiState.Loading) {
+        if (uiState is UiState.Loading) {
             val result = FeedRepository.getFeedEntries()
             uiState = result.fold(
-                onSuccess = { HomeUiState.Success(it) },
-                onFailure = { HomeUiState.Error(it.message ?: "Unknown error") }
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Unknown error") }
             )
         }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState) {
-            is HomeUiState.Loading -> {
-                CircularProgressIndicator(
+            is UiState.Loading -> {
+                PvotLoadingContent(modifier = Modifier.align(Alignment.Center))
+            }
+
+            is UiState.Error -> {
+                PvotErrorContent(
+                    title = stringResource(R.string.home_error_title),
+                    message = state.message,
+                    onRetry = { loadFeed() },
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
 
-            is HomeUiState.Error -> {
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.home_error_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error
+            is UiState.Success -> {
+                if (state.data.isEmpty()) {
+                    PvotEmptyContent(
+                        message = stringResource(R.string.home_empty_title),
+                        modifier = Modifier.align(Alignment.Center)
                     )
-                    Text(
-                        text = state.message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Button(onClick = { loadFeed() }) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
-            }
-
-            is HomeUiState.Success -> {
-                if (state.entries.isEmpty()) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = stringResource(R.string.home_empty_title),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
                 } else {
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
@@ -123,7 +97,7 @@ fun HomeScreen(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
-                        items(state.entries) { entry ->
+                        items(state.data) { entry ->
                             FeedCard(
                                 entry = entry,
                                 onClick = {

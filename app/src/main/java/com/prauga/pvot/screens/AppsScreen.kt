@@ -7,14 +7,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,76 +29,52 @@ import com.prauga.pvot.R
 import com.prauga.pvot.components.AppCard
 import com.prauga.pvot.data.model.GithubRepo
 import com.prauga.pvot.data.repository.GithubRepository
-
-sealed class AppsUiState {
-    data object Loading : AppsUiState()
-    data class Success(val repos: List<GithubRepo>) : AppsUiState()
-    data class Error(val message: String) : AppsUiState()
-}
+import com.prauga.coreui.PvotEmptyContent
+import com.prauga.coreui.PvotErrorContent
+import com.prauga.coreui.PvotLoadingContent
+import com.prauga.coreui.UiState
 
 @Composable
 fun AppsScreen(
     label: String,
     modifier: Modifier = Modifier
 ) {
-    var uiState by remember { mutableStateOf<AppsUiState>(AppsUiState.Loading) }
+    var uiState by remember { mutableStateOf<UiState<List<GithubRepo>>>(UiState.Loading) }
     val context = LocalContext.current
 
     fun loadRepos() {
-        uiState = AppsUiState.Loading
+        uiState = UiState.Loading
     }
 
     LaunchedEffect(uiState) {
-        if (uiState is AppsUiState.Loading) {
+        if (uiState is UiState.Loading) {
             val result = GithubRepository.getAppsRepos()
             uiState = result.fold(
-                onSuccess = { AppsUiState.Success(it) },
-                onFailure = { AppsUiState.Error(it.message ?: "Unknown error") }
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Unknown error") }
             )
         }
     }
 
     Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState) {
-            is AppsUiState.Loading -> {
-                CircularProgressIndicator(
+            is UiState.Loading -> {
+                PvotLoadingContent(modifier = Modifier.align(Alignment.Center))
+            }
+
+            is UiState.Error -> {
+                PvotErrorContent(
+                    title = stringResource(R.string.apps_error_title),
+                    message = state.message,
+                    onRetry = { loadRepos() },
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
 
-            is AppsUiState.Error -> {
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.apps_error_title),
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                    Text(
-                        text = state.message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Button(onClick = { loadRepos() }) {
-                        Text(stringResource(R.string.retry))
-                    }
-                }
-            }
-
-            is AppsUiState.Success -> {
-                if (state.repos.isEmpty()) {
-                    Column(
-                        modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = stringResource(R.string.apps_empty_title),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+            is UiState.Success -> {
+                if (state.data.isEmpty()) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        PvotEmptyContent(message = stringResource(R.string.apps_empty_title))
                         Text(
                             text = stringResource(R.string.apps_empty_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
@@ -129,7 +102,7 @@ fun AppsScreen(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
-                        items(state.repos) { repo ->
+                        items(state.data) { repo ->
                             AppCard(
                                 repo = repo,
                                 onClick = {
