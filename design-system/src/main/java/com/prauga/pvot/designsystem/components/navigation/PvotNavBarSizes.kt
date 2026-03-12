@@ -31,9 +31,9 @@ data class PvotNavBarSizes(
     val collapsedIconSize: Dp = 22.dp,
     val expandedIconSize: Dp = 22.dp,
     val labelFontSize: TextUnit = 16.sp,
-    val horizontalPadding: Dp = 22.dp,
-    val contentPaddingHorizontal: Dp = 9.dp,
-    val itemSpacing: Dp = 4.dp
+    val horizontalPadding: Dp = 16.dp,
+    val contentPaddingHorizontal: Dp = 6.dp,
+    val itemSpacing: Dp = 2.dp
 )
 
 val LocalPvotNavBarSizes = staticCompositionLocalOf { PvotNavBarSizes() }
