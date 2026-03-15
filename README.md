@@ -12,50 +12,69 @@ A Jetpack Compose design system library for building consistent Android applicat
 ```
 PvotLib/
 ├── app/              # Showcase app demonstrating components
-├── design-system/    # Reusable library module
+├── design-system/    # Reusable design-system library module
 │   └── src/main/java/com/prauga/pvot/designsystem/
 │       ├── components/
+│       │   ├── card/
+│       │   │   └── PvotCard.kt
 │       │   ├── navigation/
 │       │   │   └── PvotNavBar.kt
-│       │   └── picker/
-│       │       ├── PvotClockPicker.kt
-│       │       ├── PvotDurationPicker.kt
-│       │       ├── PvotPickerColors.kt
-│       │       └── internal/
-│       └── theme/
-│           ├── Color.kt
-│           ├── Theme.kt
-│           └── Type.kt
+│       │   ├── picker/
+│       │   │   ├── PvotClockPicker.kt
+│       │   │   ├── PvotDurationPicker.kt
+│       │   │   ├── PvotPickerColors.kt
+│       │   │   └── internal/
+│       │   └── screen/
+│       │       └── PvotScreen.kt
+│       ├── theme/
+│       │   ├── Color.kt
+│       │   ├── Theme.kt
+│       │   └── Type.kt
+│       └── PvotBaseActivity.kt
+├── core-ui/          # Shared UI utilities and state patterns
+│   └── src/main/java/com/prauga/coreui/
+│       ├── UiState.kt
+│       ├── PvotLoadingContent.kt
+│       ├── PvotErrorContent.kt
+│       ├── PvotEmptyContent.kt
+│       └── PvotSectionHeader.kt
 └── gradle/
     └── libs.versions.toml
 ```
+
+## Modules
+
+| Module | Namespace | minSdk | Purpose |
+|--------|-----------|--------|---------|
+| `design-system` | `com.prauga.pvot.designsystem` | 27 | Reusable components and theming |
+| `core-ui` | `com.prauga.coreui` | 27 | Shared UI utilities and state patterns |
+| `app` | `com.prauga.pvot` | 29 | Showcase/demo app |
 
 ## Installation
 
 ```kotlin
 // settings.gradle.kts
 include(":design-system")
+project(":design-system").projectDir = file("PvotLib/design-system")
+include(":core-ui")
+project(":core-ui").projectDir = file("PvotLib/core-ui")
 
 // app/build.gradle.kts
 dependencies {
     implementation(project(":design-system"))
+    implementation(project(":core-ui"))
 }
-```
-
-Or (not now):
-```kotlin
-implementation("com.prauga.pvot:design-system:0.1.0")
 ```
 
 ## Quick Start
 
-Wrap your app with `PvotAppTheme`:
+Use `PvotBaseActivity` for edge-to-edge rendering and wrap your content with `PvotAppTheme`:
 
 ```kotlin
-class MainActivity : ComponentActivity() {
+class MainActivity : PvotBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
+        setPvotContent {
             PvotAppTheme {
                 // Your app content
             }
@@ -76,6 +95,7 @@ fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     navBarColors: PvotNavBarColors = PvotNavBarColors(...),
+    pickerColors: PvotPickerColors = PvotPickerColors(...),
     content: @Composable () -> Unit
 )
 ```
@@ -97,6 +117,12 @@ PvotTheme.navBarColors.iconUnselectedColor
 PvotTheme.pickerColors.textColor
 PvotTheme.pickerColors.textSecondaryColor
 PvotTheme.pickerColors.selectionBackgroundColor
+
+// NavBar sizes
+PvotTheme.navBarSizes.barHeight
+PvotTheme.navBarSizes.collapsedItemSize
+PvotTheme.navBarSizes.expandedItemWidth
+PvotTheme.navBarSizes.cornerRadius
 ```
 
 ### Customizing Colors
@@ -119,6 +145,23 @@ PvotAppTheme(
 
 ## Components
 
+### PvotBaseActivity
+
+Base activity that enables edge-to-edge rendering and provides a `setPvotContent()` helper for setting Compose content.
+
+```kotlin
+class MyActivity : PvotBaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setPvotContent {
+            PvotAppTheme {
+                // Content
+            }
+        }
+    }
+}
+```
+
 ### PvotNavBar
 
 A floating bottom navigation bar with animated pill-style items.
@@ -128,7 +171,7 @@ A floating bottom navigation bar with animated pill-style items.
 fun PvotNavBar(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
-    tabs: List<TabItem>,
+    tabs: List<PvotTabItem>,
     modifier: Modifier = Modifier,
     barHeight: Dp = 64.dp,
     collapsedItemSize: Dp = 44.dp,
@@ -146,12 +189,12 @@ fun PvotNavBar(
 var selectedTab by remember { mutableIntStateOf(0) }
 
 val tabs = listOf(
-    TabItem(
+    PvotTabItem(
         iconRes = R.drawable.ic_home,
         labelRes = R.string.tab_home,
         contentDescriptionRes = R.string.cd_home
     ),
-    TabItem(
+    PvotTabItem(
         iconRes = R.drawable.ic_settings,
         labelRes = R.string.tab_settings,
         contentDescriptionRes = R.string.cd_settings
@@ -177,7 +220,32 @@ Scaffold(
 - Gradient background for selected item
 - Smooth scale and fade animations
 - Handles navigation bar padding automatically
-- Fully customizable colors via theme or parameters
+- Fully customizable colors and sizes via theme or parameters
+
+### PvotScreen
+
+A layout container for screens that wraps content in a `LazyColumn` with proper padding to account for the nav bar.
+
+```kotlin
+@Composable
+fun PvotScreen(
+    modifier: Modifier = Modifier,
+    content: LazyListScope.() -> Unit
+)
+```
+
+### PvotCard
+
+A styled card wrapper with rounded corners and semi-transparent surface background.
+
+```kotlin
+@Composable
+fun PvotCard(
+    modifier: Modifier = Modifier,
+    onClick: (() -> Unit)? = null,
+    content: @Composable () -> Unit
+)
+```
 
 ### PvotClockPicker
 
@@ -208,7 +276,6 @@ PvotClockPicker(
 - Clean domain-focused API using `java.time.LocalTime`
 - Smooth wheel scrolling with snap behavior
 - Adapts to light/dark theme automatically
-- No implementation details exposed (no LazyColumn, itemHeight, etc.)
 
 ### PvotDurationPicker
 
@@ -230,7 +297,7 @@ import kotlin.time.Duration.Companion.minutes
 
 var selectedDuration by remember { mutableStateOf(30.minutes) }
 
-DurationPicker(
+PvotDurationPicker(
     duration = selectedDuration,
     onDurationChange = { selectedDuration = it }
 )
@@ -243,6 +310,43 @@ DurationPicker(
 - Smooth wheel scrolling with snap behavior
 - Adapts to light/dark theme automatically
 
+## Core UI
+
+The `core-ui` module provides shared UI utilities and state management patterns.
+
+### UiState
+
+A sealed class for managing common screen states:
+
+```kotlin
+sealed class UiState<out T> {
+    data object Loading : UiState<Nothing>()
+    data class Success<T>(val data: T) : UiState<T>()
+    data class Error(val message: String) : UiState<Nothing>()
+}
+```
+
+### Utility Composables
+
+| Composable | Description |
+|------------|-------------|
+| `PvotLoadingContent` | Centered `CircularProgressIndicator` |
+| `PvotErrorContent` | Displays an error message |
+| `PvotEmptyContent` | Displays an empty state message |
+| `PvotSectionHeader` | Section title in `titleMedium` style |
+
+## Build Configuration
+
+| Setting | Value |
+|---------|-------|
+| compileSdk | 36 |
+| minSdk | 27 (library), 29 (app) |
+| targetSdk | 36 |
+| JVM target | 11 |
+| Kotlin | 2.0.21 |
+| AGP | 8.13.2 |
+| Compose BOM | 2025.12.01 |
+
 ## Roadmap
 
 ### Components (Planned)
@@ -252,8 +356,11 @@ DurationPicker(
 | PvotNavBar | Floating bottom navigation | Done |
 | PvotClockPicker | Wheel-based time picker | Done |
 | PvotDurationPicker | Wheel-based duration picker | Done |
+| PvotCard | Styled card with surface variant | Done |
+| PvotScreen | Screen layout with nav bar padding | Done |
+| PvotBaseActivity | Edge-to-edge base activity | Done |
+| UiState | Loading/Success/Error state pattern | Done |
 | PvotTopBar | Collapsible top app bar | Planned |
-| PvotCard | Styled card with elevation variants | Planned |
 | PvotButton | Primary/Secondary/Tertiary buttons | Planned |
 | PvotTextField | Styled text input fields | Planned |
 | PvotDialog | Modal dialogs with consistent styling | Planned |
