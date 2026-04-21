@@ -16,10 +16,16 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.prauga.pvot.designsystem.PvotBaseActivity
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
+import com.prauga.pvot.designsystem.components.navigation.PvotNavRail
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import com.prauga.pvot.screens.AboutScreen
@@ -30,21 +36,24 @@ import com.prauga.pvot.screens.HomeScreen
 import com.prauga.pvot.utils.PreferencesManager
 
 class MainActivity : PvotBaseActivity() {
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferencesManager.init(applicationContext)
         setPvotContent {
+            val windowSizeClass = calculateWindowSizeClass(this)
             val dynamicColor by PreferencesManager.dynamicColorEnabled.collectAsState()
             PvotAppTheme(dynamicColor = dynamicColor) {
-                DesignSystemShowcase()
+                DesignSystemShowcase(windowSizeClass.widthSizeClass)
             }
         }
     }
 }
 
 @Composable
-fun DesignSystemShowcase() {
+fun DesignSystemShowcase(widthSizeClass: WindowWidthSizeClass = WindowWidthSizeClass.Compact) {
     var selectedTab by remember { mutableIntStateOf(0) }
+    val useNavRail = widthSizeClass != WindowWidthSizeClass.Compact
 
     val tabs = listOf(
         PvotTabItem(
@@ -73,24 +82,37 @@ fun DesignSystemShowcase() {
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         bottomBar = {
-            PvotNavBar(
-                selectedTab = selectedTab,
-                onTabClick = { selectedTab = it },
-                tabs = tabs
-            )
+            if (!useNavRail) {
+                PvotNavBar(
+                    selectedTab = selectedTab,
+                    onTabClick = { selectedTab = it },
+                    tabs = tabs
+                )
+            }
         }
     ) { innerPadding ->
-        val containerModifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(top = innerPadding.calculateTopPadding())
+        Row(modifier = Modifier.fillMaxSize()) {
+            if (useNavRail) {
+                PvotNavRail(
+                    selectedTab = selectedTab,
+                    onTabClick = { selectedTab = it },
+                    tabs = tabs
+                )
+            }
 
-        when (selectedTab) {
-            0 -> HomeScreen(label = "Home", modifier = containerModifier)
-            1 -> AppsScreen(label = "Apps", modifier = containerModifier)
-            2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
-            3 -> AboutScreen(label = "About", modifier = containerModifier)
-            else -> EmptyScreen(label = "None", modifier = containerModifier)
+            val containerModifier = Modifier
+                .weight(1f)
+                .fillMaxHeight()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(top = innerPadding.calculateTopPadding())
+
+            when (selectedTab) {
+                0 -> HomeScreen(label = "Home", modifier = containerModifier)
+                1 -> AppsScreen(label = "Apps", modifier = containerModifier)
+                2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+                3 -> AboutScreen(label = "About", modifier = containerModifier)
+                else -> EmptyScreen(label = "None", modifier = containerModifier)
+            }
         }
     }
 }
