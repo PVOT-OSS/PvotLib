@@ -23,12 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.theme.PvotTheme
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.hazeChild
+import dev.chrisbanes.haze.HazeTint
 
 val ItemHorizontalPadding = 16.dp
 val IconTextGap = 8.dp
@@ -51,6 +55,7 @@ fun PvotNavBar(
     @StringRes expandedContentDescriptionRes: Int? = null,
     sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
     colors: PvotNavBarColors = PvotTheme.navBarColors,
+    hazeState: HazeState? = null,
 ) {
     Box(
         modifier = modifier
@@ -63,10 +68,23 @@ fun PvotNavBar(
             modifier = Modifier
                 .barWidthModifier(sizes)
                 .height(sizes.barHeight)
+                .shadow(30.dp, RoundedCornerShape(sizes.cornerRadius), clip = false)
                 .clip(RoundedCornerShape(sizes.cornerRadius))
-                .shadow(18.dp, RoundedCornerShape(sizes.cornerRadius), clip = false),
+                .then(
+                    if (hazeState != null) {
+                        Modifier.hazeChild(
+                            state = hazeState,
+                            shape = RoundedCornerShape(sizes.cornerRadius),
+                            style = dev.chrisbanes.haze.HazeStyle(
+                                backgroundColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+                                blurRadius = 30.dp,
+                                tints = listOf(HazeTint(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)))
+                            )
+                        )
+                    } else Modifier
+                ),
             shape = RoundedCornerShape(sizes.cornerRadius),
-            color = colors.containerColor,
+            color = if (hazeState != null) Color.Transparent else colors.containerColor,
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
         ) {
