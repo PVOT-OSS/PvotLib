@@ -23,6 +23,8 @@ import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import com.prauga.pvot.screens.AboutScreen
+import dev.chrisbanes.haze.HazeState
+import dev.chrisbanes.haze.haze
 import com.prauga.pvot.screens.AppsScreen
 import com.prauga.pvot.screens.CatalogScreen
 import com.prauga.pvot.screens.EmptyScreen
@@ -45,6 +47,7 @@ class MainActivity : PvotBaseActivity() {
 @Composable
 fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
+    val hazeState = remember { HazeState() }
 
     val tabs = listOf(
         PvotTabItem(
@@ -70,19 +73,22 @@ fun DesignSystemShowcase() {
     )
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         containerColor = Color.Transparent,
         bottomBar = {
             PvotNavBar(
                 selectedTab = selectedTab,
                 onTabClick = { selectedTab = it },
-                tabs = tabs
+                tabs = tabs,
+                hazeState = hazeState
             )
         }
     ) { innerPadding ->
         val containerModifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .haze(state = hazeState)
             .padding(top = innerPadding.calculateTopPadding())
 
         when (selectedTab) {
