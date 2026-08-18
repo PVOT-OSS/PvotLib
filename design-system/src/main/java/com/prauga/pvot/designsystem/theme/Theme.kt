@@ -98,18 +98,34 @@ object PvotTheme {
 
 object PvotThemeDefaults {
 
+    /** Whether the platform can supply a dynamic color scheme. */
+    val isDynamicColorSupported: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+    /** Whether [dynamicColor] will actually take effect on this device. */
+    fun usingDynamicColor(dynamicColor: Boolean): Boolean =
+        dynamicColor && isDynamicColorSupported
+
     @Composable
     fun colorScheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
         dynamicColor: Boolean = false
     ): ColorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        usingDynamicColor(dynamicColor) -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> PvotDarkColorScheme
         else -> PvotLightColorScheme
     }
+
+    /**
+     * Nav bar colors derived from [colorScheme] while dynamic color is in effect, and the
+     * Pvot brand gradient otherwise.
+     */
+    @Composable
+    fun navBarColors(colorScheme: ColorScheme, dynamicColor: Boolean): PvotNavBarColors =
+        if (usingDynamicColor(dynamicColor)) navBarColors(colorScheme) else PvotTheme.navBarColors
 
     fun navBarColors(colorScheme: ColorScheme) = PvotNavBarColors(
         gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
@@ -132,7 +148,7 @@ fun PvotAppTheme(
     dynamicColor: Boolean = false,
     colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
     typography: Typography = PvotTypography,
-    navBarColors: PvotNavBarColors = PvotTheme.navBarColors,
+    navBarColors: PvotNavBarColors = PvotThemeDefaults.navBarColors(colorScheme, dynamicColor),
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
     pickerColors: PvotPickerColors = PvotThemeDefaults.pickerColors(colorScheme),
     content: @Composable () -> Unit
