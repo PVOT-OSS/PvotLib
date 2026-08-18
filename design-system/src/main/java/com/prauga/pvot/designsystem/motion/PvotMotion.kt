@@ -15,14 +15,14 @@ object PvotMotion {
     /** Expo-out: arrives fast, eases to rest. */
     val Settle = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
 
-    const val RevealDurationMillis = 420
+    const val RevealDurationMillis = 260
 
-    const val StaggerStepMillis = 45
+    const val StaggerStepMillis = 20
 
     /** Past this many items the delay stops growing, so long lists never wait. */
-    const val MaxStaggeredItems = 8
+    const val MaxStaggeredItems = 3
 
-    val RevealRise = 20.dp
+    val RevealRise = 12.dp
 
     const val PressedScale = 0.97f
 
