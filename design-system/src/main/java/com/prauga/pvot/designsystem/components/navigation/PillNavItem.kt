@@ -38,6 +38,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -83,8 +84,9 @@ internal fun PillNavItem(
             .width(width)
             .height(sizes.collapsedItemSize)
             .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else CircleShape)
-            .background(if (selected) Color.Transparent else colors.collapsedChipColor)
-            .then(if (selected) Modifier.background(brush = colors.gradient) else Modifier)
+            .background(
+                if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
+            )
             .selectable(
                 selected = selected,
                 interactionSource = interactionSource,
