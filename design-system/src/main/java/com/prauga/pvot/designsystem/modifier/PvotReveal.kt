@@ -25,7 +25,7 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
  * waiting on an animation that started off screen.
  */
 @Composable
-fun pvotReveal(
+fun Modifier.pvotReveal(
     index: Int = 0,
     rise: Dp = PvotMotion.RevealRise,
     durationMillis: Int = PvotMotion.RevealDurationMillis,
@@ -48,7 +48,7 @@ fun pvotReveal(
 
     LaunchedEffect(Unit) { appeared = true }
 
-    return Modifier.graphicsLayer {
+    return this.graphicsLayer {
         alpha = progress
         translationY = (1f - progress) * risePx
     }

@@ -19,7 +19,7 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
  * affordance and a ripple reads as a flash on top of it.
  */
 @Composable
-fun pvotPressScale(
+fun Modifier.pvotPressScale(
     interactionSource: InteractionSource,
     pressedScale: Float = PvotMotion.PressedScale,
 ): Modifier {
@@ -29,7 +29,7 @@ fun pvotPressScale(
         animationSpec = PvotMotion.pressSpring(),
         label = "pvotPressScale",
     )
-    return Modifier.graphicsLayer {
+    return this.graphicsLayer {
         scaleX = scale
         scaleY = scale
     }
