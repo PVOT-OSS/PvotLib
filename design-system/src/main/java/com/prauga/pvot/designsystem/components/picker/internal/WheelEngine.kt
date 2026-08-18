@@ -87,10 +87,10 @@ internal fun WheelEngine(
             .collect { index ->
                 val selected = index.coerceIn(config.values.indices)
                 if (selected != lastSelectedIndex) {
-                    hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                     lastSelectedIndex = selected
+                    hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                    onValueSelected(config.values[selected])
                 }
-                onValueSelected(config.values[selected])
             }
     }
 
