@@ -8,6 +8,8 @@ import java.time.LocalTime
 import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 private fun twoDigits(value: Int): String = String.format(Locale.getDefault(), "%02d", value)
 
@@ -83,8 +85,5 @@ internal fun Duration.toWheelConfigs(): List<WheelConfig> {
  */
 internal fun wheelValuesToDuration(values: List<Int>): Duration {
     require(values.size >= 3) { "Need hours, minutes, and seconds values" }
-    val hours = values[0]
-    val minutes = values[1]
-    val seconds = values[2]
-    return Duration.parse("${hours}h ${minutes}m ${seconds}s")
+    return values[0].hours + values[1].minutes + values[2].seconds
 }
