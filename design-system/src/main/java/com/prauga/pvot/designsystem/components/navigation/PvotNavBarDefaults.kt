@@ -22,6 +22,7 @@ object PvotNavBarDefaults {
     val ContainerColor = Color(0x1AFFFFFF)
     val IconSelectedColor = Color.White
     val IconUnselectedColor = Color(0xFFECECEC)
+    val RippleColor = Color.White.copy(alpha = 0.25f)
 
     val Gradient: Brush = Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
 
@@ -30,12 +31,14 @@ object PvotNavBarDefaults {
         collapsedChipColor: Color = CollapsedChipColor,
         containerColor: Color = ContainerColor,
         iconSelectedColor: Color = IconSelectedColor,
-        iconUnselectedColor: Color = IconUnselectedColor
+        iconUnselectedColor: Color = IconUnselectedColor,
+        rippleColor: Color = RippleColor
     ): PvotNavBarColors = PvotNavBarColors(
         gradient = gradient,
         collapsedChipColor = collapsedChipColor,
         containerColor = containerColor,
         iconSelectedColor = iconSelectedColor,
-        iconUnselectedColor = iconUnselectedColor
+        iconUnselectedColor = iconUnselectedColor,
+        rippleColor = rippleColor
     )
 }

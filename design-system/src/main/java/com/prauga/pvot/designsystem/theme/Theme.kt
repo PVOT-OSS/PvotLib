@@ -149,7 +149,8 @@ object PvotThemeDefaults {
         collapsedChipColor = colorScheme.surfaceVariant,
         containerColor = colorScheme.surface.copy(alpha = 0.1f),
         iconSelectedColor = colorScheme.onPrimary,
-        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f)
+        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f),
+        rippleColor = colorScheme.onPrimary.copy(alpha = 0.25f)
     )
 
     /** Picker colors derived from [colorScheme]. */

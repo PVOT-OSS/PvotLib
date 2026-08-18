@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
  * @param containerColor Fill behind the bar itself
  * @param iconSelectedColor Icon and label color of a selected item
  * @param iconUnselectedColor Icon color of an unselected item
+ * @param rippleColor Ripple drawn over an item while it is pressed
  */
 @Immutable
 data class PvotNavBarColors(
@@ -23,7 +24,8 @@ data class PvotNavBarColors(
     val collapsedChipColor: Color,
     val containerColor: Color,
     val iconSelectedColor: Color,
-    val iconUnselectedColor: Color
+    val iconUnselectedColor: Color,
+    val rippleColor: Color
 )
 
 /** The [PvotNavBarColors] in scope. Provided by PvotAppTheme, read via PvotTheme.navBarColors. */

@@ -72,7 +72,8 @@ class PvotAppThemeTest {
                     collapsedChipColor = customChipColor,
                     containerColor = Color.Black,
                     iconSelectedColor = customIconColor,
-                    iconUnselectedColor = Color.Gray
+                    iconUnselectedColor = Color.Gray,
+                    rippleColor = Color.White
                 )
             ) {
                 appliedChipColor = PvotTheme.navBarColors.collapsedChipColor
