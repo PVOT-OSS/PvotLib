@@ -24,6 +24,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -34,12 +35,21 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.prauga.pvot.designsystem.R
 import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 import kotlin.math.abs
+import kotlinx.coroutines.launch
 
 private val DefaultItemHeight = 40.dp
 private val DefaultVisibleItems = 5
@@ -68,6 +78,15 @@ internal fun WheelEngine(
     var lastSelectedIndex by remember { mutableIntStateOf(config.initialIndex) }
     val currentConfig by rememberUpdatedState(config)
     val currentOnValueSelected by rememberUpdatedState(onValueSelected)
+
+    val scope = rememberCoroutineScope()
+    val suffix = config.suffixRes?.let { stringResource(it) }.orEmpty()
+    val wheelName = config.descriptionRes?.let { stringResource(it) }.orEmpty()
+    val nextLabel = stringResource(R.string.pvot_picker_action_next)
+    val previousLabel = stringResource(R.string.pvot_picker_action_previous)
+    val selectedLabel = config.values.getOrNull(lastSelectedIndex)
+        ?.let { listOfNotNull(config.label(it), suffix.ifEmpty { null }).joinToString(" ") }
+        .orEmpty()
 
     val density = LocalDensity.current
     val itemHeightPx = with(density) { itemHeight.toPx() }
@@ -102,12 +121,30 @@ internal fun WheelEngine(
         modifier = modifier
             .height(itemHeight * visibleItemsCount)
             .width(DefaultWheelWidth)
+            .semantics(mergeDescendants = true) {
+                contentDescription = wheelName
+                stateDescription = selectedLabel
+                customActions = listOf(
+                    CustomAccessibilityAction(nextLabel) {
+                        val target = (lastSelectedIndex + 1).coerceAtMost(config.values.lastIndex)
+                        scope.launch { listState.animateScrollToItem(target) }
+                        true
+                    },
+                    CustomAccessibilityAction(previousLabel) {
+                        val target = (lastSelectedIndex - 1).coerceAtLeast(0)
+                        scope.launch { listState.animateScrollToItem(target) }
+                        true
+                    }
+                )
+            }
     ) {
         LazyColumn(
             state = listState,
             flingBehavior = flingBehavior,
             contentPadding = PaddingValues(vertical = itemHeight * (visibleItemsCount / 2)),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .clearAndSetSemantics { }
         ) {
             items(config.values.size) { index ->
                 // Calculate distance from center
@@ -123,7 +160,7 @@ internal fun WheelEngine(
 
                 WheelItem(
                     text = config.label(config.values[index]),
-                    suffix = config.suffix,
+                    suffix = suffix,
                     colors = colors,
                     rotationX = rotationX,
                     scale = scale,

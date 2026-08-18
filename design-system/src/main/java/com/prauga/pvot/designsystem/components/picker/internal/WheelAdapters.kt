@@ -3,9 +3,15 @@
 
 package com.prauga.pvot.designsystem.components.picker.internal
 
+import com.prauga.pvot.designsystem.R
 import java.time.LocalTime
+import java.util.Locale
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours
+
+private fun twoDigits(value: Int): String = String.format(Locale.getDefault(), "%02d", value)
+
+private fun plain(value: Int): String = value.toString(10)
 
 /**
  * Converts a [LocalTime] to wheel configurations for hour and minute selection.
@@ -13,14 +19,16 @@ import kotlin.time.Duration.Companion.hours
 internal fun LocalTime.toWheelConfigs(): List<WheelConfig> = listOf(
     WheelConfig(
         values = (0..23).toList(),
-        label = { "%02d".format(it) },
-        suffix = "hours",
+        label = ::twoDigits,
+        suffixRes = R.string.pvot_picker_suffix_hours,
+        descriptionRes = R.string.pvot_picker_label_hours,
         initialIndex = hour
     ),
     WheelConfig(
         values = (0..59).toList(),
-        label = { "%02d".format(it) },
-        suffix = "min",
+        label = ::twoDigits,
+        suffixRes = R.string.pvot_picker_suffix_minutes,
+        descriptionRes = R.string.pvot_picker_label_minutes,
         initialIndex = minute
     )
 )
@@ -48,20 +56,23 @@ internal fun Duration.toWheelConfigs(): List<WheelConfig> {
     return listOf(
         WheelConfig(
             values = (0..23).toList(),
-            label = { it.toString() },
-            suffix = "hours",
+            label = ::plain,
+            suffixRes = R.string.pvot_picker_suffix_hours,
+            descriptionRes = R.string.pvot_picker_label_hours,
             initialIndex = hours
         ),
         WheelConfig(
             values = (0..59).toList(),
-            label = { it.toString() },
-            suffix = "min",
+            label = ::plain,
+            suffixRes = R.string.pvot_picker_suffix_minutes,
+            descriptionRes = R.string.pvot_picker_label_minutes,
             initialIndex = minutes
         ),
         WheelConfig(
             values = (0..59).toList(),
-            label = { it.toString() },
-            suffix = "sec",
+            label = ::plain,
+            suffixRes = R.string.pvot_picker_suffix_seconds,
+            descriptionRes = R.string.pvot_picker_label_seconds,
             initialIndex = seconds
         )
     )

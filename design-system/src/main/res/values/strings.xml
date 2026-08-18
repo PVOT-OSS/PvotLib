@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com> -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<resources>
+    <!-- Suffixes shown next to a picker wheel's value -->
+    <string name="pvot_picker_suffix_hours">hours</string>
+    <string name="pvot_picker_suffix_minutes">min</string>
+    <string name="pvot_picker_suffix_seconds">sec</string>
+
+    <!-- Spoken names for each picker wheel -->
+    <string name="pvot_picker_label_hours">Hours</string>
+    <string name="pvot_picker_label_minutes">Minutes</string>
+    <string name="pvot_picker_label_seconds">Seconds</string>
+
+    <!-- Accessibility actions for moving a picker wheel -->
+    <string name="pvot_picker_action_next">Next value</string>
+    <string name="pvot_picker_action_previous">Previous value</string>
+</resources>
