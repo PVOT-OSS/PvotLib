@@ -27,6 +27,9 @@ object PvotMotion {
     const val PressedScale = 0.97f
 
     /** Slightly underdamped, so a press settles with some life. */
+    val PressSpring: SpringSpec<Float> = pressSpring()
+
+    /** [PressSpring] for animations of other types. */
     fun <T> pressSpring(): SpringSpec<T> = spring(
         dampingRatio = 0.55f,
         stiffness = Spring.StiffnessMediumLow,

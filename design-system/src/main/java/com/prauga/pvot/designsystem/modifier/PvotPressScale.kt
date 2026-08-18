@@ -30,7 +30,7 @@ fun Modifier.pvotPressScale(
     val pressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(
         targetValue = if (pressed) pressedScale else 1f,
-        animationSpec = PvotMotion.pressSpring(),
+        animationSpec = PvotMotion.PressSpring,
         label = "pvotPressScale",
     )
     return this.graphicsLayer {
