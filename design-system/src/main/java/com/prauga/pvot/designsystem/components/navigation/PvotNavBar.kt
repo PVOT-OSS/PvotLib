@@ -34,10 +34,19 @@ val IconTextGap = 8.dp
 /**
  * A floating bottom navigation bar with animated pill-style items.
  *
- * When a tab is expanded, icons and content descriptions resolve in order:
- * 1. Nav bar level ([expandedIconRes]/[expandedContentDescriptionRes])
- * 2. Tab level ([TabItem.expandedIconRes])
- * 3. Fallback to collapsed values ([TabItem.iconRes]/[TabItem.contentDescriptionRes])
+ * When a tab is expanded, its content resolves as:
+ * - icon: [expandedIconRes], else [PvotTabItem.expandedIconRes], else [PvotTabItem.iconRes]
+ * - label: [PvotTabItem.expandedLabelRes], else [PvotTabItem.labelRes]
+ * - content description: [expandedContentDescriptionRes], else [PvotTabItem.contentDescriptionRes]
+ *
+ * @param selectedTab Index into [tabs] of the currently selected tab
+ * @param onTabClick Called with the index of the tab the user tapped
+ * @param tabs The tabs to display, in order
+ * @param modifier Modifier for the nav bar container
+ * @param expandedIconRes Bar-level expanded icon override, or null to resolve per tab
+ * @param expandedContentDescriptionRes Bar-level description override, or null to resolve per tab
+ * @param sizes Size configuration for the bar and its items
+ * @param colors Color configuration for the bar and its items
  */
 @Composable
 fun PvotNavBar(

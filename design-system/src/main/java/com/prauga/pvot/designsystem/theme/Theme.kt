@@ -23,7 +23,7 @@ import com.prauga.pvot.designsystem.components.navigation.PvotNavBarSizes
 import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 
-private val DarkColorScheme = darkColorScheme(
+val PvotDarkColorScheme = darkColorScheme(
     primary = PvotPrimaryDark,
     onPrimary = PvotOnPrimaryDark,
     primaryContainer = PvotPrimaryContainerDark,
@@ -54,7 +54,7 @@ private val DarkColorScheme = darkColorScheme(
     scrim = PvotScrim
 )
 
-private val LightColorScheme = lightColorScheme(
+val PvotLightColorScheme = lightColorScheme(
     primary = PvotPrimaryLight,
     onPrimary = PvotOnPrimaryLight,
     primaryContainer = PvotPrimaryContainerLight,
@@ -96,55 +96,55 @@ object PvotTheme {
         @Composable get() = LocalPvotPickerColors.current
 }
 
+object PvotThemeDefaults {
+
+    @Composable
+    fun colorScheme(
+        darkTheme: Boolean = isSystemInDarkTheme(),
+        dynamicColor: Boolean = false
+    ): ColorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+        darkTheme -> PvotDarkColorScheme
+        else -> PvotLightColorScheme
+    }
+
+    fun navBarColors(colorScheme: ColorScheme) = PvotNavBarColors(
+        gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
+        collapsedChipColor = colorScheme.surfaceVariant,
+        containerColor = colorScheme.surface.copy(alpha = 0.1f),
+        iconSelectedColor = colorScheme.onPrimary,
+        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f)
+    )
+
+    fun pickerColors(colorScheme: ColorScheme) = PvotPickerColors(
+        textColor = colorScheme.onBackground,
+        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
+        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
+    )
+}
+
 @Composable
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
-    colorScheme: ColorScheme? = null,
-    typography: Typography? = null,
-    navBarColors: PvotNavBarColors? = null,
+    colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
+    typography: Typography = PvotTypography,
+    navBarColors: PvotNavBarColors = PvotTheme.navBarColors,
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
-    pickerColors: PvotPickerColors? = null,
+    pickerColors: PvotPickerColors = PvotThemeDefaults.pickerColors(colorScheme),
     content: @Composable () -> Unit
 ) {
-    val usingDynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val resolvedColorScheme = colorScheme ?: when {
-        usingDynamicColor -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    val resolvedNavBarColors = navBarColors ?: if (colorScheme != null || usingDynamicColor) {
-        PvotNavBarColors(
-            gradient = Brush.horizontalGradient(
-                listOf(resolvedColorScheme.primary, resolvedColorScheme.tertiary)
-            ),
-            collapsedChipColor = resolvedColorScheme.surfaceVariant,
-            containerColor = resolvedColorScheme.surface.copy(alpha = 0.1f),
-            iconSelectedColor = resolvedColorScheme.onPrimary,
-            iconUnselectedColor = resolvedColorScheme.onSurface.copy(alpha = 0.7f)
-        )
-    } else {
-        LocalPvotNavBarColors.current
-    }
-
-    val resolvedPickerColors = pickerColors ?: PvotPickerColors(
-        textColor = resolvedColorScheme.onBackground,
-        textSecondaryColor = resolvedColorScheme.onBackground.copy(alpha = 0.7f),
-        selectionBackgroundColor = resolvedColorScheme.onBackground.copy(alpha = 0.1f)
-    )
-
     CompositionLocalProvider(
-        LocalPvotNavBarColors provides resolvedNavBarColors,
+        LocalPvotNavBarColors provides navBarColors,
         LocalPvotNavBarSizes provides navBarSizes,
-        LocalPvotPickerColors provides resolvedPickerColors
+        LocalPvotPickerColors provides pickerColors
     ) {
         MaterialTheme(
-            colorScheme = resolvedColorScheme,
-            typography = typography ?: PvotTypography,
+            colorScheme = colorScheme,
+            typography = typography,
             content = content
         )
     }
