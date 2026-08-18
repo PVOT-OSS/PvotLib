@@ -16,6 +16,23 @@ import androidx.compose.ui.unit.sp
  * For expanded item width, use either:
  * - [expandedWidth] for fixed width (bypasses measurement)
  * - [minExpandedWidth]/[maxExpandedWidth] for intrinsic sizing with constraints
+ *
+ * @param barHeight Height of the bar itself
+ * @param barWidth Fixed bar width, or null to fall back to [fillWidth]
+ * @param fillWidth Whether the bar spans its parent, ignored when [barWidth] is set
+ * @param collapsedItemSize Diameter of an unselected item, and the height of every item
+ * @param expandedWidth Fixed width for a selected item, or [Dp.Unspecified] to measure it
+ * @param minExpandedWidth Floor for a measured item width, or [Dp.Unspecified] for none
+ * @param maxExpandedWidth Ceiling for a measured item width, or [Dp.Unspecified] for none
+ * @param barShadowElevation Elevation of the bar's drop shadow
+ * @param cornerRadius Corner radius of the bar
+ * @param itemCornerRadius Corner radius of a selected item
+ * @param collapsedIconSize Icon size while unselected
+ * @param expandedIconSize Icon size while selected
+ * @param labelFontSize Font size of a selected item's label
+ * @param horizontalPadding Padding either side of the bar
+ * @param contentPaddingHorizontal Padding either side of the item row, inside the bar
+ * @param itemSpacing Gap between adjacent items
  */
 @Immutable
 data class PvotNavBarSizes(
@@ -37,4 +54,5 @@ data class PvotNavBarSizes(
     val itemSpacing: Dp = 4.dp
 )
 
+/** The [PvotNavBarSizes] in scope. Provided by PvotAppTheme, read via PvotTheme.navBarSizes. */
 val LocalPvotNavBarSizes = staticCompositionLocalOf { PvotNavBarSizes() }

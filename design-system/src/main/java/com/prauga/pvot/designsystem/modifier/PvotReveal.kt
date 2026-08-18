@@ -24,6 +24,13 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
  *
  * The delay stops growing past [maxStaggered] so a long list does not end up
  * waiting on an animation that started off screen.
+ *
+ * @param index Position in the staggered sequence, usually the item's index
+ * @param rise How far the content travels up into place
+ * @param durationMillis Length of a single item's animation
+ * @param staggerStepMillis Delay added per [index] step
+ * @param maxStaggered Index past which the delay stops growing
+ * @param easing Easing curve for the fade and rise
  */
 @Composable
 fun Modifier.pvotReveal(

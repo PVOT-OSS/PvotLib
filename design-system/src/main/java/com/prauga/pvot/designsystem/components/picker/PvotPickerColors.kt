@@ -39,4 +39,5 @@ object PvotPickerDefaults {
     )
 }
 
+/** The [PvotPickerColors] in scope. Provided by PvotAppTheme, read via PvotTheme.pickerColors. */
 val LocalPvotPickerColors = staticCompositionLocalOf { PvotPickerDefaults.colors() }

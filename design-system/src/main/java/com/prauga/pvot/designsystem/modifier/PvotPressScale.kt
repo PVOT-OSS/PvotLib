@@ -17,6 +17,10 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
  *
  * For large filled surfaces — cards, grouped rows — where the shape is the
  * affordance and a ripple reads as a flash on top of it.
+ *
+ * @param interactionSource The source whose press state drives the scale, the same
+ * one passed to the clickable or selectable modifier on this element
+ * @param pressedScale Scale factor held while pressed
  */
 @Composable
 fun Modifier.pvotPressScale(

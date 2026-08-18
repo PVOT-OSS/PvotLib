@@ -26,4 +26,5 @@ data class PvotNavBarColors(
     val iconUnselectedColor: Color
 )
 
+/** The [PvotNavBarColors] in scope. Provided by PvotAppTheme, read via PvotTheme.navBarColors. */
 val LocalPvotNavBarColors = staticCompositionLocalOf { PvotNavBarDefaults.colors() }
