@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +40,7 @@ import com.prauga.pvot.data.model.GithubUser
 import com.prauga.pvot.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
+import com.prauga.pvot.designsystem.modifier.pvotReveal
 import com.prauga.pvot.utils.Constants
 import com.prauga.pvot.utils.PreferencesManager
 
@@ -146,11 +147,12 @@ fun AboutScreen(
                 }
             }
         } else {
-            items(teamMembers) { member ->
+            itemsIndexed(teamMembers) { index, member ->
                 teamUsers[member.username]?.let { user ->
                     DeveloperCard(
                         user = user,
                         role = member.role,
+                        modifier = Modifier.pvotReveal(index),
                         onClick = {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.htmlUrl))
                             context.startActivity(intent)
@@ -168,9 +170,11 @@ fun AboutScreen(
             )
         }
 
-        items(projectLinks) { link ->
+        itemsIndexed(projectLinks) { index, link ->
             PvotCard(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .pvotReveal(index),
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link.url))
                     context.startActivity(intent)

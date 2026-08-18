@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +33,7 @@ import com.prauga.pvot.components.AppCard
 import com.prauga.pvot.data.model.GithubRepo
 import com.prauga.pvot.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
+import com.prauga.pvot.designsystem.modifier.pvotReveal
 
 @Composable
 fun AppsScreen(
@@ -92,9 +93,10 @@ fun AppsScreen(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
-                        items(state.data) { repo ->
+                        itemsIndexed(state.data) { index, repo ->
                             AppCard(
                                 repo = repo,
+                                modifier = Modifier.pvotReveal(index),
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repo.htmlUrl))
                                     context.startActivity(intent)

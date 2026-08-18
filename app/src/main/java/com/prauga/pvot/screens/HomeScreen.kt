@@ -8,7 +8,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +32,7 @@ import com.prauga.pvot.components.FeedCard
 import com.prauga.pvot.data.model.FeedEntry
 import com.prauga.pvot.data.repository.FeedRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
+import com.prauga.pvot.designsystem.modifier.pvotReveal
 
 @Composable
 fun HomeScreen(
@@ -83,9 +84,10 @@ fun HomeScreen(
                                 modifier = Modifier.padding(bottom = 8.dp)
                             )
                         }
-                        items(state.data) { entry ->
+                        itemsIndexed(state.data) { index, entry ->
                             FeedCard(
                                 entry = entry,
+                                modifier = Modifier.pvotReveal(index),
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(entry.link))
                                     context.startActivity(intent)
