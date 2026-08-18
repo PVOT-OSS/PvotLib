@@ -1,8 +1,12 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
+import org.lineageos.generatebp.GenerateBpPluginExtension
+import org.lineageos.generatebp.models.Module
+
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.lineageos.generatebp)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -72,4 +76,21 @@ dependencies {
     // Coil for image loading
     implementation(libs.coil.compose)
     implementation(libs.coil.network.ktor)
+}
+
+configure<GenerateBpPluginExtension> {
+    targetSdk.set(android.defaultConfig.targetSdk!!)
+    minSdk.set(android.defaultConfig.minSdk!!)
+    versionCode.set(android.defaultConfig.versionCode!!)
+    versionName.set(android.defaultConfig.versionName!!)
+    availableInAOSP.set { module: Module ->
+        when {
+            // AOSP ships the AndroidX stack, including Compose
+            module.group.startsWith("androidx") -> true
+            // kotlin-stdlib, coroutines and kotlinx-serialization
+            module.group.startsWith("org.jetbrains") -> true
+            // Ktor and Coil are not in AOSP, import them as prebuilts
+            else -> false
+        }
+    }
 }
