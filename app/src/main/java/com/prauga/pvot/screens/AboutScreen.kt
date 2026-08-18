@@ -43,6 +43,9 @@ import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.modifier.pvotReveal
 import com.prauga.pvot.utils.Constants
 import com.prauga.pvot.utils.PreferencesManager
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 
 data class TeamMember(
     val username: String,
@@ -76,13 +79,15 @@ fun AboutScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        val users = mutableMapOf<String, GithubUser>()
-        teamMembers.forEach { member ->
-            GithubRepository.getUser(member.username).onSuccess { user ->
-                users[member.username] = user
-            }
-        }
-        teamUsers = users
+        teamUsers = coroutineScope {
+            teamMembers
+                .map { member ->
+                    async { member.username to GithubRepository.getUser(member.username) }
+                }
+                .awaitAll()
+        }.mapNotNull { (username, result) ->
+            result.getOrNull()?.let { username to it }
+        }.toMap()
         isLoading = false
     }
 
