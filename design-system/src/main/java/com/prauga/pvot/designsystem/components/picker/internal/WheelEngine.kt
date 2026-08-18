@@ -24,6 +24,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -65,6 +66,8 @@ internal fun WheelEngine(
     val flingBehavior = rememberSnapFlingBehavior(listState)
     val hapticFeedback = LocalHapticFeedback.current
     var lastSelectedIndex by remember { mutableIntStateOf(config.initialIndex) }
+    val currentConfig by rememberUpdatedState(config)
+    val currentOnValueSelected by rememberUpdatedState(onValueSelected)
 
     val density = LocalDensity.current
     val itemHeightPx = with(density) { itemHeight.toPx() }
@@ -85,11 +88,12 @@ internal fun WheelEngine(
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
-                val selected = index.coerceIn(config.values.indices)
+                val values = currentConfig.values
+                val selected = index.coerceIn(values.indices)
                 if (selected != lastSelectedIndex) {
                     lastSelectedIndex = selected
                     hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                    onValueSelected(config.values[selected])
+                    currentOnValueSelected(values[selected])
                 }
             }
     }
@@ -194,7 +198,9 @@ internal fun MultiWheelEngine(
     modifier: Modifier = Modifier,
     colors: PvotPickerColors = LocalPvotPickerColors.current
 ) {
-    val selectedValues = configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()
+    val selectedValues = remember(configs) {
+        configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()
+    }
 
     Row(
         horizontalArrangement = Arrangement.Center,
