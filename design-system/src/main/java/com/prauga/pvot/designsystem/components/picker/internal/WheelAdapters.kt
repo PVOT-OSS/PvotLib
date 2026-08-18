@@ -5,6 +5,7 @@ package com.prauga.pvot.designsystem.components.picker.internal
 
 import java.time.LocalTime
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.hours
 
 /**
  * Converts a [LocalTime] to wheel configurations for hour and minute selection.
@@ -36,8 +37,11 @@ internal fun wheelValuesToLocalTime(values: List<Int>): LocalTime {
  * Converts a [Duration] to wheel configurations for hours, minutes, and seconds.
  */
 internal fun Duration.toWheelConfigs(): List<WheelConfig> {
+    require(this >= Duration.ZERO && this < 24.hours) {
+        "Duration must be in [0h, 24h), was $this"
+    }
     val totalSeconds = inWholeSeconds
-    val hours = (totalSeconds / 3600).toInt().coerceIn(0, 23)
+    val hours = (totalSeconds / 3600).toInt()
     val minutes = ((totalSeconds % 3600) / 60).toInt()
     val seconds = (totalSeconds % 60).toInt()
 

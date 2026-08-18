@@ -18,7 +18,7 @@ import kotlin.time.Duration.Companion.minutes
 /**
  * A duration picker for selecting a time duration (hours, minutes, and seconds).
  *
- * @param duration The currently selected duration
+ * @param duration The currently selected duration, which must be in `[0h, 24h)`
  * @param onDurationChange Called when the user selects a new duration
  * @param modifier Modifier for the picker container
  */
