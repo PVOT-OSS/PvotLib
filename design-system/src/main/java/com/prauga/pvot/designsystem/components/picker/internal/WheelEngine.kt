@@ -142,25 +142,15 @@ internal fun WheelEngine(
                 .clearAndSetSemantics { }
         ) {
             items(config.values.size) { index ->
-                // Calculate distance from center
-                val distanceFromCenter = (index - listState.firstVisibleItemIndex) -
-                    (listState.firstVisibleItemScrollOffset / itemHeightPx)
-
-                // Normalize distance
-                val normalizedDistance = (distanceFromCenter / halfVisibleItems).coerceIn(-1f, 1f)
-
-                // Calculate 3D transformations
-                val rotationX = normalizedDistance * MAX_ROTATION_DEGREES
-                val scale = 1f - (abs(normalizedDistance) * (1f - MIN_SCALE))
-                val alpha = 1f - (abs(normalizedDistance) * (1f - MIN_ALPHA))
-
                 WheelItem(
                     text = config.label(config.values[index]),
                     suffix = suffix,
                     colors = colors,
-                    rotationX = rotationX,
-                    scale = scale,
-                    alpha = alpha,
+                    normalizedDistance = {
+                        val distanceFromCenter = (index - listState.firstVisibleItemIndex) -
+                            (listState.firstVisibleItemScrollOffset / itemHeightPx)
+                        (distanceFromCenter / halfVisibleItems).coerceIn(-1f, 1f)
+                    },
                     modifier = Modifier.height(itemHeight)
                 )
             }
@@ -180,24 +170,30 @@ internal fun WheelEngine(
     }
 }
 
+/**
+ * A single wheel row.
+ *
+ * [normalizedDistance] is read in the draw phase, so scrolling re-runs the layer
+ * block rather than recomposing every visible row.
+ */
 @Composable
 private fun WheelItem(
     text: String,
     suffix: String,
     colors: PvotPickerColors,
-    rotationX: Float,
-    scale: Float,
-    alpha: Float,
+    normalizedDistance: () -> Float,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxWidth()
             .graphicsLayer {
-                this.rotationX = rotationX
-                this.scaleX = scale
-                this.scaleY = scale
-                this.alpha = alpha
+                val distance = normalizedDistance()
+                val itemScale = 1f - (abs(distance) * (1f - MIN_SCALE))
+                this.rotationX = distance * MAX_ROTATION_DEGREES
+                this.scaleX = itemScale
+                this.scaleY = itemScale
+                this.alpha = 1f - (abs(distance) * (1f - MIN_ALPHA))
                 this.transformOrigin = TransformOrigin.Center
                 this.cameraDistance = 12f * density
             },
