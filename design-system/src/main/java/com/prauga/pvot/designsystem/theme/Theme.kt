@@ -5,7 +5,9 @@ package com.prauga.pvot.designsystem.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -98,13 +100,16 @@ object PvotTheme {
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
+    colorScheme: ColorScheme? = null,
+    typography: Typography? = null,
     navBarColors: PvotNavBarColors? = null,
     navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
     pickerColors: PvotPickerColors? = null,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+    val usingDynamicColor = dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+    val resolvedColorScheme = colorScheme ?: when {
+        usingDynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
@@ -112,24 +117,24 @@ fun PvotAppTheme(
         else -> LightColorScheme
     }
 
-    val resolvedNavBarColors = navBarColors ?: if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    val resolvedNavBarColors = navBarColors ?: if (colorScheme != null || usingDynamicColor) {
         PvotNavBarColors(
             gradient = Brush.horizontalGradient(
-                listOf(colorScheme.primary, colorScheme.tertiary)
+                listOf(resolvedColorScheme.primary, resolvedColorScheme.tertiary)
             ),
-            collapsedChipColor = colorScheme.surfaceVariant,
-            containerColor = colorScheme.surface.copy(alpha = 0.1f),
-            iconSelectedColor = colorScheme.onPrimary,
-            iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f)
+            collapsedChipColor = resolvedColorScheme.surfaceVariant,
+            containerColor = resolvedColorScheme.surface.copy(alpha = 0.1f),
+            iconSelectedColor = resolvedColorScheme.onPrimary,
+            iconUnselectedColor = resolvedColorScheme.onSurface.copy(alpha = 0.7f)
         )
     } else {
         LocalPvotNavBarColors.current
     }
 
     val resolvedPickerColors = pickerColors ?: PvotPickerColors(
-        textColor = colorScheme.onBackground,
-        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
-        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
+        textColor = resolvedColorScheme.onBackground,
+        textSecondaryColor = resolvedColorScheme.onBackground.copy(alpha = 0.7f),
+        selectionBackgroundColor = resolvedColorScheme.onBackground.copy(alpha = 0.1f)
     )
 
     CompositionLocalProvider(
@@ -138,8 +143,8 @@ fun PvotAppTheme(
         LocalPvotPickerColors provides resolvedPickerColors
     ) {
         MaterialTheme(
-            colorScheme = colorScheme,
-            typography = PvotTypography,
+            colorScheme = resolvedColorScheme,
+            typography = typography ?: PvotTypography,
             content = content
         )
     }
