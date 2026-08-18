@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.data.model.FeedEntry
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Locale
 
 @Composable
@@ -94,7 +95,7 @@ private fun formatDate(isoDate: String): String {
         val zonedDateTime = ZonedDateTime.parse(isoDate)
         val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy", Locale.getDefault())
         zonedDateTime.format(formatter)
-    } catch (e: Exception) {
+    } catch (_: DateTimeParseException) {
         isoDate
     }
 }
