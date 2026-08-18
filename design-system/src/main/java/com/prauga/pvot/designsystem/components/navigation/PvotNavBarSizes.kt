@@ -26,6 +26,7 @@ data class PvotNavBarSizes(
     val expandedWidth: Dp = Dp.Unspecified,
     val minExpandedWidth: Dp = Dp.Unspecified,
     val maxExpandedWidth: Dp = 200.dp,
+    val barShadowElevation: Dp = 18.dp,
     val cornerRadius: Dp = 100.dp,
     val itemCornerRadius: Dp = 28.dp,
     val collapsedIconSize: Dp = 22.dp,

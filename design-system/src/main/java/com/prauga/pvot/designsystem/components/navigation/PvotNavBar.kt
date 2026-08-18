@@ -109,7 +109,7 @@ fun PvotNavBar(
             modifier = Modifier
                 .barWidthModifier(sizes)
                 .height(sizes.barHeight)
-                .shadow(18.dp, barShape, clip = false),
+                .shadow(sizes.barShadowElevation, barShape, clip = false),
             shape = barShape,
             color = colors.containerColor,
             tonalElevation = 0.dp,
