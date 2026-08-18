@@ -6,14 +6,12 @@ package com.prauga.pvot.screens
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -36,6 +34,7 @@ import com.prauga.coreui.PvotSectionHeader
 import com.prauga.pvot.BuildConfig
 import com.prauga.pvot.R
 import com.prauga.pvot.components.DeveloperCard
+import com.prauga.pvot.components.DeveloperCardSkeleton
 import com.prauga.pvot.data.model.GithubUser
 import com.prauga.pvot.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotCard
@@ -141,15 +140,8 @@ fun AboutScreen(
         }
 
         if (isLoading) {
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(32.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+            items(teamMembers.size) {
+                DeveloperCardSkeleton()
             }
         } else {
             itemsIndexed(teamMembers) { index, member ->

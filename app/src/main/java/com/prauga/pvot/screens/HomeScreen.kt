@@ -25,14 +25,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.prauga.coreui.PvotEmptyContent
 import com.prauga.coreui.PvotErrorContent
-import com.prauga.coreui.PvotLoadingContent
 import com.prauga.coreui.UiState
 import com.prauga.pvot.R
 import com.prauga.pvot.components.FeedCard
+import com.prauga.pvot.components.FeedCardSkeleton
 import com.prauga.pvot.data.model.FeedEntry
 import com.prauga.pvot.data.repository.FeedRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.modifier.pvotReveal
+
+private const val SkeletonCount = 4
 
 @Composable
 fun HomeScreen(
@@ -56,7 +58,9 @@ fun HomeScreen(
     Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState) {
             is UiState.Loading -> {
-                PvotLoadingContent(modifier = Modifier.align(Alignment.Center))
+                PvotScreen(modifier = Modifier.fillMaxSize()) {
+                    items(SkeletonCount) { FeedCardSkeleton() }
+                }
             }
 
             is UiState.Error -> {
