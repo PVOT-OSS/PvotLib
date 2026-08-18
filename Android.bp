@@ -1,0 +1,16 @@
+//
+// SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+//
+
+// The in-tree library modules reach the app through defaults rather than through
+// its static_libs, because generateBp rewrites every static_libs block in
+// app/Android.bp. Soong merges what defaults contribute with the generated list.
+java_defaults {
+    name: "PvotLocalLibsDefaults",
+
+    static_libs: [
+        "PvotCoreUi",
+        "PvotDesignSystem",
+    ],
+}

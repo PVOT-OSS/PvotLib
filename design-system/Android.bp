@@ -1,0 +1,34 @@
+//
+// SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+// SPDX-License-Identifier: Apache-2.0
+//
+
+android_library {
+    name: "PvotDesignSystem",
+
+    srcs: ["src/main/java/**/*.kt"],
+    resource_dirs: ["src/main/res"],
+    manifest: "src/main/AndroidManifest.xml",
+
+    sdk_version: "36",
+    min_sdk_version: "27",
+
+    static_libs: [
+        "androidx.activity_activity-compose",
+        "androidx.compose.animation_animation",
+        "androidx.compose.animation_animation-core",
+        "androidx.compose.foundation_foundation",
+        "androidx.compose.foundation_foundation-layout",
+        "androidx.compose.material3_material3",
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui",
+        "androidx.compose.ui_ui-geometry",
+        "androidx.compose.ui_ui-graphics",
+        "androidx.compose.ui_ui-text",
+        "androidx.compose.ui_ui-tooling-preview",
+        "androidx.compose.ui_ui-unit",
+        "androidx.compose.ui_ui-util",
+        "androidx.core_core-ktx",
+        "kotlin-stdlib",
+    ],
+}
