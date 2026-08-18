@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,18 +42,15 @@ fun AppsScreen(
     var uiState by remember { mutableStateOf<UiState<List<GithubRepo>>>(UiState.Loading) }
     val context = LocalContext.current
 
-    fun loadRepos() {
-        uiState = UiState.Loading
-    }
+    var retryCount by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(uiState) {
-        if (uiState is UiState.Loading) {
-            val result = GithubRepository.getAppsRepos()
-            uiState = result.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
-            )
-        }
+    LaunchedEffect(retryCount) {
+        uiState = UiState.Loading
+        val result = GithubRepository.getAppsRepos()
+        uiState = result.fold(
+            onSuccess = { UiState.Success(it) },
+            onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
+        )
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -65,7 +63,7 @@ fun AppsScreen(
                 PvotErrorContent(
                     title = stringResource(R.string.apps_error_title),
                     message = state.message,
-                    onRetry = { loadRepos() },
+                    onRetry = { retryCount++ },
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

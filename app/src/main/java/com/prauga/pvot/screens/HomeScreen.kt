@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,18 +41,15 @@ fun HomeScreen(
     var uiState by remember { mutableStateOf<UiState<List<FeedEntry>>>(UiState.Loading) }
     val context = LocalContext.current
 
-    fun loadFeed() {
-        uiState = UiState.Loading
-    }
+    var retryCount by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(uiState) {
-        if (uiState is UiState.Loading) {
-            val result = FeedRepository.getFeedEntries()
-            uiState = result.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
-            )
-        }
+    LaunchedEffect(retryCount) {
+        uiState = UiState.Loading
+        val result = FeedRepository.getFeedEntries()
+        uiState = result.fold(
+            onSuccess = { UiState.Success(it) },
+            onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
+        )
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -64,7 +62,7 @@ fun HomeScreen(
                 PvotErrorContent(
                     title = stringResource(R.string.home_error_title),
                     message = state.message,
-                    onRetry = { loadFeed() },
+                    onRetry = { retryCount++ },
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
