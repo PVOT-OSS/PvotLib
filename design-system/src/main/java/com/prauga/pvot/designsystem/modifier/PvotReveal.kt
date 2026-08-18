@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import com.prauga.pvot.designsystem.motion.PvotMotion
 
@@ -34,7 +35,8 @@ fun Modifier.pvotReveal(
     easing: Easing = PvotMotion.Settle,
 ): Modifier {
     val risePx = with(LocalDensity.current) { rise.toPx() }
-    var appeared by remember { mutableStateOf(false) }
+    val inspecting = LocalInspectionMode.current
+    var appeared by remember { mutableStateOf(inspecting) }
 
     val progress by animateFloatAsState(
         targetValue = if (appeared) 1f else 0f,
