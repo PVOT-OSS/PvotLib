@@ -141,7 +141,7 @@ private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.t
 )
 
 @Composable
-fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): Dp {
+internal fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): Dp {
     if (sizes.expandedWidth != Dp.Unspecified) {
         return sizes.expandedWidth
     }
