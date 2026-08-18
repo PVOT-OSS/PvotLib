@@ -50,7 +50,7 @@ fun AppsScreen(
             val result = GithubRepository.getAppsRepos()
             uiState = result.fold(
                 onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message ?: "Unknown error") }
+                onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
             )
         }
     }

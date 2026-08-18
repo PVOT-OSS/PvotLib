@@ -11,14 +11,23 @@ package com.prauga.coreui
  *
  * @param T The type of the loaded content
  */
-sealed class UiState<out T> {
+sealed interface UiState<out T> {
 
     /** The content has been requested but has not arrived yet. */
-    data object Loading : UiState<Nothing>()
+    data object Loading : UiState<Nothing>
 
     /** The content arrived. */
-    data class Success<T>(val data: T) : UiState<T>()
+    data class Success<T>(val data: T) : UiState<T>
 
-    /** The content could not be loaded. */
-    data class Error(val message: String) : UiState<Nothing>()
+    /**
+     * The content could not be loaded.
+     *
+     * @param message Text to show the user
+     * @param cause The underlying failure, kept so callers can tell a network error
+     * from a parse error without matching on [message]
+     */
+    data class Error(
+        val message: String,
+        val cause: Throwable? = null
+    ) : UiState<Nothing>
 }
