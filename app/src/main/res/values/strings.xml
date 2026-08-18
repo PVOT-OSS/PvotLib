@@ -29,6 +29,29 @@
     <string name="catalog_duration_picker">PvotDurationPicker</string>
     <string name="catalog_selected_time">Selected: %1$s</string>
     <string name="catalog_selected_duration">Selected: %1$s</string>
+    <string name="catalog_navbar_slots">PvotNavBar (slots)</string>
+    <string name="catalog_card">PvotCard</string>
+    <string name="catalog_card_static">Static card</string>
+    <string name="catalog_card_clickable">Clickable card, press it</string>
+    <string name="catalog_card_taps">Tapped %1$d times</string>
+    <string name="catalog_skeleton">PvotSkeleton</string>
+    <string name="catalog_section_header">PvotSectionHeader</string>
+    <string name="catalog_section_header_sample">Section title</string>
+    <string name="catalog_loading">PvotLoadingContent</string>
+    <string name="catalog_empty">PvotEmptyContent</string>
+    <string name="catalog_empty_sample">Nothing here yet</string>
+    <string name="catalog_error">PvotErrorContent</string>
+    <string name="catalog_error_sample_title">Something went wrong</string>
+    <string name="catalog_error_sample_message">Could not reach the server</string>
+    <string name="catalog_error_retries">Retried %1$d times</string>
+    <string name="catalog_reveal">Modifier.pvotReveal</string>
+    <string name="catalog_reveal_replay">Replay</string>
+    <string name="catalog_tab_one">One</string>
+    <string name="catalog_tab_two">Two</string>
+    <string name="catalog_tab_three">Three</string>
+    <string name="cd_catalog_tab_one">First demo tab</string>
+    <string name="cd_catalog_tab_two">Second demo tab</string>
+    <string name="cd_catalog_tab_three">Third demo tab</string>
 
     <!-- About Screen -->
     <string name="about_app_name">PVOT</string>
