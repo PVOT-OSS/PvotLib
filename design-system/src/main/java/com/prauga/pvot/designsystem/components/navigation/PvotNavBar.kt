@@ -20,7 +20,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +50,8 @@ fun PvotNavBar(
     sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
     colors: PvotNavBarColors = PvotTheme.navBarColors,
 ) {
+    val barShape = RoundedCornerShape(sizes.cornerRadius)
+
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -62,9 +63,8 @@ fun PvotNavBar(
             modifier = Modifier
                 .barWidthModifier(sizes)
                 .height(sizes.barHeight)
-                .clip(RoundedCornerShape(sizes.cornerRadius))
-                .shadow(18.dp, RoundedCornerShape(sizes.cornerRadius), clip = false),
-            shape = RoundedCornerShape(sizes.cornerRadius),
+                .shadow(18.dp, barShape, clip = false),
+            shape = barShape,
             color = colors.containerColor,
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
