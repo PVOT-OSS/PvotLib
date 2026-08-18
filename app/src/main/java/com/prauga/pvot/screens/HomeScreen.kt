@@ -76,7 +76,7 @@ fun HomeScreen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 } else {
-                    PvotScreen {
+                    PvotScreen(modifier = Modifier.fillMaxSize()) {
                         item {
                             Text(
                                 text = label,

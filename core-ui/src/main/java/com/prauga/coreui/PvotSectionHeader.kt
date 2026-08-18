@@ -3,13 +3,10 @@
 
 package com.prauga.coreui
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun PvotSectionHeader(
@@ -21,7 +18,5 @@ fun PvotSectionHeader(
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onBackground,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
     )
 }

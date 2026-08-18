@@ -20,7 +20,7 @@ fun CatalogCard(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    PvotCard(modifier = modifier) {
+    PvotCard(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

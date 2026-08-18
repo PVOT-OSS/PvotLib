@@ -97,7 +97,7 @@ fun AboutScreen(
 
         // App Info Section
         item {
-            PvotCard {
+            PvotCard(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -128,7 +128,10 @@ fun AboutScreen(
 
         // Team Section
         item {
-            PvotSectionHeader(title = stringResource(R.string.about_section_team))
+            PvotSectionHeader(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(R.string.about_section_team)
+            )
         }
 
         if (isLoading) {
@@ -159,11 +162,15 @@ fun AboutScreen(
 
         // Project Links Section
         item {
-            PvotSectionHeader(title = stringResource(R.string.about_section_links))
+            PvotSectionHeader(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(R.string.about_section_links)
+            )
         }
 
         items(projectLinks) { link ->
             PvotCard(
+                modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link.url))
                     context.startActivity(intent)
@@ -193,13 +200,16 @@ fun AboutScreen(
 
         // Settings Section
         item {
-            PvotSectionHeader(title = stringResource(R.string.about_section_settings))
+            PvotSectionHeader(
+                modifier = Modifier.fillMaxWidth(),
+                title = stringResource(R.string.about_section_settings)
+            )
         }
 
         item {
             val dynamicColorEnabled by PreferencesManager.dynamicColorEnabled.collectAsState()
 
-            PvotCard {
+            PvotCard(modifier = Modifier.fillMaxWidth()) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

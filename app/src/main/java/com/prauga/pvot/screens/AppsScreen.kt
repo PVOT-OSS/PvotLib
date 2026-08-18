@@ -85,7 +85,7 @@ fun AppsScreen(
                         )
                     }
                 } else {
-                    PvotScreen {
+                    PvotScreen(modifier = Modifier.fillMaxSize()) {
                         item {
                             Text(
                                 text = label,

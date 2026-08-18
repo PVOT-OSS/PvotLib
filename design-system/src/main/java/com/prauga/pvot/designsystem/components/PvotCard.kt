@@ -4,7 +4,6 @@
 package com.prauga.pvot.designsystem.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,9 +19,9 @@ fun PvotCard(
     content: @Composable () -> Unit
 ) {
     val cardModifier = if (onClick != null) {
-        modifier.fillMaxWidth().clickable(onClick = onClick)
+        modifier.clickable(onClick = onClick)
     } else {
-        modifier.fillMaxWidth()
+        modifier
     }
 
     Card(
