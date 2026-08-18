@@ -29,6 +29,7 @@ import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
 
 @Composable
@@ -117,7 +118,7 @@ fun CatalogScreen(
                         text = stringResource(
                             R.string.catalog_selected_duration,
                             selectedDuration.toComponents { h, m, s, _ ->
-                                "%02d:%02d:%02d".format(h, m, s)
+                                String.format(Locale.getDefault(), "%02d:%02d:%02d", h, m, s)
                             }
                         ),
                         style = MaterialTheme.typography.bodyLarge,
