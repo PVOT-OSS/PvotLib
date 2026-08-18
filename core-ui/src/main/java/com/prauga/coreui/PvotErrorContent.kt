@@ -14,6 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
+/**
+ * A failure message with a retry affordance, shown in place of content that could
+ * not be loaded.
+ *
+ * @param title Short summary of what failed
+ * @param message The failure detail, typically the exception message
+ * @param onRetry Called when the user asks to try again
+ * @param modifier Modifier for the column
+ */
 @Composable
 fun PvotErrorContent(
     title: String,

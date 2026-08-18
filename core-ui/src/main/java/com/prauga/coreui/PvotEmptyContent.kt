@@ -8,6 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * The message shown in place of a list or screen that has no content.
+ *
+ * @param message Text explaining why there is nothing to show
+ * @param modifier Modifier for the text
+ */
 @Composable
 fun PvotEmptyContent(
     message: String,

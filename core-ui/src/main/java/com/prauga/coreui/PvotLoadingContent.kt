@@ -7,6 +7,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
+/**
+ * The indeterminate progress indicator shown while content loads.
+ *
+ * @param modifier Modifier for the indicator
+ */
 @Composable
 fun PvotLoadingContent(modifier: Modifier = Modifier) {
     CircularProgressIndicator(modifier = modifier)

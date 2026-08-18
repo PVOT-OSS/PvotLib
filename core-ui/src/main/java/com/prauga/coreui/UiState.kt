@@ -3,8 +3,22 @@
 
 package com.prauga.coreui
 
+/**
+ * The loading state of a screen's content.
+ *
+ * Pair each state with the matching component: [PvotLoadingContent] for [Loading],
+ * [PvotErrorContent] for [Error], and your own content for [Success].
+ *
+ * @param T The type of the loaded content
+ */
 sealed class UiState<out T> {
+
+    /** The content has been requested but has not arrived yet. */
     data object Loading : UiState<Nothing>()
+
+    /** The content arrived. */
     data class Success<T>(val data: T) : UiState<T>()
+
+    /** The content could not be loaded. */
     data class Error(val message: String) : UiState<Nothing>()
 }
