@@ -8,12 +8,14 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -59,6 +61,41 @@ fun PvotNavBar(
     sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
     colors: PvotNavBarColors = PvotTheme.navBarColors,
 ) {
+    PvotNavBar(modifier = modifier, sizes = sizes, colors = colors) {
+        tabs.forEachIndexed { index, tab ->
+            PillNavItem(
+                tab = tab,
+                selected = index == selectedTab,
+                onClick = { onTabClick(index) },
+                expandedIconRes = expandedIconRes ?: tab.expandedIconRes ?: tab.iconRes,
+                expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
+                expandedContentDescriptionRes = expandedContentDescriptionRes
+                    ?: tab.contentDescriptionRes,
+                sizes = sizes,
+                colors = colors
+            )
+        }
+    }
+}
+
+/**
+ * A floating bottom navigation bar that lays its items out in a [RowScope].
+ *
+ * Items size themselves, so an item may carry any icon and label content. Use
+ * [PvotNavBarItem] for the standard pill item.
+ *
+ * @param modifier Modifier for the nav bar container
+ * @param sizes Size configuration for the bar
+ * @param colors Color configuration for the bar
+ * @param content The bar's items, typically [PvotNavBarItem]
+ */
+@Composable
+fun PvotNavBar(
+    modifier: Modifier = Modifier,
+    sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
+    colors: PvotNavBarColors = PvotTheme.navBarColors,
+    content: @Composable RowScope.() -> Unit
+) {
     val barShape = RoundedCornerShape(sizes.cornerRadius)
 
     Box(
@@ -82,27 +119,15 @@ fun PvotNavBar(
                 modifier = Modifier
                     .barWidthModifier(sizes)
                     .height(sizes.barHeight)
+                    .selectableGroup()
                     .padding(horizontal = sizes.contentPaddingHorizontal),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(
                     sizes.itemSpacing,
                     Alignment.CenterHorizontally
-                )
-            ) {
-                tabs.forEachIndexed { index, tab ->
-                    PillNavItem(
-                        tab = tab,
-                        selected = index == selectedTab,
-                        onClick = { onTabClick(index) },
-                        expandedIconRes = expandedIconRes ?: tab.expandedIconRes ?: tab.iconRes,
-                        expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
-                        expandedContentDescriptionRes = expandedContentDescriptionRes
-                            ?: tab.contentDescriptionRes,
-                        sizes = sizes,
-                        colors = colors
-                    )
-                }
-            }
+                ),
+                content = content
+            )
         }
     }
 }
