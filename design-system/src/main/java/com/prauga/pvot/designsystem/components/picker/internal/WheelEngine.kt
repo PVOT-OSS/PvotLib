@@ -20,7 +20,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -92,10 +91,6 @@ internal fun WheelEngine(
     val itemHeightPx = with(density) { itemHeight.toPx() }
     val halfVisibleItems = visibleItemsCount / 2f
 
-    // Track scroll position
-    val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-    val scrollOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
-
     LaunchedEffect(config.initialIndex) {
         val target = config.initialIndex.coerceIn(config.values.indices)
         if (target != lastSelectedIndex) {
@@ -148,7 +143,8 @@ internal fun WheelEngine(
         ) {
             items(config.values.size) { index ->
                 // Calculate distance from center
-                val distanceFromCenter = (index - firstVisibleIndex) - (scrollOffset / itemHeightPx)
+                val distanceFromCenter = (index - listState.firstVisibleItemIndex) -
+                    (listState.firstVisibleItemScrollOffset / itemHeightPx)
 
                 // Normalize distance
                 val normalizedDistance = (distanceFromCenter / halfVisibleItems).coerceIn(-1f, 1f)
