@@ -4,7 +4,9 @@
 package com.prauga.pvot.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -13,11 +15,13 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.modifier.pvotPressScale
 
 /** Defaults for [PvotCard]. */
 object PvotCardDefaults {
@@ -52,6 +56,8 @@ object PvotCardDefaults {
  * @param colors The card's colors
  * @param elevation The card's elevation
  * @param border An optional border drawn around the card
+ * @param interactionSource The source driving the press animation, hoist it to react
+ * to presses elsewhere
  */
 @Composable
 fun PvotCard(
@@ -62,10 +68,19 @@ fun PvotCard(
     colors: CardColors = PvotCardDefaults.colors(),
     elevation: CardElevation = PvotCardDefaults.elevation(),
     border: BorderStroke? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit
 ) {
     val cardModifier = if (onClick != null) {
-        modifier.clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+        modifier
+            .pvotPressScale(interactionSource)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                enabled = enabled,
+                role = Role.Button,
+                onClick = onClick
+            )
     } else {
         modifier
     }
