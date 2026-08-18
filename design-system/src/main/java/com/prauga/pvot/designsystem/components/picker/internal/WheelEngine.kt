@@ -74,6 +74,14 @@ internal fun WheelEngine(
     val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
     val scrollOffset by remember { derivedStateOf { listState.firstVisibleItemScrollOffset } }
 
+    LaunchedEffect(config.initialIndex) {
+        val target = config.initialIndex.coerceIn(config.values.indices)
+        if (target != lastSelectedIndex) {
+            lastSelectedIndex = target
+            listState.scrollToItem(target)
+        }
+    }
+
     LaunchedEffect(listState) {
         snapshotFlow { listState.firstVisibleItemIndex }
             .collect { index ->
