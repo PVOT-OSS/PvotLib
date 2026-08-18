@@ -103,7 +103,9 @@ internal fun PillNavItem(
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = if (selected) ItemHorizontalPadding else 0.dp),
+            modifier = Modifier.padding(
+                horizontal = if (selected) PvotNavBarDefaults.ItemHorizontalPadding else 0.dp
+            ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -121,7 +123,7 @@ internal fun PillNavItem(
             ) {
                 Text(
                     text = labelText,
-                    modifier = Modifier.padding(start = IconTextGap),
+                    modifier = Modifier.padding(start = PvotNavBarDefaults.IconTextGap),
                     color = colors.iconSelectedColor,
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,

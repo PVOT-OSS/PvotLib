@@ -7,7 +7,13 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-/** Color configuration for [WheelPicker], [TimePicker], and [PvotTimerPicker]. */
+/**
+ * Color configuration for [PvotClockPicker] and [PvotDurationPicker].
+ *
+ * @param textColor Color of a wheel's value
+ * @param textSecondaryColor Color of a wheel's suffix
+ * @param selectionBackgroundColor Fill behind the centred selection row
+ */
 @Immutable
 data class PvotPickerColors(
     val textColor: Color,
@@ -15,15 +21,22 @@ data class PvotPickerColors(
     val selectionBackgroundColor: Color
 )
 
-val LocalPvotPickerColors = staticCompositionLocalOf {
-    PvotPickerColors(
-        textColor = PickerTextColor,
-        textSecondaryColor = PickerTextSecondaryColor,
-        selectionBackgroundColor = PickerSelectionBackground
+/** Defaults for [PvotClockPicker] and [PvotDurationPicker]. */
+object PvotPickerDefaults {
+
+    val TextColor = Color.White
+    val TextSecondaryColor = Color.White.copy(alpha = 0.7f)
+    val SelectionBackgroundColor = Color.White.copy(alpha = 0.08f)
+
+    fun colors(
+        textColor: Color = TextColor,
+        textSecondaryColor: Color = TextSecondaryColor,
+        selectionBackgroundColor: Color = SelectionBackgroundColor
+    ): PvotPickerColors = PvotPickerColors(
+        textColor = textColor,
+        textSecondaryColor = textSecondaryColor,
+        selectionBackgroundColor = selectionBackgroundColor
     )
 }
 
-// Default picker colors
-val PickerTextColor = Color.White
-val PickerTextSecondaryColor = Color.White.copy(alpha = 0.7f)
-val PickerSelectionBackground = Color.White.copy(alpha = 0.08f)
+val LocalPvotPickerColors = staticCompositionLocalOf { PvotPickerDefaults.colors() }

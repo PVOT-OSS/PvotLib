@@ -8,7 +8,15 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
-/** Color configuration for [PvotNavBar]. */
+/**
+ * Color configuration for [PvotNavBar].
+ *
+ * @param gradient Fill behind a selected item
+ * @param collapsedChipColor Fill behind an unselected item
+ * @param containerColor Fill behind the bar itself
+ * @param iconSelectedColor Icon and label color of a selected item
+ * @param iconUnselectedColor Icon color of an unselected item
+ */
 @Immutable
 data class PvotNavBarColors(
     val gradient: Brush,
@@ -18,20 +26,4 @@ data class PvotNavBarColors(
     val iconUnselectedColor: Color
 )
 
-val LocalPvotNavBarColors = staticCompositionLocalOf {
-    PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(NavBarGradientStart, NavBarGradientEnd)),
-        collapsedChipColor = NavBarCollapsedChip,
-        containerColor = NavBarContainer,
-        iconSelectedColor = NavBarIconSelected,
-        iconUnselectedColor = NavBarIconUnselected
-    )
-}
-
-// Navigation bar colors
-val NavBarGradientStart = Color(0xFF9B84FF)
-val NavBarGradientEnd = Color(0xFF6B66FF)
-val NavBarCollapsedChip = Color(0xFF4D4D4F)
-val NavBarContainer = Color(0x1AFFFFFF)
-val NavBarIconSelected = Color.White
-val NavBarIconUnselected = Color(0xFFECECEC)
+val LocalPvotNavBarColors = staticCompositionLocalOf { PvotNavBarDefaults.colors() }

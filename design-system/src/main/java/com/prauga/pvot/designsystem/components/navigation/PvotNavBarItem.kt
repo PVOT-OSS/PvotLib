@@ -94,7 +94,9 @@ fun RowScope.PvotNavBarItem(
         contentAlignment = Alignment.Center
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = if (selected) ItemHorizontalPadding else 0.dp),
+            modifier = Modifier.padding(
+                horizontal = if (selected) PvotNavBarDefaults.ItemHorizontalPadding else 0.dp
+            ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -106,7 +108,7 @@ fun RowScope.PvotNavBarItem(
                     enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
                     exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
                 ) {
-                    Box(modifier = Modifier.padding(start = IconTextGap)) {
+                    Box(modifier = Modifier.padding(start = PvotNavBarDefaults.IconTextGap)) {
                         label()
                     }
                 }

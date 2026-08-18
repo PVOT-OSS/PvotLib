@@ -30,9 +30,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.theme.PvotTheme
 
-val ItemHorizontalPadding = 16.dp
-val IconTextGap = 8.dp
-
 /**
  * A floating bottom navigation bar with animated pill-style items.
  *
@@ -155,7 +152,8 @@ internal fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): 
 
     val density = LocalDensity.current
     val intrinsicWidth = with(density) {
-        sizes.expandedIconSize + IconTextGap + textLayoutResult.size.width.toDp() + (ItemHorizontalPadding * 2)
+        sizes.expandedIconSize + PvotNavBarDefaults.IconTextGap +
+            textLayoutResult.size.width.toDp() + (PvotNavBarDefaults.ItemHorizontalPadding * 2)
     }
 
     return intrinsicWidth

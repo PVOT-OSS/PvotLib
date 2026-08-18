@@ -13,8 +13,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import com.prauga.pvot.designsystem.components.navigation.NavBarCollapsedChip
-import com.prauga.pvot.designsystem.components.navigation.NavBarIconSelected
+import com.prauga.pvot.designsystem.components.navigation.PvotNavBarDefaults
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
 
 class PvotAppThemeTest {
@@ -54,8 +53,8 @@ class PvotAppThemeTest {
             }
         }
 
-        assertEquals(NavBarCollapsedChip, collapsedChipColor)
-        assertEquals(NavBarIconSelected, iconSelectedColor)
+        assertEquals(PvotNavBarDefaults.CollapsedChipColor, collapsedChipColor)
+        assertEquals(PvotNavBarDefaults.IconSelectedColor, iconSelectedColor)
     }
 
     @Test
