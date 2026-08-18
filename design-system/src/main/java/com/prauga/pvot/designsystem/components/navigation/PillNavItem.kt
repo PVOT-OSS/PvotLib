@@ -45,7 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PillNavItem(
+internal fun PillNavItem(
     tab: PvotTabItem,
     selected: Boolean,
     onClick: () -> Unit,
@@ -53,7 +53,8 @@ fun PillNavItem(
     @StringRes expandedLabelRes: Int,
     @StringRes expandedContentDescriptionRes: Int,
     sizes: PvotNavBarSizes,
-    colors: PvotNavBarColors
+    colors: PvotNavBarColors,
+    modifier: Modifier = Modifier
 ) {
     val labelText = stringResource(id = expandedLabelRes)
     val targetExpandedWidth = calculateExpandedWidth(labelText, sizes)
@@ -77,7 +78,7 @@ fun PillNavItem(
         if (selected) expandedContentDescriptionRes else tab.contentDescriptionRes
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .width(width)
             .height(sizes.collapsedItemSize)
             .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else CircleShape)
