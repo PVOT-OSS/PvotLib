@@ -35,7 +35,7 @@ import kotlin.time.Duration.Companion.minutes
 @Composable
 fun CatalogScreen(
     label: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     var selectedTime by remember { mutableStateOf(LocalTime.of(0, 0)) }
     var selectedDuration by remember { mutableStateOf(30.minutes) }

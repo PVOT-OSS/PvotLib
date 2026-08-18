@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 @Composable
 fun EmptyScreen(
     label: String,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
