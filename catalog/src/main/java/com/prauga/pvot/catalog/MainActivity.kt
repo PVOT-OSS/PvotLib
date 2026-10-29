@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.platform.PvotBaseActivity
 import com.prauga.pvot.designsystem.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
@@ -45,6 +47,7 @@ class MainActivity : PvotBaseActivity() {
 @Composable
 fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
+    val backdrop = rememberPvotGlassBackdrop()
 
     val tabs = listOf(
         PvotTabItem(
@@ -76,12 +79,14 @@ fun DesignSystemShowcase() {
             PvotNavBar(
                 selectedTab = selectedTab,
                 onTabClick = { selectedTab = it },
-                tabs = tabs
+                tabs = tabs,
+                backdrop = backdrop
             )
         }
     ) { innerPadding ->
         val containerModifier = Modifier
             .fillMaxSize()
+            .pvotGlassBackdrop(backdrop)
             .background(MaterialTheme.colorScheme.background)
             .padding(top = innerPadding.calculateTopPadding())
 
