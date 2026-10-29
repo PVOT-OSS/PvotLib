@@ -15,9 +15,9 @@ specs, each component, and the rules for working on the libraries. To add PvotLi
 ```
 design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
-├── effects/      pvotPressScale
+├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
-├── components/   PvotCard, PvotScreen, PvotSkeleton
+├── components/   PvotCard, PvotGlassCard, PvotScreen, PvotSkeleton
 │   └── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 ├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults
 └── platform/     PvotBaseActivity
@@ -132,11 +132,46 @@ PvotScreen {
 }
 ```
 
+**Glass:** `Modifier.pvotGlass(backdrop)` draws an element as clear glass, like a drop of water:
+what lies behind it shows through frosted, and a rim along the edge bends it in from just
+outside, with a slight red and blue split, a mirrored copy of what lies outside the edge and a
+soft light in place of a border. `Modifier.pvotGlassRim()` adds a fine rim of light that turns
+as the phone tilts and settles back once it is held still.
+
+Only content marked with `Modifier.pvotGlassBackdrop` shows through, so mark the content behind
+the glass and draw the glass over it, not inside it:
+
+```kotlin
+val backdrop = rememberPvotGlassBackdrop()
+Box {
+    LazyColumn(Modifier.pvotGlassBackdrop(backdrop)) { /* … */ }
+    Box(
+        Modifier
+            .align(Alignment.TopCenter)
+            .height(46.dp)
+            .fillMaxWidth()
+            .pvotGlass(backdrop)
+            .pvotGlassRim()
+    )
+}
+```
+
+| Android | What the glass shows |
+|---|---|
+| 13+ | frost and the bending rim |
+| 12 | frost |
+| 11 and older | the tint alone |
+
+`PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
+the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width and
+`CapsuleRadius`. The glass can't show other windows or the wallpaper.
+
 ## 6. Components
 
 | Component | Package | What it is |
 |---|---|---|
 | `PvotCard` | `components` | Rounded, translucent surface; pass `onClick` to make it a button with press feedback |
+| `PvotGlassCard` | `components` | Card of glass over a backdrop, with a tilt-following rim; pass `onClick` to make it a button |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
@@ -157,6 +192,7 @@ default comes from its `*Defaults` object:
 | Nav bar sizes | `LocalPvotNavBarSizes.current` | `PvotNavBarSizes(...)`; provide `LocalPvotNavBarSizes` so `PvotScreen` clears the same height |
 | Picker colors | `PvotPickerDefaults.themeColors()`, derived from the color scheme | `PvotPickerDefaults.colors(...)`, `PvotPickerDefaults.colors(colorScheme)` |
 | Card | `PvotCardDefaults.shape`, `.colors()`, `.elevation()` | parameters of `PvotCard` |
+| Glass card | `PvotGlassCardDefaults.CornerRadius`, `.ContentPadding`, `PvotGlassDefaults.Style` | parameters of `PvotGlassCard` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
 | Screen | `PvotScreenDefaults.contentPadding()`, `.VerticalArrangement` | parameters of `PvotScreen` |
 
@@ -187,7 +223,7 @@ matching on the message.
 
 **Design**
 - Use the tokens: `MaterialTheme.colorScheme`, `PvotShapes`, `PvotSpacing`, `PvotMotion`,
-  `PvotDurations`. A value used by one component only belongs in that component's `*Defaults`.
+  `PvotDurations`, `PvotGlassStyle`. A value used by one component only belongs in that component's `*Defaults`.
 - Component colors and sizes go through a `*Colors`/`*Sizes` class and a `*Defaults` object, and
   the component takes them as parameters. The theme never holds component configuration.
 - Respect the package layers; `theme` imports nothing from the library.
