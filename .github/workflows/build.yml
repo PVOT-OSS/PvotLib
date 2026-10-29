@@ -35,6 +35,9 @@ jobs:
       - name: Build design-system
         run: ./gradlew :design-system:assembleDebug
 
+      - name: Check the public API
+        run: ./gradlew apiCheck
+
       - name: Build catalog
         run: ./gradlew :catalog:assembleDebug
 
