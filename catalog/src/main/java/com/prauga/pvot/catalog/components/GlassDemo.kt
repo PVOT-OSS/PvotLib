@@ -148,7 +148,7 @@ private fun LiveBackdrop(modifier: Modifier = Modifier) {
     val blobs = listOf(
         PvotNavBarDefaults.GradientStart,
         PvotNavBarDefaults.GradientEnd,
-        colors.tertiary,
+        colors.tertiaryContainer,
         colors.primary
     )
     val base = colors.surfaceVariant
