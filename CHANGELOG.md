@@ -4,6 +4,17 @@ PvotLib follows [semantic versioning](https://semver.org): a major version may b
 versions add to it, and patch versions only fix things. `design-system` and `core-ui` are released
 together under one version.
 
+## Unreleased
+
+### Added
+- `design-system`:
+  - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a
+    `PvotGlassBackdrop` (`rememberPvotGlassBackdrop`, `Modifier.pvotGlassBackdrop`): frosted
+    on Android 12+, with a rim that bends, splits and mirrors what lies behind on Android 13+.
+    `Modifier.pvotGlassRim` draws a rim of light that turns as the phone tilts. Styled through
+    `PvotGlassStyle` and `PvotGlassDefaults`.
+  - `components`: `PvotGlassCard`, with `PvotGlassCardDefaults`.
+
 ## 0.1.0 (unreleased)
 
 The first published release.
