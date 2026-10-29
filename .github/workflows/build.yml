@@ -38,6 +38,9 @@ jobs:
       - name: Build app
         run: ./gradlew :app:assembleDebug
 
+      - name: Publish to the local Maven repository
+        run: ./gradlew :design-system:publishToMavenLocal :core-ui:publishToMavenLocal
+
       - name: Upload design-system AAR
         uses: actions/upload-artifact@v4
         with:
