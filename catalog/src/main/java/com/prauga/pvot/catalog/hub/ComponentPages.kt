@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import com.prauga.pvot.catalog.components.GlassPanel
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
@@ -325,7 +326,7 @@ internal fun StatesPage(onBack: () -> Unit) {
                             verticalArrangement = Arrangement.spacedBy(PvotSpacing.S)
                         ) {
                             repeat(3) { index ->
-                                PvotCard(modifier = Modifier.fillMaxWidth().pvotReveal(index)) {
+                                GlassPanel(modifier = Modifier.fillMaxWidth().pvotReveal(index)) {
                                     Text(
                                         text = "Item ${index + 1}",
                                         style = MaterialTheme.typography.bodyLarge,
