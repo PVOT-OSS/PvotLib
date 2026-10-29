@@ -79,6 +79,6 @@ internal fun CatalogNavBar(
     if (LocalNewUi.current) {
         PvotNavBar(selectedTab, onTabClick, tabs, modifier, backdrop = backdrop, compact = compact)
     } else {
-        LegacyNavBar(selectedTab, onTabClick, tabs, modifier)
+        LegacyNavBar(selectedTab, onTabClick, tabs, modifier, backdrop)
     }
 }

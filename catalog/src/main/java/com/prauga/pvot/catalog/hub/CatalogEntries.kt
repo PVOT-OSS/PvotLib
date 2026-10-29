@@ -82,6 +82,12 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { OverlaysPage(it) }
     ),
     CatalogEntry(
+        id = "glass", title = "Glass", group = CatalogGroup.Components,
+        summary = "Experimental see-through surfaces over a live backdrop.",
+        icon = R.drawable.ic_t_cards, keywords = "blur frosted liquid glass backdrop PvotGlassCard",
+        page = { GlassPage(it) }
+    ),
+    CatalogEntry(
         id = "states", title = "State content", group = CatalogGroup.Components,
         summary = "Loading, empty and error content, and section headers.",
         icon = R.drawable.ic_t_loader_2, keywords = "uistate loading empty error retry header coreui",

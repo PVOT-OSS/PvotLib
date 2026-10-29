@@ -13,6 +13,7 @@ object PreferencesManager {
     private const val PREFS_NAME = "pvot_preferences"
     private const val KEY_DYNAMIC_COLOR = "dynamic_color"
     private const val KEY_NEW_UI = "new_ui"
+    private const val KEY_GLASS = "glass_intensity"
 
     private lateinit var prefs: SharedPreferences
     private val _dynamicColorEnabled = MutableStateFlow(false)
@@ -21,10 +22,14 @@ object PreferencesManager {
     private val _newUiEnabled = MutableStateFlow(true)
     val newUiEnabled: StateFlow<Boolean> = _newUiEnabled.asStateFlow()
 
+    private val _glassIntensity = MutableStateFlow(1f)
+    val glassIntensity: StateFlow<Float> = _glassIntensity.asStateFlow()
+
     fun init(context: Context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         _dynamicColorEnabled.value = prefs.getBoolean(KEY_DYNAMIC_COLOR, false)
         _newUiEnabled.value = prefs.getBoolean(KEY_NEW_UI, true)
+        _glassIntensity.value = prefs.getFloat(KEY_GLASS, 1f)
     }
 
     fun setDynamicColorEnabled(enabled: Boolean) {
@@ -35,5 +40,10 @@ object PreferencesManager {
     fun setNewUiEnabled(enabled: Boolean) {
         prefs.edit().putBoolean(KEY_NEW_UI, enabled).apply()
         _newUiEnabled.value = enabled
+    }
+
+    fun setGlassIntensity(value: Float) {
+        prefs.edit().putFloat(KEY_GLASS, value).apply()
+        _glassIntensity.value = value
     }
 }
