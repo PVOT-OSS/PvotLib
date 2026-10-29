@@ -90,6 +90,18 @@ public object PvotGlassDefaults {
 
     /** How much the rim of light is blurred, 0 for a crisp line. */
     public val RimSoftness: Dp = 0.dp
+
+    /** The glass's tint while it is pressed: brighter, as if lit from inside. */
+    public val PressedFillColor: Color = Color(0x26FFFFFF)
+
+    /** How much a glass control swells while it is pressed. */
+    public const val PressedScale: Float = 1.04f
+
+    /** Elevation of the shadow that lifts glass controls off the content behind them. */
+    public val ShadowElevation: Dp = 12.dp
+
+    /** Opacity of that shadow, kept soft so the glass floats rather than sits heavy. */
+    public const val ShadowAlpha: Float = 0.18f
 }
 
 /**

@@ -73,4 +73,19 @@ public object PvotNavBarDefaults {
     @Composable
     public fun themeColors(): PvotNavBarColors =
         if (PvotTheme.isDynamicColor) colors(MaterialTheme.colorScheme) else colors()
+
+    /**
+     * Nav bar colors for a bar drawn as glass: the [themeColors] selected item over a clear bar,
+     * with unselected icons in the theme's content color and no chip behind them.
+     */
+    @Composable
+    public fun glassColors(): PvotNavBarColors {
+        val onSurface = MaterialTheme.colorScheme.onSurface
+        return themeColors().copy(
+            collapsedChipColor = Color.Transparent,
+            containerColor = Color.Transparent,
+            iconUnselectedColor = onSurface.copy(alpha = 0.8f),
+            rippleColor = onSurface.copy(alpha = 0.12f)
+        )
+    }
 }
