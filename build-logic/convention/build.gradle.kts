@@ -10,6 +10,8 @@ group = "com.prauga.pvot.buildlogic"
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
+    compileOnly(libs.kotlin.gradlePlugin)
+    implementation(libs.binaryCompatibilityValidator.gradlePlugin)
 }
 
 gradlePlugin {
@@ -25,6 +27,10 @@ gradlePlugin {
         register("androidCompose") {
             id = "pvot.android.compose"
             implementationClass = "AndroidComposeConventionPlugin"
+        }
+        register("androidApi") {
+            id = "pvot.android.api"
+            implementationClass = "AndroidApiConventionPlugin"
         }
     }
 }

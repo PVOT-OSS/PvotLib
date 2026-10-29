@@ -11,6 +11,7 @@ composeBom = "2026.02.01"
 ktor = "3.0.3"
 coil = "3.0.4"
 kotlinxSerialization = "1.7.3"
+binaryCompatibilityValidator = "0.18.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,9 @@ ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serializatio
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil" }
 coil-network-ktor = { group = "io.coil-kt.coil3", name = "coil-network-ktor3", version.ref = "coil" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+binaryCompatibilityValidator-gradlePlugin = { group = "org.jetbrains.kotlinx", name = "binary-compatibility-validator", version.ref = "binaryCompatibilityValidator" }
+kotlin-metadata-jvm = { group = "org.jetbrains.kotlin", name = "kotlin-metadata-jvm", version.ref = "kotlin" }
 compose-gradlePlugin = { group = "org.jetbrains.kotlin", name = "compose-compiler-gradle-plugin", version.ref = "kotlin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
@@ -44,3 +48,4 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 pvot-android-application = { id = "pvot.android.application" }
 pvot-android-library = { id = "pvot.android.library" }
 pvot-android-compose = { id = "pvot.android.compose" }
+pvot-android-api = { id = "pvot.android.api" }

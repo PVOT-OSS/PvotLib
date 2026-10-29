@@ -4,6 +4,7 @@
 plugins {
     alias(libs.plugins.pvot.android.library)
     alias(libs.plugins.pvot.android.compose)
+    alias(libs.plugins.pvot.android.api)
     `maven-publish`
 }
 
