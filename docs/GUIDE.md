@@ -140,7 +140,9 @@ outside, with a slight red and blue split, a mirrored copy of what lies outside 
 soft light in place of a border. `Modifier.pvotGlassRim()` adds a fine rim of light that turns
 as the phone tilts and settles back once it is held still.
 
-Only content marked with `Modifier.pvotGlassBackdrop` shows through, so mark the content behind
+Only content marked with `Modifier.pvotGlassBackdrop` shows through, and it should include an opaque
+background (put `.background(...)` after `.pvotGlassBackdrop(...)` in the chain), or the glass lets the
+sharp content behind it show through, so mark the content behind
 the glass and draw the glass over it, not inside it:
 
 ```kotlin

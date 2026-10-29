@@ -21,7 +21,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.isFinite
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
-import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
 import com.prauga.pvot.designsystem.effects.pvotGlass
@@ -39,7 +38,7 @@ internal fun Modifier.glassSurface(
     enabled: Boolean,
     interactionSource: MutableInteractionSource,
 ): Modifier {
-    val intensity = LocalPvotGlassIntensity.current
+    val intensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(intensity, style)
     val shape = if (cornerRadius.isFinite) {
         RoundedCornerShape(cornerRadius)
