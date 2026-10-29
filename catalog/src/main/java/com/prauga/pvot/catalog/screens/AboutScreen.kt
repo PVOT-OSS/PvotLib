@@ -35,9 +35,9 @@ import com.prauga.pvot.catalog.BuildConfig
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.DeveloperCard
 import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
+import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.catalog.data.model.GithubUser
 import com.prauga.pvot.catalog.data.repository.GithubRepository
-import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.motion.pvotReveal
 import com.prauga.pvot.catalog.utils.Constants
@@ -102,7 +102,7 @@ fun AboutScreen(
 
         // App Info Section
         item {
-            PvotCard(modifier = Modifier.fillMaxWidth()) {
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -168,7 +168,7 @@ fun AboutScreen(
         }
 
         itemsIndexed(projectLinks) { index, link ->
-            PvotCard(
+            GlassPanel(
                 modifier = Modifier
                     .fillMaxWidth()
                     .pvotReveal(index),
@@ -210,7 +210,7 @@ fun AboutScreen(
         item {
             val dynamicColorEnabled by PreferencesManager.dynamicColorEnabled.collectAsState()
 
-            PvotCard(modifier = Modifier.fillMaxWidth()) {
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
