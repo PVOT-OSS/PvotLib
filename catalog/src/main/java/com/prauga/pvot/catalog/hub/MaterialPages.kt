@@ -377,7 +377,8 @@ internal fun ListsPage(onBack: () -> Unit) {
                         state = state,
                         modifier = Modifier.animateContentSize(),
                         backgroundContent = {
-                            Box(
+                            // Only while swiping: the card in front is translucent.
+                            if (state.dismissDirection != SwipeToDismissBoxValue.Settled) Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(56.dp)
