@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.data.model
+package com.prauga.pvot.catalog.data.model
 
 data class FeedEntry(
     val title: String,

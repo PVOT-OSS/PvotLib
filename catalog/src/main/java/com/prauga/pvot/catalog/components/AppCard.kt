@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.components
+package com.prauga.pvot.catalog.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,8 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.prauga.pvot.R
-import com.prauga.pvot.data.model.GithubRepo
+import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.data.model.GithubRepo
 
 @Composable
 fun AppCard(

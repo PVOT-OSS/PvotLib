@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.data.repository
+package com.prauga.pvot.catalog.data.repository
 
-import com.prauga.pvot.data.model.GithubRepo
-import com.prauga.pvot.data.model.GithubUser
-import com.prauga.pvot.utils.Constants
+import com.prauga.pvot.catalog.data.model.GithubRepo
+import com.prauga.pvot.catalog.data.model.GithubUser
+import com.prauga.pvot.catalog.utils.Constants
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android

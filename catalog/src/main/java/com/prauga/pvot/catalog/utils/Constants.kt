@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.utils
+package com.prauga.pvot.catalog.utils
 
 object Constants {
     const val GITHUB_API_BASE_URL = "https://api.github.com"

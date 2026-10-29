@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.prauga.pvot"
+    namespace = "com.prauga.pvot.catalog"
     compileSdk {
         version = release(37) {
             minorApiLevel = 1

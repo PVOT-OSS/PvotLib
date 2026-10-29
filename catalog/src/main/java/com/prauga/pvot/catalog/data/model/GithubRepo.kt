@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.data.model
+package com.prauga.pvot.catalog.data.model
 
-import com.prauga.pvot.utils.Constants
+import com.prauga.pvot.catalog.utils.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.screens
+package com.prauga.pvot.catalog.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,8 +32,8 @@ import com.prauga.pvot.coreui.PvotEmptyContent
 import com.prauga.pvot.coreui.PvotErrorContent
 import com.prauga.pvot.coreui.PvotLoadingContent
 import com.prauga.pvot.coreui.PvotSectionHeader
-import com.prauga.pvot.R
-import com.prauga.pvot.components.CatalogCard
+import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.components.CatalogCard
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.PvotSkeleton

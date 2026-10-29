@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.screens
+package com.prauga.pvot.catalog.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -26,11 +26,11 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.coreui.PvotEmptyContent
 import com.prauga.pvot.coreui.PvotErrorContent
 import com.prauga.pvot.coreui.UiState
-import com.prauga.pvot.R
-import com.prauga.pvot.components.FeedCard
-import com.prauga.pvot.components.FeedCardSkeleton
-import com.prauga.pvot.data.model.FeedEntry
-import com.prauga.pvot.data.repository.FeedRepository
+import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.components.FeedCard
+import com.prauga.pvot.catalog.components.FeedCardSkeleton
+import com.prauga.pvot.catalog.data.model.FeedEntry
+import com.prauga.pvot.catalog.data.repository.FeedRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.modifier.pvotReveal
 

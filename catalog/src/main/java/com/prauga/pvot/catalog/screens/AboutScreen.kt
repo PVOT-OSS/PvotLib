@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.screens
+package com.prauga.pvot.catalog.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -31,17 +31,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.coreui.PvotSectionHeader
-import com.prauga.pvot.BuildConfig
-import com.prauga.pvot.R
-import com.prauga.pvot.components.DeveloperCard
-import com.prauga.pvot.components.DeveloperCardSkeleton
-import com.prauga.pvot.data.model.GithubUser
-import com.prauga.pvot.data.repository.GithubRepository
+import com.prauga.pvot.catalog.BuildConfig
+import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.components.DeveloperCard
+import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
+import com.prauga.pvot.catalog.data.model.GithubUser
+import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.modifier.pvotReveal
-import com.prauga.pvot.utils.Constants
-import com.prauga.pvot.utils.PreferencesManager
+import com.prauga.pvot.catalog.utils.Constants
+import com.prauga.pvot.catalog.utils.PreferencesManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

@@ -1,10 +1,10 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.data.repository
+package com.prauga.pvot.catalog.data.repository
 
-import com.prauga.pvot.data.model.FeedEntry
-import com.prauga.pvot.utils.Constants
+import com.prauga.pvot.catalog.data.model.FeedEntry
+import com.prauga.pvot.catalog.utils.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.xmlpull.v1.XmlPullParser

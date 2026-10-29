@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot
+package com.prauga.pvot.catalog
 
 import android.os.Bundle
 import androidx.compose.foundation.background
@@ -22,12 +22,12 @@ import com.prauga.pvot.designsystem.PvotBaseActivity
 import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
-import com.prauga.pvot.screens.AboutScreen
-import com.prauga.pvot.screens.AppsScreen
-import com.prauga.pvot.screens.CatalogScreen
-import com.prauga.pvot.screens.EmptyScreen
-import com.prauga.pvot.screens.HomeScreen
-import com.prauga.pvot.utils.PreferencesManager
+import com.prauga.pvot.catalog.screens.AboutScreen
+import com.prauga.pvot.catalog.screens.AppsScreen
+import com.prauga.pvot.catalog.screens.CatalogScreen
+import com.prauga.pvot.catalog.screens.EmptyScreen
+import com.prauga.pvot.catalog.screens.HomeScreen
+import com.prauga.pvot.catalog.utils.PreferencesManager
 
 class MainActivity : PvotBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
