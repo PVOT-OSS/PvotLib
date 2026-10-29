@@ -306,12 +306,12 @@ Release with the AARs, their sources and the catalog APK.
 | PvotTopBar | Collapsible top app bar | Planned |
 | PvotCard | Styled card with elevation variants | Planned |
 | PvotButton | Primary/Secondary/Tertiary buttons | Planned |
-| PvotTextField | Styled text input fields | Planned |
-| PvotDialog | Modal dialogs with consistent styling | Planned |
+| PvotTextField | Floating-label text field | Done |
+| PvotDialog | Animated modal dialogs | Done |
 | PvotChip | Filter and action chips | Planned |
 | PvotList | Styled list items with swipe actions | Planned |
 | PvotFAB | Extended floating action button | Planned |
-| PvotSheet | Bottom sheet with drag handle | Planned |
+| PvotBottomSheet | Bottom sheet with drag handle | Done |
 
 ### Theme (Plans)
 

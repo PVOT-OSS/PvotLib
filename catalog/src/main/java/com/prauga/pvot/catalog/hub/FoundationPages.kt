@@ -27,7 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -54,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotSkeleton
+import com.prauga.pvot.designsystem.components.textfield.PvotTextField
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.motion.PvotMotion
 import com.prauga.pvot.designsystem.motion.pvotReveal
@@ -186,11 +186,11 @@ internal fun TypographyPage(onBack: () -> Unit) {
         onBack = onBack,
         code = "Text(\n    text = \"Title\",\n    style = MaterialTheme.typography.titleLarge\n)"
     ) {
-        OutlinedTextField(
+        PvotTextField(
             value = sample,
             onValueChange = { sample = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Preview text") },
+            label = "Preview text",
             singleLine = true
         )
         DemoSection(title = "Type scale", framed = false) {
@@ -532,11 +532,11 @@ internal fun IconsPage(onBack: () -> Unit) {
         code = "Icon(\n    painter = painterResource(R.drawable.ic_home),\n    contentDescription = null,\n" +
             "    modifier = Modifier.size(24.dp)\n)"
     ) {
-        OutlinedTextField(
+        PvotTextField(
             value = query,
             onValueChange = { query = it },
             modifier = Modifier.fillMaxWidth(),
-            label = { Text("Filter icons") },
+            label = "Filter icons",
             singleLine = true
         )
         DemoSection(title = "Size", framed = false) {

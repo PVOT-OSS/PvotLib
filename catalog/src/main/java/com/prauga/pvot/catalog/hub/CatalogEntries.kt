@@ -64,10 +64,22 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { PickersPage(it) }
     ),
     CatalogEntry(
+        id = "text-fields", title = "Text fields", group = CatalogGroup.Components,
+        summary = "Floating label, focus ring, validation shake, counter and more.",
+        icon = R.drawable.ic_t_forms, keywords = "input form textfield password email PvotTextField search",
+        page = { InputsPage(it) }
+    ),
+    CatalogEntry(
         id = "slider", title = "Slider", group = CatalogGroup.Components,
         summary = "Pvot's minimal slider: continuous, stepped and range.",
         icon = R.drawable.ic_t_adjustments, keywords = "slider range steps scrub PvotSlider PvotRangeSlider",
         page = { SliderPage(it) }
+    ),
+    CatalogEntry(
+        id = "overlays", title = "Dialogs & sheets", group = CatalogGroup.Components,
+        summary = "Animated dialogs and bottom sheets with actions and controls.",
+        icon = R.drawable.ic_t_message_circle, keywords = "dialog sheet modal snackbar toast alert PvotDialog PvotBottomSheet",
+        page = { OverlaysPage(it) }
     ),
     CatalogEntry(
         id = "states", title = "State content", group = CatalogGroup.Components,
@@ -81,12 +93,6 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         summary = "Filled to text, icon buttons, FABs and a loading state.",
         icon = R.drawable.ic_t_click, keywords = "button fab icon action",
         page = { ButtonsPage(it) }
-    ),
-    CatalogEntry(
-        id = "text-fields", title = "Text fields", group = CatalogGroup.Material,
-        summary = "Validation, password toggle, counter and multiline.",
-        icon = R.drawable.ic_t_forms, keywords = "input form textfield password email",
-        page = { InputsPage(it) }
     ),
     CatalogEntry(
         id = "selection", title = "Selection controls", group = CatalogGroup.Material,
@@ -105,12 +111,6 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         summary = "Determinate and indeterminate progress, and badges.",
         icon = R.drawable.ic_t_loader_2, keywords = "progress spinner linear circular badge",
         page = { ProgressPage(it) }
-    ),
-    CatalogEntry(
-        id = "overlays", title = "Dialogs & sheets", group = CatalogGroup.Material,
-        summary = "Alert dialog, bottom sheet and snackbar.",
-        icon = R.drawable.ic_t_message_circle, keywords = "dialog sheet modal snackbar toast",
-        page = { OverlaysPage(it) }
     ),
     CatalogEntry(
         id = "lists", title = "Lists", group = CatalogGroup.Material,
