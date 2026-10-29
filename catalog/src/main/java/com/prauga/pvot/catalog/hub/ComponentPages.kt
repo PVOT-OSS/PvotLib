@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,7 +34,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material3.IconButton
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
@@ -40,11 +49,17 @@ import com.prauga.pvot.coreui.PvotEmptyContent
 import com.prauga.pvot.coreui.PvotErrorContent
 import com.prauga.pvot.coreui.PvotLoadingContent
 import com.prauga.pvot.coreui.PvotSectionHeader
+import com.prauga.pvot.designsystem.components.PvotBottomSheet
 import com.prauga.pvot.designsystem.components.PvotCard
+import com.prauga.pvot.designsystem.components.PvotDialog
+import com.prauga.pvot.designsystem.components.PvotDialogAction
+import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
+import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
 import com.prauga.pvot.designsystem.components.slider.PvotRangeSlider
+import com.prauga.pvot.designsystem.components.textfield.PvotTextField
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.motion.pvotReveal
@@ -384,6 +399,259 @@ internal fun SliderPage(onBack: () -> Unit) {
                 )
                 Icon(painterResource(R.drawable.ic_t_eye), null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
+        }
+    }
+}
+
+// ───────────────────────────── Dialogs & sheets ─────────────────────────────
+
+@Composable
+internal fun OverlaysPage(onBack: () -> Unit) {
+    var alert by remember { mutableStateOf(false) }
+    var destructive by remember { mutableStateOf(false) }
+    var rename by remember { mutableStateOf(false) }
+    var actions by remember { mutableStateOf(false) }
+    var filters by remember { mutableStateOf(false) }
+    var name by remember { mutableStateOf("Morning routine") }
+    var draft by remember { mutableStateOf(name) }
+    var radius by remember { mutableFloatStateOf(5f) }
+    var topics by remember { mutableStateOf(setOf("Design")) }
+    val send = rememberSnackbarSender()
+    val haptics = LocalHapticFeedback.current
+
+    DetailPage(
+        title = "Dialogs & sheets",
+        summary = "Dialogs interrupt for one decision; sheets keep the screen behind them in view. " +
+            "Both ease in and out, and both are driven by a plain visible flag.",
+        onBack = onBack,
+        code = "PvotDialog(\n    visible = show,\n    onDismissRequest = { show = false },\n" +
+            "    title = \"Delete this item?\",\n    message = \"You can't undo this.\",\n    destructive = true,\n" +
+            "    icon = { Icon(painterResource(R.drawable.ic_trash), null) }\n) {\n" +
+            "    PvotDialogAction(\"Delete\", onClick = ::delete, style = PvotDialogActionStyle.Destructive)\n" +
+            "    PvotDialogAction(\"Cancel\", onClick = { show = false })\n}\n\n" +
+            "PvotBottomSheet(visible = open, onDismissRequest = { open = false }, title = \"Share\") {\n" +
+            "    PvotSheetItem(title = \"Copy link\", onClick = ::copy)\n}"
+    ) {
+        DemoSection(title = "Dialogs", caption = "Tap outside or go back to dismiss") {
+            Button(onClick = { alert = true }, modifier = Modifier.fillMaxWidth()) { Text("Confirm") }
+            OutlinedButton(onClick = { destructive = true }, modifier = Modifier.fillMaxWidth()) { Text("Destructive") }
+            OutlinedButton(onClick = { draft = name; rename = true }, modifier = Modifier.fillMaxWidth()) { Text("With a field") }
+        }
+        DemoSection(title = "Bottom sheets", caption = "Drag down, tap the scrim or go back to dismiss") {
+            Button(onClick = { actions = true }, modifier = Modifier.fillMaxWidth()) { Text("Action list") }
+            OutlinedButton(onClick = { filters = true }, modifier = Modifier.fillMaxWidth()) { Text("With controls") }
+        }
+        DemoSection(title = "Snackbar", caption = "A brief message that fades itself") {
+            TextButton(onClick = { send("This is a snackbar") }) { Text("Show snackbar") }
+        }
+    }
+
+    PvotDialog(
+        visible = alert,
+        onDismissRequest = { alert = false },
+        title = "Turn on notifications?",
+        message = "We'll only tell you about things you asked to follow.",
+        icon = { Icon(painterResource(R.drawable.ic_t_bell), null) }
+    ) {
+        PvotDialogAction("Turn on", onClick = { alert = false; send("Notifications on") }, style = PvotDialogActionStyle.Primary)
+        PvotDialogAction("Not now", onClick = { alert = false })
+    }
+    PvotDialog(
+        visible = destructive,
+        onDismissRequest = { destructive = false },
+        title = "Delete this item?",
+        message = "It will be removed from every device. You can't undo this.",
+        icon = { Icon(painterResource(R.drawable.ic_t_trash), null) },
+        destructive = true
+    ) {
+        PvotDialogAction(
+            "Delete",
+            onClick = {
+                haptics.performHapticFeedback(HapticFeedbackType.Confirm)
+                destructive = false
+                send("Deleted")
+            },
+            style = PvotDialogActionStyle.Destructive
+        )
+        PvotDialogAction("Keep it", onClick = { destructive = false })
+    }
+    PvotDialog(
+        visible = rename,
+        onDismissRequest = { rename = false },
+        title = "Rename routine",
+        content = {
+            PvotTextField(
+                value = draft,
+                onValueChange = { draft = it },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+                label = "Name",
+                maxLength = 24
+            )
+        }
+    ) {
+        PvotDialogAction(
+            "Save",
+            onClick = { name = draft.trim().ifEmpty { name }; rename = false; send("Renamed to $name") },
+            style = PvotDialogActionStyle.Primary,
+            enabled = draft.isNotBlank()
+        )
+        PvotDialogAction("Cancel", onClick = { rename = false })
+    }
+
+    PvotBottomSheet(visible = actions, onDismissRequest = { actions = false }, title = "Share") {
+        listOf(
+            Triple("Copy link", "Anyone with it can view", R.drawable.ic_t_copy),
+            Triple("Send to a friend", "Pick from your contacts", R.drawable.ic_t_message_circle),
+            Triple("Save for later", "Find it in your favorites", R.drawable.ic_t_heart)
+        ).forEach { (title, subtitle, icon) ->
+            PvotSheetItem(
+                title = title,
+                subtitle = subtitle,
+                icon = { Icon(painterResource(icon), null) },
+                onClick = { actions = false; send(title) }
+            )
+        }
+        PvotSheetItem(
+            title = "Remove",
+            icon = { Icon(painterResource(R.drawable.ic_t_trash), null) },
+            destructive = true,
+            onClick = { actions = false; send("Removed") }
+        )
+    }
+    PvotBottomSheet(visible = filters, onDismissRequest = { filters = false }, title = "Filters") {
+        Column(
+            modifier = Modifier.padding(horizontal = PvotSpacing.S),
+            verticalArrangement = Arrangement.spacedBy(PvotSpacing.M)
+        ) {
+            ChoiceChips(
+                options = listOf("Design", "Android", "Compose", "Motion"),
+                selected = topics.first(),
+                onSelect = { topics = setOf(it) },
+                label = { it }
+            )
+            OptionSlider(
+                label = "Max distance",
+                value = radius,
+                onValueChange = { radius = it },
+                valueRange = 1f..20f,
+                valueText = "${radius.toInt()} km"
+            )
+            PvotDialogAction(
+                "Show results",
+                onClick = { filters = false; send("${topics.first()} within ${radius.toInt()} km") },
+                style = PvotDialogActionStyle.Primary
+            )
+        }
+    }
+}
+
+// ───────────────────────────── Text fields ─────────────────────────────
+
+@Composable
+internal fun InputsPage(onBack: () -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var showPassword by remember { mutableStateOf(false) }
+    var bio by remember { mutableStateOf("") }
+    var query by remember { mutableStateOf("") }
+    var enabled by remember { mutableStateOf(true) }
+    val emailInvalid = email.isNotEmpty() && !email.contains("@")
+    DetailPage(
+        title = "Text fields",
+        summary = "A soft filled field. The label rests inside and floats up as you type, a ring fades " +
+            "in on focus, and a field that turns invalid shakes once. The whole surface is the tap target.",
+        onBack = onBack,
+        code = "PvotTextField(\n    value = email,\n    onValueChange = { email = it },\n    label = \"Email\",\n" +
+            "    isError = invalid,\n    supportingText = if (invalid) \"Enter a valid email\" else null\n)"
+    ) {
+        DemoSection(title = "Basic", caption = "Tap anywhere on the field", framed = false) {
+            PvotTextField(
+                value = name,
+                onValueChange = { name = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Name",
+                supportingText = "How should we address you?",
+                singleLine = true,
+                enabled = enabled
+            )
+            OptionSwitch(label = "Enabled", checked = enabled, onCheckedChange = { enabled = it })
+        }
+        DemoSection(title = "Validation", caption = "Type an address without an @ and it shakes", framed = false) {
+            PvotTextField(
+                value = email,
+                onValueChange = { email = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Email",
+                singleLine = true,
+                isError = emailInvalid,
+                supportingText = if (emailInvalid) "Enter a valid email" else "We never share it",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                enabled = enabled
+            )
+        }
+        DemoSection(title = "Password", caption = "The trailing button reveals the text", framed = false) {
+            PvotTextField(
+                value = password,
+                onValueChange = { password = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Password",
+                singleLine = true,
+                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                leadingIcon = { Icon(painterResource(R.drawable.ic_t_settings), null) },
+                trailingIcon = {
+                    IconButton(onClick = { showPassword = !showPassword }) {
+                        Icon(
+                            painter = painterResource(if (showPassword) R.drawable.ic_t_eye_off else R.drawable.ic_t_eye),
+                            contentDescription = if (showPassword) "Hide password" else "Show password"
+                        )
+                    }
+                },
+                enabled = enabled
+            )
+        }
+        DemoSection(title = "Multiline with counter", caption = "Stops accepting text at the limit", framed = false) {
+            PvotTextField(
+                value = bio,
+                onValueChange = { bio = it },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Bio",
+                minLines = 3,
+                maxLength = 80,
+                enabled = enabled
+            )
+        }
+        DemoSection(title = "Search", caption = "Pill shape, icons and a placeholder", framed = false) {
+            PvotTextField(
+                value = query,
+                onValueChange = { query = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = "Search",
+                singleLine = true,
+                shape = CircleShape,
+                leadingIcon = { Icon(painterResource(R.drawable.ic_t_search), null) },
+                trailingIcon = {
+                    if (query.isNotEmpty()) {
+                        IconButton(onClick = { query = "" }) {
+                            Icon(painterResource(R.drawable.ic_t_x), "Clear")
+                        }
+                    }
+                },
+                enabled = enabled
+            )
+        }
+        DemoSection(title = "Read only", framed = false) {
+            PvotTextField(
+                value = "pvot-oss@example.com",
+                onValueChange = {},
+                modifier = Modifier.fillMaxWidth(),
+                label = "Account",
+                readOnly = true,
+                singleLine = true,
+                enabled = enabled
+            )
         }
     }
 }

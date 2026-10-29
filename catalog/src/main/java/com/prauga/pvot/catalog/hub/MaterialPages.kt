@@ -32,7 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
@@ -52,7 +51,6 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.OutlinedTextField
@@ -69,7 +67,6 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -163,78 +160,6 @@ internal fun ButtonsPage(onBack: () -> Unit) {
                     text = { Text("New") }
                 )
             }
-        }
-    }
-}
-
-// ───────────────────────────── Text fields ─────────────────────────────
-
-@Composable
-internal fun InputsPage(onBack: () -> Unit) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var showPassword by remember { mutableStateOf(false) }
-    var bio by remember { mutableStateOf("") }
-    val emailInvalid = email.isNotEmpty() && !email.contains("@")
-    DetailPage(
-        title = "Text fields",
-        summary = MaterialNote,
-        onBack = onBack,
-        code = "OutlinedTextField(\n    value = email,\n    onValueChange = { email = it },\n    label = { Text(\"Email\") },\n    isError = invalid\n)"
-    ) {
-        DemoSection(title = "Basic", framed = false) {
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Name") },
-                singleLine = true,
-                supportingText = { Text("How should we address you?") }
-            )
-        }
-        DemoSection(title = "Validation", caption = "Type an address without an @ to see the error", framed = false) {
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Email") },
-                singleLine = true,
-                isError = emailInvalid,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                supportingText = { Text(if (emailInvalid) "Enter a valid email" else "We never share it") }
-            )
-        }
-        DemoSection(title = "Password", caption = "The trailing icon toggles visibility", framed = false) {
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Password") },
-                singleLine = true,
-                visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                trailingIcon = {
-                    IconButton(onClick = { showPassword = !showPassword }) {
-                        Icon(
-                            painter = painterResource(if (showPassword) R.drawable.ic_t_eye_off else R.drawable.ic_t_eye),
-                            contentDescription = if (showPassword) "Hide password" else "Show password"
-                        )
-                    }
-                }
-            )
-        }
-        DemoSection(title = "Multiline with counter", framed = false) {
-            OutlinedTextField(
-                value = bio,
-                onValueChange = { if (it.length <= 80) bio = it },
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text("Bio") },
-                minLines = 3,
-                supportingText = {
-                    Text(text = "${bio.length}/80", modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.End)
-                }
-            )
         }
     }
 }
@@ -390,62 +315,6 @@ internal fun ProgressPage(onBack: () -> Unit) {
                 }
                 BadgedBox(badge = { Badge() }) {
                     Icon(painterResource(R.drawable.ic_t_message_circle), "Messages")
-                }
-            }
-        }
-    }
-}
-
-// ───────────────────────────── Dialogs & sheets ─────────────────────────────
-
-@Composable
-internal fun OverlaysPage(onBack: () -> Unit) {
-    var dialog by remember { mutableStateOf(false) }
-    var sheet by remember { mutableStateOf(false) }
-    val send = rememberSnackbarSender()
-    val haptics = LocalHapticFeedback.current
-    DetailPage(
-        title = "Dialogs & sheets",
-        summary = MaterialNote,
-        onBack = onBack,
-        code = "if (show) AlertDialog(\n    onDismissRequest = { show = false },\n    confirmButton = { TextButton(onClick = confirm) { Text(\"Delete\") } },\n    title = { Text(\"Delete?\") }\n)"
-    ) {
-        DemoSection(title = "Open one", caption = "Dialogs interrupt; sheets keep context behind them") {
-            Button(onClick = { dialog = true }, modifier = Modifier.fillMaxWidth()) { Text("Show dialog") }
-            OutlinedButton(onClick = { sheet = true }, modifier = Modifier.fillMaxWidth()) { Text("Show bottom sheet") }
-            TextButton(onClick = { send("This is a snackbar") }) { Text("Show snackbar") }
-        }
-    }
-    if (dialog) {
-        AlertDialog(
-            onDismissRequest = { dialog = false },
-            title = { Text("Delete this item?") },
-            text = { Text("It will be removed from every device. You can't undo this.") },
-            confirmButton = {
-                TextButton(onClick = {
-                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
-                    dialog = false
-                    send("Deleted")
-                }) { Text("Delete") }
-            },
-            dismissButton = { TextButton(onClick = { dialog = false }) { Text("Cancel") } }
-        )
-    }
-    if (sheet) {
-        ModalBottomSheet(onDismissRequest = { sheet = false }, sheetState = rememberModalBottomSheetState()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = PvotSpacing.L)
-                    .padding(bottom = PvotSpacing.L * 2),
-                verticalArrangement = Arrangement.spacedBy(PvotSpacing.S)
-            ) {
-                Text("Share", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onSurface)
-                listOf("Copy link", "Send to a friend", "Save for later").forEach { action ->
-                    ListItem(
-                        headlineContent = { Text(action) },
-                        modifier = Modifier.selectable(selected = false, onClick = { sheet = false; send(action) })
-                    )
                 }
             }
         }

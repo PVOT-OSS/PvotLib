@@ -39,6 +39,12 @@ The first published release.
   bar previews the item under the finger and selects it on release.
 
 ### Added
+- `components`: `PvotDialog` (with `PvotDialogAction`, `PvotDialogActionStyle`, `PvotDialogDefaults`)
+  and `PvotBottomSheet` (with `PvotSheetItem`, `PvotBottomSheetDefaults`). Both are driven by a
+  `visible` flag, so they animate out as well as in.
+- `components.textfield`: `PvotTextField`, a soft filled field with a floating label, a focus ring,
+  a validation shake, animated supporting text, a character counter, icon slots and multiline,
+  plus `PvotTextFieldColors` and `PvotTextFieldDefaults`.
 - `components.slider`: `PvotSlider` and `PvotRangeSlider`, a minimal slider of our own with
   tap-to-jump, optional snapping steps and haptic ticks, plus `PvotSliderColors` and
   `PvotSliderDefaults`. Pvot no longer uses the Material slider.
