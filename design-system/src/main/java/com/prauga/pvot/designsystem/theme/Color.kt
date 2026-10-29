@@ -8,60 +8,60 @@ import androidx.compose.ui.graphics.Color
 // PVOT Color Palette
 // Primary
 /** Material `primary` of the light Pvot palette. */
-public val PvotPrimaryLight: Color = Color(0xFF6B66FF)
+public val PvotPrimaryLight: Color = Color(0xFF5A4BFF)
 /** Material `onPrimary` of the light Pvot palette. */
 public val PvotOnPrimaryLight: Color = Color(0xFFFFFFFF)
 /** Material `primaryContainer` of the light Pvot palette. */
-public val PvotPrimaryContainerLight: Color = Color(0xFFE5DEFF)
+public val PvotPrimaryContainerLight: Color = Color(0xFFDDD8FF)
 /** Material `onPrimaryContainer` of the light Pvot palette. */
-public val PvotOnPrimaryContainerLight: Color = Color(0xFF1F0061)
+public val PvotOnPrimaryContainerLight: Color = Color(0xFF160062)
 
 /** Material `primary` of the dark Pvot palette. */
-public val PvotPrimaryDark: Color = Color(0xFFCBBEFF)
+public val PvotPrimaryDark: Color = Color(0xFF8577FF)
 /** Material `onPrimary` of the dark Pvot palette. */
-public val PvotOnPrimaryDark: Color = Color(0xFF352388)
+public val PvotOnPrimaryDark: Color = Color(0xFF0E0033)
 /** Material `primaryContainer` of the dark Pvot palette. */
-public val PvotPrimaryContainerDark: Color = Color(0xFF4D3D9E)
+public val PvotPrimaryContainerDark: Color = Color(0xFF3B2DB8)
 /** Material `onPrimaryContainer` of the dark Pvot palette. */
-public val PvotOnPrimaryContainerDark: Color = Color(0xFFE5DEFF)
+public val PvotOnPrimaryContainerDark: Color = Color(0xFFE4E0FF)
 
-// Secondary - Muted purple/gray
+// Secondary - Electric blue
 /** Material `secondary` of the light Pvot palette. */
-public val PvotSecondaryLight: Color = Color(0xFF605B71)
+public val PvotSecondaryLight: Color = Color(0xFF1F6FFF)
 /** Material `onSecondary` of the light Pvot palette. */
 public val PvotOnSecondaryLight: Color = Color(0xFFFFFFFF)
 /** Material `secondaryContainer` of the light Pvot palette. */
-public val PvotSecondaryContainerLight: Color = Color(0xFFE6DFF9)
+public val PvotSecondaryContainerLight: Color = Color(0xFFD6E4FF)
 /** Material `onSecondaryContainer` of the light Pvot palette. */
-public val PvotOnSecondaryContainerLight: Color = Color(0xFF1C192B)
+public val PvotOnSecondaryContainerLight: Color = Color(0xFF001B4D)
 
 /** Material `secondary` of the dark Pvot palette. */
-public val PvotSecondaryDark: Color = Color(0xFFCAC3DC)
+public val PvotSecondaryDark: Color = Color(0xFF6FA3FF)
 /** Material `onSecondary` of the dark Pvot palette. */
-public val PvotOnSecondaryDark: Color = Color(0xFF322E41)
+public val PvotOnSecondaryDark: Color = Color(0xFF00123A)
 /** Material `secondaryContainer` of the dark Pvot palette. */
-public val PvotSecondaryContainerDark: Color = Color(0xFF494458)
+public val PvotSecondaryContainerDark: Color = Color(0xFF0F3FA8)
 /** Material `onSecondaryContainer` of the dark Pvot palette. */
-public val PvotOnSecondaryContainerDark: Color = Color(0xFFE6DFF9)
+public val PvotOnSecondaryContainerDark: Color = Color(0xFFD6E4FF)
 
-// Tertiary - Complementary pink/rose
+// Tertiary - Vivid pink
 /** Material `tertiary` of the light Pvot palette. */
-public val PvotTertiaryLight: Color = Color(0xFF7D5260)
+public val PvotTertiaryLight: Color = Color(0xFFE5287A)
 /** Material `onTertiary` of the light Pvot palette. */
 public val PvotOnTertiaryLight: Color = Color(0xFFFFFFFF)
 /** Material `tertiaryContainer` of the light Pvot palette. */
-public val PvotTertiaryContainerLight: Color = Color(0xFFFFD9E2)
+public val PvotTertiaryContainerLight: Color = Color(0xFFFFD9E6)
 /** Material `onTertiaryContainer` of the light Pvot palette. */
-public val PvotOnTertiaryContainerLight: Color = Color(0xFF31101D)
+public val PvotOnTertiaryContainerLight: Color = Color(0xFF40001B)
 
 /** Material `tertiary` of the dark Pvot palette. */
-public val PvotTertiaryDark: Color = Color(0xFFEFB8C8)
+public val PvotTertiaryDark: Color = Color(0xFFFF6BA6)
 /** Material `onTertiary` of the dark Pvot palette. */
-public val PvotOnTertiaryDark: Color = Color(0xFF4A2532)
+public val PvotOnTertiaryDark: Color = Color(0xFF3F001B)
 /** Material `tertiaryContainer` of the dark Pvot palette. */
-public val PvotTertiaryContainerDark: Color = Color(0xFF633B48)
+public val PvotTertiaryContainerDark: Color = Color(0xFFA8104F)
 /** Material `onTertiaryContainer` of the dark Pvot palette. */
-public val PvotOnTertiaryContainerDark: Color = Color(0xFFFFD9E2)
+public val PvotOnTertiaryContainerDark: Color = Color(0xFFFFD9E6)
 
 // Error
 /** Material `error` of the light Pvot palette. */
@@ -92,9 +92,9 @@ public val PvotSurfaceLight: Color = Color(0xFFFFFFFF)
 /** Material `onSurface` of the light Pvot palette. */
 public val PvotOnSurfaceLight: Color = Color(0xFF1C1B1F)
 /** Material `surfaceVariant` of the light Pvot palette. */
-public val PvotSurfaceVariantLight: Color = Color(0xFFE7E0EC)
+public val PvotSurfaceVariantLight: Color = Color(0xFFEEE9FF)
 /** Material `onSurfaceVariant` of the light Pvot palette. */
-public val PvotOnSurfaceVariantLight: Color = Color(0xFF49454E)
+public val PvotOnSurfaceVariantLight: Color = Color(0xFF5A5478)
 
 // Background & Surface - Dark
 /** Material `background` of the dark Pvot palette. */
@@ -106,9 +106,9 @@ public val PvotSurfaceDark: Color = Color(0xFF000000)
 /** Material `onSurface` of the dark Pvot palette. */
 public val PvotOnSurfaceDark: Color = Color(0xFFE6E1E6)
 /** Material `surfaceVariant` of the dark Pvot palette. */
-public val PvotSurfaceVariantDark: Color = Color(0xFF49454E)
+public val PvotSurfaceVariantDark: Color = Color(0xFF231F36)
 /** Material `onSurfaceVariant` of the dark Pvot palette. */
-public val PvotOnSurfaceVariantDark: Color = Color(0xFFCAC4CF)
+public val PvotOnSurfaceVariantDark: Color = Color(0xFFB9B3D6)
 
 // Outline
 /** Material `outline` of the light Pvot palette. */
@@ -126,14 +126,14 @@ public val PvotInverseSurfaceLight: Color = Color(0xFF313033)
 /** Material `inverseOnSurface` of the light Pvot palette. */
 public val PvotInverseOnSurfaceLight: Color = Color(0xFFF4EFF4)
 /** Material `inversePrimary` of the light Pvot palette. */
-public val PvotInversePrimaryLight: Color = Color(0xFFCBBEFF)
+public val PvotInversePrimaryLight: Color = Color(0xFF8577FF)
 
 /** Material `inverseSurface` of the dark Pvot palette. */
 public val PvotInverseSurfaceDark: Color = Color(0xFFE6E1E6)
 /** Material `inverseOnSurface` of the dark Pvot palette. */
 public val PvotInverseOnSurfaceDark: Color = Color(0xFF313033)
 /** Material `inversePrimary` of the dark Pvot palette. */
-public val PvotInversePrimaryDark: Color = Color(0xFF6750A4)
+public val PvotInversePrimaryDark: Color = Color(0xFF5A4BFF)
 
 // Scrim
 /** Material `scrim` of both Pvot palettes. */

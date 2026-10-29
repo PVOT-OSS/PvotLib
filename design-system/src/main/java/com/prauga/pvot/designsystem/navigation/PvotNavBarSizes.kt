@@ -16,16 +16,16 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * Size configuration for [PvotNavBar].
  *
  * For expanded item width, use either:
- * - [expandedWidth] for fixed width (bypasses measurement)
- * - [minExpandedWidth]/[maxExpandedWidth] for intrinsic sizing with constraints
+ * - [expandedWidth] for fixed width
+ * - [minExpandedWidth]/[maxExpandedWidth] for content-based sizing with constraints
  *
  * @param barHeight Height of the bar itself
  * @param barWidth Fixed bar width, or null to fall back to [fillWidth]
  * @param fillWidth Whether the bar spans its parent, ignored when [barWidth] is set
  * @param collapsedItemSize Diameter of an unselected item, and the height of every item
- * @param expandedWidth Fixed width for a selected item, or [Dp.Unspecified] to measure it
- * @param minExpandedWidth Floor for a measured item width, or [Dp.Unspecified] for none
- * @param maxExpandedWidth Ceiling for a measured item width, or [Dp.Unspecified] for none
+ * @param expandedWidth Fixed width for a selected item, or [Dp.Unspecified] to fit its content
+ * @param minExpandedWidth Floor for a selected item's width, or [Dp.Unspecified] for none
+ * @param maxExpandedWidth Ceiling for a selected item's width, or [Dp.Unspecified] for none
  * @param barShadowElevation Elevation of the bar's drop shadow
  * @param cornerRadius Corner radius of the bar
  * @param itemCornerRadius Corner radius of a selected item
@@ -35,25 +35,31 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param horizontalPadding Padding either side of the bar
  * @param contentPaddingHorizontal Padding either side of the item row, inside the bar
  * @param itemSpacing Gap between adjacent items
+ * @param compactBarHeight Height of the bar while compact
+ * @param compactItemSize Height of an item while compact, and the width of an unselected one
+ * @param compactPillWidth Width of the selected item while compact: a pill around its icon
  */
 @Immutable
 public data class PvotNavBarSizes(
-    val barHeight: Dp = 72.dp,
+    val barHeight: Dp = 68.dp,
     val barWidth: Dp? = null,
     val fillWidth: Boolean = false,
-    val collapsedItemSize: Dp = 56.dp,
+    val collapsedItemSize: Dp = 52.dp,
     val expandedWidth: Dp = Dp.Unspecified,
     val minExpandedWidth: Dp = Dp.Unspecified,
     val maxExpandedWidth: Dp = 200.dp,
-    val barShadowElevation: Dp = 18.dp,
+    val barShadowElevation: Dp = 8.dp,
     val cornerRadius: Dp = 100.dp,
-    val itemCornerRadius: Dp = 28.dp,
-    val collapsedIconSize: Dp = 22.dp,
-    val expandedIconSize: Dp = 22.dp,
-    val labelFontSize: TextUnit = 16.sp,
+    val itemCornerRadius: Dp = 24.dp,
+    val collapsedIconSize: Dp = 24.dp,
+    val expandedIconSize: Dp = 24.dp,
+    val labelFontSize: TextUnit = 15.sp,
     val horizontalPadding: Dp = 22.dp,
-    val contentPaddingHorizontal: Dp = 9.dp,
-    val itemSpacing: Dp = PvotSpacing.XS
+    val contentPaddingHorizontal: Dp = 8.dp,
+    val itemSpacing: Dp = PvotSpacing.XS,
+    val compactBarHeight: Dp = 52.dp,
+    val compactItemSize: Dp = 40.dp,
+    val compactPillWidth: Dp = 60.dp
 )
 
 /** The [PvotNavBarSizes] in scope, read by PvotNavBar and PvotScreen for their defaults. */

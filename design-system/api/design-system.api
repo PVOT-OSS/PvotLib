@@ -96,6 +96,44 @@ public final class com/prauga/pvot/designsystem/components/picker/PvotPickerDefa
 	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/picker/PvotPickerColors;
 }
 
+public final class com/prauga/pvot/designsystem/components/slider/PvotSliderColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun copy-t635Npw (JJJJJ)Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;
+	public static synthetic fun copy-t635Npw$default (Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;JJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveTickColor-0d7_KjU ()J
+	public final fun getActiveTrackColor-0d7_KjU ()J
+	public final fun getInactiveTrackColor-0d7_KjU ()J
+	public final fun getThumbColor-0d7_KjU ()J
+	public final fun getTickColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/slider/PvotSliderDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/slider/PvotSliderDefaults;
+	public static final field PressedThumbScale F
+	public final fun colors-jdqzblg (Landroidx/compose/material3/ColorScheme;JJJJJ)Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;
+	public static synthetic fun colors-jdqzblg$default (Lcom/prauga/pvot/designsystem/components/slider/PvotSliderDefaults;Landroidx/compose/material3/ColorScheme;JJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;
+	public final fun getThumbSize-D9Ej5fM ()F
+	public final fun getTickSize-D9Ej5fM ()F
+	public final fun getTouchHeight-D9Ej5fM ()F
+	public final fun getTrackHeight-D9Ej5fM ()F
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/slider/PvotSliderKt {
+	public static final fun PvotRangeSlider (Lkotlin/ranges/ClosedFloatingPointRange;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLkotlin/ranges/ClosedFloatingPointRange;ILkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotSlider (FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLkotlin/ranges/ClosedFloatingPointRange;ILkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/components/slider/PvotSliderColors;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/effects/PvotGlassBackdrop {
 	public static final field $stable I
 }
@@ -185,6 +223,7 @@ public final class com/prauga/pvot/designsystem/motion/PvotMotion {
 	public static final field PressedScale F
 	public static final field RevealDurationMillis I
 	public static final field StaggerStepMillis I
+	public final fun bounceSpring ()Landroidx/compose/animation/core/SpringSpec;
 	public final fun getPressSpring ()Landroidx/compose/animation/core/SpringSpec;
 	public final fun getRevealRise-D9Ej5fM ()F
 	public final fun getSettle ()Landroidx/compose/animation/core/Easing;
@@ -242,14 +281,14 @@ public final class com/prauga/pvot/designsystem/navigation/PvotNavBarItemKt {
 }
 
 public final class com/prauga/pvot/designsystem/navigation/PvotNavBarKt {
-	public static final fun PvotNavBar (ILkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Ljava/lang/Integer;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarColors;Landroidx/compose/runtime/Composer;II)V
-	public static final fun PvotNavBar (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarColors;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotNavBar (ILkotlin/jvm/functions/Function1;Ljava/util/List;Landroidx/compose/ui/Modifier;Ljava/lang/Integer;Ljava/lang/Integer;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarColors;ZLandroidx/compose/runtime/Composer;II)V
+	public static final fun PvotNavBar (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;Lcom/prauga/pvot/designsystem/navigation/PvotNavBarColors;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/navigation/PvotNavBarSizes {
 	public static final field $stable I
-	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
-	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-D9Ej5fM ()F
 	public final fun component10-D9Ej5fM ()F
 	public final fun component11-D9Ej5fM ()F
@@ -258,6 +297,9 @@ public final class com/prauga/pvot/designsystem/navigation/PvotNavBarSizes {
 	public final fun component14-D9Ej5fM ()F
 	public final fun component15-D9Ej5fM ()F
 	public final fun component16-D9Ej5fM ()F
+	public final fun component17-D9Ej5fM ()F
+	public final fun component18-D9Ej5fM ()F
+	public final fun component19-D9Ej5fM ()F
 	public final fun component2-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
 	public final fun component3 ()Z
 	public final fun component4-D9Ej5fM ()F
@@ -266,14 +308,17 @@ public final class com/prauga/pvot/designsystem/navigation/PvotNavBarSizes {
 	public final fun component7-D9Ej5fM ()F
 	public final fun component8-D9Ej5fM ()F
 	public final fun component9-D9Ej5fM ()F
-	public final fun copy-pyYr8oY (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFF)Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;
-	public static synthetic fun copy-pyYr8oY$default (Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFILjava/lang/Object;)Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;
+	public final fun copy-v06HTkQ (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFF)Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;
+	public static synthetic fun copy-v06HTkQ$default (Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFFILjava/lang/Object;)Lcom/prauga/pvot/designsystem/navigation/PvotNavBarSizes;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBarHeight-D9Ej5fM ()F
 	public final fun getBarShadowElevation-D9Ej5fM ()F
 	public final fun getBarWidth-lTKBWiU ()Landroidx/compose/ui/unit/Dp;
 	public final fun getCollapsedIconSize-D9Ej5fM ()F
 	public final fun getCollapsedItemSize-D9Ej5fM ()F
+	public final fun getCompactBarHeight-D9Ej5fM ()F
+	public final fun getCompactItemSize-D9Ej5fM ()F
+	public final fun getCompactPillWidth-D9Ej5fM ()F
 	public final fun getContentPaddingHorizontal-D9Ej5fM ()F
 	public final fun getCornerRadius-D9Ej5fM ()F
 	public final fun getExpandedIconSize-D9Ej5fM ()F

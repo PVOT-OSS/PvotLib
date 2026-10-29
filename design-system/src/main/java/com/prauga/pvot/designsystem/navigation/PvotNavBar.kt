@@ -5,6 +5,10 @@ package com.prauga.pvot.designsystem.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -17,27 +21,36 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.pvotGlass
 import com.prauga.pvot.designsystem.effects.pvotGlassRim
+import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
+
 /**
- * A floating bottom navigation bar with animated pill-style items.
+ * A floating bottom navigation bar with an item that opens into a pill when selected.
+ *
+ * Dragging a finger along the bar previews each item it passes over, and lifting the finger
+ * selects the item it ended on.
  *
  * When a tab is expanded, its content resolves as:
  * - icon: [expandedIconRes], else [PvotTabItem.expandedIconRes], else [PvotTabItem.iconRes]
@@ -55,6 +68,8 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * as glass over it; null for a plain bar
  * @param sizes Size configuration for the bar and its items
  * @param colors Color configuration for the bar and its items
+ * @param compact Whether to shrink the bar into its compact form: shorter, with smaller items and
+ * no labels. The change animates, so drive it from scroll direction to get out of the way
  */
 @Composable
 public fun PvotNavBar(
@@ -68,8 +83,15 @@ public fun PvotNavBar(
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
         if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
+    compact: Boolean = false,
 ) {
-    PvotNavBar(modifier = modifier, backdrop = backdrop, sizes = sizes, colors = colors) {
+    PvotNavBar(
+        modifier = modifier,
+        backdrop = backdrop,
+        sizes = sizes,
+        colors = colors,
+        compact = compact
+    ) {
         tabs.forEachIndexed { index, tab ->
             PillNavItem(
                 tab = tab,
@@ -89,8 +111,7 @@ public fun PvotNavBar(
 /**
  * A floating bottom navigation bar that lays its items out in a [RowScope].
  *
- * Items size themselves, so an item may carry any icon and label content. Use
- * [PvotNavBarItem] for the standard pill item.
+ * The bar handles dragging along it to pick an item. Use [PvotNavBarItem] for the standard item.
  *
  * @param modifier Modifier for the nav bar container
  * @param backdrop The content behind the bar, marked with
@@ -98,6 +119,7 @@ public fun PvotNavBar(
  * as glass over it; null for a plain bar
  * @param sizes Size configuration for the bar
  * @param colors Color configuration for the bar
+ * @param compact Whether to shrink the bar into its compact form, see the tab-list overload
  * @param content The bar's items, typically [PvotNavBarItem]
  */
 @Composable
@@ -107,6 +129,7 @@ public fun PvotNavBar(
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
         if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
+    compact: Boolean = false,
     content: @Composable RowScope.() -> Unit
 ) {
     val barShape = RoundedCornerShape(sizes.cornerRadius)
@@ -114,6 +137,20 @@ public fun PvotNavBar(
         Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
     } else {
         DefaultShadowColor
+    }
+    val state = remember { NavBarState() }
+    val haptics = LocalHapticFeedback.current
+
+    val compactFraction by animateFloatAsState(
+        targetValue = if (compact) 1f else 0f,
+        animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
+        label = "navBarCompact"
+    )
+    SideEffect { state.compactFraction = compactFraction }
+    val barHeight = lerp(sizes.barHeight, sizes.compactBarHeight, compactFraction)
+
+    LaunchedEffect(state.hovered) {
+        if (state.hovered != null) haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
     }
 
     Box(
@@ -126,7 +163,7 @@ public fun PvotNavBar(
         Surface(
             modifier = Modifier
                 .barWidthModifier(sizes)
-                .height(sizes.barHeight)
+                .height(barHeight)
                 .shadow(
                     sizes.barShadowElevation,
                     barShape,
@@ -148,19 +185,35 @@ public fun PvotNavBar(
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
         ) {
-            Row(
-                modifier = Modifier
-                    .barWidthModifier(sizes)
-                    .height(sizes.barHeight)
-                    .selectableGroup()
-                    .padding(horizontal = sizes.contentPaddingHorizontal),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(
-                    sizes.itemSpacing,
-                    Alignment.CenterHorizontally
-                ),
-                content = content
-            )
+            CompositionLocalProvider(LocalNavBarState provides state) {
+                Row(
+                    modifier = Modifier
+                        .barWidthModifier(sizes)
+                        .height(barHeight)
+                        .selectableGroup()
+                        // Before the gestures, so their coordinates match the items' bounds.
+                        .padding(horizontal = sizes.contentPaddingHorizontal)
+                        .pointerInput(state) {
+                            detectHorizontalDragGestures(
+                                onDragStart = { offset -> state.hovered = state.entryAt(offset.x) },
+                                onDragEnd = {
+                                    state.hovered?.takeIf { !it.selected }?.onClick?.invoke()
+                                    state.hovered = null
+                                },
+                                onDragCancel = { state.hovered = null }
+                            ) { change, _ ->
+                                state.entryAt(change.position.x)?.let { state.hovered = it }
+                                change.consume()
+                            }
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(
+                        sizes.itemSpacing,
+                        Alignment.CenterHorizontally
+                    ),
+                    content = content
+                )
+            }
         }
     }
 }
@@ -172,27 +225,3 @@ private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.t
         else -> Modifier.wrapContentWidth()
     }
 )
-
-@Composable
-internal fun calculateExpandedWidth(labelText: String, sizes: PvotNavBarSizes): Dp {
-    if (sizes.expandedWidth != Dp.Unspecified) {
-        return sizes.expandedWidth
-    }
-
-    val textMeasurer = rememberTextMeasurer()
-    val textStyle = MaterialTheme.typography.labelMedium.copy(
-        fontWeight = FontWeight.SemiBold,
-        fontSize = sizes.labelFontSize
-    )
-    val textLayoutResult = textMeasurer.measure(labelText, textStyle)
-
-    val density = LocalDensity.current
-    val intrinsicWidth = with(density) {
-        sizes.expandedIconSize + PvotNavBarDefaults.IconTextGap +
-            textLayoutResult.size.width.toDp() + (PvotNavBarDefaults.ItemHorizontalPadding * 2)
-    }
-
-    return intrinsicWidth
-        .coerceAtLeast(sizes.minExpandedWidth.takeIf { it != Dp.Unspecified } ?: 0.dp)
-        .coerceAtMost(sizes.maxExpandedWidth.takeIf { it != Dp.Unspecified } ?: Dp.Infinity)
-}

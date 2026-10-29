@@ -136,8 +136,8 @@ Each component derives its colors from the theme through its `*Defaults` object,
 `colors` parameter to override them:
 
 ```kotlin
-PvotNavBarDefaults.themeColors()   // brand gradient, or the color scheme under dynamic color
-PvotNavBarDefaults.colors(collapsedChipColor = Color.DarkGray)
+PvotNavBarDefaults.themeColors()   // derived from the color scheme (light, dark and dynamic)
+PvotNavBarDefaults.colors(containerColor = Color.DarkGray)
 PvotPickerDefaults.themeColors()   // derived from the color scheme
 
 PvotNavBar(
@@ -162,7 +162,7 @@ CompositionLocalProvider(LocalPvotNavBarSizes provides PvotNavBarSizes(barHeight
 
 ### PvotNavBar
 
-A floating bottom navigation bar with animated pill-style items.
+A floating bottom navigation bar: bare icons, with the selected one opening into a filled pill. Drag a finger along the bar to preview items, and lift to select.
 
 ```kotlin
 @Composable
@@ -211,9 +211,9 @@ Scaffold(
 
 #### Features
 
-- Animated pill expansion on selection
-- Gradient background for selected item
-- Smooth scale and fade animations
+- Smooth, eased pill opening and closing, with no overshoot
+- Drag along the bar to land on any item, with haptic ticks
+- Press feedback on every item
 - Handles navigation bar padding automatically
 - Fully customizable colors via theme or parameters
 
@@ -300,6 +300,7 @@ Release with the AARs, their sources and the catalog APK.
 | Component | Description | Status |
 |-----------|-------------|--------|
 | PvotNavBar | Floating bottom navigation | Done |
+| PvotSlider | Minimal slider, with a range variant | Done |
 | PvotClockPicker | Wheel-based time picker | Done |
 | PvotDurationPicker | Wheel-based duration picker | Done |
 | PvotTopBar | Collapsible top app bar | Planned |

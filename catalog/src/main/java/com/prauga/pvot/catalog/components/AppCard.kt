@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.data.model.GithubRepo
 
 @Composable
@@ -69,7 +70,7 @@ fun AppCard(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_star),
+                            painter = painterResource(id = LocalAppIcons.current.star),
                             contentDescription = stringResource(R.string.stars),
                             modifier = Modifier.size(16.dp),
                             tint = MaterialTheme.colorScheme.primary

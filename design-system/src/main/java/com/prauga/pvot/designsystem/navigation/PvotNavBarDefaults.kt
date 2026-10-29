@@ -8,9 +8,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.Dp
 import com.prauga.pvot.designsystem.theme.PvotSpacing
-import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /** Defaults for [PvotNavBar] and its items. */
 public object PvotNavBarDefaults {
@@ -22,17 +22,17 @@ public object PvotNavBarDefaults {
     public val IconTextGap: Dp = PvotSpacing.S
 
     /** Start of the brand gradient behind a selected item. */
-    public val GradientStart: Color = Color(0xFF9B84FF)
+    public val GradientStart: Color = Color(0xFF7A6BFF)
     /** End of the brand gradient behind a selected item. */
-    public val GradientEnd: Color = Color(0xFF6B66FF)
-    /** Fill behind an unselected item. */
-    public val CollapsedChipColor: Color = Color(0xFF4D4D4F)
+    public val GradientEnd: Color = Color(0xFF5A4BFF)
+    /** Fill behind an unselected item; none, so only the selected item is marked. */
+    public val CollapsedChipColor: Color = Color.Transparent
     /** Fill behind the bar itself. */
-    public val ContainerColor: Color = Color(0x1AFFFFFF)
+    public val ContainerColor: Color = Color(0xFF231F36)
     /** Icon and label color of a selected item. */
     public val IconSelectedColor: Color = Color.White
     /** Icon color of an unselected item. */
-    public val IconUnselectedColor: Color = Color(0xFFECECEC)
+    public val IconUnselectedColor: Color = Color(0xFFB9B3D6)
     /** Ripple drawn over an item while it is pressed. */
     public val RippleColor: Color = Color.White.copy(alpha = 0.25f)
 
@@ -56,23 +56,19 @@ public object PvotNavBarDefaults {
         rippleColor = rippleColor
     )
 
-    /** Nav bar colors derived from [colorScheme]. */
+    /** Nav bar colors derived from [colorScheme]: a solid primary pill on a tinted surface bar. */
     public fun colors(colorScheme: ColorScheme): PvotNavBarColors = PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
-        collapsedChipColor = colorScheme.surfaceVariant,
-        containerColor = colorScheme.surface.copy(alpha = 0.1f),
+        gradient = SolidColor(colorScheme.primary),
+        collapsedChipColor = Color.Transparent,
+        containerColor = colorScheme.surfaceVariant,
         iconSelectedColor = colorScheme.onPrimary,
-        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f),
-        rippleColor = colorScheme.onPrimary.copy(alpha = 0.25f)
+        iconUnselectedColor = colorScheme.onSurfaceVariant,
+        rippleColor = colorScheme.primary.copy(alpha = 0.16f)
     )
 
-    /**
-     * Nav bar colors derived from the theme's color scheme while dynamic color is in effect,
-     * and the Pvot brand gradient otherwise.
-     */
+    /** Nav bar colors derived from the theme's color scheme, so they follow light, dark and dynamic color. */
     @Composable
-    public fun themeColors(): PvotNavBarColors =
-        if (PvotTheme.isDynamicColor) colors(MaterialTheme.colorScheme) else colors()
+    public fun themeColors(): PvotNavBarColors = colors(MaterialTheme.colorScheme)
 
     /**
      * Nav bar colors for a bar drawn as glass: the [themeColors] selected item over a clear bar,
