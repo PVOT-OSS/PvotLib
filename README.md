@@ -85,6 +85,9 @@ dependencies {
 
 **In AOSP.** Both libraries build inline as `PvotDesignSystem` and `PvotCoreUi` (`Android.bp`).
 
+The full reference (tokens, motion, components and the rules for library code) is in
+**[docs/GUIDE.md](docs/GUIDE.md)**.
+
 ## Quick Start
 
 Wrap your app with `PvotAppTheme`:
