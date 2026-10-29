@@ -70,8 +70,8 @@ jobs:
             commit -m "PvotLib ${{ steps.version.outputs.version }}"
           git push origin gh-pages
 
-      - name: Build the showcase app
-        run: ./gradlew :app:assembleRelease
+      - name: Build the catalog app
+        run: ./gradlew :catalog:assembleRelease
 
       - name: Create the GitHub Release
         env:
@@ -88,8 +88,8 @@ jobs:
             cp "pages/maven/com/prauga/pvot/$lib/$version/$lib-$version-sources.jar" .
             assets+=("$lib-$version.aar" "$lib-$version-sources.jar")
           done
-          cp app/build/outputs/apk/release/app-release.apk "pvot-showcase-$version.apk"
+          cp catalog/build/outputs/apk/release/catalog-release.apk "pvot-catalog-$version.apk"
           gh release create "$GITHUB_REF_NAME" \
             --title "PvotLib $version" \
             --notes-file notes.md \
-            "${assets[@]}" "pvot-showcase-$version.apk"
+            "${assets[@]}" "pvot-catalog-$version.apk"

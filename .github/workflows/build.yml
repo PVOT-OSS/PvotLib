@@ -35,8 +35,8 @@ jobs:
       - name: Build design-system
         run: ./gradlew :design-system:assembleDebug
 
-      - name: Build app
-        run: ./gradlew :app:assembleDebug
+      - name: Build catalog
+        run: ./gradlew :catalog:assembleDebug
 
       - name: Publish to the local Maven repository
         run: ./gradlew :design-system:publishToMavenLocal :core-ui:publishToMavenLocal
@@ -50,8 +50,8 @@ jobs:
       - name: Upload app APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          name: catalog-debug-apk
+          path: catalog/build/outputs/apk/debug/*.apk
 
   unit-test:
     name: Unit Tests

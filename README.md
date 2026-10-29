@@ -11,7 +11,7 @@ A Jetpack Compose design system library for building consistent Android applicat
 
 ```
 PvotLib/
-├── app/              # Showcase app demonstrating components
+├── catalog/          # Catalog app demonstrating components
 ├── design-system/    # Reusable library module
 │   └── src/main/java/com/prauga/pvot/designsystem/
 │       ├── components/
@@ -292,7 +292,7 @@ DurationPicker(
 
 The release workflow checks the tag matches the version, builds and tests, adds both libraries to
 the Maven repository on GitHub Pages (never overwriting a released version), and creates a GitHub
-Release with the AARs, their sources and the showcase APK.
+Release with the AARs, their sources and the catalog APK.
 
 ## Roadmap
 
