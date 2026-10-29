@@ -11,6 +11,7 @@ A Jetpack Compose design system library for building consistent Android applicat
 
 ```
 PvotLib/
+├── build-logic/      # Convention plugins: SDK levels, Compose
 ├── catalog/          # Catalog app demonstrating components
 ├── core-ui/          # UiState and loading/error/empty content (com.prauga.pvot.coreui)
 ├── design-system/    # Reusable library module

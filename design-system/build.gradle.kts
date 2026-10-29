@@ -2,37 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.pvot.android.library)
+    alias(libs.plugins.pvot.android.compose)
     `maven-publish`
 }
 
 android {
     namespace = "com.prauga.pvot.designsystem"
-    compileSdk {
-        version = release(37) {
-            minorApiLevel = 1
-        }
-    }
-
-    defaultConfig {
-        minSdk = 27
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    buildFeatures {
-        compose = true
-    }
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -46,11 +22,8 @@ dependencies {
     api(platform(libs.androidx.compose.bom))
     api(libs.androidx.compose.ui)
     api(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.tooling.preview)
     api(libs.androidx.compose.material3)
-    debugImplementation(libs.androidx.compose.ui.tooling)
 
-    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
