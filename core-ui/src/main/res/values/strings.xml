@@ -2,5 +2,5 @@
 <!-- SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com> -->
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <resources>
-    <string name="retry">Retry</string>
+    <string name="pvot_retry">Retry</string>
 </resources>

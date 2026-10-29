@@ -12,6 +12,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         pluginManager.apply("com.android.library")
         extensions.configure<LibraryExtension> {
+            resourcePrefix = "pvot_"
             compileSdk {
                 version = release(Sdk.COMPILE) { minorApiLevel = Sdk.COMPILE_MINOR }
             }

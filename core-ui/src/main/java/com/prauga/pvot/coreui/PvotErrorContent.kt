@@ -46,7 +46,7 @@ fun PvotErrorContent(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Button(onClick = onRetry) {
-            Text(stringResource(R.string.retry))
+            Text(stringResource(R.string.pvot_retry))
         }
     }
 }
