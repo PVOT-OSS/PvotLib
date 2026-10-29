@@ -32,7 +32,7 @@ import com.prauga.pvot.catalog.components.FeedCardSkeleton
 import com.prauga.pvot.catalog.data.model.FeedEntry
 import com.prauga.pvot.catalog.data.repository.FeedRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
-import com.prauga.pvot.designsystem.modifier.pvotReveal
+import com.prauga.pvot.designsystem.motion.pvotReveal
 
 private const val SkeletonCount = 4
 

@@ -13,8 +13,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBarDefaults
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
+import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
+import com.prauga.pvot.designsystem.navigation.PvotNavBarColors
 
 class PvotAppThemeTest {
 

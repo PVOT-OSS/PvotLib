@@ -39,7 +39,7 @@ import com.prauga.pvot.catalog.data.model.GithubUser
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
-import com.prauga.pvot.designsystem.modifier.pvotReveal
+import com.prauga.pvot.designsystem.motion.pvotReveal
 import com.prauga.pvot.catalog.utils.Constants
 import com.prauga.pvot.catalog.utils.PreferencesManager
 import kotlinx.coroutines.async

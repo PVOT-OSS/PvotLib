@@ -18,9 +18,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.prauga.pvot.designsystem.PvotBaseActivity
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
-import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
+import com.prauga.pvot.designsystem.platform.PvotBaseActivity
+import com.prauga.pvot.designsystem.navigation.PvotNavBar
+import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import com.prauga.pvot.catalog.screens.AboutScreen
 import com.prauga.pvot.catalog.screens.AppsScreen

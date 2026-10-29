@@ -33,7 +33,7 @@ import com.prauga.pvot.catalog.components.AppCardSkeleton
 import com.prauga.pvot.catalog.data.model.GithubRepo
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
-import com.prauga.pvot.designsystem.modifier.pvotReveal
+import com.prauga.pvot.designsystem.motion.pvotReveal
 
 private const val SkeletonCount = 3
 

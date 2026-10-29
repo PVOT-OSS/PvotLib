@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.modifier.pvotPressScale
+import com.prauga.pvot.designsystem.effects.pvotPressScale
 
 /** Defaults for [PvotCard]. */
 object PvotCardDefaults {

@@ -16,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
-import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarColors
-import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBarColors
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBarSizes
+import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarColors
+import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarSizes
+import com.prauga.pvot.designsystem.navigation.PvotNavBarColors
+import com.prauga.pvot.designsystem.navigation.PvotNavBarSizes
 import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 

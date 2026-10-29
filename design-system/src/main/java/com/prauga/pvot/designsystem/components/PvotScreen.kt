@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.components.navigation.LocalPvotNavBarSizes
+import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarSizes
 
 /** Defaults for [PvotScreen]. */
 object PvotScreenDefaults {

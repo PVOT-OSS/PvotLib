@@ -37,12 +37,12 @@ import com.prauga.pvot.catalog.components.CatalogCard
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.PvotSkeleton
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBar
-import com.prauga.pvot.designsystem.components.navigation.PvotNavBarItem
-import com.prauga.pvot.designsystem.components.navigation.PvotTabItem
+import com.prauga.pvot.designsystem.navigation.PvotNavBar
+import com.prauga.pvot.designsystem.navigation.PvotNavBarItem
+import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
-import com.prauga.pvot.designsystem.modifier.pvotReveal
+import com.prauga.pvot.designsystem.motion.pvotReveal
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale

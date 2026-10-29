@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.pvot.designsystem.components.navigation
+package com.prauga.pvot.designsystem.navigation
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
