@@ -6,6 +6,11 @@ together under one version.
 
 ## Unreleased
 
+### Fixed
+- The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
+  compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
+  whole shader, so the glass drew nothing and the content behind showed through sharp.
+
 ### Added
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a

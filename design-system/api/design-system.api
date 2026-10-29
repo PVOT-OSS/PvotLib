@@ -235,6 +235,8 @@ public final class com/prauga/pvot/designsystem/effects/PvotGlassDefaults {
 	public static final field LensThreshold F
 	public static final field PressedScale F
 	public static final field ShadowAlpha F
+	public final fun currentIntensity (Landroidx/compose/runtime/Composer;I)F
+	public final fun defaultIntensity ()F
 	public final fun edge (Landroidx/compose/ui/Modifier;FLandroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
 	public final fun getCapsuleRadius-D9Ej5fM ()F
 	public final fun getFillColor-0d7_KjU ()J
@@ -244,6 +246,9 @@ public final class com/prauga/pvot/designsystem/effects/PvotGlassDefaults {
 	public final fun getRimWidth-D9Ej5fM ()F
 	public final fun getShadowElevation-D9Ej5fM ()F
 	public final fun getStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun isBlurSupported ()Z
+	public final fun isLensSupported ()Z
+	public final fun maxIntensity ()F
 	public final fun style (FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 }
 

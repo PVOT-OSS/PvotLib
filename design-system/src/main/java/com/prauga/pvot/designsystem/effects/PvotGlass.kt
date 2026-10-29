@@ -119,6 +119,36 @@ public object PvotGlassDefaults {
     /** Below this intensity the edge lens is switched off altogether, which saves its cost. */
     public const val LensThreshold: Float = 0.15f
 
+    /** Whether this device can blur what is behind the glass, Android 12 and up. */
+    public val isBlurSupported: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+
+    /** Whether this device can draw the edge lens, Android 13 and up. */
+    public val isLensSupported: Boolean
+        get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+    /**
+     * The most glass this device can draw: 1 with the edge lens (Android 13+), a little over the
+     * lens threshold with only the blur (Android 12), and 0 with neither, where the glass is a flat,
+     * nearly opaque frost. Every glass reads its intensity through this, so a setting above it is
+     * harmless.
+     */
+    public fun maxIntensity(): Float = when {
+        isLensSupported -> 1f
+        isBlurSupported -> BlurOnlyIntensity
+        else -> 0f
+    }
+
+    /** What an app should start with: full glass where the device can, the frosted look elsewhere. */
+    public fun defaultIntensity(): Float = if (isLensSupported) 1f else 0f
+
+    /** The intensity in [LocalPvotGlassIntensity], held to what the device can draw. */
+    @Composable
+    public fun currentIntensity(): Float =
+        LocalPvotGlassIntensity.current.coerceIn(0f, maxIntensity())
+
+    private const val BlurOnlyIntensity: Float = 0.33f
+
     /**
      * [base] at [intensity], from 0 (frosted blur and a tint, no lens) to 1 (as [base] is).
      *
@@ -131,9 +161,10 @@ public object PvotGlassDefaults {
      */
     @Composable
     public fun style(intensity: Float, base: PvotGlassStyle = Style): PvotGlassStyle {
-        val i = intensity.coerceIn(0f, 1f)
-        val lens = if (i < LensThreshold) 0f else i
-        val frost = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = FrostFillAlpha)
+        val i = intensity.coerceIn(0f, maxIntensity())
+        val lens = if (i < LensThreshold || !isLensSupported) 0f else i
+        val surface = MaterialTheme.colorScheme.surfaceVariant
+        val frost = surface.copy(alpha = FrostFillAlpha)
         return base.copy(
             strength = base.strength * lens,
             aberration = base.aberration * lens,
@@ -143,7 +174,13 @@ public object PvotGlassDefaults {
             glow = base.glow * lens,
             darkGlow = base.darkGlow * lens,
             vividMix = base.vividMix * lens,
-            fillColor = lerp(frost, base.fillColor, i),
+            // Without a blur there is nothing to frost, so the glass is a nearly opaque surface:
+            // anything less lets the content behind it show through, sharp.
+            fillColor = if (isBlurSupported) {
+                lerp(frost, base.fillColor, i)
+            } else {
+                surface.copy(alpha = NoBlurFillAlpha)
+            },
             frost = FrostBlur,
             frostMix = 1f - i,
         )
@@ -177,6 +214,8 @@ public object PvotGlassDefaults {
     private const val LightThemeEdge: Float = 0.6f
 
     private const val FrostFillAlpha: Float = 0.7f
+
+    private const val NoBlurFillAlpha: Float = 0.94f
 
     /** Width of the rim of light round the glass. */
     public val RimWidth: Dp = 1.dp
@@ -478,12 +517,12 @@ half4 main(float2 coord) {
     float ease = t * t;
     // The same, eased in and out (a smoothstep): what grows across the band does so
     // with no step, so the rim fades into the middle with no edge of its own.
-    float smooth = t * t * (3.0 - 2.0 * t);
+    float ramp = t * t * (3.0 - 2.0 * t);
     float2 apart = n * (aberration * ease);
 
     // The bend.
     float2 at = coord + n * (strength * ease);
-    float soft = edgeBlur * smooth;
+    float soft = edgeBlur * ramp;
     half4 bent = split(at, apart) * 0.4
         + split(at + tangent * soft, apart) * 0.15
         + split(at - tangent * soft, apart) * 0.15
@@ -493,11 +532,11 @@ half4 main(float2 coord) {
     // The reflection: as far outside the edge as this point is inside it.
     float inside = -d;
     half4 mirrored = split(coord + n * (inside * (1.0 + mirrorScale)), apart);
-    half4 c = mix(bent, mirrored, half(reflection * smooth));
+    half4 c = mix(bent, mirrored, half(reflection * ramp));
 
     // Vivid colours spread further in: a wider ring round the bend, mixed in only
     // as much as it is saturated.
-    float reach = vividSpread * smooth;
+    float reach = vividSpread * ramp;
     float diag = reach * 0.7071;
     half4 around = (split(at + tangent * reach, apart)
         + split(at - tangent * reach, apart)
@@ -507,7 +546,7 @@ half4 main(float2 coord) {
         + split(at + (n - tangent) * diag, apart)
         + split(at - (n + tangent) * diag, apart)
         + split(at - (n - tangent) * diag, apart)) * 0.125;
-    c = mix(c, around, half(clamp(vividMix * smooth * vividness(around), 0.0, 1.0)));
+    c = mix(c, around, half(clamp(vividMix * ramp * vividness(around), 0.0, 1.0)));
 
     // The rim's light, no line: brighter towards the edge and on the side facing the
     // light, laid over whatever shows there (also over the bare wallpaper).
