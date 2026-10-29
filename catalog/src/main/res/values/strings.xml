@@ -46,6 +46,10 @@
     <string name="catalog_error_retries">Retried %1$d times</string>
     <string name="catalog_reveal">Modifier.pvotReveal</string>
     <string name="catalog_reveal_replay">Replay</string>
+    <string name="catalog_glass">Glass</string>
+    <string name="catalog_glass_search">Search</string>
+    <string name="catalog_glass_card">Glass card, tap it</string>
+    <string name="catalog_glass_taps">Glass card tapped %1$d times</string>
     <string name="catalog_tab_one">One</string>
     <string name="catalog_tab_two">Two</string>
     <string name="catalog_tab_three">Three</string>
@@ -65,6 +69,8 @@
     <string name="about_link_website">Website</string>
     <string name="about_new_ui_title">Enable New UI</string>
     <string name="about_new_ui_subtitle">Tabler icons, vivid colors and the new navigation bar</string>
+    <string name="about_glass_title">Liquid glass</string>
+    <string name="about_glass_subtitle">Frosted is the lightest; Full is the most glass</string>
     <string name="about_dynamic_colors_title">Dynamic Colors</string>
     <string name="about_dynamic_colors_subtitle">Use Material You colors (Android 12+)</string>
 

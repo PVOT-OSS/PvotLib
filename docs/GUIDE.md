@@ -15,9 +15,9 @@ specs, each component, and the rules for working on the libraries. To add PvotLi
 ```
 design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
-├── effects/      pvotPressScale
+├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
-├── components/   PvotCard, PvotScreen, PvotSkeleton, PvotDialog, PvotBottomSheet
+├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotBottomSheet
 │   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 │   ├── textfield/ PvotTextField, PvotTextFieldColors, PvotTextFieldDefaults
 │   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
@@ -134,11 +134,68 @@ PvotScreen {
 }
 ```
 
+**Glass:** `Modifier.pvotGlass(backdrop)` draws an element as clear glass, like a drop of water:
+what lies behind it shows through frosted, and a rim along the edge bends it in from just
+outside, with a slight red and blue split, a mirrored copy of what lies outside the edge and a
+soft light in place of a border. `Modifier.pvotGlassRim()` adds a fine rim of light that turns
+as the phone tilts and settles back once it is held still.
+
+Only content marked with `Modifier.pvotGlassBackdrop` shows through, so mark the content behind
+the glass and draw the glass over it, not inside it:
+
+```kotlin
+val backdrop = rememberPvotGlassBackdrop()
+Box {
+    LazyColumn(Modifier.pvotGlassBackdrop(backdrop)) { /* … */ }
+    Box(
+        Modifier
+            .align(Alignment.TopCenter)
+            .height(46.dp)
+            .fillMaxWidth()
+            .pvotGlass(backdrop)
+            .pvotGlassRim()
+    )
+}
+```
+
+| Android | What the glass shows |
+|---|---|
+| 13+ | frost and the bending rim |
+| 12 | frost |
+| 11 and older | the tint alone |
+
+**How much glass:** `LocalPvotGlassIntensity` (0 to 1, default 1) is read by every glass in the tree,
+including `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton`. Provide it near the root and let
+the user choose. 1 is the full effect; 0 is the cheapest, a frosted blur with a surface-colored
+tint and no edge lens, rim or light, which is what a frosted header or bar looks like. Below
+`PvotGlassDefaults.LensThreshold` the edge lens is switched off entirely, so the glass stops paying
+for it. For a style of your own, `PvotGlassDefaults.style(intensity, base)` returns `base` at that
+intensity, and `pvotGlassRim(alpha = intensity)` fades the rim. Apps should keep glass to a few
+floating surfaces (bars, sheets); at 0 the catalog turns its cards back into plain cards.
+
+`PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
+the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width,
+`CapsuleRadius`, and the press and shadow values of the glass components. The glass can't show
+other windows or the wallpaper.
+
+Glass belongs to the layer that floats over the content: the nav bar, buttons and cards over a
+screen that scrolls under them. Mark the whole screen as the backdrop and pass it to
+`PvotNavBar`, so the content shows through the bar, bent at its edge, as it scrolls by:
+
+```kotlin
+val backdrop = rememberPvotGlassBackdrop()
+Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = backdrop) }) {
+    Screen(Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
+}
+```
+
 ## 6. Components
 
 | Component | Package | What it is |
 |---|---|---|
 | `PvotCard` | `components` | Rounded, translucent surface; pass `onClick` to make it a button with press feedback |
+| `PvotGlassCard` | `components` | Card of glass over a backdrop, with a tilt-following rim; pass `onClick` to make it a button |
+| `PvotGlassIconButton` | `components` | Round glass button for an icon floating over a backdrop |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |
 | `PvotDialog` | `components` | Centered dialog that eases in and out over its own scrim; icon, title, message, optional content and stacked `PvotDialogAction` buttons. Driven by `visible` |
@@ -148,7 +205,7 @@ PvotScreen {
 | `PvotRangeSlider` | `components.slider` | Two-thumb version of `PvotSlider` for choosing a span |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
-| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem` |
+| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
 | `PvotLoadingContent` | `core-ui` | Indeterminate progress indicator for `UiState.Loading` |
 | `PvotErrorContent` | `core-ui` | Title, message and retry button for `UiState.Error` |
@@ -166,6 +223,7 @@ default comes from its `*Defaults` object:
 | Slider colors | `PvotSliderDefaults.themeColors()`, derived from the color scheme | `PvotSliderDefaults.colors(colorScheme, ...)` |
 | Picker colors | `PvotPickerDefaults.themeColors()`, derived from the color scheme | `PvotPickerDefaults.colors(...)`, `PvotPickerDefaults.colors(colorScheme)` |
 | Card | `PvotCardDefaults.shape`, `.colors()`, `.elevation()` | parameters of `PvotCard` |
+| Glass card | `PvotGlassCardDefaults.CornerRadius`, `.ContentPadding`, `PvotGlassDefaults.Style` | parameters of `PvotGlassCard` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
 | Screen | `PvotScreenDefaults.contentPadding()`, `.VerticalArrangement` | parameters of `PvotScreen` |
 
@@ -196,7 +254,7 @@ matching on the message.
 
 **Design**
 - Use the tokens: `MaterialTheme.colorScheme`, `PvotShapes`, `PvotSpacing`, `PvotMotion`,
-  `PvotDurations`. A value used by one component only belongs in that component's `*Defaults`.
+  `PvotDurations`, `PvotGlassStyle`. A value used by one component only belongs in that component's `*Defaults`.
 - Component colors and sizes go through a `*Colors`/`*Sizes` class and a `*Defaults` object, and
   the component takes them as parameters. The theme never holds component configuration.
 - Respect the package layers; `theme` imports nothing from the library.

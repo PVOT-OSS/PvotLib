@@ -31,11 +31,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+import com.prauga.pvot.designsystem.effects.pvotGlass
+import com.prauga.pvot.designsystem.effects.pvotGlassRim
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
@@ -57,6 +64,9 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param modifier Modifier for the nav bar container
  * @param expandedIconRes Bar-level expanded icon override, or null to resolve per tab
  * @param expandedContentDescriptionRes Bar-level description override, or null to resolve per tab
+ * @param backdrop The content behind the bar, marked with
+ * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar
+ * as glass over it; null for a plain bar
  * @param sizes Size configuration for the bar and its items
  * @param colors Color configuration for the bar and its items
  * @param compact Whether to shrink the bar into its compact form: shorter, with smaller items and
@@ -70,11 +80,13 @@ public fun PvotNavBar(
     modifier: Modifier = Modifier,
     @DrawableRes expandedIconRes: Int? = null,
     @StringRes expandedContentDescriptionRes: Int? = null,
+    backdrop: PvotGlassBackdrop? = null,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
-    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),
+    colors: PvotNavBarColors =
+        if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
     compact: Boolean = false,
 ) {
-    PvotNavBar(modifier = modifier, sizes = sizes, colors = colors, compact = compact) {
+    PvotNavBar(modifier = modifier, backdrop = backdrop, sizes = sizes, colors = colors, compact = compact) {
         tabs.forEachIndexed { index, tab ->
             PillNavItem(
                 tab = tab,
@@ -97,6 +109,9 @@ public fun PvotNavBar(
  * The bar handles dragging along it to pick an item. Use [PvotNavBarItem] for the standard item.
  *
  * @param modifier Modifier for the nav bar container
+ * @param backdrop The content behind the bar, marked with
+ * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar
+ * as glass over it; null for a plain bar
  * @param sizes Size configuration for the bar
  * @param colors Color configuration for the bar
  * @param compact Whether to shrink the bar into its compact form, see the tab-list overload
@@ -105,12 +120,21 @@ public fun PvotNavBar(
 @Composable
 public fun PvotNavBar(
     modifier: Modifier = Modifier,
+    backdrop: PvotGlassBackdrop? = null,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
-    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),
+    colors: PvotNavBarColors =
+        if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
     compact: Boolean = false,
     content: @Composable RowScope.() -> Unit
 ) {
     val barShape = RoundedCornerShape(sizes.cornerRadius)
+    val glassIntensity = LocalPvotGlassIntensity.current
+    val glassStyle = PvotGlassDefaults.style(glassIntensity)
+    val shadowColor = if (backdrop != null) {
+        Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
+    } else {
+        DefaultShadowColor
+    }
     val state = remember { NavBarState() }
     val haptics = LocalHapticFeedback.current
 
@@ -137,9 +161,24 @@ public fun PvotNavBar(
             modifier = Modifier
                 .barWidthModifier(sizes)
                 .height(barHeight)
-                .shadow(sizes.barShadowElevation, barShape, clip = false),
+                .shadow(
+                    sizes.barShadowElevation,
+                    barShape,
+                    clip = false,
+                    ambientColor = shadowColor,
+                    spotColor = shadowColor
+                )
+                .then(
+                    if (backdrop != null) {
+                        with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
+                            .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
+                            .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
+                    } else {
+                        Modifier
+                    }
+                ),
             shape = barShape,
-            color = colors.containerColor,
+            color = if (backdrop != null) Color.Transparent else colors.containerColor,
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
         ) {

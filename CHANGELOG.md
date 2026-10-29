@@ -4,6 +4,26 @@ PvotLib follows [semantic versioning](https://semver.org): a major version may b
 versions add to it, and patch versions only fix things. `design-system` and `core-ui` are released
 together under one version.
 
+## Unreleased
+
+### Added
+- `design-system`:
+  - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a
+    `PvotGlassBackdrop` (`rememberPvotGlassBackdrop`, `Modifier.pvotGlassBackdrop`): frosted
+    on Android 12+, with a rim that bends, splits and mirrors what lies behind on Android 13+.
+    `Modifier.pvotGlassRim` draws a rim of light that turns as the phone tilts. Styled through
+    `PvotGlassStyle` and `PvotGlassDefaults`.
+  - `LocalPvotGlassIntensity` and `PvotGlassDefaults.style(intensity)` set how much glass, from a
+    frosted blur only (0) to the full effect (1); `pvotGlassRim` takes an `alpha`.
+  - `components`: `PvotGlassCard` and `PvotGlassIconButton`, with their defaults. Over a
+    backdrop they float on a soft shadow, and swell and brighten while pressed.
+  - `navigation`: `PvotNavBarDefaults.glassColors()`.
+
+### Changed
+- `PvotNavBar` takes a `backdrop`: given one, the bar is glass over it, with
+  `PvotNavBarDefaults.glassColors()` and a softer shadow. A new parameter, so code compiled
+  against 0.1.0 must be recompiled.
+
 ## 0.1.0 (unreleased)
 
 The first published release.

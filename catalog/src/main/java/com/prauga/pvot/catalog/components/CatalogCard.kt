@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.components.PvotCard
 
 @Composable
 fun CatalogCard(
@@ -20,7 +19,7 @@ fun CatalogCard(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    PvotCard(modifier = modifier.fillMaxWidth()) {
+    GlassPanel(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

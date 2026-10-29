@@ -38,6 +38,7 @@ import com.prauga.pvot.catalog.legacy.CatalogNavBar
 import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.legacy.LocalNewUi
 import com.prauga.pvot.catalog.components.CatalogCard
+import com.prauga.pvot.catalog.components.GlassDemo
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.PvotSkeleton
@@ -193,6 +194,12 @@ fun CatalogScreen(
                         modifier = Modifier.padding(top = 12.dp)
                     )
                 }
+            }
+        }
+
+        item {
+            CatalogCard(title = stringResource(R.string.catalog_glass)) {
+                GlassDemo()
             }
         }
 

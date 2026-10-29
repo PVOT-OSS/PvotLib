@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotThemeDefaults
@@ -72,11 +73,12 @@ internal fun CatalogNavBar(
     onTabClick: (Int) -> Unit,
     tabs: List<PvotTabItem>,
     modifier: Modifier = Modifier,
-    compact: Boolean = false
+    compact: Boolean = false,
+    backdrop: PvotGlassBackdrop? = null
 ) {
     if (LocalNewUi.current) {
-        PvotNavBar(selectedTab, onTabClick, tabs, modifier, compact = compact)
+        PvotNavBar(selectedTab, onTabClick, tabs, modifier, backdrop = backdrop, compact = compact)
     } else {
-        LegacyNavBar(selectedTab, onTabClick, tabs, modifier)
+        LegacyNavBar(selectedTab, onTabClick, tabs, modifier, backdrop)
     }
 }

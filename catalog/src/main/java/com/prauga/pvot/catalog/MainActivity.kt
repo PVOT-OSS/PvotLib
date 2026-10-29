@@ -5,6 +5,7 @@ package com.prauga.pvot.catalog
 
 import android.os.Bundle
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -24,9 +25,14 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.platform.PvotBaseActivity
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
+import com.prauga.pvot.catalog.components.LiveBackground
+import com.prauga.pvot.catalog.components.LocalBackgroundBackdrop
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.catalog.hub.CatalogHub
 import com.prauga.pvot.catalog.legacy.CatalogNavBar
@@ -50,7 +56,9 @@ class MainActivity : PvotBaseActivity() {
         setPvotContent {
             val dynamicColor by PreferencesManager.dynamicColorEnabled.collectAsState()
             val newUi by PreferencesManager.newUiEnabled.collectAsState()
+            val glassIntensity by PreferencesManager.glassIntensity.collectAsState()
             CompositionLocalProvider(
+                LocalPvotGlassIntensity provides glassIntensity,
                 LocalNewUi provides newUi,
                 LocalAppIcons provides if (newUi) NewIcons else LegacyIcons
             ) {
@@ -82,6 +90,11 @@ fun DesignSystemShowcase() {
             }
         }
     }
+    // The old UI is the glass demo as it was: a live background behind glass cards and a glass
+    // bar. The new UI keeps the glass bar and cards over the plain background the app has always had.
+    val newUi = LocalNewUi.current
+    val backdrop = rememberPvotGlassBackdrop()
+    val backgroundBackdrop = rememberPvotGlassBackdrop()
 
     val icons = LocalAppIcons.current
     val tabs = listOf(
@@ -118,26 +131,44 @@ fun DesignSystemShowcase() {
                     navCompact = false
                 },
                 tabs = tabs,
-                compact = navCompact
+                compact = navCompact,
+                backdrop = backdrop
             )
         }
     ) { innerPadding ->
-        val containerModifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(scrollConnection)
-            .background(MaterialTheme.colorScheme.background)
-            .padding(top = innerPadding.calculateTopPadding())
-
-        when (selectedTab) {
-            0 -> HomeScreen(label = "Home", modifier = containerModifier)
-            1 -> AppsScreen(label = "Apps", modifier = containerModifier)
-            2 -> if (LocalNewUi.current) {
-                CatalogHub(modifier = containerModifier)
-            } else {
-                CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .pvotGlassBackdrop(backdrop)
+        ) {
+            if (!newUi) {
+                LiveBackground(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .pvotGlassBackdrop(backgroundBackdrop)
+                )
             }
-            3 -> AboutScreen(label = "About", modifier = containerModifier)
-            else -> EmptyScreen(label = "None", modifier = containerModifier)
+            CompositionLocalProvider(
+                LocalBackgroundBackdrop provides if (newUi) null else backgroundBackdrop
+            ) {
+                val containerModifier = Modifier
+                    .fillMaxSize()
+                    .nestedScroll(scrollConnection)
+                    .padding(top = innerPadding.calculateTopPadding())
+
+                when (selectedTab) {
+                    0 -> HomeScreen(label = "Home", modifier = containerModifier)
+                    1 -> AppsScreen(label = "Apps", modifier = containerModifier)
+                    2 -> if (newUi) {
+                        CatalogHub(modifier = containerModifier)
+                    } else {
+                        CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+                    }
+                    3 -> AboutScreen(label = "About", modifier = containerModifier)
+                    else -> EmptyScreen(label = "None", modifier = containerModifier)
+                }
+            }
         }
     }
 }
