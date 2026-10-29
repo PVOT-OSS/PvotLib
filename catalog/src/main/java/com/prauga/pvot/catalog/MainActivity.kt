@@ -25,6 +25,7 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.platform.PvotBaseActivity
@@ -55,7 +56,9 @@ class MainActivity : PvotBaseActivity() {
         setPvotContent {
             val dynamicColor by PreferencesManager.dynamicColorEnabled.collectAsState()
             val newUi by PreferencesManager.newUiEnabled.collectAsState()
+            val glassIntensity by PreferencesManager.glassIntensity.collectAsState()
             CompositionLocalProvider(
+                LocalPvotGlassIntensity provides glassIntensity,
                 LocalNewUi provides newUi,
                 LocalAppIcons provides if (newUi) NewIcons else LegacyIcons
             ) {

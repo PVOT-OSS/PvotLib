@@ -37,6 +37,7 @@ import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.components.DeveloperCard
 import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
 import com.prauga.pvot.catalog.components.GlassPanel
+import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.catalog.data.model.GithubUser
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
@@ -244,6 +245,45 @@ fun AboutScreen(
         }
 
         item {
+            val intensity by PreferencesManager.glassIntensity.collectAsState()
+
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.about_glass_title),
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Text(
+                                text = stringResource(R.string.about_glass_subtitle),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(top = 4.dp)
+                            )
+                        }
+                        Text(
+                            text = glassLabel(intensity),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    PvotSlider(
+                        value = intensity,
+                        onValueChange = { PreferencesManager.setGlassIntensity(it) },
+                        steps = 3,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            }
+        }
+
+        item {
             val dynamicColorEnabled by PreferencesManager.dynamicColorEnabled.collectAsState()
 
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
@@ -275,4 +315,13 @@ fun AboutScreen(
             }
         }
     }
+}
+
+/** The name of each stop of the glass slider, from the cheapest to the full effect. */
+private fun glassLabel(intensity: Float): String = when {
+    intensity <= 0f -> "Frosted"
+    intensity <= 0.34f -> "Light"
+    intensity <= 0.67f -> "Medium"
+    intensity < 1f -> "Rich"
+    else -> "Full"
 }

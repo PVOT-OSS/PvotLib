@@ -30,7 +30,9 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.designsystem.components.PvotGlassCard
 import com.prauga.pvot.designsystem.components.PvotGlassIconButton
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.pvotGlass
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.pvotGlassRim
@@ -39,6 +41,7 @@ import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 @Composable
 fun GlassDemo(modifier: Modifier = Modifier) {
     val backdrop = rememberPvotGlassBackdrop()
+    val intensity = LocalPvotGlassIntensity.current
     var taps by remember { mutableIntStateOf(0) }
 
     Column(
@@ -63,8 +66,8 @@ fun GlassDemo(modifier: Modifier = Modifier) {
                     .padding(16.dp)
                     .fillMaxWidth()
                     .height(46.dp)
-                    .pvotGlass(backdrop)
-                    .pvotGlassRim(),
+                    .pvotGlass(backdrop, style = PvotGlassDefaults.style(intensity))
+                    .pvotGlassRim(alpha = intensity),
                 contentAlignment = Alignment.CenterStart
             ) {
                 Text(

@@ -164,6 +164,15 @@ Box {
 | 12 | frost |
 | 11 and older | the tint alone |
 
+**How much glass:** `LocalPvotGlassIntensity` (0 to 1, default 1) is read by every glass in the tree,
+including `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton`. Provide it near the root and let
+the user choose. 1 is the full effect; 0 is the cheapest, a frosted blur with a surface-colored
+tint and no edge lens, rim or light, which is what a frosted header or bar looks like. Below
+`PvotGlassDefaults.LensThreshold` the edge lens is switched off entirely, so the glass stops paying
+for it. For a style of your own, `PvotGlassDefaults.style(intensity, base)` returns `base` at that
+intensity, and `pvotGlassRim(alpha = intensity)` fades the rim. Apps should keep glass to a few
+floating surfaces (bars, sheets); at 0 the catalog turns its cards back into plain cards.
+
 `PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
 the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width,
 `CapsuleRadius`, and the press and shadow values of the glass components. The glass can't show

@@ -20,8 +20,13 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.components.PvotCard
+import com.prauga.pvot.catalog.legacy.LocalNewUi
+import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotGlassCard
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
 import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
@@ -39,6 +44,17 @@ fun GlassPanel(
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
+    if (LocalBackgroundBackdrop.current == null) {
+        // Glass shows what is behind it; with a plain background there is nothing to show, so
+        // these are plain cards, as before the redesign.
+        PvotCard(modifier = modifier.fillMaxWidth(), onClick = onClick, content = content)
+        return
+    }
+    if (LocalPvotGlassIntensity.current <= 0f) {
+        // The lowest setting is glass on the bars only; cards go back to plain surfaces.
+        PvotCard(modifier = modifier.fillMaxWidth(), onClick = onClick, content = content)
+        return
+    }
     PvotGlassCard(
         backdrop = LocalBackgroundBackdrop.current,
         modifier = modifier.fillMaxWidth(),
@@ -52,9 +68,11 @@ fun GlassPanel(
 @Composable
 fun LiveBackground(modifier: Modifier = Modifier) {
     val colors = MaterialTheme.colorScheme
+    // The old UI keeps the old brand gradient; the new one the vivid one.
+    val newUi = LocalNewUi.current
     val blobs = listOf(
-        PvotNavBarDefaults.GradientStart,
-        PvotNavBarDefaults.GradientEnd,
+        if (newUi) PvotNavBarDefaults.GradientStart else LegacyGradientStart,
+        if (newUi) PvotNavBarDefaults.GradientEnd else LegacyGradientEnd,
         colors.tertiaryContainer,
         colors.primary,
         colors.secondaryContainer
@@ -91,6 +109,9 @@ fun LiveBackground(modifier: Modifier = Modifier) {
         }
     }
 }
+
+private val LegacyGradientStart = Color(0xFF9B84FF)
+private val LegacyGradientEnd = Color(0xFF6B66FF)
 
 private const val BackgroundLoopMillis = 30_000
 

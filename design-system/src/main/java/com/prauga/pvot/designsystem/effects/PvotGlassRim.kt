@@ -35,25 +35,29 @@ import kotlin.math.min
  * @param width Width of the rim
  * @param softness How much the rim is blurred, 0 for a crisp line
  * @param followTilt Whether the light turns as the phone tilts
+ * @param alpha How strong the rim is, 0 to 1; at 0 nothing is drawn and the tilt sensor is left
+ * alone
  */
 public fun Modifier.pvotGlassRim(
     cornerRadius: Dp = PvotGlassDefaults.CapsuleRadius,
     width: Dp = PvotGlassDefaults.RimWidth,
     softness: Dp = PvotGlassDefaults.RimSoftness,
     followTilt: Boolean = true,
-): Modifier = this then GlassRimElement(cornerRadius, width, softness, followTilt)
+    alpha: Float = 1f,
+): Modifier = this then GlassRimElement(cornerRadius, width, softness, followTilt, alpha)
 
 private data class GlassRimElement(
     val cornerRadius: Dp,
     val width: Dp,
     val softness: Dp,
     val followTilt: Boolean,
+    val alpha: Float,
 ) : ModifierNodeElement<GlassRimNode>() {
 
-    override fun create(): GlassRimNode = GlassRimNode(cornerRadius, width, softness, followTilt)
+    override fun create(): GlassRimNode = GlassRimNode(cornerRadius, width, softness, followTilt, alpha)
 
     override fun update(node: GlassRimNode) {
-        node.update(cornerRadius, width, softness, followTilt)
+        node.update(cornerRadius, width, softness, followTilt, alpha)
     }
 
     override fun InspectorInfo.inspectableProperties() {
@@ -62,6 +66,7 @@ private data class GlassRimElement(
         properties["width"] = width
         properties["softness"] = softness
         properties["followTilt"] = followTilt
+        properties["alpha"] = alpha
     }
 }
 
@@ -70,6 +75,7 @@ private class GlassRimNode(
     var width: Dp,
     var softness: Dp,
     var followTilt: Boolean,
+    var alpha: Float,
 ) : Modifier.Node(), DrawModifierNode {
 
     private val onTilt = Runnable { invalidateDraw() }
@@ -94,33 +100,42 @@ private class GlassRimNode(
     }
     private var paintKey: Any? = null
 
+    private var tilting = false
+
+    private fun syncTilt() {
+        val wanted = isAttached && followTilt && alpha > 0f
+        if (wanted == tilting) return
+        tilting = wanted
+        if (wanted) {
+            TiltLight.addListener(requireView().context, onTilt)
+        } else {
+            TiltLight.removeListener(onTilt)
+        }
+    }
+
     override fun onAttach() {
-        if (followTilt) TiltLight.addListener(requireView().context, onTilt)
+        syncTilt()
     }
 
     override fun onDetach() {
-        TiltLight.removeListener(onTilt)
+        if (tilting) TiltLight.removeListener(onTilt)
+        tilting = false
     }
 
-    fun update(cornerRadius: Dp, width: Dp, softness: Dp, followTilt: Boolean) {
+    fun update(cornerRadius: Dp, width: Dp, softness: Dp, followTilt: Boolean, alpha: Float) {
         this.cornerRadius = cornerRadius
         this.width = width
         this.softness = softness
-        if (followTilt != this.followTilt) {
-            this.followTilt = followTilt
-            if (followTilt) {
-                TiltLight.addListener(requireView().context, onTilt)
-            } else {
-                TiltLight.removeListener(onTilt)
-            }
-        }
+        this.followTilt = followTilt
+        this.alpha = alpha
+        syncTilt()
         invalidateDraw()
     }
 
     override fun ContentDrawScope.draw() {
         drawContent()
         val stroke = width.toPx()
-        if (stroke <= 0f || size.width <= 0f || size.height <= 0f) return
+        if (alpha <= 0f || stroke <= 0f || size.width <= 0f || size.height <= 0f) return
         val blur = softness.toPx()
         val key = stroke to blur
         if (key != paintKey) {
@@ -146,10 +161,10 @@ private class GlassRimNode(
         drawIntoCanvas { canvas ->
             val native = canvas.nativeCanvas
             if (lit < 1f) {
-                evenPaint.alpha = ((EVEN_COLOR ushr 24) * (1f - lit)).toInt()
+                evenPaint.alpha = ((EVEN_COLOR ushr 24) * (1f - lit) * alpha).toInt()
                 native.drawRoundRect(rect, radius, radius, evenPaint)
             }
-            paint.alpha = (lit * 255).toInt()
+            paint.alpha = (lit * 255 * alpha).toInt()
             native.drawRoundRect(rect, radius, radius, paint)
         }
     }

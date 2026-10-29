@@ -13,6 +13,8 @@ together under one version.
     on Android 12+, with a rim that bends, splits and mirrors what lies behind on Android 13+.
     `Modifier.pvotGlassRim` draws a rim of light that turns as the phone tilts. Styled through
     `PvotGlassStyle` and `PvotGlassDefaults`.
+  - `LocalPvotGlassIntensity` and `PvotGlassDefaults.style(intensity)` set how much glass, from a
+    frosted blur only (0) to the full effect (1); `pvotGlassRim` takes an `alpha`.
   - `components`: `PvotGlassCard` and `PvotGlassIconButton`, with their defaults. Over a
     backdrop they float on a soft shadow, and swell and brighten while pressed.
   - `navigation`: `PvotNavBarDefaults.glassColors()`.

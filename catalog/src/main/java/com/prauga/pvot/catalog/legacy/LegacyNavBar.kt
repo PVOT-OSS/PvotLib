@@ -45,6 +45,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.DefaultShadowColor
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
@@ -56,6 +57,11 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+import com.prauga.pvot.designsystem.effects.pvotGlass
+import com.prauga.pvot.designsystem.effects.pvotGlassRim
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotShapes
@@ -78,14 +84,14 @@ private class LegacyNavSizes {
     val itemSpacing = PvotSpacing.XS
 }
 
-private class LegacyNavColors {
-    val gradient = Brush.horizontalGradient(listOf(Color(0xFF9B84FF), Color(0xFF6B66FF)))
-    val collapsedChipColor = Color(0xFF4D4D4F)
-    val containerColor = Color(0x1AFFFFFF)
-    val iconSelectedColor = Color.White
-    val iconUnselectedColor = Color(0xFFECECEC)
-    val rippleColor = Color.White.copy(alpha = 0.25f)
-}
+private class LegacyNavColors(
+    val gradient: Brush = Brush.horizontalGradient(listOf(Color(0xFF9B84FF), Color(0xFF6B66FF))),
+    val collapsedChipColor: Color = Color(0xFF4D4D4F),
+    val containerColor: Color = Color(0x1AFFFFFF),
+    val iconSelectedColor: Color = Color.White,
+    val iconUnselectedColor: Color = Color(0xFFECECEC),
+    val rippleColor: Color = Color.White.copy(alpha = 0.25f)
+)
 
 private val LegacySizes = LegacyNavSizes()
 private val LegacyColors = LegacyNavColors()
@@ -96,9 +102,22 @@ internal fun LegacyNavBar(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
     tabs: List<PvotTabItem>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    backdrop: PvotGlassBackdrop? = null
 ) {
-    LegacyBarContainer(modifier) {
+    val onSurface = MaterialTheme.colorScheme.onSurface
+    // As a glass bar: no fill of its own, no chips behind unselected items.
+    val colors = if (backdrop != null) {
+        LegacyNavColors(
+            collapsedChipColor = Color.Transparent,
+            containerColor = Color.Transparent,
+            iconUnselectedColor = onSurface.copy(alpha = 0.8f),
+            rippleColor = onSurface.copy(alpha = 0.12f)
+        )
+    } else {
+        LegacyColors
+    }
+    LegacyBarContainer(modifier, backdrop, colors) {
         tabs.forEachIndexed { index, tab ->
             LegacyPillNavItem(
                 tab = tab,
@@ -108,16 +127,28 @@ internal fun LegacyNavBar(
                 expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
                 expandedContentDescriptionRes = tab.contentDescriptionRes,
                 sizes = LegacySizes,
-                colors = LegacyColors
+                colors = colors
             )
         }
     }
 }
 
 @Composable
-private fun LegacyBarContainer(modifier: Modifier, content: @Composable RowScope.() -> Unit) {
+private fun LegacyBarContainer(
+    modifier: Modifier,
+    backdrop: PvotGlassBackdrop?,
+    colors: LegacyNavColors,
+    content: @Composable RowScope.() -> Unit
+) {
     val sizes = LegacySizes
     val barShape = RoundedCornerShape(sizes.cornerRadius)
+    val glassIntensity = LocalPvotGlassIntensity.current
+    val glassStyle = PvotGlassDefaults.style(glassIntensity)
+    val shadowColor = if (backdrop != null) {
+        Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
+    } else {
+        DefaultShadowColor
+    }
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -129,9 +160,24 @@ private fun LegacyBarContainer(modifier: Modifier, content: @Composable RowScope
             modifier = Modifier
                 .wrapContentWidth()
                 .height(sizes.barHeight)
-                .shadow(sizes.barShadowElevation, barShape, clip = false),
+                .shadow(
+                    sizes.barShadowElevation,
+                    barShape,
+                    clip = false,
+                    ambientColor = shadowColor,
+                    spotColor = shadowColor
+                )
+                .then(
+                    if (backdrop != null) {
+                        with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
+                            .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
+                            .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
+                    } else {
+                        Modifier
+                    }
+                ),
             shape = barShape,
-            color = LegacyColors.containerColor,
+            color = if (backdrop != null) Color.Transparent else colors.containerColor,
             tonalElevation = 0.dp,
             shadowElevation = 0.dp
         ) {

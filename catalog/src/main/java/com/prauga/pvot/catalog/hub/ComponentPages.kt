@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.components.GlassDemo
 import com.prauga.pvot.coreui.PvotEmptyContent
 import com.prauga.pvot.coreui.PvotErrorContent
 import com.prauga.pvot.coreui.PvotLoadingContent
@@ -652,6 +653,24 @@ internal fun InputsPage(onBack: () -> Unit) {
                 singleLine = true,
                 enabled = enabled
             )
+        }
+    }
+}
+
+// ───────────────────────────── Glass ─────────────────────────────
+
+@Composable
+internal fun GlassPage(onBack: () -> Unit) {
+    DetailPage(
+        title = "Glass",
+        summary = "Surfaces that show what is behind them. Experimental: this is the first cut and " +
+            "is being reworked for speed on low-end devices.",
+        onBack = onBack,
+        code = "val backdrop = rememberPvotGlassBackdrop()\n\nBox(Modifier.pvotGlassBackdrop(backdrop)) { Content() }\n" +
+            "PvotGlassCard(backdrop = backdrop) { Text(\"On glass\") }"
+    ) {
+        DemoSection(title = "Live demo", caption = "Glass card and button over a moving background", framed = false) {
+            GlassDemo()
         }
     }
 }
