@@ -20,19 +20,22 @@ import java.time.LocalTime
  * @param time The currently selected time
  * @param onTimeChange Called when the user selects a new time
  * @param modifier Modifier for the picker container
+ * @param colors Color configuration for the wheels
  */
 @Composable
 fun PvotClockPicker(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
 ) {
     MultiWheelEngine(
         configs = time.toWheelConfigs(),
         onValuesSelected = { values ->
             onTimeChange(wheelValuesToLocalTime(values))
         },
-        modifier = modifier
+        modifier = modifier,
+        colors = colors
     )
 }
 

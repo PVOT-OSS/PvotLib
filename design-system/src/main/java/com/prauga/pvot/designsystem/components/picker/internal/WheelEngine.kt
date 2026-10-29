@@ -45,7 +45,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prauga.pvot.designsystem.R
-import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
+import com.prauga.pvot.designsystem.components.picker.PvotPickerDefaults
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 import kotlin.math.abs
 import kotlinx.coroutines.launch
@@ -67,7 +67,7 @@ internal fun WheelEngine(
     config: WheelConfig,
     onValueSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = LocalPvotPickerColors.current,
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors(),
     itemHeight: Dp = DefaultItemHeight,
     visibleItemsCount: Int = DefaultVisibleItems
 ) {
@@ -225,7 +225,7 @@ internal fun MultiWheelEngine(
     configs: List<WheelConfig>,
     onValuesSelected: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = LocalPvotPickerColors.current
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
 ) {
     val selectedValues = remember(configs) {
         configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()

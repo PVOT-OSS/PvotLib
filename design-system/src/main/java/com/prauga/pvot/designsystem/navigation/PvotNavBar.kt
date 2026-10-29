@@ -28,7 +28,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /**
  * A floating bottom navigation bar with animated pill-style items.
@@ -55,8 +54,8 @@ fun PvotNavBar(
     modifier: Modifier = Modifier,
     @DrawableRes expandedIconRes: Int? = null,
     @StringRes expandedContentDescriptionRes: Int? = null,
-    sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
-    colors: PvotNavBarColors = PvotTheme.navBarColors,
+    sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
+    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),
 ) {
     PvotNavBar(modifier = modifier, sizes = sizes, colors = colors) {
         tabs.forEachIndexed { index, tab ->
@@ -89,8 +88,8 @@ fun PvotNavBar(
 @Composable
 fun PvotNavBar(
     modifier: Modifier = Modifier,
-    sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
-    colors: PvotNavBarColors = PvotTheme.navBarColors,
+    sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
+    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),
     content: @Composable RowScope.() -> Unit
 ) {
     val barShape = RoundedCornerShape(sizes.cornerRadius)

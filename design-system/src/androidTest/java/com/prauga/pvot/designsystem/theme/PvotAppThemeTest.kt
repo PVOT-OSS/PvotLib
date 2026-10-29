@@ -5,8 +5,6 @@ package com.prauga.pvot.designsystem.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
 import org.junit.Assert.assertEquals
@@ -27,7 +25,7 @@ class PvotAppThemeTest {
 
         composeTestRule.setContent {
             PvotAppTheme {
-                navBarColors = PvotTheme.navBarColors
+                navBarColors = PvotNavBarDefaults.themeColors()
                 Text("Test")
             }
         }
@@ -46,9 +44,10 @@ class PvotAppThemeTest {
         var iconSelectedColor: Color? = null
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                collapsedChipColor = PvotTheme.navBarColors.collapsedChipColor
-                iconSelectedColor = PvotTheme.navBarColors.iconSelectedColor
+            PvotAppTheme(dynamicColor = false) {
+                val colors = PvotNavBarDefaults.themeColors()
+                collapsedChipColor = colors.collapsedChipColor
+                iconSelectedColor = colors.iconSelectedColor
                 Text("Test")
             }
         }
@@ -58,32 +57,17 @@ class PvotAppThemeTest {
     }
 
     @Test
-    fun theme_customNavBarColors_areApplied() {
-        val customChipColor = Color.Red
-        val customIconColor = Color.Blue
-
-        var appliedChipColor: Color? = null
-        var appliedIconColor: Color? = null
+    fun theme_withoutDynamicColor_reportsStaticColor() {
+        var isDynamicColor: Boolean? = null
 
         composeTestRule.setContent {
-            PvotAppTheme(
-                navBarColors = PvotNavBarColors(
-                    gradient = Brush.horizontalGradient(listOf(Color.Red, Color.Blue)),
-                    collapsedChipColor = customChipColor,
-                    containerColor = Color.Black,
-                    iconSelectedColor = customIconColor,
-                    iconUnselectedColor = Color.Gray,
-                    rippleColor = Color.White
-                )
-            ) {
-                appliedChipColor = PvotTheme.navBarColors.collapsedChipColor
-                appliedIconColor = PvotTheme.navBarColors.iconSelectedColor
+            PvotAppTheme(dynamicColor = false) {
+                isDynamicColor = PvotTheme.isDynamicColor
                 Text("Test")
             }
         }
 
-        assertEquals(customChipColor, appliedChipColor)
-        assertEquals(customIconColor, appliedIconColor)
+        assertEquals(false, isDynamicColor)
     }
 
     @Test

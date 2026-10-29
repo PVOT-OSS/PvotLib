@@ -4,7 +4,6 @@
 package com.prauga.pvot.designsystem.navigation
 
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
@@ -27,6 +26,3 @@ data class PvotNavBarColors(
     val iconUnselectedColor: Color,
     val rippleColor: Color
 )
-
-/** The [PvotNavBarColors] in scope. Provided by PvotAppTheme, read via PvotTheme.navBarColors. */
-val LocalPvotNavBarColors = staticCompositionLocalOf { PvotNavBarDefaults.colors() }

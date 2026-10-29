@@ -14,14 +14,8 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
-import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarColors
-import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarSizes
-import com.prauga.pvot.designsystem.navigation.PvotNavBarColors
-import com.prauga.pvot.designsystem.navigation.PvotNavBarSizes
-import com.prauga.pvot.designsystem.components.picker.LocalPvotPickerColors
-import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
 
 /** The Pvot palette arranged for a dark background. */
 val PvotDarkColorScheme = darkColorScheme(
@@ -94,15 +88,12 @@ val PvotLightColorScheme = lightColorScheme(
  * outside a component, or to derive one.
  */
 object PvotTheme {
-    val navBarColors: PvotNavBarColors
-        @Composable get() = LocalPvotNavBarColors.current
-
-    val navBarSizes: PvotNavBarSizes
-        @Composable get() = LocalPvotNavBarSizes.current
-
-    val pickerColors: PvotPickerColors
-        @Composable get() = LocalPvotPickerColors.current
+    /** Whether the platform's dynamic colors are in effect. */
+    val isDynamicColor: Boolean
+        @Composable get() = LocalPvotDynamicColor.current
 }
+
+internal val LocalPvotDynamicColor = staticCompositionLocalOf { false }
 
 /** Defaults for [PvotAppTheme]. */
 object PvotThemeDefaults {
@@ -134,39 +125,14 @@ object PvotThemeDefaults {
         darkTheme -> PvotDarkColorScheme
         else -> PvotLightColorScheme
     }
-
-    /**
-     * Nav bar colors derived from [colorScheme] while dynamic color is in effect, and the
-     * Pvot brand gradient otherwise.
-     */
-    @Composable
-    fun navBarColors(colorScheme: ColorScheme, dynamicColor: Boolean): PvotNavBarColors =
-        if (usingDynamicColor(dynamicColor)) navBarColors(colorScheme) else PvotTheme.navBarColors
-
-    /** Nav bar colors derived from [colorScheme]. */
-    fun navBarColors(colorScheme: ColorScheme) = PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
-        collapsedChipColor = colorScheme.surfaceVariant,
-        containerColor = colorScheme.surface.copy(alpha = 0.1f),
-        iconSelectedColor = colorScheme.onPrimary,
-        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f),
-        rippleColor = colorScheme.onPrimary.copy(alpha = 0.25f)
-    )
-
-    /** Picker colors derived from [colorScheme]. */
-    fun pickerColors(colorScheme: ColorScheme) = PvotPickerColors(
-        textColor = colorScheme.onBackground,
-        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
-        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
-    )
 }
 
 /**
  * Applies the Pvot design system to [content].
  *
- * Wraps [MaterialTheme] and additionally provides the nav bar and picker
- * configuration that Pvot components read for their defaults. Every value is
- * overridable, so an app can adopt the whole system or take it a piece at a time:
+ * Wraps [MaterialTheme] and additionally provides whether dynamic color is in effect,
+ * which Pvot components read for their defaults. Every value is overridable, so an
+ * app can adopt the whole system or take it a piece at a time:
  *
  * ```
  * PvotAppTheme(dynamicColor = true) {
@@ -178,9 +144,6 @@ object PvotThemeDefaults {
  * @param dynamicColor Whether to prefer the platform's wallpaper-derived colors
  * @param colorScheme The Material color scheme to apply
  * @param typography The Material type scale to apply
- * @param navBarColors Colors that PvotNavBar reads for its defaults
- * @param navBarSizes Sizes that PvotNavBar and PvotScreen read for their defaults
- * @param pickerColors Colors that the pickers read for their defaults
  */
 @Composable
 fun PvotAppTheme(
@@ -188,15 +151,10 @@ fun PvotAppTheme(
     dynamicColor: Boolean = false,
     colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
     typography: Typography = PvotTypography,
-    navBarColors: PvotNavBarColors = PvotThemeDefaults.navBarColors(colorScheme, dynamicColor),
-    navBarSizes: PvotNavBarSizes = PvotNavBarSizes(),
-    pickerColors: PvotPickerColors = PvotThemeDefaults.pickerColors(colorScheme),
     content: @Composable () -> Unit
 ) {
     CompositionLocalProvider(
-        LocalPvotNavBarColors provides navBarColors,
-        LocalPvotNavBarSizes provides navBarSizes,
-        LocalPvotPickerColors provides pickerColors
+        LocalPvotDynamicColor provides PvotThemeDefaults.usingDynamicColor(dynamicColor)
     ) {
         MaterialTheme(
             colorScheme = colorScheme,

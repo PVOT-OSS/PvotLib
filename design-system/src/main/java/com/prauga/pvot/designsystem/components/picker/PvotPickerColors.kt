@@ -3,8 +3,10 @@
 
 package com.prauga.pvot.designsystem.components.picker
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 /**
@@ -37,7 +39,15 @@ object PvotPickerDefaults {
         textSecondaryColor = textSecondaryColor,
         selectionBackgroundColor = selectionBackgroundColor
     )
-}
 
-/** The [PvotPickerColors] in scope. Provided by PvotAppTheme, read via PvotTheme.pickerColors. */
-val LocalPvotPickerColors = staticCompositionLocalOf { PvotPickerDefaults.colors() }
+    /** Picker colors derived from [colorScheme]. */
+    fun colors(colorScheme: ColorScheme): PvotPickerColors = PvotPickerColors(
+        textColor = colorScheme.onBackground,
+        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
+        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
+    )
+
+    /** Picker colors derived from the theme's color scheme. */
+    @Composable
+    fun themeColors(): PvotPickerColors = colors(MaterialTheme.colorScheme)
+}

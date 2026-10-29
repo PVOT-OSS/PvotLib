@@ -21,19 +21,22 @@ import kotlin.time.Duration.Companion.minutes
  * @param duration The currently selected duration, which must be in `[0h, 24h)`
  * @param onDurationChange Called when the user selects a new duration
  * @param modifier Modifier for the picker container
+ * @param colors Color configuration for the wheels
  */
 @Composable
 fun PvotDurationPicker(
     duration: Duration,
     onDurationChange: (Duration) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
 ) {
     MultiWheelEngine(
         configs = duration.toWheelConfigs(),
         onValuesSelected = { values ->
             onDurationChange(wheelValuesToDuration(values))
         },
-        modifier = modifier
+        modifier = modifier,
+        colors = colors
     )
 }
 

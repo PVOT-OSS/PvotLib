@@ -34,7 +34,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /**
  * A pill-style item for the slot-based [PvotNavBar].
@@ -58,8 +57,8 @@ fun RowScope.PvotNavBarItem(
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     label: (@Composable () -> Unit)? = null,
-    sizes: PvotNavBarSizes = PvotTheme.navBarSizes,
-    colors: PvotNavBarColors = PvotTheme.navBarColors
+    sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
+    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors()
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 

@@ -3,9 +3,13 @@
 
 package com.prauga.pvot.designsystem.navigation
 
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /** Defaults for [PvotNavBar] and its items. */
 object PvotNavBarDefaults {
@@ -41,4 +45,22 @@ object PvotNavBarDefaults {
         iconUnselectedColor = iconUnselectedColor,
         rippleColor = rippleColor
     )
+
+    /** Nav bar colors derived from [colorScheme]. */
+    fun colors(colorScheme: ColorScheme): PvotNavBarColors = PvotNavBarColors(
+        gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
+        collapsedChipColor = colorScheme.surfaceVariant,
+        containerColor = colorScheme.surface.copy(alpha = 0.1f),
+        iconSelectedColor = colorScheme.onPrimary,
+        iconUnselectedColor = colorScheme.onSurface.copy(alpha = 0.7f),
+        rippleColor = colorScheme.onPrimary.copy(alpha = 0.25f)
+    )
+
+    /**
+     * Nav bar colors derived from the theme's color scheme while dynamic color is in effect,
+     * and the Pvot brand gradient otherwise.
+     */
+    @Composable
+    fun themeColors(): PvotNavBarColors =
+        if (PvotTheme.isDynamicColor) colors(MaterialTheme.colorScheme) else colors()
 }

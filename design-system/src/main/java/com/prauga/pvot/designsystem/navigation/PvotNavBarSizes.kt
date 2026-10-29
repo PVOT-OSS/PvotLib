@@ -54,5 +54,5 @@ data class PvotNavBarSizes(
     val itemSpacing: Dp = 4.dp
 )
 
-/** The [PvotNavBarSizes] in scope. Provided by PvotAppTheme, read via PvotTheme.navBarSizes. */
+/** The [PvotNavBarSizes] in scope, read by PvotNavBar and PvotScreen for their defaults. */
 val LocalPvotNavBarSizes = staticCompositionLocalOf { PvotNavBarSizes() }
