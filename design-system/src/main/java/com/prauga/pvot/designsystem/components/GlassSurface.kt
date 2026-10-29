@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.isFinite
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
@@ -37,7 +38,11 @@ internal fun Modifier.glassSurface(
     enabled: Boolean,
     interactionSource: MutableInteractionSource,
 ): Modifier {
-    val shape = RoundedCornerShape(cornerRadius)
+    val shape = if (cornerRadius.isFinite) {
+        RoundedCornerShape(cornerRadius)
+    } else {
+        RoundedCornerShape(percent = 50)
+    }
     val pressed by interactionSource.collectIsPressedAsState()
     val fill by animateColorAsState(
         targetValue = if (pressed) PvotGlassDefaults.PressedFillColor else style.fillColor,
