@@ -4,12 +4,12 @@
 package com.prauga.pvot.catalog
 
 import android.os.Bundle
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -24,6 +24,8 @@ import com.prauga.pvot.designsystem.platform.PvotBaseActivity
 import com.prauga.pvot.designsystem.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
+import com.prauga.pvot.catalog.components.LiveBackground
+import com.prauga.pvot.catalog.components.LocalBackgroundBackdrop
 import com.prauga.pvot.catalog.screens.AboutScreen
 import com.prauga.pvot.catalog.screens.AppsScreen
 import com.prauga.pvot.catalog.screens.CatalogScreen
@@ -48,6 +50,7 @@ class MainActivity : PvotBaseActivity() {
 fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
     val backdrop = rememberPvotGlassBackdrop()
+    val backgroundBackdrop = rememberPvotGlassBackdrop()
 
     val tabs = listOf(
         PvotTabItem(
@@ -84,18 +87,29 @@ fun DesignSystemShowcase() {
             )
         }
     ) { innerPadding ->
-        val containerModifier = Modifier
-            .fillMaxSize()
-            .pvotGlassBackdrop(backdrop)
-            .background(MaterialTheme.colorScheme.background)
-            .padding(top = innerPadding.calculateTopPadding())
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pvotGlassBackdrop(backdrop)
+        ) {
+            LiveBackground(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pvotGlassBackdrop(backgroundBackdrop)
+            )
+            CompositionLocalProvider(LocalBackgroundBackdrop provides backgroundBackdrop) {
+                val containerModifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = innerPadding.calculateTopPadding())
 
-        when (selectedTab) {
-            0 -> HomeScreen(label = "Home", modifier = containerModifier)
-            1 -> AppsScreen(label = "Apps", modifier = containerModifier)
-            2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
-            3 -> AboutScreen(label = "About", modifier = containerModifier)
-            else -> EmptyScreen(label = "None", modifier = containerModifier)
+                when (selectedTab) {
+                    0 -> HomeScreen(label = "Home", modifier = containerModifier)
+                    1 -> AppsScreen(label = "Apps", modifier = containerModifier)
+                    2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+                    3 -> AboutScreen(label = "About", modifier = containerModifier)
+                    else -> EmptyScreen(label = "None", modifier = containerModifier)
+                }
+            }
         }
     }
 }

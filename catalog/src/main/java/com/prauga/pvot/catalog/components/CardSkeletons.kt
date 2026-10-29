@@ -17,13 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 
 /** Stands in for a [FeedCard] while the feed loads. */
 @Composable
 fun FeedCardSkeleton(modifier: Modifier = Modifier) {
-    PvotCard(modifier = modifier.fillMaxWidth()) {
+    GlassPanel(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,7 +49,7 @@ fun FeedCardSkeleton(modifier: Modifier = Modifier) {
 /** Stands in for an [AppCard] while the repository list loads. */
 @Composable
 fun AppCardSkeleton(modifier: Modifier = Modifier) {
-    PvotCard(modifier = modifier.fillMaxWidth()) {
+    GlassPanel(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
             PvotSkeleton(
                 modifier = Modifier
@@ -81,7 +80,7 @@ fun AppCardSkeleton(modifier: Modifier = Modifier) {
 /** Stands in for a [DeveloperCard] while the team profiles load. */
 @Composable
 fun DeveloperCardSkeleton(modifier: Modifier = Modifier) {
-    PvotCard(modifier = modifier.fillMaxWidth()) {
+    GlassPanel(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
