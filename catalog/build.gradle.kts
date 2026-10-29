@@ -7,14 +7,18 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val versionMajor = 1
+val versionMinor = 0
+val versionPatch = 0
+
 android {
     namespace = "com.prauga.pvot.catalog"
 
     defaultConfig {
         applicationId = "com.prauga.pvot"
         minSdk = 29
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = versionMajor * 10000 + versionMinor * 100 + versionPatch
+        versionName = "$versionMajor.$versionMinor.$versionPatch"
     }
 
     buildTypes {
