@@ -1,0 +1,22 @@
+What's in Pvot is the showcase for Pvot, the open source design system behind PVOT-OSS's Android apps. Every color, type style, motion and component is here to try, live, on your own phone.
+
+Design catalog
+• Foundations: color, typography, shape and spacing, motion, icons
+• Components: navigation bar, cards, skeletons, pickers, text fields, sliders, dialogs and sheets, loading, empty and error states
+• Each page has live demos you can touch, and the code to use it
+
+Liquid glass
+• Glass that frosts and bends what scrolls under it, with a rim of light that follows the tilt of your phone
+• Choose how much glass you want, from a light frost to the full effect
+
+Made for your phone
+• Dark and light themes, and Material You colors on Android 12 and later
+• A floating navigation bar you can drag along, which tucks away as you scroll
+
+PVOT-OSS in one place
+• The latest posts from squadri.me, the Pvot developer's blog
+• Every PVOT-OSS project, with its stars, issues and contributors
+
+Private and open
+• No ads, no accounts, no tracking
+• Free and open source under the Apache-2.0 licence: github.com/PVOT-OSS/PvotLib
