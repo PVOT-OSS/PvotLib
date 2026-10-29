@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.Dp
  * @param easing Easing curve for the fade and rise
  */
 @Composable
-fun Modifier.pvotReveal(
+public fun Modifier.pvotReveal(
     index: Int = 0,
     rise: Dp = PvotMotion.RevealRise,
     durationMillis: Int = PvotMotion.RevealDurationMillis,

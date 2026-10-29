@@ -52,7 +52,7 @@ import com.prauga.pvot.designsystem.theme.PvotShapes
  * @param colors Color configuration for this item
  */
 @Composable
-fun RowScope.PvotNavBarItem(
+public fun RowScope.PvotNavBarItem(
     selected: Boolean,
     onClick: () -> Unit,
     icon: @Composable () -> Unit,

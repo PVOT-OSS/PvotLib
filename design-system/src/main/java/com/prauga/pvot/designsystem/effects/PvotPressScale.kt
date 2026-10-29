@@ -23,7 +23,7 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
  * @param pressedScale Scale factor held while pressed
  */
 @Composable
-fun Modifier.pvotPressScale(
+public fun Modifier.pvotPressScale(
     interactionSource: InteractionSource,
     pressedScale: Float = PvotMotion.PressedScale,
 ): Modifier {

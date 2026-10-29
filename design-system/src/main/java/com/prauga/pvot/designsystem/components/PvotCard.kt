@@ -23,21 +23,21 @@ import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /** Defaults for [PvotCard]. */
-object PvotCardDefaults {
+public object PvotCardDefaults {
 
     /** How much of the surface variant shows through the card. */
-    const val ContainerAlpha = 0.5f
+    public const val ContainerAlpha: Float = 0.5f
 
-    val shape: Shape = PvotShapes.Card
+    public val shape: Shape = PvotShapes.Card
 
     @Composable
-    fun colors(
+    public fun colors(
         containerColor: Color =
             MaterialTheme.colorScheme.surfaceVariant.copy(alpha = ContainerAlpha)
     ): CardColors = CardDefaults.cardColors(containerColor = containerColor)
 
     @Composable
-    fun elevation(): CardElevation = CardDefaults.cardElevation()
+    public fun elevation(): CardElevation = CardDefaults.cardElevation()
 }
 
 /**
@@ -57,7 +57,7 @@ object PvotCardDefaults {
  * to presses elsewhere
  */
 @Composable
-fun PvotCard(
+public fun PvotCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     enabled: Boolean = true,

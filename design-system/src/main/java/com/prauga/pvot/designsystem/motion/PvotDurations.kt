@@ -3,8 +3,8 @@
 
 package com.prauga.pvot.designsystem.motion
 
-object PvotDurations {
-    const val Short: Int = 200
-    const val Medium: Int = 240
-    const val Long: Int = 260
+public object PvotDurations {
+    public const val Short: Int = 200
+    public const val Medium: Int = 240
+    public const val Long: Int = 260
 }

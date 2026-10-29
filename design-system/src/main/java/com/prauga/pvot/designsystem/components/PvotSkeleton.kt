@@ -23,20 +23,20 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /** Defaults for [PvotSkeleton]. */
-object PvotSkeletonDefaults {
+public object PvotSkeletonDefaults {
 
-    val Shape: Shape = PvotShapes.Small
+    public val Shape: Shape = PvotShapes.Small
 
     /** One full sweep of the highlight across the placeholder. */
-    const val DurationMillis = 1100
+    public const val DurationMillis: Int = 1100
 
     /** Fraction of the placeholder's width covered by the moving highlight. */
-    const val BandFraction = 0.6f
+    public const val BandFraction: Float = 0.6f
 
-    val baseColor: Color
+    public val baseColor: Color
         @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
 
-    val highlightColor: Color
+    public val highlightColor: Color
         @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.16f)
 }
 
@@ -61,7 +61,7 @@ object PvotSkeletonDefaults {
  * @param highlightColor Color of the band sweeping across the placeholder
  */
 @Composable
-fun PvotSkeleton(
+public fun PvotSkeleton(
     modifier: Modifier,
     shape: Shape = PvotSkeletonDefaults.Shape,
     baseColor: Color = PvotSkeletonDefaults.baseColor,

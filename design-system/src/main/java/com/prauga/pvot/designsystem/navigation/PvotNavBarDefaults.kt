@@ -8,29 +8,30 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /** Defaults for [PvotNavBar] and its items. */
-object PvotNavBarDefaults {
+public object PvotNavBarDefaults {
 
     /** Padding either side of an expanded item's content. */
-    val ItemHorizontalPadding = PvotSpacing.L
+    public val ItemHorizontalPadding: Dp = PvotSpacing.L
 
     /** Gap between an item's icon and its label. */
-    val IconTextGap = PvotSpacing.S
+    public val IconTextGap: Dp = PvotSpacing.S
 
-    val GradientStart = Color(0xFF9B84FF)
-    val GradientEnd = Color(0xFF6B66FF)
-    val CollapsedChipColor = Color(0xFF4D4D4F)
-    val ContainerColor = Color(0x1AFFFFFF)
-    val IconSelectedColor = Color.White
-    val IconUnselectedColor = Color(0xFFECECEC)
-    val RippleColor = Color.White.copy(alpha = 0.25f)
+    public val GradientStart: Color = Color(0xFF9B84FF)
+    public val GradientEnd: Color = Color(0xFF6B66FF)
+    public val CollapsedChipColor: Color = Color(0xFF4D4D4F)
+    public val ContainerColor: Color = Color(0x1AFFFFFF)
+    public val IconSelectedColor: Color = Color.White
+    public val IconUnselectedColor: Color = Color(0xFFECECEC)
+    public val RippleColor: Color = Color.White.copy(alpha = 0.25f)
 
-    val Gradient: Brush = Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
+    public val Gradient: Brush = Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
 
-    fun colors(
+    public fun colors(
         gradient: Brush = Gradient,
         collapsedChipColor: Color = CollapsedChipColor,
         containerColor: Color = ContainerColor,
@@ -47,7 +48,7 @@ object PvotNavBarDefaults {
     )
 
     /** Nav bar colors derived from [colorScheme]. */
-    fun colors(colorScheme: ColorScheme): PvotNavBarColors = PvotNavBarColors(
+    public fun colors(colorScheme: ColorScheme): PvotNavBarColors = PvotNavBarColors(
         gradient = Brush.horizontalGradient(listOf(colorScheme.primary, colorScheme.tertiary)),
         collapsedChipColor = colorScheme.surfaceVariant,
         containerColor = colorScheme.surface.copy(alpha = 0.1f),
@@ -61,6 +62,6 @@ object PvotNavBarDefaults {
      * and the Pvot brand gradient otherwise.
      */
     @Composable
-    fun themeColors(): PvotNavBarColors =
+    public fun themeColors(): PvotNavBarColors =
         if (PvotTheme.isDynamicColor) colors(MaterialTheme.colorScheme) else colors()
 }

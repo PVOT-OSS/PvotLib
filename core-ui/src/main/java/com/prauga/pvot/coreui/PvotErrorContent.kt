@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
  * @param modifier Modifier for the column
  */
 @Composable
-fun PvotErrorContent(
+public fun PvotErrorContent(
     title: String,
     message: String,
     onRetry: () -> Unit,

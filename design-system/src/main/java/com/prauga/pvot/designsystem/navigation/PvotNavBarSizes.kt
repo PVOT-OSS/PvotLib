@@ -4,6 +4,7 @@
 package com.prauga.pvot.designsystem.navigation
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -36,7 +37,7 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param itemSpacing Gap between adjacent items
  */
 @Immutable
-data class PvotNavBarSizes(
+public data class PvotNavBarSizes(
     val barHeight: Dp = 72.dp,
     val barWidth: Dp? = null,
     val fillWidth: Boolean = false,
@@ -56,4 +57,4 @@ data class PvotNavBarSizes(
 )
 
 /** The [PvotNavBarSizes] in scope, read by PvotNavBar and PvotScreen for their defaults. */
-val LocalPvotNavBarSizes = staticCompositionLocalOf { PvotNavBarSizes() }
+public val LocalPvotNavBarSizes: ProvidableCompositionLocal<PvotNavBarSizes> = staticCompositionLocalOf { PvotNavBarSizes() }

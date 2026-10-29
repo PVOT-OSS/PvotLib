@@ -18,7 +18,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 
 /** The Pvot palette arranged for a dark background. */
-val PvotDarkColorScheme = darkColorScheme(
+public val PvotDarkColorScheme: ColorScheme = darkColorScheme(
     primary = PvotPrimaryDark,
     onPrimary = PvotOnPrimaryDark,
     primaryContainer = PvotPrimaryContainerDark,
@@ -50,7 +50,7 @@ val PvotDarkColorScheme = darkColorScheme(
 )
 
 /** The Pvot palette arranged for a light background. */
-val PvotLightColorScheme = lightColorScheme(
+public val PvotLightColorScheme: ColorScheme = lightColorScheme(
     primary = PvotPrimaryLight,
     onPrimary = PvotOnPrimaryLight,
     primaryContainer = PvotPrimaryContainerLight,
@@ -87,23 +87,23 @@ val PvotLightColorScheme = lightColorScheme(
  * Component parameters default to these, so read them here when you need a value
  * outside a component, or to derive one.
  */
-object PvotTheme {
+public object PvotTheme {
     /** Whether the platform's dynamic colors are in effect. */
-    val isDynamicColor: Boolean
+    public val isDynamicColor: Boolean
         @Composable get() = LocalPvotDynamicColor.current
 }
 
 internal val LocalPvotDynamicColor = staticCompositionLocalOf { false }
 
 /** Defaults for [PvotAppTheme]. */
-object PvotThemeDefaults {
+public object PvotThemeDefaults {
 
     /** Whether the platform can supply a dynamic color scheme. */
-    val isDynamicColorSupported: Boolean
+    public val isDynamicColorSupported: Boolean
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
 
     /** Whether [dynamicColor] will actually take effect on this device. */
-    fun usingDynamicColor(dynamicColor: Boolean): Boolean =
+    public fun usingDynamicColor(dynamicColor: Boolean): Boolean =
         dynamicColor && isDynamicColorSupported
 
     /**
@@ -114,7 +114,7 @@ object PvotThemeDefaults {
      * @param dynamicColor Whether to prefer the platform's dynamic colors
      */
     @Composable
-    fun colorScheme(
+    public fun colorScheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
         dynamicColor: Boolean = false
     ): ColorScheme = when {
@@ -146,7 +146,7 @@ object PvotThemeDefaults {
  * @param typography The Material type scale to apply
  */
 @Composable
-fun PvotAppTheme(
+public fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),

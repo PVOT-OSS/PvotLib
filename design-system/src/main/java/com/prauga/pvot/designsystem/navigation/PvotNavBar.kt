@@ -48,7 +48,7 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param colors Color configuration for the bar and its items
  */
 @Composable
-fun PvotNavBar(
+public fun PvotNavBar(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
     tabs: List<PvotTabItem>,
@@ -87,7 +87,7 @@ fun PvotNavBar(
  * @param content The bar's items, typically [PvotNavBarItem]
  */
 @Composable
-fun PvotNavBar(
+public fun PvotNavBar(
     modifier: Modifier = Modifier,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),

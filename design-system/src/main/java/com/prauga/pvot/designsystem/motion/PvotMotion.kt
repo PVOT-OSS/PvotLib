@@ -4,33 +4,35 @@
 package com.prauga.pvot.designsystem.motion
 
 import androidx.compose.animation.core.CubicBezierEasing
+import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /** Shared motion defaults. Every value is overridable at the call site. */
-object PvotMotion {
+public object PvotMotion {
 
     /** Expo-out: arrives fast, eases to rest. */
-    val Settle = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
+    public val Settle: Easing = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
 
-    const val RevealDurationMillis = PvotDurations.Long
+    public const val RevealDurationMillis: Int = PvotDurations.Long
 
-    const val StaggerStepMillis = 20
+    public const val StaggerStepMillis: Int = 20
 
     /** Past this many items the delay stops growing, so long lists never wait. */
-    const val MaxStaggeredItems = 3
+    public const val MaxStaggeredItems: Int = 3
 
-    val RevealRise = 12.dp
+    public val RevealRise: Dp = 12.dp
 
-    const val PressedScale = 0.97f
+    public const val PressedScale: Float = 0.97f
 
     /** Slightly underdamped, so a press settles with some life. */
-    val PressSpring: SpringSpec<Float> = pressSpring()
+    public val PressSpring: SpringSpec<Float> = pressSpring()
 
     /** [PressSpring] for animations of other types. */
-    fun <T> pressSpring(): SpringSpec<T> = spring(
+    public fun <T> pressSpring(): SpringSpec<T> = spring(
         dampingRatio = 0.55f,
         stiffness = Spring.StiffnessMediumLow,
     )

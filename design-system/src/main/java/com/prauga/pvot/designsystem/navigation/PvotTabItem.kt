@@ -15,7 +15,7 @@ import androidx.annotation.StringRes
  * @param expandedIconRes Icon for expanded state (defaults to [iconRes]).
  * @param expandedLabelRes Label for expanded state (defaults to [labelRes]).
  */
-data class PvotTabItem(
+public data class PvotTabItem(
     @DrawableRes val iconRes: Int,
     @StringRes val labelRes: Int,
     @StringRes val contentDescriptionRes: Int,

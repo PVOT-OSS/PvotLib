@@ -11,13 +11,13 @@ package com.prauga.pvot.coreui
  *
  * @param T The type of the loaded content
  */
-sealed interface UiState<out T> {
+public sealed interface UiState<out T> {
 
     /** The content has been requested but has not arrived yet. */
-    data object Loading : UiState<Nothing>
+    public data object Loading : UiState<Nothing>
 
     /** The content arrived. */
-    data class Success<T>(val data: T) : UiState<T>
+    public data class Success<T>(val data: T) : UiState<T>
 
     /**
      * The content could not be loaded.
@@ -26,7 +26,7 @@ sealed interface UiState<out T> {
      * @param cause The underlying failure, kept so callers can tell a network error
      * from a parse error without matching on [message]
      */
-    data class Error(
+    public data class Error(
         val message: String,
         val cause: Throwable? = null
     ) : UiState<Nothing>

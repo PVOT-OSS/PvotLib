@@ -23,7 +23,7 @@ import java.time.LocalTime
  * @param colors Color configuration for the wheels
  */
 @Composable
-fun PvotClockPicker(
+public fun PvotClockPicker(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
     modifier: Modifier = Modifier,

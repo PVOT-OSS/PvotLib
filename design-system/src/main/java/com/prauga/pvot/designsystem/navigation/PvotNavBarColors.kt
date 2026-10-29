@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
  * @param rippleColor Ripple drawn over an item while it is pressed
  */
 @Immutable
-data class PvotNavBarColors(
+public data class PvotNavBarColors(
     val gradient: Brush,
     val collapsedChipColor: Color,
     val containerColor: Color,

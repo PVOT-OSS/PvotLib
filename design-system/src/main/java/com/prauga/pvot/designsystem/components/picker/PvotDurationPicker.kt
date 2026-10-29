@@ -24,7 +24,7 @@ import kotlin.time.Duration.Companion.minutes
  * @param colors Color configuration for the wheels
  */
 @Composable
-fun PvotDurationPicker(
+public fun PvotDurationPicker(
     duration: Duration,
     onDurationChange: (Duration) -> Unit,
     modifier: Modifier = Modifier,

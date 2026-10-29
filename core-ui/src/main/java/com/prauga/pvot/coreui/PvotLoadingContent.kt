@@ -13,6 +13,6 @@ import androidx.compose.ui.Modifier
  * @param modifier Modifier for the indicator
  */
 @Composable
-fun PvotLoadingContent(modifier: Modifier = Modifier) {
+public fun PvotLoadingContent(modifier: Modifier = Modifier) {
     CircularProgressIndicator(modifier = modifier)
 }

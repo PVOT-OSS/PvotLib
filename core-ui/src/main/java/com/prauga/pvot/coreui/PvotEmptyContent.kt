@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
  * @param modifier Modifier for the text
  */
 @Composable
-fun PvotEmptyContent(
+public fun PvotEmptyContent(
     message: String,
     modifier: Modifier = Modifier
 ) {

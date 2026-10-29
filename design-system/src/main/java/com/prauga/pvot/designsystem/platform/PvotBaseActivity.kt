@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
  * Extend this instead of [ComponentActivity] to get the window setup every Pvot
  * screen expects, then set content with [setPvotContent].
  */
-abstract class PvotBaseActivity : ComponentActivity() {
+public abstract class PvotBaseActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,7 @@ abstract class PvotBaseActivity : ComponentActivity() {
      *
      * @param content The composable hierarchy, typically wrapped in PvotAppTheme
      */
-    fun setPvotContent(content: @Composable () -> Unit) {
+    public fun setPvotContent(content: @Composable () -> Unit) {
         setContent { content() }
     }
 }

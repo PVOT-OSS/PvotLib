@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
  *
  * Only the styles Pvot overrides are set; the rest fall back to the Material defaults.
  */
-val PvotTypography = Typography(
+public val PvotTypography: Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,

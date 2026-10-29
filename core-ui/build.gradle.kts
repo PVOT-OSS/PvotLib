@@ -16,6 +16,10 @@ android {
     }
 }
 
+kotlin {
+    explicitApi()
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     api(platform(libs.androidx.compose.bom))

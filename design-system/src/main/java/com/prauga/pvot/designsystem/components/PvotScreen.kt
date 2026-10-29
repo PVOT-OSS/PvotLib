@@ -18,19 +18,19 @@ import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarSizes
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /** Defaults for [PvotScreen]. */
-object PvotScreenDefaults {
+public object PvotScreenDefaults {
 
-    val HorizontalPadding = PvotSpacing.L
+    public val HorizontalPadding: Dp = PvotSpacing.L
 
-    val TopPadding = PvotSpacing.L
+    public val TopPadding: Dp = PvotSpacing.L
 
     /** Gap left below the last item, on top of the nav bar's own height. */
-    val BottomSpacing = 28.dp
+    public val BottomSpacing: Dp = 28.dp
 
-    val VerticalArrangement = Arrangement.spacedBy(PvotSpacing.M)
+    public val VerticalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(PvotSpacing.M)
 
     @Composable
-    fun contentPadding(
+    public fun contentPadding(
         horizontal: Dp = HorizontalPadding,
         top: Dp = TopPadding,
         bottom: Dp = LocalPvotNavBarSizes.current.barHeight + BottomSpacing
@@ -52,7 +52,7 @@ object PvotScreenDefaults {
  * @param horizontalAlignment Horizontal alignment of the items
  */
 @Composable
-fun PvotScreen(
+public fun PvotScreen(
     modifier: Modifier = Modifier,
     state: LazyListState = rememberLazyListState(),
     contentPadding: PaddingValues = PvotScreenDefaults.contentPadding(),
