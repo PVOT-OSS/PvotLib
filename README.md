@@ -12,20 +12,16 @@ A Jetpack Compose design system library for building consistent Android applicat
 ```
 PvotLib/
 ├── catalog/          # Catalog app demonstrating components
+├── core-ui/          # UiState and loading/error/empty content (com.prauga.pvot.coreui)
 ├── design-system/    # Reusable library module
 │   └── src/main/java/com/prauga/pvot/designsystem/
-│       ├── components/
-│       │   ├── navigation/
-│       │   │   └── PvotNavBar.kt
-│       │   └── picker/
-│       │       ├── PvotClockPicker.kt
-│       │       ├── PvotDurationPicker.kt
-│       │       ├── PvotPickerColors.kt
-│       │       └── internal/
-│       └── theme/
-│           ├── Color.kt
-│           ├── Theme.kt
-│           └── Type.kt
+│       ├── theme/        # PvotAppTheme, PvotTheme, colors, type
+│       ├── effects/      # pvotPressScale
+│       ├── motion/       # PvotMotion, pvotReveal
+│       ├── components/   # PvotCard, PvotScreen, PvotSkeleton
+│       │   └── picker/   # PvotClockPicker, PvotDurationPicker
+│       ├── navigation/   # PvotNavBar
+│       └── platform/     # PvotBaseActivity
 └── gradle/
     └── libs.versions.toml
 ```
@@ -109,14 +105,16 @@ class MainActivity : ComponentActivity() {
 
 ### PvotAppTheme
 
-The main theme composable that provides Material 3 theming with extended color tokens.
+The main theme composable: Material 3 with the Pvot palette or, when enabled and supported,
+the platform's dynamic colors.
 
 ```kotlin
 @Composable
 fun PvotAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
-    navBarColors: PvotNavBarColors = PvotNavBarColors(...),
+    dynamicColor: Boolean = false,
+    colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
+    typography: Typography = PvotTypography,
     content: @Composable () -> Unit
 )
 ```
@@ -124,37 +122,35 @@ fun PvotAppTheme(
 ### Accessing Theme Colors
 
 ```kotlin
-// Material 3 colors
 MaterialTheme.colorScheme.primary
-
-// Pvot extended colors
-PvotTheme.navBarColors.gradient
-PvotTheme.navBarColors.collapsedChipColor
-PvotTheme.navBarColors.containerColor
-PvotTheme.navBarColors.iconSelectedColor
-PvotTheme.navBarColors.iconUnselectedColor
-
-// Picker colors
-PvotTheme.pickerColors.textColor
-PvotTheme.pickerColors.textSecondaryColor
-PvotTheme.pickerColors.selectionBackgroundColor
+PvotTheme.isDynamicColor
 ```
 
-### Customizing Colors
+### Component Colors
 
-Override navbar colors per-app:
+Each component derives its colors from the theme through its `*Defaults` object, and takes a
+`colors` parameter to override them:
 
 ```kotlin
-PvotAppTheme(
-    navBarColors = PvotNavBarColors(
-        gradient = Brush.horizontalGradient(listOf(Color.Red, Color.Orange)),
-        collapsedChipColor = Color.DarkGray,
-        containerColor = Color.Black.copy(alpha = 0.3f),
-        iconSelectedColor = Color.White,
-        iconUnselectedColor = Color.LightGray
+PvotNavBarDefaults.themeColors()   // brand gradient, or the color scheme under dynamic color
+PvotNavBarDefaults.colors(collapsedChipColor = Color.DarkGray)
+PvotPickerDefaults.themeColors()   // derived from the color scheme
+
+PvotNavBar(
+    selectedTab = selectedTab,
+    onTabClick = { selectedTab = it },
+    tabs = tabs,
+    colors = PvotNavBarDefaults.colors(
+        gradient = Brush.horizontalGradient(listOf(Color.Red, Color.Magenta))
     )
-) {
-    // App content
+)
+```
+
+Nav bar sizes are shared with `PvotScreen` through `LocalPvotNavBarSizes`:
+
+```kotlin
+CompositionLocalProvider(LocalPvotNavBarSizes provides PvotNavBarSizes(barHeight = 64.dp)) {
+    // PvotNavBar and PvotScreen
 }
 ```
 
@@ -169,15 +165,12 @@ A floating bottom navigation bar with animated pill-style items.
 fun PvotNavBar(
     selectedTab: Int,
     onTabClick: (Int) -> Unit,
-    tabs: List<TabItem>,
+    tabs: List<PvotTabItem>,
     modifier: Modifier = Modifier,
-    barHeight: Dp = 64.dp,
-    collapsedItemSize: Dp = 44.dp,
-    expandedItemWidth: Dp = 120.dp,
-    cornerRadius: Dp = 28.dp,
-    gradient: Brush = PvotTheme.navBarColors.gradient,
-    collapsedChipColor: Color = PvotTheme.navBarColors.collapsedChipColor,
-    containerColor: Color = PvotTheme.navBarColors.containerColor
+    @DrawableRes expandedIconRes: Int? = null,
+    @StringRes expandedContentDescriptionRes: Int? = null,
+    sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
+    colors: PvotNavBarColors = PvotNavBarDefaults.themeColors(),
 )
 ```
 
@@ -187,12 +180,12 @@ fun PvotNavBar(
 var selectedTab by remember { mutableIntStateOf(0) }
 
 val tabs = listOf(
-    TabItem(
+    PvotTabItem(
         iconRes = R.drawable.ic_home,
         labelRes = R.string.tab_home,
         contentDescriptionRes = R.string.cd_home
     ),
-    TabItem(
+    PvotTabItem(
         iconRes = R.drawable.ic_settings,
         labelRes = R.string.tab_settings,
         contentDescriptionRes = R.string.cd_settings
@@ -229,7 +222,8 @@ A wheel-based time picker for selecting a time of day.
 fun PvotClockPicker(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
 )
 ```
 
@@ -260,7 +254,8 @@ A wheel-based picker for selecting a time duration.
 fun PvotDurationPicker(
     duration: Duration,
     onDurationChange: (Duration) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
 )
 ```
 
@@ -271,7 +266,7 @@ import kotlin.time.Duration.Companion.minutes
 
 var selectedDuration by remember { mutableStateOf(30.minutes) }
 
-DurationPicker(
+PvotDurationPicker(
     duration = selectedDuration,
     onDurationChange = { selectedDuration = it }
 )
