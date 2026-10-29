@@ -57,7 +57,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.pvotGlass
@@ -142,7 +141,7 @@ private fun LegacyBarContainer(
 ) {
     val sizes = LegacySizes
     val barShape = RoundedCornerShape(sizes.cornerRadius)
-    val glassIntensity = LocalPvotGlassIntensity.current
+    val glassIntensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(glassIntensity)
     val shadowColor = if (backdrop != null) {
         Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)

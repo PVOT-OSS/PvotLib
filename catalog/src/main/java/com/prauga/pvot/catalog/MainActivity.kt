@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -78,8 +79,8 @@ private const val ScrollThreshold = 4f
 
 @Composable
 fun DesignSystemShowcase() {
-    var selectedTab by remember { mutableIntStateOf(0) }
-    var navCompact by remember { mutableStateOf(false) }
+    var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var navCompact by rememberSaveable { mutableStateOf(false) }
     // Swiping up through a list shrinks the nav bar out of the way; swiping back down restores it.
     val scrollConnection = remember {
         object : NestedScrollConnection {
@@ -139,8 +140,10 @@ fun DesignSystemShowcase() {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                // The background goes inside the backdrop: glass frosts what is recorded there, and a
+                // backdrop with no opaque background lets the sharp content show through the glass.
                 .pvotGlassBackdrop(backdrop)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             if (!newUi) {
                 LiveBackground(
