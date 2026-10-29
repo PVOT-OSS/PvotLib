@@ -3,27 +3,19 @@
 
 package com.prauga.pvot.designsystem.components
 
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
-import com.prauga.pvot.designsystem.effects.pvotGlass
-import com.prauga.pvot.designsystem.effects.pvotGlassRim
-import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /** Defaults for [PvotGlassCard]. */
@@ -38,6 +30,8 @@ public object PvotGlassCardDefaults {
 
 /**
  * A card of glass over [backdrop], with a rim of light that follows the phone's tilt.
+ *
+ * Over a backdrop it floats on a soft shadow; pressed, it swells and brightens.
  *
  * Pass [onClick] to make the whole card act as a button; leave it null for a static card.
  *
@@ -67,22 +61,15 @@ public fun PvotGlassCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val shape = RoundedCornerShape(cornerRadius)
-    var cardModifier = modifier
-    if (onClick != null) cardModifier = cardModifier.pvotPressScale(interactionSource)
-    cardModifier = cardModifier
-        .pvotGlass(backdrop, cornerRadius, style)
-        .clip(shape)
-    if (rim) cardModifier = cardModifier.pvotGlassRim(cornerRadius)
-    if (onClick != null) {
-        cardModifier = cardModifier.clickable(
-            interactionSource = interactionSource,
-            indication = LocalIndication.current,
-            enabled = enabled,
-            role = Role.Button,
-            onClick = onClick
-        )
-    }
+    val cardModifier = modifier.glassSurface(
+        backdrop = backdrop,
+        cornerRadius = cornerRadius,
+        style = style,
+        rim = rim,
+        onClick = onClick,
+        enabled = enabled,
+        interactionSource = interactionSource
+    )
     Column(
         modifier = cardModifier.padding(contentPadding),
         content = content
