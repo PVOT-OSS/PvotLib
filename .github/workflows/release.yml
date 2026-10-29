@@ -1,0 +1,95 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Check the tag matches the library version
+        id: version
+        run: |
+          version=$(sed -n 's/^version=//p' gradle.properties)
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME doesn't match version $version in gradle.properties" >&2
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Build, test and lint
+        run: ./gradlew build --stacktrace
+
+      - name: Check out the Maven repository (gh-pages)
+        run: |
+          git fetch origin gh-pages:gh-pages || true
+          if git show-ref --quiet refs/heads/gh-pages; then
+            git worktree add pages gh-pages
+          else
+            git worktree add --orphan -b gh-pages pages
+          fi
+
+      - name: Refuse to overwrite a released version
+        run: |
+          for lib in design-system core-ui; do
+            if [ -d "pages/maven/com/prauga/pvot/$lib/${{ steps.version.outputs.version }}" ]; then
+              echo "$lib ${{ steps.version.outputs.version }} is already published" >&2
+              exit 1
+            fi
+          done
+
+      - name: Publish into the Maven repository
+        run: |
+          ./gradlew :design-system:publishReleasePublicationToReleaseRepository \
+            :core-ui:publishReleasePublicationToReleaseRepository -PreleaseRepo="$PWD/pages/maven"
+
+      - name: Push the Maven repository
+        working-directory: pages
+        run: |
+          touch .nojekyll
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "PvotLib ${{ steps.version.outputs.version }}"
+          git push origin gh-pages
+
+      - name: Build the showcase app
+        run: ./gradlew :app:assembleRelease
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=${{ steps.version.outputs.version }}
+          awk -v v="$version" '
+            /^## / { if (found) exit; if (index($0, "## " v) == 1) { found = 1; next } }
+            found { print }
+          ' CHANGELOG.md > notes.md
+          assets=()
+          for lib in design-system core-ui; do
+            cp "$lib/build/outputs/aar/$lib-release.aar" "$lib-$version.aar"
+            cp "pages/maven/com/prauga/pvot/$lib/$version/$lib-$version-sources.jar" .
+            assets+=("$lib-$version.aar" "$lib-$version-sources.jar")
+          done
+          cp app/build/outputs/apk/release/app-release.apk "pvot-showcase-$version.apk"
+          gh release create "$GITHUB_REF_NAME" \
+            --title "PvotLib $version" \
+            --notes-file notes.md \
+            "${assets[@]}" "pvot-showcase-$version.apk"
