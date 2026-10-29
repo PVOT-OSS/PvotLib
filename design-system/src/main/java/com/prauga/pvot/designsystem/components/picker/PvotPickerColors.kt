@@ -26,10 +26,14 @@ public data class PvotPickerColors(
 /** Defaults for [PvotClockPicker] and [PvotDurationPicker]. */
 public object PvotPickerDefaults {
 
+    /** Wheel value color for a dark background. */
     public val TextColor: Color = Color.White
+    /** Wheel suffix color for a dark background. */
     public val TextSecondaryColor: Color = Color.White.copy(alpha = 0.7f)
+    /** Selection row fill for a dark background. */
     public val SelectionBackgroundColor: Color = Color.White.copy(alpha = 0.08f)
 
+    /** Picker colors, white on dark by default. */
     public fun colors(
         textColor: Color = TextColor,
         textSecondaryColor: Color = TextSecondaryColor,

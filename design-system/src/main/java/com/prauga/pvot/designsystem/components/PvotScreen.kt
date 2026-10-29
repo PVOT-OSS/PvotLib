@@ -20,15 +20,19 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
 /** Defaults for [PvotScreen]. */
 public object PvotScreenDefaults {
 
+    /** Padding either side of the screen's content. */
     public val HorizontalPadding: Dp = PvotSpacing.L
 
+    /** Padding above the screen's first item. */
     public val TopPadding: Dp = PvotSpacing.L
 
     /** Gap left below the last item, on top of the nav bar's own height. */
     public val BottomSpacing: Dp = 28.dp
 
+    /** Gap between the screen's items. */
     public val VerticalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(PvotSpacing.M)
 
+    /** Padding around a screen's content that clears the nav bar below it. */
     @Composable
     public fun contentPadding(
         horizontal: Dp = HorizontalPadding,

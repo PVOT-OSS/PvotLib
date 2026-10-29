@@ -21,16 +21,25 @@ public object PvotNavBarDefaults {
     /** Gap between an item's icon and its label. */
     public val IconTextGap: Dp = PvotSpacing.S
 
+    /** Start of the brand gradient behind a selected item. */
     public val GradientStart: Color = Color(0xFF9B84FF)
+    /** End of the brand gradient behind a selected item. */
     public val GradientEnd: Color = Color(0xFF6B66FF)
+    /** Fill behind an unselected item. */
     public val CollapsedChipColor: Color = Color(0xFF4D4D4F)
+    /** Fill behind the bar itself. */
     public val ContainerColor: Color = Color(0x1AFFFFFF)
+    /** Icon and label color of a selected item. */
     public val IconSelectedColor: Color = Color.White
+    /** Icon color of an unselected item. */
     public val IconUnselectedColor: Color = Color(0xFFECECEC)
+    /** Ripple drawn over an item while it is pressed. */
     public val RippleColor: Color = Color.White.copy(alpha = 0.25f)
 
+    /** The brand gradient behind a selected item. */
     public val Gradient: Brush = Brush.horizontalGradient(listOf(GradientStart, GradientEnd))
 
+    /** Nav bar colors on the brand palette, each overridable. */
     public fun colors(
         gradient: Brush = Gradient,
         collapsedChipColor: Color = CollapsedChipColor,

@@ -17,15 +17,19 @@ public object PvotMotion {
     /** Expo-out: arrives fast, eases to rest. */
     public val Settle: Easing = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
 
+    /** Length of a single item's reveal. */
     public const val RevealDurationMillis: Int = PvotDurations.Long
 
+    /** Delay added per item in a staggered reveal. */
     public const val StaggerStepMillis: Int = 20
 
     /** Past this many items the delay stops growing, so long lists never wait. */
     public const val MaxStaggeredItems: Int = 3
 
+    /** How far an item rises while it reveals. */
     public val RevealRise: Dp = 12.dp
 
+    /** Scale of an element while it is pressed. */
     public const val PressedScale: Float = 0.97f
 
     /** Slightly underdamped, so a press settles with some life. */

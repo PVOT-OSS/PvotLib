@@ -25,6 +25,7 @@ import com.prauga.pvot.designsystem.theme.PvotShapes
 /** Defaults for [PvotSkeleton]. */
 public object PvotSkeletonDefaults {
 
+    /** The placeholder's default shape. */
     public val Shape: Shape = PvotShapes.Small
 
     /** One full sweep of the highlight across the placeholder. */
@@ -33,9 +34,11 @@ public object PvotSkeletonDefaults {
     /** Fraction of the placeholder's width covered by the moving highlight. */
     public const val BandFraction: Float = 0.6f
 
+    /** Fill of the placeholder outside the moving highlight. */
     public val baseColor: Color
         @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
 
+    /** Fill of the moving highlight. */
     public val highlightColor: Color
         @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.16f)
 }
