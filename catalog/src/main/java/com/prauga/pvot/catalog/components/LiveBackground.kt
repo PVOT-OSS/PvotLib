@@ -31,7 +31,7 @@ import kotlin.math.sin
 
 val LocalBackgroundBackdrop = staticCompositionLocalOf<PvotGlassBackdrop?> { null }
 
-private val PanelStyle = PvotGlassStyle(referenceSize = 120.dp, blur = 14.dp)
+private val PanelStyle = PvotGlassStyle(referenceSize = 120.dp, blur = 8.dp)
 
 @Composable
 fun GlassPanel(
@@ -56,7 +56,8 @@ fun LiveBackground(modifier: Modifier = Modifier) {
         PvotNavBarDefaults.GradientStart,
         PvotNavBarDefaults.GradientEnd,
         colors.tertiaryContainer,
-        colors.primary
+        colors.primary,
+        colors.secondaryContainer
     )
     val base = colors.background
     val phase by rememberInfiniteTransition(label = "liveBackground").animateFloat(
@@ -71,15 +72,16 @@ fun LiveBackground(modifier: Modifier = Modifier) {
     Canvas(modifier) {
         drawRect(base)
         blobs.forEachIndexed { index, color ->
-            val angle = phase + index * PI.toFloat() / 2f
+            val speed = BlobSpeeds[index % BlobSpeeds.size]
+            val angle = phase * speed + index * 1.3f
             val center = Offset(
-                size.width * (0.5f + 0.34f * cos(angle * (1 + index % 2))),
-                size.height * (0.5f + 0.34f * sin(angle))
+                size.width * (0.5f + 0.4f * cos(angle)),
+                size.height * (0.5f + 0.4f * sin(angle * 2f + index))
             )
-            val radius = size.minDimension * 0.6f
+            val radius = size.width * (0.45f + 0.08f * sin(phase * 2f + index))
             drawCircle(
                 brush = Brush.radialGradient(
-                    listOf(color.copy(alpha = 0.85f), color.copy(alpha = 0f)),
+                    listOf(color, color.copy(alpha = 0.6f), color.copy(alpha = 0f)),
                     center = center,
                     radius = radius
                 ),
@@ -90,4 +92,6 @@ fun LiveBackground(modifier: Modifier = Modifier) {
     }
 }
 
-private const val BackgroundLoopMillis = 20_000
+private const val BackgroundLoopMillis = 30_000
+
+private val BlobSpeeds = listOf(3f, -2f, 4f, -3f, 2f)
