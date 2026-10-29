@@ -9,11 +9,20 @@ together under one version.
 The first published release.
 
 ### Added
-- `design-system`: `PvotAppTheme` and `PvotTheme` (Material 3 with dynamic color and extended
-  nav bar and picker colors), `PvotBaseActivity`, `PvotNavBar` (tab item and slot overloads),
-  `PvotCard`, `PvotScreen`, `PvotSkeleton`, `PvotClockPicker`, `PvotDurationPicker`,
-  `Modifier.pvotPressScale`, `Modifier.pvotReveal` and `PvotMotion`.
-- `core-ui`: `UiState`, `PvotLoadingContent`, `PvotErrorContent`, `PvotEmptyContent` and
-  `PvotSectionHeader`.
+- `design-system`:
+  - `theme`: `PvotAppTheme` (Material 3 with optional dynamic color), `PvotTheme`,
+    `PvotThemeDefaults`, the Pvot palette, `PvotTypography`, and the `PvotShapes` and
+    `PvotSpacing` tokens.
+  - `effects`: `Modifier.pvotPressScale`.
+  - `motion`: `PvotMotion`, `PvotDurations` and `Modifier.pvotReveal`.
+  - `components`: `PvotCard`, `PvotScreen`, `PvotSkeleton`, `PvotClockPicker` and
+    `PvotDurationPicker`, with `PvotPickerColors` and `PvotPickerDefaults`.
+  - `navigation`: `PvotNavBar` (tab item and slot overloads), `PvotNavBarItem`, `PvotTabItem`,
+    `PvotNavBarColors`, `PvotNavBarSizes` and `PvotNavBarDefaults`.
+  - `platform`: `PvotBaseActivity`.
+- `core-ui` (`com.prauga.pvot.coreui`): `UiState`, `PvotLoadingContent`, `PvotErrorContent`,
+  `PvotEmptyContent` and `PvotSectionHeader`.
+- The public API of both libraries is recorded in `api/` and checked by the build.
+- [docs/GUIDE.md](docs/GUIDE.md): every token, motion spec, component and library rule.
 - Published to the Maven repository at https://pvot-oss.github.io/PvotLib/maven as
   `com.prauga.pvot:design-system` and `com.prauga.pvot:core-ui`.
