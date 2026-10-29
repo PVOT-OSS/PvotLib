@@ -15,18 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.navigation.LocalPvotNavBarSizes
+import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /** Defaults for [PvotScreen]. */
 object PvotScreenDefaults {
 
-    val HorizontalPadding = 16.dp
+    val HorizontalPadding = PvotSpacing.L
 
-    val TopPadding = 16.dp
+    val TopPadding = PvotSpacing.L
 
     /** Gap left below the last item, on top of the nav bar's own height. */
     val BottomSpacing = 28.dp
 
-    val VerticalArrangement = Arrangement.spacedBy(12.dp)
+    val VerticalArrangement = Arrangement.spacedBy(PvotSpacing.M)
 
     @Composable
     fun contentPadding(

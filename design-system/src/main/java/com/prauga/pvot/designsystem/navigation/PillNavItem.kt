@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +43,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.motion.PvotDurations
+import com.prauga.pvot.designsystem.theme.PvotShapes
 
 @Composable
 internal fun PillNavItem(
@@ -62,13 +63,13 @@ internal fun PillNavItem(
 
     val width by animateDpAsState(
         targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
-        animationSpec = tween(240, easing = FastOutSlowInEasing),
+        animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
         label = "itemWidth"
     )
 
     val scale by animateFloatAsState(
         targetValue = if (selected) 1f else 0.98f,
-        animationSpec = tween(200),
+        animationSpec = tween(PvotDurations.Short),
         label = "scale"
     )
 
@@ -82,7 +83,7 @@ internal fun PillNavItem(
         modifier = modifier
             .width(width)
             .height(sizes.collapsedItemSize)
-            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else CircleShape)
+            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else PvotShapes.Pill)
             .background(
                 if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
             )

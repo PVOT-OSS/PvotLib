@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /**
  * Size configuration for [PvotNavBar].
@@ -51,7 +52,7 @@ data class PvotNavBarSizes(
     val labelFontSize: TextUnit = 16.sp,
     val horizontalPadding: Dp = 22.dp,
     val contentPaddingHorizontal: Dp = 9.dp,
-    val itemSpacing: Dp = 4.dp
+    val itemSpacing: Dp = PvotSpacing.XS
 )
 
 /** The [PvotNavBarSizes] in scope, read by PvotNavBar and PvotScreen for their defaults. */

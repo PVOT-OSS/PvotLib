@@ -15,7 +15,7 @@ object PvotMotion {
     /** Expo-out: arrives fast, eases to rest. */
     val Settle = CubicBezierEasing(0.16f, 1f, 0.3f, 1f)
 
-    const val RevealDurationMillis = 260
+    const val RevealDurationMillis = PvotDurations.Long
 
     const val StaggerStepMillis = 20
 

@@ -8,17 +8,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.theme.PvotSpacing
 import com.prauga.pvot.designsystem.theme.PvotTheme
 
 /** Defaults for [PvotNavBar] and its items. */
 object PvotNavBarDefaults {
 
     /** Padding either side of an expanded item's content. */
-    val ItemHorizontalPadding = 16.dp
+    val ItemHorizontalPadding = PvotSpacing.L
 
     /** Gap between an item's icon and its label. */
-    val IconTextGap = 8.dp
+    val IconTextGap = PvotSpacing.S
 
     val GradientStart = Color(0xFF9B84FF)
     val GradientEnd = Color(0xFF6B66FF)

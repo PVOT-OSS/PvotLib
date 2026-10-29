@@ -10,7 +10,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,11 +20,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /** Defaults for [PvotSkeleton]. */
 object PvotSkeletonDefaults {
 
-    val Shape: Shape = RoundedCornerShape(8.dp)
+    val Shape: Shape = PvotShapes.Small
 
     /** One full sweep of the highlight across the placeholder. */
     const val DurationMillis = 1100

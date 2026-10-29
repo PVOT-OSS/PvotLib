@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -34,6 +33,8 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.motion.PvotDurations
+import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /**
  * A pill-style item for the slot-based [PvotNavBar].
@@ -64,7 +65,7 @@ fun RowScope.PvotNavBarItem(
 
     val scale by animateFloatAsState(
         targetValue = if (selected) 1f else 0.98f,
-        animationSpec = tween(200),
+        animationSpec = tween(PvotDurations.Short),
         label = "scale"
     )
 
@@ -72,7 +73,7 @@ fun RowScope.PvotNavBarItem(
         modifier = modifier
             .height(sizes.collapsedItemSize)
             .widthIn(min = sizes.collapsedItemSize)
-            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else CircleShape)
+            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else PvotShapes.Pill)
             .background(
                 if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
             )

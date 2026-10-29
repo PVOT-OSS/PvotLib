@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,8 +44,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.prauga.pvot.designsystem.R
-import com.prauga.pvot.designsystem.components.picker.PvotPickerDefaults
 import com.prauga.pvot.designsystem.components.picker.PvotPickerColors
+import com.prauga.pvot.designsystem.components.picker.PvotPickerDefaults
+import com.prauga.pvot.designsystem.theme.PvotShapes
+import com.prauga.pvot.designsystem.theme.PvotSpacing
 import kotlin.math.abs
 import kotlinx.coroutines.launch
 
@@ -164,7 +165,7 @@ internal fun WheelEngine(
                 .fillMaxWidth()
                 .background(
                     colors.selectionBackgroundColor,
-                    RoundedCornerShape(20.dp)
+                    PvotShapes.Selection
                 )
         )
     }
@@ -206,7 +207,7 @@ private fun WheelItem(
                 color = colors.textColor
             )
             if (suffix.isNotEmpty()) {
-                Spacer(Modifier.width(4.dp))
+                Spacer(Modifier.width(PvotSpacing.XS))
                 Text(
                     text = suffix,
                     fontSize = 16.sp,

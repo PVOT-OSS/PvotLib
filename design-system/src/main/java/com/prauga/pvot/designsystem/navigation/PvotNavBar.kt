@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /**
  * A floating bottom navigation bar with animated pill-style items.
@@ -98,7 +99,7 @@ fun PvotNavBar(
         modifier = modifier
             .fillMaxWidth()
             .navigationBarsPadding()
-            .padding(horizontal = sizes.horizontalPadding, vertical = 12.dp),
+            .padding(horizontal = sizes.horizontalPadding, vertical = PvotSpacing.M),
         contentAlignment = Alignment.BottomCenter
     ) {
         Surface(

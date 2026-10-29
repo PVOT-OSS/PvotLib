@@ -8,7 +8,6 @@ import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -20,18 +19,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.pvotPressScale
+import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /** Defaults for [PvotCard]. */
 object PvotCardDefaults {
 
-    val CornerRadius = 16.dp
-
     /** How much of the surface variant shows through the card. */
     const val ContainerAlpha = 0.5f
 
-    val shape: Shape = RoundedCornerShape(CornerRadius)
+    val shape: Shape = PvotShapes.Card
 
     @Composable
     fun colors(
