@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.catalog.BuildConfig
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.components.DeveloperCard
 import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
 import com.prauga.pvot.catalog.components.GlassPanel
@@ -62,17 +63,20 @@ data class ProjectLink(
     val iconRes: Int
 )
 
-private val projectLinks = listOf(
-    ProjectLink(R.string.about_link_github_repo, Constants.GITHUB_REPO_URL, R.drawable.ic_github),
-    ProjectLink(R.string.about_link_github_org, Constants.GITHUB_ORG_URL, R.drawable.ic_github),
-    ProjectLink(R.string.about_link_website, Constants.WEBSITE_URL, R.drawable.ic_link)
-)
 
 @Composable
 fun AboutScreen(
     label: String,
     modifier: Modifier = Modifier
 ) {
+    val icons = LocalAppIcons.current
+    val projectLinks = remember(icons) {
+        listOf(
+            ProjectLink(R.string.about_link_github_repo, Constants.GITHUB_REPO_URL, icons.github),
+            ProjectLink(R.string.about_link_github_org, Constants.GITHUB_ORG_URL, icons.github),
+            ProjectLink(R.string.about_link_website, Constants.WEBSITE_URL, icons.link)
+        )
+    }
     var teamUsers by remember { mutableStateOf<Map<String, GithubUser>>(emptyMap()) }
     var isLoading by remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -205,6 +209,38 @@ fun AboutScreen(
                 modifier = Modifier.fillMaxWidth(),
                 title = stringResource(R.string.about_section_settings)
             )
+        }
+
+        item {
+            val newUiEnabled by PreferencesManager.newUiEnabled.collectAsState()
+
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = stringResource(R.string.about_new_ui_title),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            text = stringResource(R.string.about_new_ui_subtitle),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                    Switch(
+                        checked = newUiEnabled,
+                        onCheckedChange = { PreferencesManager.setNewUiEnabled(it) }
+                    )
+                }
+            }
         }
 
         item {

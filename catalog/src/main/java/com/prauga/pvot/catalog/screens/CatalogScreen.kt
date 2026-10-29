@@ -33,6 +33,10 @@ import com.prauga.pvot.coreui.PvotErrorContent
 import com.prauga.pvot.coreui.PvotLoadingContent
 import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.legacy.AppIcons
+import com.prauga.pvot.catalog.legacy.CatalogNavBar
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
+import com.prauga.pvot.catalog.legacy.LocalNewUi
 import com.prauga.pvot.catalog.components.CatalogCard
 import com.prauga.pvot.catalog.components.GlassDemo
 import com.prauga.pvot.designsystem.components.PvotCard
@@ -62,19 +66,21 @@ fun CatalogScreen(
     var retries by remember { mutableIntStateOf(0) }
     var revealRun by remember { mutableIntStateOf(0) }
 
+    val icons = LocalAppIcons.current
+    val slotTabs = remember(icons) { buildSlotTabs(icons) }
     val previewTabs = listOf(
         PvotTabItem(
-            iconRes = R.drawable.ic_home,
+            iconRes = icons.home,
             labelRes = R.string.tab_home,
             contentDescriptionRes = R.string.cd_home
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_apps,
+            iconRes = icons.apps,
             labelRes = R.string.tab_apps,
             contentDescriptionRes = R.string.cd_apps
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_catalog,
+            iconRes = icons.catalog,
             labelRes = R.string.tab_catalog,
             contentDescriptionRes = R.string.cd_catalog
         )
@@ -99,7 +105,7 @@ fun CatalogScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    PvotNavBar(
+                    CatalogNavBar(
                         selectedTab = demoNavTab,
                         onTabClick = { demoNavTab = it },
                         tabs = previewTabs
@@ -114,30 +120,36 @@ fun CatalogScreen(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
-                    PvotNavBar {
-                        SlotTabs.forEachIndexed { index, tab ->
-                            PvotNavBarItem(
-                                selected = index == slotNavTab,
-                                onClick = { slotNavTab = index },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(tab.iconRes),
-                                        contentDescription = stringResource(
-                                            tab.contentDescriptionRes
-                                        ),
-                                        modifier = Modifier.size(22.dp),
-                                        tint = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                },
-                                label = {
-                                    Text(
-                                        text = stringResource(tab.labelRes),
-                                        style = MaterialTheme.typography.labelLarge,
-                                        color = MaterialTheme.colorScheme.onPrimary
-                                    )
-                                }
-                            )
+                    if (LocalNewUi.current) {
+                        PvotNavBar {
+                            slotTabs.forEachIndexed { index, tab ->
+                                PvotNavBarItem(
+                                    selected = index == slotNavTab,
+                                    onClick = { slotNavTab = index },
+                                    icon = {
+                                        Icon(
+                                            painter = painterResource(tab.iconRes),
+                                            contentDescription = stringResource(
+                                                tab.contentDescriptionRes
+                                            ),
+                                            modifier = Modifier.size(22.dp)
+                                        )
+                                    },
+                                    label = {
+                                        Text(
+                                            text = stringResource(tab.labelRes),
+                                            maxLines = 1
+                                        )
+                                    }
+                                )
+                            }
                         }
+                    } else {
+                        CatalogNavBar(
+                            selectedTab = slotNavTab,
+                            onTabClick = { slotNavTab = it },
+                            tabs = slotTabs
+                        )
                     }
                 }
             }
@@ -319,19 +331,19 @@ fun CatalogScreen(
 
 private const val RevealSampleCount = 4
 
-private val SlotTabs = listOf(
+private fun buildSlotTabs(icons: AppIcons) = listOf(
     PvotTabItem(
-        iconRes = R.drawable.ic_home,
+        iconRes = icons.home,
         labelRes = R.string.catalog_tab_one,
         contentDescriptionRes = R.string.cd_catalog_tab_one
     ),
     PvotTabItem(
-        iconRes = R.drawable.ic_apps,
+        iconRes = icons.apps,
         labelRes = R.string.catalog_tab_two,
         contentDescriptionRes = R.string.cd_catalog_tab_two
     ),
     PvotTabItem(
-        iconRes = R.drawable.ic_catalog,
+        iconRes = icons.catalog,
         labelRes = R.string.catalog_tab_three,
         contentDescriptionRes = R.string.cd_catalog_tab_three
     )
