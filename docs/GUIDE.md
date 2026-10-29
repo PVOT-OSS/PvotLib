@@ -18,7 +18,8 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── effects/      pvotPressScale
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
 ├── components/   PvotCard, PvotScreen, PvotSkeleton
-│   └── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
+│   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
+│   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
 ├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults
 └── platform/     PvotBaseActivity
 
@@ -139,9 +140,11 @@ PvotScreen {
 | `PvotCard` | `components` | Rounded, translucent surface; pass `onClick` to make it a button with press feedback |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |
+| `PvotSlider` | `components.slider` | Minimal slider: slim track, round thumb, tap to jump, optional snapping steps |
+| `PvotRangeSlider` | `components.slider` | Two-thumb version of `PvotSlider` for choosing a span |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
-| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab expands into a gradient pill. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem` |
+| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem` |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
 | `PvotLoadingContent` | `core-ui` | Indeterminate progress indicator for `UiState.Loading` |
 | `PvotErrorContent` | `core-ui` | Title, message and retry button for `UiState.Error` |
@@ -153,8 +156,9 @@ default comes from its `*Defaults` object:
 
 | | Default | Overriding |
 |---|---|---|
-| Nav bar colors | `PvotNavBarDefaults.themeColors()`: the brand gradient, or derived from the color scheme under dynamic color | `PvotNavBarDefaults.colors(...)`, `PvotNavBarDefaults.colors(colorScheme)` |
+| Nav bar colors | `PvotNavBarDefaults.themeColors()`: derived from the color scheme | `PvotNavBarDefaults.colors(...)`, `PvotNavBarDefaults.colors(colorScheme)` |
 | Nav bar sizes | `LocalPvotNavBarSizes.current` | `PvotNavBarSizes(...)`; provide `LocalPvotNavBarSizes` so `PvotScreen` clears the same height |
+| Slider colors | `PvotSliderDefaults.themeColors()`, derived from the color scheme | `PvotSliderDefaults.colors(colorScheme, ...)` |
 | Picker colors | `PvotPickerDefaults.themeColors()`, derived from the color scheme | `PvotPickerDefaults.colors(...)`, `PvotPickerDefaults.colors(colorScheme)` |
 | Card | `PvotCardDefaults.shape`, `.colors()`, `.elevation()` | parameters of `PvotCard` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
@@ -201,7 +205,7 @@ matching on the message.
 ## 8. Adding a component
 
 1. The composable, in the package of its layer, with KDoc and a `*Defaults` object for its values.
-2. A demo in the catalog's Design Catalog screen (`catalog/`).
+2. A catalog page: add a page composable under `catalog/.../hub/` and list it in `CatalogEntries.kt`.
 3. A row in the components table above.
 4. An entry in `CHANGELOG.md` under the unreleased version.
 5. `./gradlew apiDump`, then `./gradlew build`.

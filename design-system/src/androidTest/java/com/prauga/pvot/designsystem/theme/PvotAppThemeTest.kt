@@ -40,20 +40,19 @@ class PvotAppThemeTest {
 
     @Test
     fun theme_providesDefaultColors() {
-        var collapsedChipColor: Color? = null
         var iconSelectedColor: Color? = null
+        var onPrimary: Color? = null
 
         composeTestRule.setContent {
             PvotAppTheme(dynamicColor = false) {
                 val colors = PvotNavBarDefaults.themeColors()
-                collapsedChipColor = colors.collapsedChipColor
                 iconSelectedColor = colors.iconSelectedColor
+                onPrimary = MaterialTheme.colorScheme.onPrimary
                 Text("Test")
             }
         }
 
-        assertEquals(PvotNavBarDefaults.CollapsedChipColor, collapsedChipColor)
-        assertEquals(PvotNavBarDefaults.IconSelectedColor, iconSelectedColor)
+        assertEquals(onPrimary, iconSelectedColor)
     }
 
     @Test

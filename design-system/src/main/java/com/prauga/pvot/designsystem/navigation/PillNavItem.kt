@@ -5,49 +5,17 @@ package com.prauga.pvot.designsystem.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandHorizontally
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
-import androidx.compose.foundation.background
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.motion.PvotDurations
-import com.prauga.pvot.designsystem.theme.PvotShapes
 
 @Composable
-internal fun PillNavItem(
+internal fun RowScope.PillNavItem(
     tab: PvotTabItem,
     selected: Boolean,
     onClick: () -> Unit,
@@ -58,81 +26,25 @@ internal fun PillNavItem(
     colors: PvotNavBarColors,
     modifier: Modifier = Modifier
 ) {
-    val labelText = stringResource(id = expandedLabelRes)
-    val targetExpandedWidth = calculateExpandedWidth(labelText, sizes)
-
-    val width by animateDpAsState(
-        targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
-        animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
-        label = "itemWidth"
-    )
-
-    val scale by animateFloatAsState(
-        targetValue = if (selected) 1f else 0.98f,
-        animationSpec = tween(PvotDurations.Short),
-        label = "scale"
-    )
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val iconTint = if (selected) colors.iconSelectedColor else colors.iconUnselectedColor
-    val displayedIconRes = if (selected) expandedIconRes else tab.iconRes
-    val displayedContentDescriptionRes =
+    val iconRes = if (selected) expandedIconRes else tab.iconRes
+    val descriptionRes =
         if (selected) expandedContentDescriptionRes else tab.contentDescriptionRes
 
-    Box(
-        modifier = modifier
-            .width(width)
-            .height(sizes.collapsedItemSize)
-            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else PvotShapes.Pill)
-            .background(
-                if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
-            )
-            .selectable(
-                selected = selected,
-                interactionSource = interactionSource,
-                indication = null,
-                role = Role.Tab,
-                onClick = onClick
-            )
-            .indication(
-                interactionSource = interactionSource,
-                indication = ripple(bounded = true, color = colors.rippleColor)
-            )
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            },
-        contentAlignment = Alignment.Center
-    ) {
-        Row(
-            modifier = Modifier.padding(
-                horizontal = if (selected) PvotNavBarDefaults.ItemHorizontalPadding else 0.dp
-            ),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
+    PvotNavBarItem(
+        selected = selected,
+        onClick = onClick,
+        modifier = modifier,
+        sizes = sizes,
+        colors = colors,
+        icon = {
             Icon(
-                painter = painterResource(id = displayedIconRes),
-                contentDescription = stringResource(id = displayedContentDescriptionRes),
-                modifier = Modifier.size(if (selected) sizes.expandedIconSize else sizes.collapsedIconSize),
-                tint = iconTint
-            )
-
-            AnimatedVisibility(
-                visible = selected,
-                enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
-            ) {
-                Text(
-                    text = labelText,
-                    modifier = Modifier.padding(start = PvotNavBarDefaults.IconTextGap),
-                    color = colors.iconSelectedColor,
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = sizes.labelFontSize,
-                    maxLines = 1
+                painter = painterResource(id = iconRes),
+                contentDescription = stringResource(id = descriptionRes),
+                modifier = Modifier.size(
+                    if (selected) sizes.expandedIconSize else sizes.collapsedIconSize
                 )
-            }
-        }
-    }
+            )
+        },
+        label = { Text(text = stringResource(id = expandedLabelRes), maxLines = 1) }
+    )
 }

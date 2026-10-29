@@ -63,6 +63,8 @@
     <string name="about_link_github_repo">GitHub Repository</string>
     <string name="about_link_github_org">PVOT-OSS Organization</string>
     <string name="about_link_website">Website</string>
+    <string name="about_new_ui_title">Enable New UI</string>
+    <string name="about_new_ui_subtitle">Tabler icons, vivid colors and the new navigation bar</string>
     <string name="about_dynamic_colors_title">Dynamic Colors</string>
     <string name="about_dynamic_colors_subtitle">Use Material You colors (Android 12+)</string>
 

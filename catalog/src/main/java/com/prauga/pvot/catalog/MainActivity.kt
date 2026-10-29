@@ -10,18 +10,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import com.prauga.pvot.designsystem.platform.PvotBaseActivity
-import com.prauga.pvot.designsystem.navigation.PvotNavBar
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
+import com.prauga.pvot.catalog.data.repository.GithubRepository
+import com.prauga.pvot.catalog.hub.CatalogHub
+import com.prauga.pvot.catalog.legacy.CatalogNavBar
+import com.prauga.pvot.catalog.legacy.LegacyIcons
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
+import com.prauga.pvot.catalog.legacy.LocalNewUi
+import com.prauga.pvot.catalog.legacy.NewIcons
+import com.prauga.pvot.catalog.legacy.catalogColorScheme
 import com.prauga.pvot.catalog.screens.AboutScreen
 import com.prauga.pvot.catalog.screens.AppsScreen
 import com.prauga.pvot.catalog.screens.CatalogScreen
@@ -33,37 +46,62 @@ class MainActivity : PvotBaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         PreferencesManager.init(applicationContext)
+        GithubRepository.init(applicationContext)
         setPvotContent {
             val dynamicColor by PreferencesManager.dynamicColorEnabled.collectAsState()
-            PvotAppTheme(dynamicColor = dynamicColor) {
-                DesignSystemShowcase()
+            val newUi by PreferencesManager.newUiEnabled.collectAsState()
+            CompositionLocalProvider(
+                LocalNewUi provides newUi,
+                LocalAppIcons provides if (newUi) NewIcons else LegacyIcons
+            ) {
+                PvotAppTheme(
+                    dynamicColor = dynamicColor,
+                    colorScheme = catalogColorScheme(newUi, dynamicColor)
+                ) {
+                    DesignSystemShowcase()
+                }
             }
         }
     }
 }
 
+/** Pixels of scroll in one event before the nav bar reacts, so a jitter doesn't flip it. */
+private const val ScrollThreshold = 4f
+
 @Composable
 fun DesignSystemShowcase() {
     var selectedTab by remember { mutableIntStateOf(0) }
+    var navCompact by remember { mutableStateOf(false) }
+    // Swiping up through a list shrinks the nav bar out of the way; swiping back down restores it.
+    val scrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                if (available.y < -ScrollThreshold) navCompact = true
+                else if (available.y > ScrollThreshold) navCompact = false
+                return Offset.Zero
+            }
+        }
+    }
 
+    val icons = LocalAppIcons.current
     val tabs = listOf(
         PvotTabItem(
-            iconRes = R.drawable.ic_home,
+            iconRes = icons.home,
             labelRes = R.string.tab_home,
             contentDescriptionRes = R.string.cd_home
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_apps,
+            iconRes = icons.apps,
             labelRes = R.string.tab_apps,
             contentDescriptionRes = R.string.cd_apps
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_catalog,
+            iconRes = icons.catalog,
             labelRes = R.string.tab_catalog,
             contentDescriptionRes = R.string.cd_catalog
         ),
         PvotTabItem(
-            iconRes = R.drawable.ic_about,
+            iconRes = icons.about,
             labelRes = R.string.tab_about,
             contentDescriptionRes = R.string.cd_about
         )
@@ -73,22 +111,31 @@ fun DesignSystemShowcase() {
         modifier = Modifier.fillMaxSize(),
         containerColor = Color.Transparent,
         bottomBar = {
-            PvotNavBar(
+            CatalogNavBar(
                 selectedTab = selectedTab,
-                onTabClick = { selectedTab = it },
-                tabs = tabs
+                onTabClick = {
+                    selectedTab = it
+                    navCompact = false
+                },
+                tabs = tabs,
+                compact = navCompact
             )
         }
     ) { innerPadding ->
         val containerModifier = Modifier
             .fillMaxSize()
+            .nestedScroll(scrollConnection)
             .background(MaterialTheme.colorScheme.background)
             .padding(top = innerPadding.calculateTopPadding())
 
         when (selectedTab) {
             0 -> HomeScreen(label = "Home", modifier = containerModifier)
             1 -> AppsScreen(label = "Apps", modifier = containerModifier)
-            2 -> CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+            2 -> if (LocalNewUi.current) {
+                CatalogHub(modifier = containerModifier)
+            } else {
+                CatalogScreen(label = "Design Catalog", modifier = containerModifier)
+            }
             3 -> AboutScreen(label = "About", modifier = containerModifier)
             else -> EmptyScreen(label = "None", modifier = containerModifier)
         }
