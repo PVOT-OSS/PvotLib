@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.coreui
+package com.prauga.pvot.coreui
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -9,20 +9,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 /**
- * A heading that introduces a group of related items on a screen.
+ * The message shown in place of a list or screen that has no content.
  *
- * @param title The heading text
+ * @param message Text explaining why there is nothing to show
  * @param modifier Modifier for the text
  */
 @Composable
-fun PvotSectionHeader(
-    title: String,
+fun PvotEmptyContent(
+    message: String,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = title,
-        style = MaterialTheme.typography.titleMedium,
-        color = MaterialTheme.colorScheme.onBackground,
+        text = message,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
     )
 }

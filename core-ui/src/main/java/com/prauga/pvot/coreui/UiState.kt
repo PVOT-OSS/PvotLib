@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
 // SPDX-License-Identifier: Apache-2.0
 
-package com.prauga.coreui
+package com.prauga.pvot.coreui
 
 /**
  * The loading state of a screen's content.

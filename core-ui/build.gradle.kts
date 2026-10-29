@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.prauga.coreui"
+    namespace = "com.prauga.pvot.coreui"
     compileSdk {
         version = release(37) {
             minorApiLevel = 1

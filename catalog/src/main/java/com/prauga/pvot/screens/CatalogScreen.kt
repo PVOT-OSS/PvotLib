@@ -28,10 +28,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prauga.coreui.PvotEmptyContent
-import com.prauga.coreui.PvotErrorContent
-import com.prauga.coreui.PvotLoadingContent
-import com.prauga.coreui.PvotSectionHeader
+import com.prauga.pvot.coreui.PvotEmptyContent
+import com.prauga.pvot.coreui.PvotErrorContent
+import com.prauga.pvot.coreui.PvotLoadingContent
+import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.R
 import com.prauga.pvot.components.CatalogCard
 import com.prauga.pvot.designsystem.components.PvotCard

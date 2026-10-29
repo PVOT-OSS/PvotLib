@@ -23,9 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prauga.coreui.PvotEmptyContent
-import com.prauga.coreui.PvotErrorContent
-import com.prauga.coreui.UiState
+import com.prauga.pvot.coreui.PvotEmptyContent
+import com.prauga.pvot.coreui.PvotErrorContent
+import com.prauga.pvot.coreui.UiState
 import com.prauga.pvot.R
 import com.prauga.pvot.components.FeedCard
 import com.prauga.pvot.components.FeedCardSkeleton
