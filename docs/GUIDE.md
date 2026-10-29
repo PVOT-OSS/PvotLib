@@ -17,7 +17,7 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
 ├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
-├── components/   PvotCard, PvotGlassCard, PvotScreen, PvotSkeleton
+├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton
 │   └── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 ├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults
 └── platform/     PvotBaseActivity
@@ -163,8 +163,20 @@ Box {
 | 11 and older | the tint alone |
 
 `PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
-the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width and
-`CapsuleRadius`. The glass can't show other windows or the wallpaper.
+the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width,
+`CapsuleRadius`, and the press and shadow values of the glass components. The glass can't show
+other windows or the wallpaper.
+
+Glass belongs to the layer that floats over the content: the nav bar, buttons and cards over a
+screen that scrolls under them. Mark the whole screen as the backdrop and pass it to
+`PvotNavBar`, so the content shows through the bar, bent at its edge, as it scrolls by:
+
+```kotlin
+val backdrop = rememberPvotGlassBackdrop()
+Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = backdrop) }) {
+    Screen(Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
+}
+```
 
 ## 6. Components
 
@@ -172,11 +184,12 @@ the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width an
 |---|---|---|
 | `PvotCard` | `components` | Rounded, translucent surface; pass `onClick` to make it a button with press feedback |
 | `PvotGlassCard` | `components` | Card of glass over a backdrop, with a tilt-following rim; pass `onClick` to make it a button |
+| `PvotGlassIconButton` | `components` | Round glass button for an icon floating over a backdrop |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
-| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab expands into a gradient pill. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem` |
+| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab expands into a gradient pill. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
 | `PvotLoadingContent` | `core-ui` | Indeterminate progress indicator for `UiState.Loading` |
 | `PvotErrorContent` | `core-ui` | Title, message and retry button for `UiState.Error` |
