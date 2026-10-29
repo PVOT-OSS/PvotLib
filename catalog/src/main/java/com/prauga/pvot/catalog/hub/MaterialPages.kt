@@ -82,6 +82,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -189,6 +190,7 @@ internal fun SelectionPage(onBack: () -> Unit) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
                     .selectable(selected = terms, role = Role.Checkbox, onClick = { terms = !terms }),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -208,6 +210,7 @@ internal fun SelectionPage(onBack: () -> Unit) {
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(48.dp)
+                            .clip(RoundedCornerShape(12.dp))
                             .selectable(selected = plan == index, role = Role.RadioButton, onClick = { plan = index }),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
