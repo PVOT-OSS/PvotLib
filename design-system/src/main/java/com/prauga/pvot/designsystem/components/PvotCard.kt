@@ -4,8 +4,6 @@
 package com.prauga.pvot.designsystem.components
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.Card
@@ -19,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.theme.PvotShapes
 
@@ -71,26 +71,30 @@ public fun PvotCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val cardModifier = if (onClick != null) {
-        modifier
-            .pvotPressScale(interactionSource)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = LocalIndication.current,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
+    if (onClick != null) {
+        // The card's own click overload, so the press highlight is clipped to the card's shape. A
+        // clickable around the card would draw it over the card's square bounds instead.
+        Card(
+            onClick = onClick,
+            modifier = modifier
+                .pvotPressScale(interactionSource)
+                .semantics { role = Role.Button },
+            enabled = enabled,
+            shape = shape,
+            colors = colors,
+            elevation = elevation,
+            border = border,
+            interactionSource = interactionSource,
+            content = content
+        )
     } else {
-        modifier
+        Card(
+            modifier = modifier,
+            shape = shape,
+            colors = colors,
+            elevation = elevation,
+            border = border,
+            content = content
+        )
     }
-
-    Card(
-        modifier = cardModifier,
-        shape = shape,
-        colors = colors,
-        elevation = elevation,
-        border = border,
-        content = content
-    )
 }

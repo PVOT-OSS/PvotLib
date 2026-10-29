@@ -55,9 +55,9 @@ data class TeamMember(
 )
 
 private val teamMembers = listOf(
-    TeamMember("debz-g", "Developer"),
     TeamMember("danascape", "Lead Developer"),
-    TeamMember("sxivansx", "Lead Designer")
+    TeamMember("sxivansx", "Lead Designer"),
+    TeamMember("debz-g", "Silver Developer")
 )
 
 data class ProjectLink(
