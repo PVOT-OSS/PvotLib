@@ -38,6 +38,7 @@ import com.prauga.pvot.catalog.components.DeveloperCard
 import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
 import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.catalog.data.model.GithubUser
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
@@ -261,24 +262,34 @@ fun AboutScreen(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = stringResource(R.string.about_glass_subtitle),
+                                text = stringResource(
+                                    when {
+                                        PvotGlassDefaults.isLensSupported -> R.string.about_glass_subtitle
+                                        PvotGlassDefaults.isBlurSupported -> R.string.about_glass_subtitle_blur
+                                        else -> R.string.about_glass_subtitle_flat
+                                    }
+                                ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.padding(top = 4.dp)
                             )
                         }
                         Text(
-                            text = glassLabel(intensity),
+                            text = glassLabel(intensity.coerceAtMost(PvotGlassDefaults.maxIntensity())),
                             style = MaterialTheme.typography.labelLarge,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
-                    PvotSlider(
-                        value = intensity,
-                        onValueChange = { PreferencesManager.setGlassIntensity(it) },
-                        steps = 3,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
+                    val max = PvotGlassDefaults.maxIntensity()
+                    if (max > 0f) {
+                        PvotSlider(
+                            value = intensity.coerceAtMost(max),
+                            onValueChange = { PreferencesManager.setGlassIntensity(it) },
+                            valueRange = 0f..max,
+                            steps = if (max >= 1f) 3 else 0,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
                 }
             }
         }

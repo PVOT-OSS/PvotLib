@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import com.prauga.pvot.catalog.components.GlassPanel
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
@@ -265,7 +266,7 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
 
 @Composable
 private fun EntryRow(entry: CatalogEntry, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    PvotCard(modifier = modifier.fillMaxWidth(), onClick = onClick) {
+    GlassPanel(modifier = modifier.fillMaxWidth(), onClick = onClick) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

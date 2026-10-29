@@ -26,7 +26,7 @@ import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.catalog.legacy.LocalNewUi
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotGlassCard
-import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
 import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
@@ -50,8 +50,9 @@ fun GlassPanel(
         PvotCard(modifier = modifier.fillMaxWidth(), onClick = onClick, content = content)
         return
     }
-    if (LocalPvotGlassIntensity.current <= 0f) {
-        // The lowest setting is glass on the bars only; cards go back to plain surfaces.
+    if (PvotGlassDefaults.currentIntensity() <= 0f || !PvotGlassDefaults.isBlurSupported) {
+        // The lowest setting, and any device with no blur, is glass on the bars only: cards go back
+        // to plain surfaces.
         PvotCard(modifier = modifier.fillMaxWidth(), onClick = onClick, content = content)
         return
     }

@@ -5,6 +5,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import com.prauga.pvot.catalog.components.GlassPanel
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -336,7 +337,7 @@ internal fun ListsPage(onBack: () -> Unit) {
         code = "ListItem(\n    headlineContent = { Text(\"Title\") },\n    supportingContent = { Text(\"Detail\") },\n    trailingContent = { Switch(...) }\n)"
     ) {
         DemoSection(title = "List items", framed = false) {
-            PvotCard(modifier = Modifier.fillMaxWidth()) {
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 ListItem(
                     headlineContent = { Text("Notifications") },
                     supportingContent = { Text("Banners and sounds") },
@@ -390,7 +391,7 @@ internal fun ListsPage(onBack: () -> Unit) {
                             }
                         }
                     ) {
-                        PvotCard(modifier = Modifier.fillMaxWidth()) {
+                        GlassPanel(modifier = Modifier.fillMaxWidth()) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()

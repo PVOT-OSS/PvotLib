@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import com.prauga.pvot.catalog.components.GlassPanel
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateDpAsState
@@ -195,7 +196,7 @@ internal fun TypographyPage(onBack: () -> Unit) {
         )
         DemoSection(title = "Type scale", framed = false) {
             styles.forEach { (name, style) ->
-                PvotCard(
+                GlassPanel(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { copy("MaterialTheme.typography.$name", "$name copied") }
                 ) {

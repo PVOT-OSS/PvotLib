@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import com.prauga.pvot.catalog.components.GlassPanel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -177,7 +178,7 @@ internal fun DemoSection(
             }
         }
         if (framed) {
-            PvotCard(modifier = Modifier.fillMaxWidth()) {
+            GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -197,7 +198,7 @@ internal fun DemoSection(
 @Composable
 internal fun CodeBlock(code: String, modifier: Modifier = Modifier) {
     val copy = rememberCopier()
-    PvotCard(modifier = modifier.fillMaxWidth()) {
+    GlassPanel(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

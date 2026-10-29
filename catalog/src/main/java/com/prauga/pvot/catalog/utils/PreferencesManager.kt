@@ -5,6 +5,7 @@ package com.prauga.pvot.catalog.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -29,7 +30,11 @@ object PreferencesManager {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         _dynamicColorEnabled.value = prefs.getBoolean(KEY_DYNAMIC_COLOR, false)
         _newUiEnabled.value = prefs.getBoolean(KEY_NEW_UI, true)
-        _glassIntensity.value = prefs.getFloat(KEY_GLASS, 1f)
+        _glassIntensity.value = if (prefs.contains(KEY_GLASS)) {
+            prefs.getFloat(KEY_GLASS, 1f)
+        } else {
+            PvotGlassDefaults.defaultIntensity()
+        }
     }
 
     fun setDynamicColorEnabled(enabled: Boolean) {
