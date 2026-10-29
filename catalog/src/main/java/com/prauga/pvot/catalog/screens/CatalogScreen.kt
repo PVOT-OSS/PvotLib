@@ -34,6 +34,7 @@ import com.prauga.pvot.coreui.PvotLoadingContent
 import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.CatalogCard
+import com.prauga.pvot.catalog.components.GlassDemo
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.PvotSkeleton
@@ -181,6 +182,12 @@ fun CatalogScreen(
                         modifier = Modifier.padding(top = 12.dp)
                     )
                 }
+            }
+        }
+
+        item {
+            CatalogCard(title = stringResource(R.string.catalog_glass)) {
+                GlassDemo()
             }
         }
 
