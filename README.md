@@ -32,6 +32,50 @@ PvotLib/
 
 ## Installation
 
+PvotLib is published from this repository; no account or token is needed to use it.
+
+**From the Maven repository (recommended).** Add the repository in `settings.gradle.kts`:
+
+```kotlin
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://pvot-oss.github.io/PvotLib/maven") {
+            content { includeGroup("com.prauga.pvot") }
+        }
+    }
+}
+```
+
+then the libraries, for example through the version catalog:
+
+```toml
+[versions]
+pvot = "0.1.0"
+
+[libraries]
+pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
+pvot-core-ui = { group = "com.prauga.pvot", name = "core-ui", version.ref = "pvot" }
+```
+
+```kotlin
+// app/build.gradle.kts
+dependencies {
+    implementation(libs.pvot.design.system)
+    implementation(libs.pvot.core.ui)
+}
+```
+
+Compose UI, Material 3 and Activity Compose come with them.
+
+**As an AAR.** Each [release](https://github.com/PVOT-OSS/PvotLib/releases) has
+`design-system-<version>.aar` and `core-ui-<version>.aar` attached. A bare AAR doesn't bring its
+dependencies, so also add the Compose BOM, `androidx.compose.ui:ui`, `ui-graphics`, `material3` and
+`androidx.activity:activity-compose`.
+
+**From source.** Include the modules in a multi-module project:
+
 ```kotlin
 // settings.gradle.kts
 include(":design-system")
@@ -42,10 +86,7 @@ dependencies {
 }
 ```
 
-Or (not now):
-```kotlin
-implementation("com.prauga.pvot:design-system:0.1.0")
-```
+**In AOSP.** Both libraries build inline as `PvotDesignSystem` and `PvotCoreUi` (`Android.bp`).
 
 ## Quick Start
 
@@ -242,6 +283,16 @@ DurationPicker(
 - Hours, minutes, and seconds wheels
 - Smooth wheel scrolling with snap behavior
 - Adapts to light/dark theme automatically
+
+## Releasing
+
+1. Set `version` in `gradle.properties`, and turn the changelog's "unreleased" heading into that
+   version's date.
+2. Commit, then tag and push: `git tag v0.1.0 && git push origin v0.1.0`.
+
+The release workflow checks the tag matches the version, builds and tests, adds both libraries to
+the Maven repository on GitHub Pages (never overwriting a released version), and creates a GitHub
+Release with the AARs, their sources and the showcase APK.
 
 ## Roadmap
 
