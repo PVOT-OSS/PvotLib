@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+PackageName: com.prauga.pvot
+Name: "What's in Pvot"
+Summary: "The Pvot design system, live: liquid glass, components and motion"
+License: Apache-2.0
+AuthorName: Saalim Quadri
+SourceCode: https://github.com/PVOT-OSS/PvotLib
+IssueTracker: https://github.com/PVOT-OSS/PvotLib/issues
+WebSite: https://squadri.me
+Categories:
+  - Development
+AntiFeatures:
+  NonFreeNet:
+    en-US: Shows PVOT-OSS projects from the GitHub API.
+CurrentVersion: "1.0.0"
+CurrentVersionCode: 10000
+Description: |
+  What's in Pvot is the showcase for Pvot, the open source design system
+  behind PVOT-OSS's Android apps: every color, type style, motion and
+  component to try live, including liquid glass, plus the PVOT-OSS projects
+  and the latest posts from the developer's blog.
+
+RepoType: git
+Repo: https://github.com/PVOT-OSS/PvotLib.git
+
+Builds:
+  - versionName: 1.0.0
+    versionCode: 10000
+    commit: catalog-v1.0.0
+    subdir: catalog
+    gradle:
+      - yes
