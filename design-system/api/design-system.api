@@ -78,11 +78,13 @@ public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDe
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
 	public static final field MediumFraction F
 	public final fun getContainerColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getFloatingCornerRadius-D9Ej5fM ()F
+	public final fun getFloatingMargin-D9Ej5fM ()F
 	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetKt {
-	public static final fun PvotPersistentSheet-Y7b-7Ic (Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetState;FLandroidx/compose/ui/Modifier;FLandroidx/compose/foundation/layout/WindowInsets;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotPersistentSheet-VrRJkwU (Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetState;FLandroidx/compose/ui/Modifier;FLandroidx/compose/foundation/layout/WindowInsets;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberPvotPersistentSheetState (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Landroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetState;
 }
 

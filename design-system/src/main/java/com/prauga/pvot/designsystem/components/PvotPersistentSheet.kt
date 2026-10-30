@@ -12,6 +12,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.animateTo
 import androidx.compose.foundation.gestures.snapTo
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -28,6 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -36,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -43,11 +45,14 @@ import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import com.prauga.pvot.designsystem.R
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.theme.PvotSpacing
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /** The heights a [PvotPersistentSheet] rests at. */
 public enum class PvotSheetDetent {
@@ -69,6 +74,12 @@ public object PvotPersistentSheetDefaults {
 
     /** Corner shape of the sheet, rounded at the top only. */
     public val Shape: Shape = PvotBottomSheetDefaults.Shape
+
+    /** Gap between a floating sheet and the edges of the space it moves in. */
+    public val FloatingMargin: Dp = PvotSpacing.L
+
+    /** Corner radius of a floating sheet once it is open; collapsed, it is a capsule. */
+    public val FloatingCornerRadius: Dp = 32.dp
 
     /** Fill of the sheet. */
     public val containerColor: Color
@@ -140,12 +151,20 @@ public fun rememberPvotPersistentSheetState(
  * the content; pad the parent or pass `Modifier.statusBarsPadding()` to keep the expanded sheet
  * below the status bar. The content does not scroll inside the sheet.
  *
+ * With [floating] the sheet is a card of glass over [backdrop], inset from the edges and kept
+ * above the bottom [windowInsets]: collapsed it is a capsule, like a floating search bar, and its
+ * corners soften as it opens.
+ *
  * @param state The sheet's detent and position, from [rememberPvotPersistentSheetState]
  * @param peekHeight Height that shows when collapsed, above the bottom [windowInsets]
  * @param modifier Modifier for the area the sheet moves in
  * @param mediumFraction Share of the available height covered at the medium detent
- * @param windowInsets Insets the content keeps clear of at the bottom, the navigation bar by default
- * @param containerColor Fill of the sheet
+ * @param windowInsets Insets the sheet keeps clear of at the bottom, the navigation bar by default
+ * @param floating Whether the sheet floats as an inset card of glass rather than filling the width
+ * @param backdrop The content behind a [floating] sheet, marked with
+ * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ * glass tint alone
+ * @param containerColor Fill of the sheet when it is not [floating]
  * @param content The sheet's content, below the drag handle
  */
 @Composable
@@ -155,13 +174,18 @@ public fun PvotPersistentSheet(
     modifier: Modifier = Modifier,
     mediumFraction: Float = PvotPersistentSheetDefaults.MediumFraction,
     windowInsets: WindowInsets = WindowInsets.navigationBars,
+    floating: Boolean = false,
+    backdrop: PvotGlassBackdrop? = null,
     containerColor: Color = PvotPersistentSheetDefaults.containerColor,
     content: @Composable ColumnScope.() -> Unit
 ) {
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
-    val peek = with(density) { peekHeight.toPx() } + windowInsets.getBottom(density)
+    val margin = if (floating) PvotPersistentSheetDefaults.FloatingMargin else 0.dp
+    val bottomGap = if (floating) windowInsets.getBottom(density) + with(density) { margin.toPx() } else 0f
+    val peek = with(density) { peekHeight.toPx() } + if (floating) bottomGap else windowInsets.getBottom(density).toFloat()
     val flingBehavior = AnchoredDraggableDefaults.flingBehavior(state.draggable)
+    val interactionSource = remember { MutableInteractionSource() }
     val actionLabels = mapOf(
         PvotSheetDetent.Collapsed to stringResource(R.string.pvot_sheet_action_collapse),
         PvotSheetDetent.Medium to stringResource(R.string.pvot_sheet_action_medium),
@@ -173,26 +197,46 @@ public fun PvotPersistentSheet(
             .fillMaxSize()
             .onSizeChanged { size ->
                 val height = size.height.toFloat()
+                val top = with(density) { margin.toPx() }
                 state.draggable.updateAnchors(
                     DraggableAnchors {
-                        PvotSheetDetent.Collapsed at (height - peek).coerceAtLeast(0f)
+                        PvotSheetDetent.Collapsed at (height - peek).coerceAtLeast(top)
                         PvotSheetDetent.Medium at height * (1f - mediumFraction)
-                        PvotSheetDetent.Expanded at 0f
+                        PvotSheetDetent.Expanded at top
                     }
                 )
             },
         contentAlignment = Alignment.TopCenter
     ) {
-        Column(
-            modifier = Modifier
-                .offset {
-                    val offset = state.offset
-                    IntOffset(0, if (offset.isNaN()) Int.MAX_VALUE / 2 else offset.roundToInt())
-                }
-                .widthIn(max = PvotBottomSheetDefaults.MaxWidth)
-                .fillMaxSize()
+        val surface = if (floating) {
+            Modifier.glassSurface(
+                backdrop = backdrop,
+                cornerRadius = floatingCornerRadius(state, peekHeight),
+                style = PvotGlassDefaults.Style,
+                rim = true,
+                onClick = null,
+                enabled = true,
+                interactionSource = interactionSource
+            )
+        } else {
+            Modifier
                 .clip(PvotPersistentSheetDefaults.Shape)
                 .background(containerColor)
+        }
+        Column(
+            modifier = Modifier
+                .widthIn(max = PvotBottomSheetDefaults.MaxWidth)
+                .padding(horizontal = margin)
+                .layout { measurable, constraints ->
+                    val offset = state.offset
+                    val top = if (offset.isNaN()) constraints.maxHeight else offset.roundToInt()
+                    val height = (constraints.maxHeight - top - bottomGap.roundToInt()).coerceAtLeast(0)
+                    val placeable = measurable.measure(
+                        constraints.copy(minHeight = height, maxHeight = height)
+                    )
+                    layout(placeable.width, constraints.maxHeight) { placeable.place(0, top) }
+                }
+                .then(surface)
                 .anchoredDraggable(
                     state = state.draggable,
                     orientation = Orientation.Vertical,
@@ -208,14 +252,27 @@ public fun PvotPersistentSheet(
                             }
                         }
                 }
-                .windowInsetsPadding(windowInsets)
+                .then(if (floating) Modifier else Modifier.windowInsetsPadding(windowInsets))
                 .padding(horizontal = PvotSpacing.L),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PvotSheetHandle()
+            PvotSheetHandle(verticalPadding = if (floating) PvotSpacing.S else PvotSpacing.M)
             CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
                 Column(modifier = Modifier.fillMaxWidth(), content = content)
             }
         }
     }
+}
+
+@Composable
+private fun floatingCornerRadius(state: PvotPersistentSheetState, peekHeight: Dp): Dp {
+    val anchors = state.draggable.anchors
+    val collapsed = anchors.positionOf(PvotSheetDetent.Collapsed)
+    val medium = anchors.positionOf(PvotSheetDetent.Medium)
+    val progress = if (collapsed.isNaN() || medium.isNaN() || collapsed <= medium || state.offset.isNaN()) {
+        0f
+    } else {
+        ((collapsed - state.offset) / (collapsed - medium)).coerceIn(0f, 1f)
+    }
+    return lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, progress)
 }
