@@ -265,6 +265,7 @@ public final class com/prauga/pvot/designsystem/effects/PvotGlassRimKt {
 
 public final class com/prauga/pvot/designsystem/effects/PvotGlassStyle {
 	public static final field $stable I
+	public fun <init> ()V
 	public synthetic fun <init> (FFFFFFFFFFFFJFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (FFFFFFFFFFFFJFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-D9Ej5fM ()F
@@ -387,6 +388,7 @@ public final class com/prauga/pvot/designsystem/navigation/PvotNavBarKt {
 
 public final class com/prauga/pvot/designsystem/navigation/PvotNavBarSizes {
 	public static final field $stable I
+	public fun <init> ()V
 	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFFILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public synthetic fun <init> (FLandroidx/compose/ui/unit/Dp;ZFFFFFFFFFJFFFFFFLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-D9Ej5fM ()F

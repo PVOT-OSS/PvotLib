@@ -6,6 +6,11 @@ together under one version.
 
 ## Unreleased
 
+### Changed
+- The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
+  and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
+  adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
+
 ### Fixed
 - The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
   compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
