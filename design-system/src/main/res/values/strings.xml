@@ -15,4 +15,9 @@
     <!-- Accessibility actions for moving a picker wheel -->
     <string name="pvot_picker_action_next">Next value</string>
     <string name="pvot_picker_action_previous">Previous value</string>
+
+    <!-- Accessibility actions for moving a persistent sheet -->
+    <string name="pvot_sheet_action_collapse">Collapse</string>
+    <string name="pvot_sheet_action_medium">Show half</string>
+    <string name="pvot_sheet_action_expand">Expand</string>
 </resources>

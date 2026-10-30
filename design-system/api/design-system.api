@@ -73,6 +73,28 @@ public final class com/prauga/pvot/designsystem/components/PvotGlassIconButtonKt
 	public static final fun PvotGlassIconButton-Y6xPZig (Lkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;ZFLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;JLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
+	public static final field MediumFraction F
+	public final fun getContainerColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetKt {
+	public static final fun PvotPersistentSheet-Y7b-7Ic (Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetState;FLandroidx/compose/ui/Modifier;FLandroidx/compose/foundation/layout/WindowInsets;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPvotPersistentSheetState (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Landroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetState;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetState {
+	public static final field $stable I
+	public final fun animateTo (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public final fun getCurrentDetent ()Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public final fun getOffset ()F
+	public final fun getTargetDetent ()Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public final fun snapTo (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotScreenDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotScreenDefaults;
@@ -85,6 +107,15 @@ public final class com/prauga/pvot/designsystem/components/PvotScreenDefaults {
 
 public final class com/prauga/pvot/designsystem/components/PvotScreenKt {
 	public static final fun PvotScreen (Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/ui/Alignment$Horizontal;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSheetDetent : java/lang/Enum {
+	public static final field Collapsed Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public static final field Expanded Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public static final field Medium Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotSkeletonDefaults {

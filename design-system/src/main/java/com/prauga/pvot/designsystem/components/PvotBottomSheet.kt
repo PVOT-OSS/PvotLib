@@ -149,7 +149,7 @@ public fun PvotBottomSheet(
 }
 
 @Composable
-private fun PvotSheetHandle() {
+internal fun PvotSheetHandle() {
     Box(
         modifier = Modifier
             .padding(vertical = PvotSpacing.M)
