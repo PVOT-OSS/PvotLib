@@ -11,15 +11,18 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -34,9 +37,12 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
@@ -57,10 +63,13 @@ import com.prauga.pvot.designsystem.components.PvotDialog
 import com.prauga.pvot.designsystem.components.PvotDialogAction
 import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
 import com.prauga.pvot.designsystem.components.PvotDialogContent
+import com.prauga.pvot.designsystem.components.PvotPersistentSheet
+import com.prauga.pvot.designsystem.components.PvotSheetDetent
 import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
+import com.prauga.pvot.designsystem.components.rememberPvotPersistentSheetState
 import com.prauga.pvot.designsystem.components.slider.PvotRangeSlider
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.designsystem.components.textfield.PvotTextField
@@ -74,6 +83,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 import kotlin.time.Duration.Companion.minutes
+import kotlinx.coroutines.launch
 
 // ───────────────────────────── Navigation bar ─────────────────────────────
 
@@ -522,7 +532,9 @@ internal fun OverlaysPage(onBack: () -> Unit) {
                 "    PvotDialogAction(\"Delete\", onClick = ::delete, style = PvotDialogActionStyle.Destructive)\n" +
                 "    PvotDialogAction(\"Cancel\", onClick = { show = false })\n}\n\n" +
                 "PvotBottomSheet(visible = open, onDismissRequest = { open = false }, title = \"Share\") {\n" +
-                "    PvotSheetItem(title = \"Copy link\", onClick = ::copy)\n}",
+                "    PvotSheetItem(title = \"Copy link\", onClick = ::copy)\n}\n\n" +
+                "PvotPersistentSheet(state = rememberPvotPersistentSheetState(), peekHeight = 72.dp) {\n" +
+                "    SearchField()\n}",
     ) {
         DemoSection(title = "Dialogs", caption = "Tap outside or go back to dismiss") {
             Button(onClick = { alert = true }, modifier = Modifier.fillMaxWidth()) {
@@ -567,6 +579,13 @@ internal fun OverlaysPage(onBack: () -> Unit) {
             OutlinedButton(onClick = { filters = true }, modifier = Modifier.fillMaxWidth()) {
                 Text("With controls")
             }
+        }
+        DemoSection(
+            title = "Persistent sheet",
+            caption = "Stays over content you can still use; drag it between three heights",
+            framed = false,
+        ) {
+            PersistentSheetDemo()
         }
         DemoSection(title = "Snackbar", caption = "A brief message that fades itself") {
             TextButton(onClick = { send("This is a snackbar") }) { Text("Show snackbar") }
@@ -694,6 +713,48 @@ internal fun OverlaysPage(onBack: () -> Unit) {
                 },
                 style = PvotDialogActionStyle.Primary,
             )
+        }
+    }
+}
+
+@Composable
+private fun PersistentSheetDemo() {
+    val state = rememberPvotPersistentSheetState()
+    val scope = rememberCoroutineScope()
+    Box(
+        modifier =
+            Modifier.fillMaxWidth()
+                .height(440.dp)
+                .clip(RoundedCornerShape(24.dp))
+                .background(
+                    Brush.verticalGradient(
+                        listOf(
+                            MaterialTheme.colorScheme.primaryContainer,
+                            MaterialTheme.colorScheme.tertiaryContainer,
+                        )
+                    )
+                )
+    ) {
+        Text(
+            text = "Showing: ${state.currentDetent}",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.padding(PvotSpacing.L),
+        )
+        PvotPersistentSheet(state = state, peekHeight = 72.dp, windowInsets = WindowInsets(0)) {
+            PvotSheetItem(
+                title = "Search",
+                subtitle = "Tap to open, or drag the sheet",
+                icon = { Icon(painterResource(R.drawable.ic_t_search), null) },
+                onClick = { scope.launch { state.animateTo(PvotSheetDetent.Expanded) } },
+            )
+            listOf("Home", "Work", "Recent place").forEach { place ->
+                PvotSheetItem(
+                    title = place,
+                    icon = { Icon(painterResource(R.drawable.ic_t_heart), null) },
+                    onClick = { scope.launch { state.animateTo(PvotSheetDetent.Collapsed) } },
+                )
+            }
         }
     }
 }

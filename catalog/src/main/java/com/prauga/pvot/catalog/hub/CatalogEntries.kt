@@ -135,7 +135,8 @@ internal fun catalogEntries(): List<CatalogEntry> =
             group = CatalogGroup.Components,
             summary = "Animated dialogs and bottom sheets with actions and controls.",
             icon = R.drawable.ic_t_message_circle,
-            keywords = "dialog sheet modal snackbar toast alert PvotDialog PvotBottomSheet",
+            keywords =
+                "dialog sheet modal persistent snackbar toast alert PvotDialog PvotBottomSheet PvotPersistentSheet",
             page = { OverlaysPage(it) },
         ),
         CatalogEntry(
