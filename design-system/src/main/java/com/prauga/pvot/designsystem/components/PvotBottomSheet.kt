@@ -150,10 +150,10 @@ public fun PvotBottomSheet(
 }
 
 @Composable
-internal fun PvotSheetHandle() {
+internal fun PvotSheetHandle(verticalPadding: Dp = PvotSpacing.M) {
     Box(
         modifier =
-            Modifier.padding(vertical = PvotSpacing.M)
+            Modifier.padding(vertical = verticalPadding)
                 .size(PvotBottomSheetDefaults.HandleWidth, PvotBottomSheetDefaults.HandleHeight)
                 .background(
                     MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
