@@ -14,11 +14,13 @@ import androidx.annotation.StringRes
  * @param contentDescriptionRes Accessibility description.
  * @param expandedIconRes Icon for expanded state (defaults to [iconRes]).
  * @param expandedLabelRes Label for expanded state (defaults to [labelRes]).
+ * @param badgeCount Number shown in a badge on the icon, such as unread items; 0 hides the badge.
  */
 public data class PvotTabItem(
     @DrawableRes val iconRes: Int,
     @StringRes val labelRes: Int,
     @StringRes val contentDescriptionRes: Int,
     @DrawableRes val expandedIconRes: Int? = null,
-    @StringRes val expandedLabelRes: Int? = null
+    @StringRes val expandedLabelRes: Int? = null,
+    val badgeCount: Int = 0
 )

@@ -28,6 +28,8 @@ together under one version.
   - `components`: `PvotGlassCard` and `PvotGlassIconButton`, with their defaults. Over a
     backdrop they float on a soft shadow, and swell and brighten while pressed.
   - `navigation`: `PvotNavBarDefaults.glassColors()`.
+  - `navigation`: `PvotTabItem.badgeCount` shows a count badge on a tab's icon (above 999 it
+    reads "999+"), and TalkBack reads it with the tab's description.
 
 ### Changed
 - `PvotNavBar` takes a `backdrop`: given one, the bar is glass over it, with

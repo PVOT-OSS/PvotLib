@@ -77,7 +77,8 @@ fun CatalogScreen(
         PvotTabItem(
             iconRes = icons.apps,
             labelRes = R.string.tab_apps,
-            contentDescriptionRes = R.string.cd_apps
+            contentDescriptionRes = R.string.cd_apps,
+            badgeCount = 3
         ),
         PvotTabItem(
             iconRes = icons.catalog,
