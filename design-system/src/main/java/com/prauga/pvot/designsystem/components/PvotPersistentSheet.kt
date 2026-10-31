@@ -265,7 +265,7 @@ public fun PvotPersistentSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (floating) {
-                PvotSheetHandle(verticalPadding = PvotSpacing.S, width = PvotPersistentSheetDefaults.FloatingHandleWidth)
+                PvotSheetHandle(verticalPadding = PvotSpacing.XS, width = PvotPersistentSheetDefaults.FloatingHandleWidth)
             } else {
                 PvotSheetHandle()
             }
