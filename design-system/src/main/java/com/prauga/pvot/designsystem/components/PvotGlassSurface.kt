@@ -59,7 +59,6 @@ import com.prauga.pvot.designsystem.motion.PvotDurations
  * @param interactionSource The source driving the press animation, hoist it to react to presses
  *   elsewhere; null to keep one here
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 public fun Modifier.pvotGlassSurface(
     backdrop: PvotGlassBackdrop?,
@@ -71,9 +70,35 @@ public fun Modifier.pvotGlassSurface(
     enabled: Boolean = true,
     role: Role? = Role.Button,
     interactionSource: MutableInteractionSource? = null,
+): Modifier =
+    glassSurface(
+        backdrop = backdrop,
+        cornerRadius = cornerRadius,
+        style = style,
+        rim = rim,
+        onClick = onClick,
+        onLongClick = onLongClick,
+        enabled = enabled,
+        role = role,
+        interactionSource = interactionSource,
+        intensity = PvotGlassDefaults.currentIntensity(),
+    )
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+internal fun Modifier.glassSurface(
+    backdrop: PvotGlassBackdrop?,
+    cornerRadius: Dp = PvotGlassDefaults.CapsuleRadius,
+    style: PvotGlassStyle = PvotGlassDefaults.Style,
+    rim: Boolean = true,
+    onClick: (() -> Unit)? = null,
+    onLongClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
+    role: Role? = Role.Button,
+    interactionSource: MutableInteractionSource? = null,
+    intensity: Float,
 ): Modifier {
     val source = interactionSource ?: remember { MutableInteractionSource() }
-    val intensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(intensity, style)
     val shape =
         if (cornerRadius.isFinite) {
