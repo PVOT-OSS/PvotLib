@@ -15,4 +15,11 @@
     <!-- Accessibility actions for moving a picker wheel -->
     <string name="pvot_picker_action_next">Next value</string>
     <string name="pvot_picker_action_previous">Previous value</string>
+
+    <!-- Badge on a navigation bar tab: the count when it is too large to show, and its spoken form -->
+    <string name="pvot_nav_badge_overflow">%1$d+</string>
+    <plurals name="pvot_nav_badge_description">
+        <item quantity="one">%1$d new item</item>
+        <item quantity="other">%1$d new items</item>
+    </plurals>
 </resources>
