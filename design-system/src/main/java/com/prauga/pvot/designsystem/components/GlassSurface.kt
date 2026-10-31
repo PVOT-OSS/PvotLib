@@ -37,8 +37,8 @@ internal fun Modifier.glassSurface(
     onClick: (() -> Unit)?,
     enabled: Boolean,
     interactionSource: MutableInteractionSource,
+    intensity: Float = PvotGlassDefaults.currentIntensity(),
 ): Modifier {
-    val intensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(intensity, style)
     val shape = if (cornerRadius.isFinite) {
         RoundedCornerShape(cornerRadius)

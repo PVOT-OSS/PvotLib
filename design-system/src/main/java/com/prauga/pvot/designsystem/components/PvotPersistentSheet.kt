@@ -87,10 +87,10 @@ public object PvotPersistentSheetDefaults {
     /** Width of a floating sheet's drag handle, wider so the collapsed bar reads as grabbable. */
     public val FloatingHandleWidth: Dp = PvotBottomSheetDefaults.HandleWidth * 1.5f
 
-    /** Width of the hairline around a floating sheet. */
+    /** Width of the hairline around an open floating sheet. */
     public val FloatingOutlineWidth: Dp = 1.dp
 
-    /** Hairline around a floating sheet, so it holds its edge over busy content. */
+    /** Hairline around an open floating sheet, so it holds its edge over busy content. */
     public val floatingOutlineColor: Color
         @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.14f)
 
@@ -164,9 +164,10 @@ public fun rememberPvotPersistentSheetState(
  * the content; pad the parent or pass `Modifier.statusBarsPadding()` to keep the expanded sheet
  * below the status bar. The content does not scroll inside the sheet.
  *
- * With [floating] the sheet is an outlined card of glass over [backdrop]: collapsed it is a capsule
- * inset from the edges and kept above the bottom [windowInsets], like a floating search bar; as it
- * opens it grows to the full width and down to the bottom edge.
+ * With [floating] the sheet is glass over [backdrop]. Collapsed it is a capsule inset from the
+ * edges and kept above the bottom [windowInsets], in the same glass as a [PvotGlassCard], like a
+ * floating search bar. As it opens it grows to the full width and down to the bottom edge, and
+ * turns into frosted glass with a hairline outline.
  *
  * @param state The sheet's detent and position, from [rememberPvotPersistentSheetState]
  * @param peekHeight Height that shows when collapsed, above the bottom [windowInsets]
@@ -222,7 +223,9 @@ public fun PvotPersistentSheet(
         contentAlignment = Alignment.TopCenter
     ) {
         val surface = if (floating) {
-            val radius = lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, state.openProgress())
+            val progress = state.openProgress()
+            val radius = lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, progress)
+            val outline = PvotPersistentSheetDefaults.floatingOutlineColor
             Modifier
                 .glassSurface(
                     backdrop = backdrop,
@@ -231,11 +234,12 @@ public fun PvotPersistentSheet(
                     rim = true,
                     onClick = null,
                     enabled = true,
-                    interactionSource = interactionSource
+                    interactionSource = interactionSource,
+                    intensity = PvotGlassDefaults.currentIntensity() * (1f - progress)
                 )
                 .border(
                     PvotPersistentSheetDefaults.FloatingOutlineWidth,
-                    PvotPersistentSheetDefaults.floatingOutlineColor,
+                    outline.copy(alpha = outline.alpha * progress),
                     RoundedCornerShape(radius)
                 )
         } else {
