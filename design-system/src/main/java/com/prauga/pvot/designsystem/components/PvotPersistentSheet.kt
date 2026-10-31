@@ -5,6 +5,7 @@ package com.prauga.pvot.designsystem.components
 
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.AnchoredDraggableDefaults
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -44,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
@@ -80,6 +83,16 @@ public object PvotPersistentSheetDefaults {
 
     /** Corner radius of a floating sheet once it is open; collapsed, it is a capsule. */
     public val FloatingCornerRadius: Dp = 32.dp
+
+    /** Width of a floating sheet's drag handle, wider so the collapsed bar reads as grabbable. */
+    public val FloatingHandleWidth: Dp = PvotBottomSheetDefaults.HandleWidth * 1.5f
+
+    /** Width of the hairline around a floating sheet. */
+    public val FloatingOutlineWidth: Dp = 1.dp
+
+    /** Hairline around a floating sheet, so it holds its edge over busy content. */
+    public val floatingOutlineColor: Color
+        @Composable get() = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.14f)
 
     /** Fill of the sheet. */
     public val containerColor: Color
@@ -151,9 +164,9 @@ public fun rememberPvotPersistentSheetState(
  * the content; pad the parent or pass `Modifier.statusBarsPadding()` to keep the expanded sheet
  * below the status bar. The content does not scroll inside the sheet.
  *
- * With [floating] the sheet is a card of glass over [backdrop], inset from the edges and kept
- * above the bottom [windowInsets]: collapsed it is a capsule, like a floating search bar, and its
- * corners soften as it opens.
+ * With [floating] the sheet is an outlined card of glass over [backdrop]: collapsed it is a capsule
+ * inset from the edges and kept above the bottom [windowInsets], like a floating search bar; as it
+ * opens it grows to the full width and down to the bottom edge.
  *
  * @param state The sheet's detent and position, from [rememberPvotPersistentSheetState]
  * @param peekHeight Height that shows when collapsed, above the bottom [windowInsets]
@@ -209,15 +222,22 @@ public fun PvotPersistentSheet(
         contentAlignment = Alignment.TopCenter
     ) {
         val surface = if (floating) {
-            Modifier.glassSurface(
-                backdrop = backdrop,
-                cornerRadius = floatingCornerRadius(state, peekHeight),
-                style = PvotGlassDefaults.Style,
-                rim = true,
-                onClick = null,
-                enabled = true,
-                interactionSource = interactionSource
-            )
+            val radius = lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, state.openProgress())
+            Modifier
+                .glassSurface(
+                    backdrop = backdrop,
+                    cornerRadius = radius,
+                    style = PvotGlassDefaults.Style,
+                    rim = true,
+                    onClick = null,
+                    enabled = true,
+                    interactionSource = interactionSource
+                )
+                .border(
+                    PvotPersistentSheetDefaults.FloatingOutlineWidth,
+                    PvotPersistentSheetDefaults.floatingOutlineColor,
+                    RoundedCornerShape(radius)
+                )
         } else {
             Modifier
                 .clip(PvotPersistentSheetDefaults.Shape)
@@ -226,15 +246,15 @@ public fun PvotPersistentSheet(
         Column(
             modifier = Modifier
                 .widthIn(max = PvotBottomSheetDefaults.MaxWidth)
-                .padding(horizontal = margin)
                 .layout { measurable, constraints ->
                     val offset = state.offset
+                    val detached = 1f - state.openProgress()
+                    val side = (margin.toPx() * detached).roundToInt()
                     val top = if (offset.isNaN()) constraints.maxHeight else offset.roundToInt()
-                    val height = (constraints.maxHeight - top - bottomGap.roundToInt()).coerceAtLeast(0)
-                    val placeable = measurable.measure(
-                        constraints.copy(minHeight = height, maxHeight = height)
-                    )
-                    layout(placeable.width, constraints.maxHeight) { placeable.place(0, top) }
+                    val height = (constraints.maxHeight - top - (bottomGap * detached).roundToInt()).coerceAtLeast(0)
+                    val width = (constraints.maxWidth - 2 * side).coerceAtLeast(0)
+                    val placeable = measurable.measure(Constraints.fixed(width, height))
+                    layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(side, top) }
                 }
                 .then(surface)
                 .anchoredDraggable(
@@ -256,7 +276,11 @@ public fun PvotPersistentSheet(
                 .padding(horizontal = PvotSpacing.L),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            PvotSheetHandle(verticalPadding = if (floating) PvotSpacing.S else PvotSpacing.M)
+            if (floating) {
+                PvotSheetHandle(verticalPadding = PvotSpacing.S, width = PvotPersistentSheetDefaults.FloatingHandleWidth)
+            } else {
+                PvotSheetHandle()
+            }
             CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
                 Column(modifier = Modifier.fillMaxWidth(), content = content)
             }
@@ -264,15 +288,10 @@ public fun PvotPersistentSheet(
     }
 }
 
-@Composable
-private fun floatingCornerRadius(state: PvotPersistentSheetState, peekHeight: Dp): Dp {
-    val anchors = state.draggable.anchors
+private fun PvotPersistentSheetState.openProgress(): Float {
+    val anchors = draggable.anchors
     val collapsed = anchors.positionOf(PvotSheetDetent.Collapsed)
     val medium = anchors.positionOf(PvotSheetDetent.Medium)
-    val progress = if (collapsed.isNaN() || medium.isNaN() || collapsed <= medium || state.offset.isNaN()) {
-        0f
-    } else {
-        ((collapsed - state.offset) / (collapsed - medium)).coerceIn(0f, 1f)
-    }
-    return lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, progress)
+    if (collapsed.isNaN() || medium.isNaN() || collapsed <= medium || offset.isNaN()) return 0f
+    return ((collapsed - offset) / (collapsed - medium)).coerceIn(0f, 1f)
 }

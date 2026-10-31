@@ -79,7 +79,10 @@ public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDe
 	public static final field MediumFraction F
 	public final fun getContainerColor (Landroidx/compose/runtime/Composer;I)J
 	public final fun getFloatingCornerRadius-D9Ej5fM ()F
+	public final fun getFloatingHandleWidth-D9Ej5fM ()F
 	public final fun getFloatingMargin-D9Ej5fM ()F
+	public final fun getFloatingOutlineColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getFloatingOutlineWidth-D9Ej5fM ()F
 	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
 }
 
