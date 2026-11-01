@@ -151,6 +151,7 @@ internal fun KeypadPage(onBack: () -> Unit) {
     val send = rememberSnackbarSender()
     var digits by remember { mutableStateOf("") }
     var held by remember { mutableIntStateOf(0) }
+    var filled by remember { mutableStateOf(false) }
     DetailPage(
         title = "Keypad",
         summary = "Twelve round keys that report down and up, so a tone plays while a key is held, " +
@@ -161,6 +162,7 @@ internal fun KeypadPage(onBack: () -> Unit) {
             "PvotKeypad(onKeyPress = { key, pressed -> if (pressed) { tone(key); digits += key.digit } })"
     ) {
         DemoSection(title = "Dial", caption = "Hold 0 for +. Keys held: $held") {
+            OptionSwitch("Filled keys", filled, { filled = it })
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 PvotKeypadDisplay(
                     digits = digits,
@@ -175,6 +177,7 @@ internal fun KeypadPage(onBack: () -> Unit) {
                         }
                     },
                     keys = PvotKeypadDefaults.keys(zeroLongPressLabel = "Plus"),
+                    colors = if (filled) PvotKeypadDefaults.filledColors() else PvotKeypadDefaults.flatColors(),
                     onKeyLongPress = { key ->
                         // The 0 already went in on the down: swap it for the +.
                         digits = digits.dropLast(1) + "+"

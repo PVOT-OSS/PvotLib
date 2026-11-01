@@ -6,10 +6,14 @@ package com.prauga.pvot.designsystem.components.call
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.pvotPressScale
@@ -73,6 +80,15 @@ public object PvotCallActionButtonDefaults {
     /** Opacity of a disabled button. */
     public const val DisabledAlpha: Float = 0.38f
 
+    /** Height of a pill with its label inside, such as "End" under a call's controls. */
+    public val LabelledHeight: Dp = 64.dp
+
+    /** Padding at each side of a pill with its label inside. */
+    public val LabelledHorizontalPadding: Dp = PvotSpacing.L * 2
+
+    /** How much darker the bottom of a labelled pill's gradient is. */
+    public const val GradientDepth: Float = 0.2f
+
     /** The colors for [action]: answer in the success color, decline and end in the error color. */
     @Composable
     public fun colors(action: PvotCallAction): PvotCallActionButtonColors = when (action) {
@@ -94,7 +110,8 @@ public object PvotCallActionButtonDefaults {
  *
  * It is always solid, never glass: the one action that must be found at a glance keeps its color
  * over any background. A circle by default; give the end-call button
- * [PvotCallActionButtonDefaults.EndWidth] for a pill.
+ * [PvotCallActionButtonDefaults.EndWidth] for a pill, or set [labelInside] for a pill that says
+ * what it does, such as "End".
  *
  * @param action What the button does, which picks its color
  * @param icon The button's icon
@@ -104,6 +121,7 @@ public object PvotCallActionButtonDefaults {
  * @param size Height of the button, and its width unless [width] is set
  * @param width Width of the button
  * @param showLabel Whether to show [label] under the button
+ * @param labelInside Whether to show [label] inside, after the icon, as a pill as wide as it needs
  * @param enabled Whether the button responds to taps
  * @param colors The button's colors
  */
@@ -117,6 +135,7 @@ public fun PvotCallActionButton(
     size: Dp = PvotCallActionButtonDefaults.Size,
     width: Dp = size,
     showLabel: Boolean = false,
+    labelInside: Boolean = false,
     enabled: Boolean = true,
     colors: PvotCallActionButtonColors = PvotCallActionButtonDefaults.colors(action)
 ) {
@@ -135,22 +154,53 @@ public fun PvotCallActionButton(
             .semantics(mergeDescendants = true) { contentDescription = label },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
-            modifier = Modifier
-                .size(width = width, height = size)
-                .alpha(alpha)
-                .clip(CircleShape)
-                .background(colors.containerColor, CircleShape),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                painter = icon,
-                contentDescription = null,
-                tint = colors.contentColor,
-                modifier = Modifier.size(PvotCallActionButtonDefaults.IconSize)
-            )
+        if (labelInside) {
+            Row(
+                modifier = Modifier
+                    .height(PvotCallActionButtonDefaults.LabelledHeight)
+                    .widthIn(min = width)
+                    .alpha(alpha)
+                    .clip(CircleShape)
+                    .background(
+                        Brush.verticalGradient(
+                            listOf(
+                                colors.containerColor,
+                                lerp(colors.containerColor, Color.Black, PvotCallActionButtonDefaults.GradientDepth)
+                            )
+                        )
+                    )
+                    .padding(horizontal = PvotCallActionButtonDefaults.LabelledHorizontalPadding),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(painter = icon, contentDescription = null, tint = colors.contentColor)
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = colors.contentColor,
+                    maxLines = 1,
+                    modifier = Modifier.padding(start = PvotSpacing.S)
+                )
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .size(width = width, height = size)
+                    .alpha(alpha)
+                    .clip(CircleShape)
+                    .background(colors.containerColor, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = icon,
+                    contentDescription = null,
+                    tint = colors.contentColor,
+                    modifier = Modifier.size(PvotCallActionButtonDefaults.IconSize)
+                )
+            }
         }
-        if (showLabel) {
+        if (showLabel && !labelInside) {
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,

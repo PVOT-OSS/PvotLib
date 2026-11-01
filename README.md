@@ -312,6 +312,11 @@ Release with the AARs, their sources and the catalog APK.
 | PvotKeypad / PvotKeypadDisplay | Phone keypad reporting down and up, and the number with a backspace | Done |
 | PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
 | PvotSlideToAct | Slide up or down to act, as answering a call | Done |
+| PvotDock / PvotCapsule | Round tabs on a capsule whose selected tab names its action | Done |
+| PvotTabRow | Text tabs with a sliding underline | Done |
+| PvotIconButton | Round icon buttons and toggles | Done |
+| PvotListGroup | Rows grouped on one card with dividers | Done |
+| PvotLinearProgress / PvotProportionBar | A seekable progress bar and a bar of shares in one hue | Done |
 | PvotButton | Filled, tonal, text and destructive buttons | Done |
 | PvotTextField | Floating-label text field | Done |
 | PvotDialog | Animated modal dialogs | Done |

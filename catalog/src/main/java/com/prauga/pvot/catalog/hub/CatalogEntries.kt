@@ -118,6 +118,18 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { CallControlsPage(it) }
     ),
     CatalogEntry(
+        id = "dock", title = "Dock", group = CatalogGroup.Components,
+        summary = "Round tabs on a capsule; the selected one becomes a pill that names its action.",
+        icon = R.drawable.ic_t_layout_navbar, keywords = "dock navigation tabs bottom bar action dial search PvotDock",
+        page = { DockPage(it) }
+    ),
+    CatalogEntry(
+        id = "capsule", title = "Icon buttons and capsule", group = CatalogGroup.Components,
+        summary = "Round icon buttons, grouped on a glass capsule, and the end pill with its label inside.",
+        icon = R.drawable.ic_t_microphone_off, keywords = "icon button round toggle capsule call controls end PvotIconButton PvotCapsule",
+        page = { CapsulePage(it) }
+    ),
+    CatalogEntry(
         id = "keypad", title = "Keypad", group = CatalogGroup.Components,
         summary = "Twelve keys that report down and up, with the number and a backspace above.",
         icon = R.drawable.ic_t_dialpad, keywords = "dialpad dial digits number backspace tone PvotKeypad PvotKeypadDisplay",
@@ -152,6 +164,24 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         summary = "Exclusive choices with a sliding pill.",
         icon = R.drawable.ic_t_toggle_left, keywords = "segmented tabs filter choice PvotSegmentedControl",
         page = { SegmentedControlPage(it) }
+    ),
+    CatalogEntry(
+        id = "pvot-tabs", title = "Tab row", group = CatalogGroup.Components,
+        summary = "Text tabs with a sliding underline, to switch what a list shows.",
+        icon = R.drawable.ic_t_list, keywords = "tabs tab row underline filter PvotTabRow",
+        page = { TabRowPage(it) }
+    ),
+    CatalogEntry(
+        id = "list-group", title = "List group", group = CatalogGroup.Components,
+        summary = "Rows on one card with hairlines between them, under a title.",
+        icon = R.drawable.ic_t_settings, keywords = "list group settings card divider rows PvotListGroup",
+        page = { ListGroupPage(it) }
+    ),
+    CatalogEntry(
+        id = "pvot-progress", title = "Progress bars", group = CatalogGroup.Components,
+        summary = "A thin bar that can seek, and a bar of shares in one hue.",
+        icon = R.drawable.ic_t_loader_2, keywords = "progress bar seek proportion share legend PvotLinearProgress PvotProportionBar",
+        page = { PvotProgressPage(it) }
     ),
     CatalogEntry(
         id = "snackbar", title = "Snackbar", group = CatalogGroup.Components,

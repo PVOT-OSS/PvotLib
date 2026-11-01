@@ -62,9 +62,14 @@ Use the Pvot component whenever one exists. Do not use the Material equivalent.
 | Fast scroll through a sectioned list | `PvotFastScroller` | a hand-made scrollbar |
 | Settings row | `PvotSwitchRow`, `PvotPreferenceRow` | `ListItem` + `Switch` |
 | Segmented choice | `PvotSegmentedControl` | `SegmentedButton` |
+| Tabs over a list | `PvotTabRow` | `TabRow`, `PrimaryTabRow` |
+| Main navigation with an action per tab | `PvotDock` | a hand-made bar |
+| Icon-only button | `PvotIconButton` | `IconButton`, `FilledIconButton` |
+| Grouped rows on a card | `PvotListGroup` | `Card` + `HorizontalDivider` |
+| Progress, shares | `PvotLinearProgress`, `PvotProportionBar` | `LinearProgressIndicator` |
 | Snackbar | `PvotSnackbarHost` | `SnackbarHost` |
 
-Not built yet (chips, tabs, checkboxes, radio buttons, progress): use the Material 3
+Not built yet (chips, checkboxes, radio buttons, circular progress): use the Material 3
 component, which `PvotAppTheme` already styles, and keep it to default parameters so a Pvot version
 can replace it cleanly. If a screen needs one badly, say so and propose adding it to the library
 rather than hand-styling it in the app.

@@ -54,7 +54,8 @@ public object PvotSettingsRowDefaults {
  * @param onCheckedChange Called with the new value when the row is tapped
  * @param modifier Modifier for the row
  * @param summary What the setting does, under the title
- * @param icon Content of the tinted circle at the start, typically an `Icon`; it is tinted for you
+ * @param icon The icon at the start, typically an `Icon`; it is tinted for you
+ * @param iconStyle Whether [icon] sits in a tinted circle or stands bare
  * @param enabled Whether the row responds to touch; a disabled row is dimmed
  * @param colors The row's colors
  * @param switchColors The switch's colors
@@ -67,6 +68,7 @@ public fun PvotSwitchRow(
     modifier: Modifier = Modifier,
     summary: String? = null,
     icon: (@Composable () -> Unit)? = null,
+    iconStyle: PvotRowIconStyle = PvotRowIconStyle.Contained,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
     switchColors: SwitchColors = PvotSettingsRowDefaults.switchColors()
@@ -86,7 +88,7 @@ public fun PvotSwitchRow(
             ),
         title = { Text(text = title, maxLines = 2, overflow = TextOverflow.Ellipsis) },
         supportingText = summary?.let { { Text(text = it) } },
-        leading = icon?.let { { PvotRowIcon(colors, it) } },
+        leading = icon?.let { { PvotRowIcon(colors, it, iconStyle) } },
         trailing = {
             // The row toggles; the switch only shows the state, so it takes no clicks of its own.
             Switch(
@@ -115,8 +117,10 @@ public fun PvotSwitchRow(
  * @param modifier Modifier for the row
  * @param summary What the setting does, under the title
  * @param value The current value, such as "Vibrate"
- * @param icon Content of the tinted circle at the start, typically an `Icon`; it is tinted for you
+ * @param icon The icon at the start, typically an `Icon`; it is tinted for you
+ * @param iconStyle Whether [icon] sits in a tinted circle or stands bare
  * @param showChevron Whether to end with a chevron, which says the row opens a new screen
+ * @param chevron Whether that end is a chevron or an arrow
  * @param enabled Whether the row responds to touch; a disabled row is dimmed
  * @param colors The row's colors
  */
@@ -128,7 +132,9 @@ public fun PvotPreferenceRow(
     summary: String? = null,
     value: String? = null,
     icon: (@Composable () -> Unit)? = null,
+    iconStyle: PvotRowIconStyle = PvotRowIconStyle.Contained,
     showChevron: Boolean = true,
+    chevron: PvotRowChevron = PvotRowChevron.Chevron,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors()
 ) {
@@ -150,7 +156,12 @@ public fun PvotPreferenceRow(
                 }
                 if (showChevron) {
                     Icon(
-                        painter = painterResource(R.drawable.pvot_ic_chevron_right),
+                        painter = painterResource(
+                            when (chevron) {
+                                PvotRowChevron.Chevron -> R.drawable.pvot_ic_chevron_right
+                                PvotRowChevron.Arrow -> R.drawable.pvot_ic_arrow_right
+                            }
+                        ),
                         contentDescription = null,
                         modifier = Modifier.size(PvotSettingsRowDefaults.ChevronSize)
                     )
@@ -173,7 +184,7 @@ public fun PvotPreferenceRow(
             ),
         title = { Text(text = title, maxLines = 2, overflow = TextOverflow.Ellipsis) },
         supportingText = summary?.let { { Text(text = it) } },
-        leading = icon?.let { { PvotRowIcon(colors, it) } },
+        leading = icon?.let { { PvotRowIcon(colors, it, iconStyle) } },
         trailing = trailing,
         selected = false,
         enabled = enabled,

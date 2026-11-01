@@ -40,6 +40,7 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.onLongClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.pvotPressScale
@@ -67,6 +68,22 @@ public data class PvotKeypadKey(
         get() = listOfNotNull(digit, letters?.takeIf { it.isNotBlank() }).joinToString(", ")
 }
 
+/**
+ * The colors of a [PvotKeypad]'s keys.
+ *
+ * @param keyColor Fill of a key at rest
+ * @param pressedKeyColor Fill of a key while it is held
+ * @param digitColor Color of the digit
+ * @param lettersColor Color of the letters under the digit
+ */
+@Immutable
+public data class PvotKeypadColors(
+    val keyColor: Color,
+    val pressedKeyColor: Color,
+    val digitColor: Color,
+    val lettersColor: Color
+)
+
 /** Defaults for [PvotKeypad]. */
 public object PvotKeypadDefaults {
 
@@ -75,6 +92,24 @@ public object PvotKeypadDefaults {
 
     /** Keys to a row. */
     public const val Columns: Int = 3
+
+    /** Keys with no fill of their own, for a keypad on a sheet or glass; a faint fill while held. */
+    @Composable
+    public fun flatColors(): PvotKeypadColors = PvotKeypadColors(
+        keyColor = Color.Transparent,
+        pressedKeyColor = MaterialTheme.colorScheme.onSurface.copy(alpha = PressedFillAlpha),
+        digitColor = MaterialTheme.colorScheme.onSurface,
+        lettersColor = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+
+    /** Filled round keys, for a keypad on the plain background; brighter while held. */
+    @Composable
+    public fun filledColors(): PvotKeypadColors = PvotKeypadColors(
+        keyColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        pressedKeyColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+        digitColor = MaterialTheme.colorScheme.onSurface,
+        lettersColor = MaterialTheme.colorScheme.onSurface
+    )
 
     /**
      * The twelve keys of a phone keypad, with the Latin letters and [KeyEvent] key codes as ids.
@@ -127,7 +162,8 @@ public object PvotKeypadDefaults {
  * but nothing else happens. TalkBack reads each key as its digit and letters and taps it with a
  * down and an up.
  *
- * The keys have no fill of their own: the keypad sits on the surface or glass sheet that holds it.
+ * By default the keys have no fill of their own, for a keypad on a sheet or glass; use
+ * [PvotKeypadDefaults.filledColors] for round filled keys on a plain background.
  *
  * @param onKeyPress Called with a key and true when it goes down, false when it comes up
  * @param modifier Modifier for the keypad
@@ -136,6 +172,7 @@ public object PvotKeypadDefaults {
  * @param haptics Whether a key ticks when it goes down
  * @param keySize Diameter of a key
  * @param keyModifier Extra modifier for each key, such as a test tag
+ * @param colors The keys' colors
  */
 @Composable
 public fun PvotKeypad(
@@ -145,13 +182,14 @@ public fun PvotKeypad(
     onKeyLongPress: (key: PvotKeypadKey) -> Boolean = { false },
     haptics: Boolean = true,
     keySize: Dp = PvotKeypadDefaults.KeySize,
-    keyModifier: (PvotKeypadKey) -> Modifier = { Modifier }
+    keyModifier: (PvotKeypadKey) -> Modifier = { Modifier },
+    colors: PvotKeypadColors = PvotKeypadDefaults.flatColors()
 ) {
     Column(modifier) {
         for (row in keys.chunked(PvotKeypadDefaults.Columns)) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 for (key in row) {
-                    KeypadKey(key, onKeyPress, onKeyLongPress, haptics, keySize, keyModifier(key))
+                    KeypadKey(key, onKeyPress, onKeyLongPress, haptics, keySize, keyModifier(key), colors)
                 }
             }
         }
@@ -165,7 +203,8 @@ private fun KeypadKey(
     onKeyLongPress: (PvotKeypadKey) -> Boolean,
     haptics: Boolean,
     size: Dp,
-    modifier: Modifier
+    modifier: Modifier,
+    colors: PvotKeypadColors
 ) {
     val source = remember { MutableInteractionSource() }
     val hapticFeedback = LocalHapticFeedback.current
@@ -173,7 +212,7 @@ private fun KeypadKey(
     val longPress by rememberUpdatedState(onKeyLongPress)
     val pressed by source.collectIsPressedAsState()
     val fill by animateColorAsState(
-        if (pressed) MaterialTheme.colorScheme.onSurface.copy(alpha = PressedFillAlpha) else Color.Transparent,
+        if (pressed) colors.pressedKeyColor else colors.keyColor,
         tween(PvotDurations.Short),
         label = "keypadKeyFill"
     )
@@ -222,15 +261,15 @@ private fun KeypadKey(
         Text(
             text = key.digit,
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onSurface
+            color = colors.digitColor
         )
         // 1 keeps an empty letters line so its digit sits level with 2 and 3.
         val letters = key.letters ?: if (key.secondaryLetters == null && key.id == KeyEvent.KEYCODE_1) " " else null
         letters?.let {
-            Text(text = it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = it, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, color = colors.lettersColor)
         }
         key.secondaryLetters?.let {
-            Text(text = it, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(text = it, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, color = colors.lettersColor)
         }
     }
 }

@@ -18,11 +18,13 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
 ├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotDialogContent, PvotBottomSheet,
-│   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct
+│   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule, PvotDock,
+│   │             PvotTabRow
 │   ├── call/     PvotCallButton, PvotCallActionButton, PvotCallAction, their *Colors and *Defaults
-│   ├── keypad/   PvotKeypad, PvotKeypadKey, PvotKeypadDisplay, their *Defaults
-│   ├── button/   PvotButton, PvotButtonStyle, PvotFab, their *Colors and *Defaults
-│   ├── list/     PvotListRow, PvotLetterTile, PvotAvatar, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotFastScroller
+│   ├── keypad/   PvotKeypad, PvotKeypadKey, PvotKeypadColors, PvotKeypadDisplay, their *Defaults
+│   ├── progress/ PvotLinearProgress, PvotProportionBar, their *Colors and *Defaults
+│   ├── button/   PvotButton, PvotButtonStyle, PvotFab, PvotIconButton, their *Colors and *Defaults
+│   ├── list/     PvotListRow, PvotLetterTile, PvotAvatar, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotListGroup, PvotFastScroller
 │   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 │   ├── textfield/ PvotTextField, PvotTextFieldColors, PvotTextFieldDefaults
 │   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
@@ -312,6 +314,13 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotCallActionButton` | `components.call` | Answer, decline or end: solid success or error color, never glass; a circle, or a pill with `EndWidth` |
 | `PvotKeypad` | `components.keypad` | Twelve round keys reporting down and up (tones while held), with keyboard haptics, long presses and TalkBack labels such as "2, ABC" |
 | `PvotKeypadDisplay` | `components.keypad` | The number above a keypad with a backspace that clears when held; a slot for an app's own text field |
+| `PvotCapsule` | `components` | A pill grouping a row of floating controls; glass over a backdrop, solid otherwise. The container of the dock and of a call's controls |
+| `PvotDock` | `components` | The main navigation as round tabs on a capsule; the selected tab becomes a pill naming its action ("Dial", "Search", "Add") and runs it when tapped again. TalkBack reads the action as the tab's click label |
+| `PvotTabRow` | `components` | Text tabs with an underline that slides to the selected tab, sharing the width or scrolling; for switching what a list shows |
+| `PvotIconButton` | `components.button` | A round icon button, tonal, filled or plain, at 36, 48 or 56dp; a toggle with `checked` reads as a switch and ticks its haptic |
+| `PvotListGroup` | `components.list` | Rows on one card with inset hairlines between them, under a title; rows in a group use `PvotRowIconStyle.Plain` and `PvotRowChevron.Arrow` |
+| `PvotLinearProgress` | `components.progress` | A thin rounded progress bar, read at draw time; with `onSeek` it takes taps and drags and TalkBack can set it |
+| `PvotProportionBar` | `components.progress` | A bar of shares whose parts are tonal steps of one hue (`PvotProportionBarDefaults.tonalColors`), with legend dots in the same colors |
 | `PvotSlideToAct` | `components` | A puck slid up or down to act, flung or past a distance, springing back otherwise; haptics at the threshold, the target's color past halfway, each target a TalkBack action. `PvotSlideToActDefaults.decide` is the pure decision |
 | `PvotSegmentedControl` | `components` | Exclusive choices with a pill that slides to the selected one |
 | `PvotSnackbarHost`, `PvotSnackbar` | `components` | Snackbars of a `SnackbarHostState`, with an action such as Undo and an optional close button |
@@ -344,6 +353,12 @@ default comes from its `*Defaults` object:
 | Avatar | `PvotAvatarDefaults.Small` to `.Hero`, `.RingWidth` | parameters of `PvotAvatar` |
 | Call buttons | `PvotCallButtonDefaults.colors()` (tonal), `.glassColors()`; `PvotCallActionButtonDefaults.colors(action)` | a `PvotCallButtonColors` or `PvotCallActionButtonColors` |
 | Keypad | `PvotKeypadDefaults.keys()`, `.KeySize`; `PvotKeypadDisplayDefaults` | `keys(digits, zeroLongPressLabel, oneLongPressLabel)` or a list of `PvotKeypadKey` |
+| Dock | `PvotDockDefaults.ItemSize`, `.Height`, `.ContentClearance`, `.colors()` | items, colors |
+| Tab row | `PvotTabRowDefaults.TabHeight`, `.IndicatorHeight`, `.colors()` | colors, `scrollable` |
+| Icon button | `PvotIconButtonDefaults.Size`, `.LargeSize`, `.SmallSize`, `.tonalColors()`, `.filledColors()`, `.plainColors()` | size, colors |
+| List group | `PvotListGroupDefaults.DividerInset`, `.colors()` | `dividerInset`, colors |
+| Progress | `PvotLinearProgressDefaults.Height`, `.colors()`; `PvotProportionBarDefaults.Height`, `.tonalColors(base, track)` | colors |
+| Keypad keys | `PvotKeypadDefaults.flatColors()`, `.filledColors()` | colors |
 | Slide to act | `PvotSlideToActDefaults.UpDistance`, `.DownDistance`, `.FlingVelocity`, `.PuckSize` | a `PvotSlideTarget` per end |
 | Letter tile | `PvotLetterTileDefaults.themePalette()`, the container roles | `PvotLetterTileDefaults.palette(colorScheme)` or a list of `PvotLetterTileColors` |
 | Swipe actions | `PvotSwipeRowDefaults.action(...)` (primary), `.destructiveAction(...)` (error, removes the row) | their color parameters, or `PvotSwipeAction(...)` |

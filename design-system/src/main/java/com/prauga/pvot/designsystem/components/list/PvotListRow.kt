@@ -87,6 +87,9 @@ public object PvotListRowDefaults {
     /** Size of a leading avatar, letter tile or icon circle. */
     public val LeadingSize: Dp = 40.dp
 
+    /** Size of a [plain][PvotRowIconStyle.Plain] leading icon, with no circle round it. */
+    public val PlainIconSize: Dp = 24.dp
+
     /** Opacity of a disabled row. */
     public const val DisabledAlpha: Float = 0.38f
 
@@ -298,11 +301,18 @@ internal fun PvotRowLayout(
 
 /** The tinted circle that holds the icon of a settings row. */
 @Composable
-internal fun PvotRowIcon(colors: PvotListRowColors, icon: @Composable () -> Unit) {
+internal fun PvotRowIcon(
+    colors: PvotListRowColors,
+    icon: @Composable () -> Unit,
+    style: PvotRowIconStyle = PvotRowIconStyle.Contained
+) {
     Box(
-        modifier = Modifier
-            .size(PvotListRowDefaults.LeadingSize)
-            .background(colors.iconContainerColor, CircleShape),
+        modifier = when (style) {
+            PvotRowIconStyle.Contained -> Modifier
+                .size(PvotListRowDefaults.LeadingSize)
+                .background(colors.iconContainerColor, CircleShape)
+            PvotRowIconStyle.Plain -> Modifier.size(PvotListRowDefaults.PlainIconSize)
+        },
         contentAlignment = Alignment.Center
     ) {
         CompositionLocalProvider(LocalContentColor provides colors.iconColor, content = icon)

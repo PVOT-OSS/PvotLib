@@ -64,6 +64,20 @@ together under one version.
     list row to the call screen, with a ring and a badge.
   - `components`: `PvotSlideToAct`, `PvotSlideTarget`, `PvotSlideDecision` and
     `PvotSlideToActDefaults` (`decide`, `isTouchExplorationEnabled`): slide up or down to act.
+  - `components`: `PvotCapsule` (a glass pill grouping floating controls), `PvotDock`,
+    `PvotDockItem`, `PvotDockAction`, `PvotDockColors` and `PvotDockDefaults` (round tabs whose
+    selected tab becomes a pill naming its action and runs it), `PvotTabRow` with `*Colors` and
+    `*Defaults` (text tabs with a sliding underline).
+  - `components.button`: `PvotIconButton` with `*Colors` and `*Defaults` (round icon buttons and
+    toggles, tonal, filled or plain).
+  - `components.list`: `PvotListGroup` with `*Scope`, `*Colors` and `*Defaults` (rows on one card
+    with dividers); `PvotRowIconStyle` and `PvotRowChevron`, taken by `PvotSwitchRow` (`iconStyle`)
+    and `PvotPreferenceRow` (`iconStyle`, `chevron`); icon `pvot_ic_arrow_right`.
+  - `components.progress`: `PvotLinearProgress` (seekable with `onSeek`) and `PvotProportionBar`,
+    with `*Colors` and `*Defaults`; `PvotProportionBarDefaults.tonalColors` gives one hue in steps.
+  - `components.call`: `PvotCallActionButton(labelInside = true)`, a pill with its label inside.
+  - `components.keypad`: `PvotKeypadColors`, `PvotKeypadDefaults.flatColors()` (as before) and
+    `.filledColors()` (round filled keys); `PvotKeypad` takes `colors`.
   - `effects`: `PvotGlassDefaults.materialStyle(material)`, a material's tinted style for a glass
     component's `style`.
   - Icons `pvot_ic_phone`, `pvot_ic_phone_off` and `pvot_ic_backspace`; strings `pvot_state_on`,
