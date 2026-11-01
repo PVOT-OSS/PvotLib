@@ -54,8 +54,17 @@ Use the Pvot component whenever one exists. Do not use the Material equivalent.
 | Loading, empty, error | `UiState<T>`, `PvotLoadingContent`, `PvotEmptyContent`, `PvotErrorContent` | one-off layouts |
 | Time, duration | `PvotClockPicker`, `PvotDurationPicker` | Material time picker |
 | Group title | `PvotSectionHeader` | ad-hoc `Text` |
+| Button | `PvotButton` (`PvotButtonStyle`) | `Button`, `FilledTonalButton`, `TextButton` |
+| Floating action button | `PvotFab` | `FloatingActionButton`, `ExtendedFloatingActionButton` |
+| Top bar | `PvotTopBar` + `PvotTopBarAction` (`compact` driven by scroll) | `TopAppBar`, `LargeTopAppBar` |
+| List item | `PvotListRow`, `PvotLetterTile` | `ListItem` |
+| Swipe actions | `PvotSwipeRow` | `SwipeToDismissBox` |
+| Fast scroll through a sectioned list | `PvotFastScroller` | a hand-made scrollbar |
+| Settings row | `PvotSwitchRow`, `PvotPreferenceRow` | `ListItem` + `Switch` |
+| Segmented choice | `PvotSegmentedControl` | `SegmentedButton` |
+| Snackbar | `PvotSnackbarHost` | `SnackbarHost` |
 
-Not built yet (Pvot buttons, chips, switches, list items, tabs, progress): use the Material 3
+Not built yet (chips, tabs, checkboxes, radio buttons, progress): use the Material 3
 component, which `PvotAppTheme` already styles, and keep it to default parameters so a Pvot version
 can replace it cleanly. If a screen needs one badly, say so and propose adding it to the library
 rather than hand-styling it in the app.

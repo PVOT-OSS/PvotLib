@@ -82,6 +82,60 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { OverlaysPage(it) }
     ),
     CatalogEntry(
+        id = "pvot-button", title = "Button", group = CatalogGroup.Components,
+        summary = "Filled, tonal, text and destructive pill buttons.",
+        icon = R.drawable.ic_t_click, keywords = "button action destructive tonal PvotButton",
+        page = { PvotButtonPage(it) }
+    ),
+    CatalogEntry(
+        id = "fab", title = "Floating action button", group = CatalogGroup.Components,
+        summary = "Round or extended, folding its label while a list scrolls.",
+        icon = R.drawable.ic_t_plus, keywords = "fab floating action extended PvotFab",
+        page = { FabPage(it) }
+    ),
+    CatalogEntry(
+        id = "top-bar", title = "Top bar", group = CatalogGroup.Components,
+        summary = "Back, title and actions; the large title folds in on scroll.",
+        icon = R.drawable.ic_t_layout_navbar, keywords = "toolbar app bar header back collapse PvotTopBar",
+        page = { TopBarPage(it) }
+    ),
+    CatalogEntry(
+        id = "list-row", title = "List row", group = CatalogGroup.Components,
+        summary = "Avatar or letter tile, title, supporting text and a trailing slot.",
+        icon = R.drawable.ic_t_list, keywords = "list item row contact avatar letter tile PvotListRow PvotLetterTile",
+        page = { ListRowPage(it) }
+    ),
+    CatalogEntry(
+        id = "swipe-row", title = "Swipe row", group = CatalogGroup.Components,
+        summary = "Swipe actions at both ends, with undo for removal.",
+        icon = R.drawable.ic_t_arrow_back_up, keywords = "swipe dismiss delete call undo PvotSwipeRow",
+        page = { SwipeRowPage(it) }
+    ),
+    CatalogEntry(
+        id = "fast-scroller", title = "Fast scroller", group = CatalogGroup.Components,
+        summary = "Drag along the edge of a long list to jump between sections.",
+        icon = R.drawable.ic_t_list, keywords = "fast scroll scrollbar index letter alphabet contacts PvotFastScroller",
+        page = { FastScrollerPage(it) }
+    ),
+    CatalogEntry(
+        id = "settings-rows", title = "Settings rows", group = CatalogGroup.Components,
+        summary = "Switch rows and preference rows with a value and chevron.",
+        icon = R.drawable.ic_t_settings, keywords = "settings preference switch toggle PvotSwitchRow PvotPreferenceRow",
+        page = { SettingsRowsPage(it) }
+    ),
+    CatalogEntry(
+        id = "segmented", title = "Segmented control", group = CatalogGroup.Components,
+        summary = "Exclusive choices with a sliding pill.",
+        icon = R.drawable.ic_t_toggle_left, keywords = "segmented tabs filter choice PvotSegmentedControl",
+        page = { SegmentedControlPage(it) }
+    ),
+    CatalogEntry(
+        id = "snackbar", title = "Snackbar", group = CatalogGroup.Components,
+        summary = "Brief messages with Undo and a close button.",
+        icon = R.drawable.ic_t_message_circle, keywords = "snackbar toast undo message PvotSnackbarHost",
+        page = { SnackbarPage(it) }
+    ),
+    CatalogEntry(
         id = "glass", title = "Glass", group = CatalogGroup.Components,
         summary = "Experimental see-through surfaces over a live backdrop.",
         icon = R.drawable.ic_t_cards, keywords = "blur frosted liquid glass backdrop PvotGlassCard",

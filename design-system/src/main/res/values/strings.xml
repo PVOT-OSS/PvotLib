@@ -22,4 +22,10 @@
         <item quantity="one">%1$d new item</item>
         <item quantity="other">%1$d new items</item>
     </plurals>
+
+    <!-- Top bar: spoken label of the back button -->
+    <string name="pvot_top_bar_back">Back</string>
+
+    <!-- Snackbar: spoken label of the close button -->
+    <string name="pvot_snackbar_dismiss">Dismiss</string>
 </resources>

@@ -17,12 +17,16 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
 ├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
-├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotBottomSheet
+├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotBottomSheet,
+│   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar
+│   ├── button/   PvotButton, PvotButtonStyle, PvotFab, their *Colors and *Defaults
+│   ├── list/     PvotListRow, PvotLetterTile, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotFastScroller
 │   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 │   ├── textfield/ PvotTextField, PvotTextFieldColors, PvotTextFieldDefaults
 │   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
-├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults
-└── platform/     PvotBaseActivity
+├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults,
+│                 PvotTopBar, PvotTopBarAction, rememberPvotTopBarCompact
+└── platform/     PvotBaseActivity, enablePvotEdgeToEdge, setPvotContent
 
 core-ui/src/main/java/com/prauga/pvot/coreui/
 └── UiState, PvotLoadingContent, PvotErrorContent, PvotEmptyContent, PvotSectionHeader
@@ -51,6 +55,17 @@ class MainActivity : PvotBaseActivity() {
 
 `PvotBaseActivity` turns on edge-to-edge before any content is set. `PvotAppTheme` installs a
 Material 3 theme, so stock Material components pick up the Pvot palette too.
+
+An activity that has to extend something else (an `AppCompatActivity`, a dialer's in-call
+activity) gets the same setup from two extensions on `ComponentActivity`:
+
+```kotlin
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    enablePvotEdgeToEdge()
+    setPvotContent { PvotAppTheme { /* content */ } }
+}
+```
 
 | Parameter | Default | |
 |---|---|---|
@@ -209,9 +224,20 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
 | `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
+| `PvotTopBar` | `navigation` | Back button, title and actions; the large title folds into the bar when `compact`, driven by `rememberPvotTopBarCompact(listState)`. `PvotTopBarAction` for its icon buttons |
+| `PvotButton` | `components.button` | Pill button in four `PvotButtonStyle`s: `Filled`, `Tonal`, `Text`, `Destructive`; optional icon |
+| `PvotFab` | `components.button` | Floating action button; with `text` it is a pill whose label folds away when `expanded` is false |
+| `PvotListRow` | `components.list` | Leading slot (avatar, `PvotLetterTile`, icon), title, supporting text, trailing slot; optional `onClick`, `onLongClick` and `selected`. A slot overload takes rich title and supporting text |
+| `PvotLetterTile` | `components.list` | Round tile with a name's first letter, colored by a stable key; a person icon when there is no letter |
+| `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. Offered to TalkBack as actions |
+| `PvotFastScroller` | `components.list` | Over the end edge of a long list of `PvotFastScrollSection`s: a thumb while scrolling, and a drag along the edge jumps by section with a label bubble and a haptic tick. Hidden when the list fits and from TalkBack |
+| `PvotSwitchRow` | `components.list` | Settings row with a switch; the whole row toggles |
+| `PvotPreferenceRow` | `components.list` | Settings row with a summary, the current value and a chevron |
+| `PvotSegmentedControl` | `components` | Exclusive choices with a pill that slides to the selected one |
+| `PvotSnackbarHost`, `PvotSnackbar` | `components` | Snackbars of a `SnackbarHostState`, with an action such as Undo and an optional close button |
 | `PvotLoadingContent` | `core-ui` | Indeterminate progress indicator for `UiState.Loading` |
 | `PvotErrorContent` | `core-ui` | Title, message and retry button for `UiState.Error` |
-| `PvotEmptyContent` | `core-ui` | Message shown when there is nothing to list |
+| `PvotEmptyContent` | `core-ui` | Message shown when there is nothing to list, with an optional icon and action |
 | `PvotSectionHeader` | `core-ui` | Title above a group of items |
 
 **Colors and sizes.** Each component takes a `colors` (and the nav bar a `sizes`) parameter whose
@@ -228,6 +254,14 @@ default comes from its `*Defaults` object:
 | Glass card | `PvotGlassCardDefaults.CornerRadius`, `.ContentPadding`, `PvotGlassDefaults.Style` | parameters of `PvotGlassCard` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
 | Screen | `PvotScreenDefaults.contentPadding()`, `.VerticalArrangement` | parameters of `PvotScreen` |
+| Button colors | `PvotButtonDefaults.themeColors(style)` | `PvotButtonDefaults.colors(colorScheme, style)`, or a `PvotButtonColors` |
+| FAB colors | `PvotFabDefaults.themeColors()` | `PvotFabDefaults.colors(colorScheme, ...)` |
+| Top bar colors | `PvotTopBarDefaults.themeColors()`; `.windowInsets` (status bar) | `PvotTopBarDefaults.colors(colorScheme, ...)` |
+| Row colors (list, switch, preference) | `PvotListRowDefaults.themeColors()` | `PvotListRowDefaults.colors(colorScheme, ...)`; switch: `PvotSettingsRowDefaults.switchColors()` |
+| Letter tile | `PvotLetterTileDefaults.themePalette()`, the container roles | `PvotLetterTileDefaults.palette(colorScheme)` or a list of `PvotLetterTileColors` |
+| Swipe actions | `PvotSwipeRowDefaults.action(...)` (primary), `.destructiveAction(...)` (error, removes the row) | their color parameters, or `PvotSwipeAction(...)` |
+| Segmented control colors | `PvotSegmentedControlDefaults.themeColors()` | `PvotSegmentedControlDefaults.colors(colorScheme, ...)` |
+| Snackbar colors | `PvotSnackbarDefaults.themeColors()`, the inverse roles | `PvotSnackbarDefaults.colors(colorScheme, ...)` |
 
 **Loading states.** Model a screen's content as `UiState<T>` and show the matching component:
 

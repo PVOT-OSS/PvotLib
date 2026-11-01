@@ -315,7 +315,12 @@ internal fun StatesPage(onBack: () -> Unit) {
                 Box(modifier = Modifier.fillMaxWidth().height(220.dp), contentAlignment = Alignment.Center) {
                     when (shown) {
                         DemoState.Loading -> PvotLoadingContent()
-                        DemoState.Empty -> PvotEmptyContent(message = "Nothing here yet")
+                        DemoState.Empty -> PvotEmptyContent(
+                            message = "No recent calls",
+                            icon = { Icon(painterResource(R.drawable.ic_t_phone), contentDescription = null) },
+                            actionLabel = "Open dialpad",
+                            onAction = { state = DemoState.Success }
+                        )
                         DemoState.Error -> PvotErrorContent(
                             title = "Couldn't load",
                             message = "Check your connection and try again. Retried $retries times.",
@@ -339,6 +344,9 @@ internal fun StatesPage(onBack: () -> Unit) {
                     }
                 }
             }
+        }
+        DemoSection(title = "Empty, message only", caption = "Icon and action are optional") {
+            PvotEmptyContent(message = "Nothing here yet")
         }
         DemoSection(title = "Section header", caption = "Titles a group of items") {
             PvotSectionHeader(modifier = Modifier.fillMaxWidth(), title = "Recent apps")

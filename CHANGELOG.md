@@ -30,6 +30,34 @@ together under one version.
   - `navigation`: `PvotNavBarDefaults.glassColors()`.
   - `navigation`: `PvotTabItem.badgeCount` shows a count badge on a tab's icon (above 999 it
     reads "999+"), and TalkBack reads it with the tab's description.
+  - Components for list and settings screens, first needed by the Phone app:
+    - `components.list`: `PvotListRow` (leading slot, title, supporting text, trailing slot,
+      `onClick`, `onLongClick`, `selected`; a slot overload for rich text), `PvotLetterTile`,
+      `PvotSwipeRow` with `PvotSwipeAction`, `PvotSwipeRowState` and
+      `rememberPvotSwipeRowState` (start and end actions; a removing action slides the row off
+      for Undo), `PvotSwitchRow` and `PvotPreferenceRow`, with `PvotListRowColors`,
+      `PvotListRowDefaults`, `PvotLetterTileColors`, `PvotLetterTileDefaults`,
+      `PvotSwipeRowDefaults` and `PvotSettingsRowDefaults`.
+    - `components.list`: `PvotFastScroller` with `PvotFastScrollSection`,
+      `PvotFastScrollerColors` and `PvotFastScrollerDefaults` (drag along the end edge of a long
+      list to jump by section, with a bubble and a haptic tick per section).
+    - `components.button`: `PvotButton` in four `PvotButtonStyle`s (filled, tonal, text,
+      destructive) and `PvotFab`, round or extended, with `PvotButtonColors`,
+      `PvotButtonDefaults`, `PvotFabColors` and `PvotFabDefaults`.
+    - `components`: `PvotSegmentedControl` and `PvotSnackbarHost` / `PvotSnackbar`, with their
+      `*Colors` and `*Defaults`.
+    - `navigation`: `PvotTopBar`, whose large title folds into the bar when `compact`,
+      `PvotTopBarAction`, `rememberPvotTopBarCompact`, `PvotTopBarColors` and
+      `PvotTopBarDefaults`.
+    - `platform`: `ComponentActivity.enablePvotEdgeToEdge()` and
+      `ComponentActivity.setPvotContent {}`, for activities that cannot extend
+      `PvotBaseActivity`. `PvotBaseActivity` now calls `enablePvotEdgeToEdge()`; the window
+      setup is unchanged.
+    - Icons `pvot_ic_arrow_left`, `pvot_ic_chevron_right`, `pvot_ic_x` and `pvot_ic_user` (Tabler)
+      and the strings `pvot_top_bar_back` and `pvot_snackbar_dismiss`.
+- `core-ui`: `PvotEmptyContent` takes an optional `icon`, `actionLabel` and `onAction`, and
+  centers its message. Existing calls compile unchanged, and the old signature is kept, hidden,
+  so code compiled against 0.1.0 still links.
 
 ### Changed
 - `PvotNavBar` takes a `backdrop`: given one, the bar is glass over it, with
