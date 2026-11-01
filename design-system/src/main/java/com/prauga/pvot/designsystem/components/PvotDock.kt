@@ -3,15 +3,20 @@
 
 package com.prauga.pvot.designsystem.components
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -31,8 +36,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +48,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -132,6 +141,9 @@ public object PvotDockDefaults {
 
     /** The widest a pill grows; its label is cut short past it. */
     public val PillMaxWidth: Dp = 200.dp
+
+    /** How far a tab shrinks as it becomes selected, before it springs back to full size. */
+    public const val SelectDip: Float = 0.9f
 
     /** How much darker the bottom of the selected tab's gradient is. */
     public const val GradientDepth: Float = 0.18f
@@ -232,11 +244,22 @@ private fun DockItem(item: PvotDockItem, selected: Boolean, onSelect: () -> Unit
         tween(PvotDurations.Medium, easing = PvotMotion.Settle),
         label = "dockContent"
     )
+    // The pill grows with a little overshoot and folds back without one.
     val sidePadding by animateDpAsState(
         if (pill) PvotDockDefaults.PillHorizontalPadding else 0.dp,
-        tween(PvotDurations.Medium, easing = PvotMotion.Settle),
+        if (pill) PvotMotion.bounceSpring() else tween(PvotDurations.Short, easing = PvotMotion.Settle),
         label = "dockPadding"
     )
+    // A tab that becomes selected dips and springs back, so the change reads as a press.
+    val pop = remember { Animatable(1f) }
+    var wasSelected by remember { mutableStateOf(selected) }
+    LaunchedEffect(selected) {
+        if (selected && !wasSelected) {
+            pop.snapTo(PvotDockDefaults.SelectDip)
+            pop.animateTo(1f, PvotMotion.bounceSpring())
+        }
+        wasSelected = selected
+    }
     val run = {
         if (pill) {
             haptics.performHapticFeedback(HapticFeedbackType.Confirm)
@@ -251,6 +274,10 @@ private fun DockItem(item: PvotDockItem, selected: Boolean, onSelect: () -> Unit
             .height(PvotDockDefaults.ItemSize)
             .widthIn(min = PvotDockDefaults.ItemSize, max = PvotDockDefaults.PillMaxWidth)
             .pvotPressScale(source)
+            .graphicsLayer {
+                scaleX = pop.value
+                scaleY = pop.value
+            }
             .clip(PvotShapes.Pill)
             .background(colors.itemColor)
             .drawBehind {
@@ -288,17 +315,27 @@ private fun DockItem(item: PvotDockItem, selected: Boolean, onSelect: () -> Unit
                 if (item.badgeCount > 0 && !pill) Badge { Text(badgeText(item.badgeCount)) }
             }
         ) {
-            Icon(
-                painter = if (pill) action!!.icon else item.icon,
-                contentDescription = null,
-                tint = content,
-                modifier = Modifier.size(IconSize)
-            )
+            // The tab's icon turns into its action's icon and back.
+            AnimatedContent(
+                targetState = pill,
+                transitionSpec = {
+                    (scaleIn(tween(PvotDurations.Medium, easing = PvotMotion.Settle), IconSwapScale) +
+                        fadeIn(tween(PvotDurations.Medium))) togetherWith
+                        (scaleOut(tween(PvotDurations.Short), IconSwapScale) + fadeOut(tween(PvotDurations.Short)))
+                },
+                label = "dockIcon"
+            ) { showsAction ->
+                Icon(
+                    painter = if (showsAction) action!!.icon else item.icon,
+                    contentDescription = null,
+                    tint = content,
+                    modifier = Modifier.size(IconSize)
+                )
+            }
         }
         AnimatedVisibility(
             visible = pill,
-            enter = expandHorizontally(tween(PvotDurations.Medium, easing = PvotMotion.Settle)) +
-                fadeIn(tween(PvotDurations.Medium)),
+            enter = expandHorizontally(PvotMotion.bounceSpring()) + fadeIn(tween(PvotDurations.Medium)),
             exit = shrinkHorizontally(tween(PvotDurations.Short, easing = PvotMotion.Settle)) +
                 fadeOut(tween(PvotDurations.Short))
         ) {
@@ -317,5 +354,6 @@ private fun DockItem(item: PvotDockItem, selected: Boolean, onSelect: () -> Unit
 private fun badgeText(count: Int): String = if (count > MaxBadge) "$MaxBadge+" else count.toString()
 
 private val IconSize = 24.dp
+private const val IconSwapScale = 0.6f
 private const val HighlightAlpha = 0.22f
 private const val MaxBadge = 999

@@ -98,6 +98,7 @@ public final class com/prauga/pvot/designsystem/components/PvotDockDefaults {
 	public static final field $stable I
 	public static final field GradientDepth F
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotDockDefaults;
+	public static final field SelectDip F
 	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotDockColors;
 	public final fun getContentClearance-D9Ej5fM ()F
 	public final fun getHeight-D9Ej5fM ()F
@@ -519,6 +520,7 @@ public final class com/prauga/pvot/designsystem/components/call/PvotCallActionBu
 	public final fun getLabelledHeight-D9Ej5fM ()F
 	public final fun getLabelledHorizontalPadding-D9Ej5fM ()F
 	public final fun getSize-D9Ej5fM ()F
+	public final fun themeColors (Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;
 }
 
 public final class com/prauga/pvot/designsystem/components/call/PvotCallActionButtonKt {
@@ -1367,6 +1369,8 @@ public abstract class com/prauga/pvot/designsystem/platform/PvotBaseActivity : a
 public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotBackgroundDark ()J
 	public static final fun getPvotBackgroundLight ()J
+	public static final fun getPvotCallAnswer ()J
+	public static final fun getPvotCallEnd ()J
 	public static final fun getPvotErrorContainerDark ()J
 	public static final fun getPvotErrorContainerLight ()J
 	public static final fun getPvotErrorDark ()J
@@ -1379,6 +1383,8 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotInverseSurfaceLight ()J
 	public static final fun getPvotOnBackgroundDark ()J
 	public static final fun getPvotOnBackgroundLight ()J
+	public static final fun getPvotOnCallAnswer ()J
+	public static final fun getPvotOnCallEnd ()J
 	public static final fun getPvotOnErrorContainerDark ()J
 	public static final fun getPvotOnErrorContainerLight ()J
 	public static final fun getPvotOnErrorDark ()J

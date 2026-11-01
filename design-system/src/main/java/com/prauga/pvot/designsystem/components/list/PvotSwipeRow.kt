@@ -311,10 +311,12 @@ public fun PvotSwipeRow(
                 )
             }
         }
+        // Filled square: the row's own clip rounds the corners. A rounded fill here would leave
+        // the action's color showing at the corners still inside the clip while the row slides.
         Box(
             modifier = Modifier
                 .offset { IntOffset(state.offset.roundToInt(), 0) }
-                .background(containerColor, shape)
+                .background(containerColor)
         ) {
             content()
         }

@@ -176,3 +176,18 @@ public val PvotOnWarningDark: Color = Color(0xFF402D00)
 public val PvotWarningContainerDark: Color = Color(0xFF634100)
 /** `onWarningContainer` of the dark Pvot palette. */
 public val PvotOnWarningContainerDark: Color = Color(0xFFFFDEA6)
+
+/**
+ * The call buttons' red, for ending and declining a call. Vivid and the same in light and dark,
+ * like the green: the button that ends a call must be found at a glance over any background.
+ */
+public val PvotCallEnd: Color = Color(0xFFE5372B)
+
+/** Content on [PvotCallEnd]. */
+public val PvotOnCallEnd: Color = Color(0xFFFFFFFF)
+
+/** The call buttons' green, for answering or placing a call. */
+public val PvotCallAnswer: Color = Color(0xFF1FA855)
+
+/** Content on [PvotCallAnswer]. */
+public val PvotOnCallAnswer: Color = Color(0xFFFFFFFF)

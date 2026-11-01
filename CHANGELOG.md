@@ -7,6 +7,12 @@ together under one version.
 ## Unreleased
 
 ### Changed
+- `PvotCallActionButton` gives haptic feedback: a confirm for Answer, a reject for Decline and End.
+- Call buttons answer in a vivid green and end in a vivid red, the same in light and dark
+  (`PvotCallAnswer`, `PvotCallEnd`), so they read at a glance; `PvotCallActionButtonDefaults.themeColors()`
+  keeps the theme's success and error colors.
+- `PvotDock`: a tab dips and springs back as it is selected, its icon turns into the action's
+  icon and back, and the pill grows with a little overshoot. `PvotDockDefaults.SelectDip` sets the dip.
 - `LocalPvotGlassIntensity` 0 now means **solid**: an opaque surface with no blur, which costs
   nothing to draw. The frosted blur that 0 used to mean is `PvotGlassDefaults.FrostedIntensity`
   (0.1); `defaultIntensity()` returns it where the device blurs but has no lens. An app that
@@ -20,6 +26,7 @@ together under one version.
   adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
 
 ### Fixed
+- `PvotSwipeRow`: no slivers of the action's color at the row's corners while it slides.
 - The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
   compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
   whole shader, so the glass drew nothing and the content behind showed through sharp.

@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -36,6 +38,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.pvotPressScale
+import com.prauga.pvot.designsystem.theme.PvotCallAnswer
+import com.prauga.pvot.designsystem.theme.PvotCallEnd
+import com.prauga.pvot.designsystem.theme.PvotOnCallAnswer
+import com.prauga.pvot.designsystem.theme.PvotOnCallEnd
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 import com.prauga.pvot.designsystem.theme.PvotTheme
 
@@ -89,9 +95,27 @@ public object PvotCallActionButtonDefaults {
     /** How much darker the bottom of a labelled pill's gradient is. */
     public const val GradientDepth: Float = 0.2f
 
-    /** The colors for [action]: answer in the success color, decline and end in the error color. */
+    /**
+     * The colors for [action]: answer in [PvotCallAnswer] green, decline and end in [PvotCallEnd]
+     * red, the same vivid fills in light and dark.
+     */
     @Composable
     public fun colors(action: PvotCallAction): PvotCallActionButtonColors = when (action) {
+        PvotCallAction.Answer -> PvotCallActionButtonColors(
+            containerColor = PvotCallAnswer,
+            contentColor = PvotOnCallAnswer,
+            labelColor = MaterialTheme.colorScheme.onSurface
+        )
+        PvotCallAction.Decline, PvotCallAction.End -> PvotCallActionButtonColors(
+            containerColor = PvotCallEnd,
+            contentColor = PvotOnCallEnd,
+            labelColor = MaterialTheme.colorScheme.onSurface
+        )
+    }
+
+    /** The theme's own success and error colors, for an app that wants the call buttons to follow its palette. */
+    @Composable
+    public fun themeColors(action: PvotCallAction): PvotCallActionButtonColors = when (action) {
         PvotCallAction.Answer -> PvotCallActionButtonColors(
             containerColor = PvotTheme.extendedColors.success,
             contentColor = PvotTheme.extendedColors.onSuccess,
@@ -140,6 +164,7 @@ public fun PvotCallActionButton(
     colors: PvotCallActionButtonColors = PvotCallActionButtonDefaults.colors(action)
 ) {
     val source = remember { MutableInteractionSource() }
+    val haptics = LocalHapticFeedback.current
     val alpha = if (enabled) 1f else PvotCallActionButtonDefaults.DisabledAlpha
     Column(
         modifier = modifier
@@ -149,7 +174,13 @@ public fun PvotCallActionButton(
                 indication = null,
                 enabled = enabled,
                 role = Role.Button,
-                onClick = onClick
+                onClick = {
+                    // Answering confirms; declining and ending feel like a rejection.
+                    haptics.performHapticFeedback(
+                        if (action == PvotCallAction.Answer) HapticFeedbackType.Confirm else HapticFeedbackType.Reject
+                    )
+                    onClick()
+                }
             )
             .semantics(mergeDescendants = true) { contentDescription = label },
         horizontalAlignment = Alignment.CenterHorizontally
