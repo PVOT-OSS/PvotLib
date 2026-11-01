@@ -56,6 +56,7 @@ import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotDialog
 import com.prauga.pvot.designsystem.components.PvotDialogAction
 import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
+import com.prauga.pvot.designsystem.components.PvotDialogContent
 import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
@@ -446,6 +447,17 @@ internal fun OverlaysPage(onBack: () -> Unit) {
             Button(onClick = { alert = true }, modifier = Modifier.fillMaxWidth()) { Text("Confirm") }
             OutlinedButton(onClick = { destructive = true }, modifier = Modifier.fillMaxWidth()) { Text("Destructive") }
             OutlinedButton(onClick = { draft = name; rename = true }, modifier = Modifier.fillMaxWidth()) { Text("With a field") }
+        }
+        DemoSection(
+            title = "Dialog card",
+            caption = "PvotDialogContent: the card alone, for a window you already have. No title here"
+        ) {
+            PvotDialogContent(
+                title = null,
+                message = "Couldn't connect the call. Check the number and try again."
+            ) {
+                PvotDialogAction("OK", onClick = { send("Dismissed") }, style = PvotDialogActionStyle.Primary)
+            }
         }
         DemoSection(title = "Bottom sheets", caption = "Drag down, tap the scrim or go back to dismiss") {
             Button(onClick = { actions = true }, modifier = Modifier.fillMaxWidth()) { Text("Action list") }

@@ -38,6 +38,10 @@ together under one version.
       for Undo), `PvotSwitchRow` and `PvotPreferenceRow`, with `PvotListRowColors`,
       `PvotListRowDefaults`, `PvotLetterTileColors`, `PvotLetterTileDefaults`,
       `PvotSwipeRowDefaults` and `PvotSettingsRowDefaults`.
+    - `components`: `PvotDialogContent`, the card of a `PvotDialog` without its window, for a
+      dialog whose window comes from elsewhere (such as an `android.app.Dialog` with platform
+      window flags). `PvotDialog` and `PvotDialogContent` take a null `title` for a message-only
+      dialog.
     - `components.list`: `PvotFastScroller` with `PvotFastScrollSection`,
       `PvotFastScrollerColors` and `PvotFastScrollerDefaults` (drag along the end edge of a long
       list to jump by section, with a bubble and a haptic tick per section).

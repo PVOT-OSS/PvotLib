@@ -50,6 +50,7 @@ public final class com/prauga/pvot/designsystem/components/PvotDialogDefaults {
 public final class com/prauga/pvot/designsystem/components/PvotDialogKt {
 	public static final fun PvotDialog (ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PvotDialogAction (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/PvotDialogActionStyle;ZLandroidx/compose/runtime/Composer;II)V
+	public static final fun PvotDialogContent (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotGlassCardDefaults {
