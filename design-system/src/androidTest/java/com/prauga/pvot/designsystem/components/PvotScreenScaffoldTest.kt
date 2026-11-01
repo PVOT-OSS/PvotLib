@@ -4,13 +4,18 @@
 package com.prauga.pvot.designsystem.components
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.components.background.PvotBackgroundMotion
+import com.prauga.pvot.designsystem.components.background.PvotLiveBackground
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassReduced
@@ -36,7 +41,7 @@ class PvotScreenScaffoldTest {
         var padding: PaddingValues? = null
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotScreenScaffold(topBar = { Box(Modifier.fillMaxWidth().height(64.dp)) }) { padding = it }
+                PvotScreenScaffold(background = StillBackground, topBar = { Box(Modifier.fillMaxWidth().height(64.dp)) }) { padding = it }
             }
         }
         composeTestRule.waitForIdle()
@@ -50,6 +55,7 @@ class PvotScreenScaffoldTest {
         composeTestRule.setContent {
             PvotAppTheme {
                 PvotScreenScaffold(
+                    background = StillBackground,
                     topBar = { barBackdrop = LocalPvotGlassBackdrop.current },
                 ) { contentBackdrop = LocalPvotGlassBackdrop.current }
             }
@@ -92,4 +98,12 @@ class PvotScreenScaffoldTest {
         /** A stand-in that the content must replace with null. */
         val PvotGlassBackdropMarker: PvotGlassBackdrop? = null
     }
+}
+
+/**
+ * A background that does not move: the default one runs a frame loop for as long as it is shown,
+ * and the test clock never goes idle under a loop that never ends.
+ */
+internal val StillBackground: @Composable BoxScope.() -> Unit = {
+    PvotLiveBackground(Modifier.fillMaxSize(), motion = PvotBackgroundMotion.Still)
 }
