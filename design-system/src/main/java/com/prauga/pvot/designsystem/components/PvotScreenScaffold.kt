@@ -7,9 +7,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -65,13 +67,16 @@ public object PvotScreenScaffoldDefaults {
  *
  * @param modifier Modifier for the scaffold, which fills the window edge to edge
  * @param backdrop The backdrop the chrome's glass shows; one per scaffold
- * @param background What fills the screen under the content, inside the backdrop
+ * @param background What fills the screen under the content, inside the backdrop. The default
+ * moves for as long as it is shown, so a Compose UI test never goes idle over it: tests pass a
+ * `PvotLiveBackground` with `PvotBackgroundMotion.Still`
  * @param topBar The bar at the top, over the content; typically a `PvotTopBar`
  * @param bottomBar The bar at the bottom, over the content; typically a `PvotNavBar`
  * @param floatingAction The floating action above the bottom bar's end; typically a `PvotFab`
  * @param snackbarHost The snackbar host above the bottom bar
  * @param overlay Sheets, dialogs and anything else drawn last, over everything
- * @param content The screen, given the padding that clears the top bar
+ * @param content The screen, given the padding that clears the top bar, or the status bar when
+ *     there is no top bar
  */
 @Composable
 public fun PvotScreenScaffold(
@@ -88,7 +93,9 @@ public fun PvotScreenScaffold(
     val density = LocalDensity.current
     var topBarHeight by remember { mutableIntStateOf(0) }
     var bottomBarHeight by remember { mutableIntStateOf(0) }
-    val contentPadding = with(density) { PaddingValues(top = topBarHeight.toDp()) }
+    // A screen with no top bar still clears the status bar; a top bar already pads itself by it.
+    val statusBar = WindowInsets.statusBars.getTop(density)
+    val contentPadding = with(density) { PaddingValues(top = maxOf(topBarHeight, statusBar).toDp()) }
     val aboveBottomBar = with(density) { bottomBarHeight.toDp() }
 
     Box(modifier.fillMaxSize()) {
