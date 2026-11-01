@@ -206,6 +206,14 @@ public object PvotGlassDefaults {
         base.copy(fillColor = materialFill(material, MaterialTheme.colorScheme))
     )
 
+    /**
+     * The full-intensity style of [material] with its tint, for a glass that applies the intensity
+     * itself, such as `PvotGlassCard(style = PvotGlassDefaults.materialStyle(Regular))`.
+     */
+    @Composable
+    public fun materialStyle(material: PvotGlassMaterial): PvotGlassStyle =
+        styleOf(material).copy(fillColor = materialFill(material, MaterialTheme.colorScheme))
+
     private const val RegularFillAlpha: Float = 0.45f
 
     private const val ThickFillAlpha: Float = 0.78f

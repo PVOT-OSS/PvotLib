@@ -308,6 +308,10 @@ Release with the AARs, their sources and the catalog APK.
 | PvotGlassCard / PvotGlassIconButton / PvotGlassSurface | Glass over a backdrop, and the recipe to build your own | Done |
 | PvotScreenScaffold | The frame of a glass screen: backdrop, background, bars and overlays | Done |
 | PvotLiveBackground / PvotGradientBackground / PvotPhotoBackground | Backgrounds for glass to refract | Done |
+| PvotCallButton / PvotCallActionButton | In-call toggles with labels, and the solid answer, decline and end buttons | Done |
+| PvotKeypad / PvotKeypadDisplay | Phone keypad reporting down and up, and the number with a backspace | Done |
+| PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
+| PvotSlideToAct | Slide up or down to act, as answering a call | Done |
 | PvotButton | Filled, tonal, text and destructive buttons | Done |
 | PvotTextField | Floating-label text field | Done |
 | PvotDialog | Animated modal dialogs | Done |

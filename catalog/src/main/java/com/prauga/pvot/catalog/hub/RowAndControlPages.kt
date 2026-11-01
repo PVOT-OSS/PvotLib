@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -41,6 +42,8 @@ import com.prauga.pvot.designsystem.components.PvotSegmentedControl
 import com.prauga.pvot.designsystem.components.button.PvotButton
 import com.prauga.pvot.designsystem.components.button.PvotButtonStyle
 import com.prauga.pvot.designsystem.components.button.PvotFab
+import com.prauga.pvot.designsystem.components.list.PvotAvatar
+import com.prauga.pvot.designsystem.components.list.PvotAvatarDefaults
 import com.prauga.pvot.designsystem.components.list.PvotFastScrollSection
 import com.prauga.pvot.designsystem.components.list.PvotFastScroller
 import com.prauga.pvot.designsystem.components.list.PvotLetterTile
@@ -54,6 +57,7 @@ import com.prauga.pvot.designsystem.navigation.PvotTopBarAction
 import com.prauga.pvot.designsystem.navigation.rememberPvotTopBarCompact
 import com.prauga.pvot.designsystem.theme.PvotShapes
 import com.prauga.pvot.designsystem.theme.PvotSpacing
+import com.prauga.pvot.designsystem.theme.PvotTheme
 import kotlinx.coroutines.launch
 
 private val People = listOf("Ada Lovelace", "Grace Hopper", "Alan Turing", "Katherine Johnson", "Linus Torvalds")
@@ -115,6 +119,35 @@ internal fun ListRowPage(onBack: () -> Unit) {
         DemoSection(title = "Letter tiles", caption = "The color follows the name; no letter shows a person") {
             Row(horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)) {
                 listOf("Ada", "Grace", "Émile", "7 Eleven", "+1 555", "").forEach { PvotLetterTile(it) }
+            }
+        }
+        DemoSection(title = "Avatars", caption = "A photo or the letter tile, from list row size to the call screen's, with an optional ring and badge") {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M),
+                verticalAlignment = Alignment.Bottom
+            ) {
+                PvotAvatar(name = "Ada Lovelace", size = PvotAvatarDefaults.Small)
+                PvotAvatar(name = "Grace Hopper", size = PvotAvatarDefaults.Medium, ring = MaterialTheme.colorScheme.primary)
+                PvotAvatar(
+                    name = "Alan Turing",
+                    size = PvotAvatarDefaults.Large,
+                    badge = {
+                        Box(
+                            modifier = Modifier
+                                .clip(PvotShapes.Pill)
+                                .background(MaterialTheme.colorScheme.error)
+                                .padding(PvotSpacing.XS)
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ic_t_phone),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onError,
+                                modifier = Modifier.size(PvotSpacing.L)
+                            )
+                        }
+                    }
+                )
+                PvotAvatar(name = "Katherine Johnson", size = PvotAvatarDefaults.ExtraLarge, ring = PvotTheme.extendedColors.success)
             }
         }
         DemoSection(title = "Static and disabled", framed = false) {

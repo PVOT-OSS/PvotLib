@@ -28,4 +28,11 @@
 
     <!-- Snackbar: spoken label of the close button -->
     <string name="pvot_snackbar_dismiss">Dismiss</string>
+
+    <!-- Call button: spoken state of a toggle such as mute or speaker -->
+    <string name="pvot_state_on">On</string>
+    <string name="pvot_state_off">Off</string>
+
+    <!-- Keypad: spoken label of the button that deletes the last digit -->
+    <string name="pvot_keypad_backspace">Backspace</string>
 </resources>

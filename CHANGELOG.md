@@ -50,9 +50,24 @@ together under one version.
   - `components`: `PvotScreenScaffold`, the frame of a glass screen: background and content inside
     one backdrop, top bar, bottom bar, floating action, snackbar host and overlays over it, each
     getting the backdrop through `LocalPvotGlassBackdrop`; the content gets the padding that
-    clears the top bar.
+    clears the top bar, or the status bar when there is none.
   - `navigation`: `PvotTopBar` over a `backdrop` draws its compact bar as glass, fading in as the
     large title folds, with `PvotTopBarDefaults.glassColors()` and `.Material`.
+  - `components.call`: `PvotCallButton` (a call control with its label, a toggle that morphs
+    and reads as a switch, a badge dot), `PvotCallActionButton` and `PvotCallAction` (answer in
+    the success color, decline and end in the error color, never glass), with `*Colors` and
+    `*Defaults`.
+  - `components.keypad`: `PvotKeypad` and `PvotKeypadKey` (down and up per key, keyboard haptics,
+    long presses, "2, ABC" for TalkBack, other scripts' digits through `PvotKeypadDefaults.keys`)
+    and `PvotKeypadDisplay` (the number and a backspace that clears when held, or a slot).
+  - `components.list`: `PvotAvatar`, a photo from any `Painter` or the letter tile, sized from a
+    list row to the call screen, with a ring and a badge.
+  - `components`: `PvotSlideToAct`, `PvotSlideTarget`, `PvotSlideDecision` and
+    `PvotSlideToActDefaults` (`decide`, `isTouchExplorationEnabled`): slide up or down to act.
+  - `effects`: `PvotGlassDefaults.materialStyle(material)`, a material's tinted style for a glass
+    component's `style`.
+  - Icons `pvot_ic_phone`, `pvot_ic_phone_off` and `pvot_ic_backspace`; strings `pvot_state_on`,
+    `pvot_state_off` and `pvot_keypad_backspace`.
   - `design-system/src/test`: the first JVM unit tests (materials, extended colors, background
     phase, photo blur), and instrumented tests for the glass surface, top bar and scaffold.
 - `design-system`:

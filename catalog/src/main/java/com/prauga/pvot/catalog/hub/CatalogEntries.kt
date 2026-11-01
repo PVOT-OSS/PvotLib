@@ -108,8 +108,26 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
     CatalogEntry(
         id = "list-row", title = "List row", group = CatalogGroup.Components,
         summary = "Avatar or letter tile, title, supporting text and a trailing slot.",
-        icon = R.drawable.ic_t_list, keywords = "list item row contact avatar letter tile PvotListRow PvotLetterTile",
+        icon = R.drawable.ic_t_list, keywords = "list item row contact avatar photo ring letter tile PvotListRow PvotLetterTile PvotAvatar",
         page = { ListRowPage(it) }
+    ),
+    CatalogEntry(
+        id = "call-controls", title = "Call controls", group = CatalogGroup.Components,
+        summary = "In-call toggles with labels on one glass card, and the solid answer, decline and end buttons.",
+        icon = R.drawable.ic_t_phone, keywords = "call mute speaker hold end answer decline PvotCallButton PvotCallActionButton",
+        page = { CallControlsPage(it) }
+    ),
+    CatalogEntry(
+        id = "keypad", title = "Keypad", group = CatalogGroup.Components,
+        summary = "Twelve keys that report down and up, with the number and a backspace above.",
+        icon = R.drawable.ic_t_dialpad, keywords = "dialpad dial digits number backspace tone PvotKeypad PvotKeypadDisplay",
+        page = { KeypadPage(it) }
+    ),
+    CatalogEntry(
+        id = "slide-to-act", title = "Slide to act", group = CatalogGroup.Components,
+        summary = "A puck slid up or down to act, as an incoming call is answered or declined.",
+        icon = R.drawable.ic_t_click, keywords = "swipe answer decline puck slide PvotSlideToAct",
+        page = { SlideToActPage(it) }
     ),
     CatalogEntry(
         id = "swipe-row", title = "Swipe row", group = CatalogGroup.Components,
