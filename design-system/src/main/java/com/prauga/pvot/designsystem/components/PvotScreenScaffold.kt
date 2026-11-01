@@ -27,7 +27,6 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.Dp
-import com.prauga.pvot.designsystem.components.background.PvotLiveBackground
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
@@ -67,9 +66,9 @@ public object PvotScreenScaffoldDefaults {
  *
  * @param modifier Modifier for the scaffold, which fills the window edge to edge
  * @param backdrop The backdrop the chrome's glass shows; one per scaffold
- * @param background What fills the screen under the content, inside the backdrop. The default
- * moves for as long as it is shown, so a Compose UI test never goes idle over it: tests pass a
- * `PvotLiveBackground` with `PvotBackgroundMotion.Still`
+ * @param background What draws over the theme background under the content, inside the backdrop.
+ * Nothing by default: the design is glass over the plain background, refracting the content that
+ * scrolls under it. Pass a `PvotPhotoBackground` for a screen about a photo, such as a call
  * @param topBar The bar at the top, over the content; typically a `PvotTopBar`
  * @param bottomBar The bar at the bottom, over the content; typically a `PvotNavBar`
  * @param floatingAction The floating action above the bottom bar's end; typically a `PvotFab`
@@ -82,7 +81,7 @@ public object PvotScreenScaffoldDefaults {
 public fun PvotScreenScaffold(
     modifier: Modifier = Modifier,
     backdrop: PvotGlassBackdrop = rememberPvotGlassBackdrop(),
-    background: @Composable BoxScope.() -> Unit = { PvotLiveBackground(Modifier.fillMaxSize()) },
+    background: @Composable BoxScope.() -> Unit = {},
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     floatingAction: @Composable () -> Unit = {},

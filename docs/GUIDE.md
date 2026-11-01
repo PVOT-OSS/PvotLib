@@ -234,18 +234,17 @@ background's scrim is the guard.
 **Budget:** glass costs with its area and with every frame of whatever moves behind it, and each
 frame of the backdrop re-records every glass over it. Keep to two glass surfaces on a screen (a
 bar and a sheet, a bar and a floating control), never put glass under body text or in list rows,
-and keep the live background slow. `Modifier.pvotGlassSurface` is the recipe every glass control
+and keep what moves behind glass to what the user scrolls. `Modifier.pvotGlassSurface` is the recipe every glass control
 is built from (press swell, shadow, hairline edge, glass, clip, rim, click); use it, or
 `PvotGlassSurface`, for a control of your own rather than composing the pieces.
 
-**Backgrounds:** glass needs something to refract. `PvotLiveBackground` is the screen's
-background with a slow drift of soft color across it, from the scheme's container roles; it moves
-at about fifteen frames a second (`PvotBackgroundMotion.Slow`), and not at all when animations
-are off or the device asks for less glass (`PvotBackgroundDefaults.motion()`).
-`PvotGradientBackground` is the still version. `PvotPhotoBackground` draws a photo blurred and
-dimmed, for a screen about that photo, such as a call; blur it once with
+**Backgrounds:** the design is glass over the plain theme background: the bars and floating
+controls refract the content that scrolls under them, never a decorative backdrop. A moving
+gradient behind glass was the old catalog look and is not the design. `PvotPhotoBackground` draws
+a photo blurred and dimmed, for a screen about that photo, such as a call; blur it once with
 `preparePvotPhotoBackground` off the main thread and pass the result, so the backdrop never blurs
-again.
+again. `PvotLiveBackground` and `PvotGradientBackground` stay for the catalog's old UI and demos;
+a screen does not use them.
 
 **Scaffold:** `PvotScreenScaffold` wires it all: the background and the content inside one
 backdrop, with the opaque background first, and the top bar, bottom bar, floating action,
@@ -284,8 +283,8 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotGlassIconButton` | `components` | Round glass button for an icon floating over a backdrop |
 | `PvotGlassSurface`, `Modifier.pvotGlassSurface` | `components` | The recipe every glass control is built from: press swell, shadow, hairline edge, glass, clip, rim and click; for a glass control of your own |
 | `PvotScreenScaffold` | `components` | The frame of a glass screen: background and content inside one backdrop, bars, floating action, snackbars and overlays over it, each glass over that backdrop by default |
-| `PvotLiveBackground` | `components.background` | The screen's background with a slow drift of soft color across it, for glass to refract; still when animations are off |
-| `PvotGradientBackground` | `components.background` | The still version: a gradient across the background |
+| `PvotLiveBackground` | `components.background` | A slow drift of soft color: the catalog's old UI and demos, not a screen background; still when animations are off |
+| `PvotGradientBackground` | `components.background` | The still version of it, for the same demos |
 | `PvotPhotoBackground` | `components.background` | A photo blurred once with `preparePvotPhotoBackground` and dimmed, as the background of a screen about it |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |

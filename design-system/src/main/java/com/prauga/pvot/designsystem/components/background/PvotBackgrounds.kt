@@ -216,14 +216,14 @@ public fun PvotGradientBackground(
  * @param image The blurred photo, or null while it loads or when there is none
  * @param modifier Modifier for the background; give it the size to fill
  * @param scrim The dim over the photo, so what sits on it stays readable
- * @param fallback What to show without a photo
+ * @param fallback What to show without a photo; nothing by default, so the theme background shows
  */
 @Composable
 public fun PvotPhotoBackground(
     image: ImageBitmap?,
     modifier: Modifier = Modifier,
     scrim: Color = Color.Black.copy(alpha = PvotBackgroundDefaults.PhotoScrimAlpha),
-    fallback: @Composable () -> Unit = { PvotGradientBackground(Modifier.fillMaxSize()) },
+    fallback: @Composable () -> Unit = {},
 ) {
     Box(modifier) {
         if (image == null) {

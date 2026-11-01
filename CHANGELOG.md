@@ -47,8 +47,8 @@ together under one version.
     `PvotGradientBackground`, `PvotPhotoBackground` with `preparePvotPhotoBackground` (a photo
     shrunk and box-blurred once off the main thread, then drawn under a scrim), `PvotBackgroundMotion`
     and `PvotBackgroundDefaults`.
-  - `components`: `PvotScreenScaffold`, the frame of a glass screen: background and content inside
-    one backdrop, top bar, bottom bar, floating action, snackbar host and overlays over it, each
+  - `components`: `PvotScreenScaffold`, the frame of a glass screen: the plain theme background
+    (a photo when passed) and content inside one backdrop, top bar, bottom bar, floating action, snackbar host and overlays over it, each
     getting the backdrop through `LocalPvotGlassBackdrop`; the content gets the padding that
     clears the top bar, or the status bar when there is none.
   - `navigation`: `PvotTopBar` over a `backdrop` draws its compact bar as glass, fading in as the
