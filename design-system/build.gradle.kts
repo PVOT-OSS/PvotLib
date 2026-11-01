@@ -29,6 +29,7 @@ dependencies {
     api(libs.androidx.compose.ui.graphics)
     api(libs.androidx.compose.material3)
 
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

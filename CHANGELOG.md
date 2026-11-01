@@ -7,6 +7,14 @@ together under one version.
 ## Unreleased
 
 ### Changed
+- `LocalPvotGlassIntensity` 0 now means **solid**: an opaque surface with no blur, which costs
+  nothing to draw. The frosted blur that 0 used to mean is `PvotGlassDefaults.FrostedIntensity`
+  (0.1); `defaultIntensity()` returns it where the device blurs but has no lens. An app that
+  persisted 0 for the frosted look should store `FrostedIntensity` instead.
+- `PvotAppTheme` takes `extendedColors`, `PvotTopBar` takes `backdrop` and `material`, and
+  `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton` default their `backdrop` to
+  `LocalPvotGlassBackdrop`: source-compatible, binary-incompatible, like the nav bar's `backdrop`
+  before.
 - The toolchain moves to Android Gradle Plugin 9.4.0, Kotlin 2.4.21 and Java 21 (library bytecode
   and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
   adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
@@ -17,6 +25,36 @@ together under one version.
   whole shader, so the glass drew nothing and the content behind showed through sharp.
 
 ### Added
+- `design-system`, the glass floating layer:
+  - `components`: `Modifier.pvotGlassSurface` and `PvotGlassSurface`, the recipe every glass
+    control is built from (press swell, shadow, hairline edge, glass, clip, rim, click, with
+    `onLongClick` and a `role`), public so an app can build its own glass control;
+    `PvotGlassCard` and `PvotGlassIconButton` are built on it.
+  - `effects`: `PvotGlassMaterial` (`Clear`, `Regular`, `Thick`) with
+    `PvotGlassDefaults.ClearStyle/RegularStyle/ThickStyle`, `styleOf`, `materialFill` and
+    `style(intensity, material)`; text sits only on `Regular` or `Thick`, whose surface tint keeps
+    it readable (held to 4.5:1 on `Thick` and 3:1 on `Regular` over the palette by a unit test).
+    `PvotGlassDefaults.SolidIntensity` and `FrostedIntensity`.
+  - `effects`: `PvotGlassIntensity.isReduced()` (battery saver, observed live, or no blur) and
+    `effective(preferred)`, and `ProvidePvotGlassIntensity(preferred)` for an app's root;
+    `LocalPvotGlassReduced` for tests. `LocalPvotGlassBackdrop`, the backdrop the glass
+    components draw over by default.
+  - `theme`: `PvotExtendedColors` (success and warning, each with content and container roles),
+    `PvotLightExtendedColors`, `PvotDarkExtendedColors`, `PvotThemeDefaults.extendedColors` and
+    `PvotTheme.extendedColors`; `PvotAppTheme` takes `extendedColors`.
+  - `components.background`: `PvotLiveBackground` (the catalog's drifting blobs, moved into the
+    library, stepped at about fifteen frames a second and still when animations are off),
+    `PvotGradientBackground`, `PvotPhotoBackground` with `preparePvotPhotoBackground` (a photo
+    shrunk and box-blurred once off the main thread, then drawn under a scrim), `PvotBackgroundMotion`
+    and `PvotBackgroundDefaults`.
+  - `components`: `PvotScreenScaffold`, the frame of a glass screen: background and content inside
+    one backdrop, top bar, bottom bar, floating action, snackbar host and overlays over it, each
+    getting the backdrop through `LocalPvotGlassBackdrop`; the content gets the padding that
+    clears the top bar.
+  - `navigation`: `PvotTopBar` over a `backdrop` draws its compact bar as glass, fading in as the
+    large title folds, with `PvotTopBarDefaults.glassColors()` and `.Material`.
+  - `design-system/src/test`: the first JVM unit tests (materials, extended colors, background
+    phase, photo blur), and instrumented tests for the glass surface, top bar and scaffold.
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a
     `PvotGlassBackdrop` (`rememberPvotGlassBackdrop`, `Modifier.pvotGlassBackdrop`): frosted

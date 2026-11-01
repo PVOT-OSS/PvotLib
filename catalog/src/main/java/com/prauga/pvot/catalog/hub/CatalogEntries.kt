@@ -33,6 +33,12 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { MotionPage(it) }
     ),
     CatalogEntry(
+        id = "backgrounds", title = "Backgrounds", group = CatalogGroup.Foundations,
+        summary = "What glass refracts: a slow drift of color, a still gradient, or a blurred photo.",
+        icon = R.drawable.ic_t_wave_sine, keywords = "background gradient live blob photo blur glass scaffold",
+        page = { BackgroundsPage(it) }
+    ),
+    CatalogEntry(
         id = "icons", title = "Icons", group = CatalogGroup.Foundations,
         summary = "The Tabler icon set the catalog uses, resizable.",
         icon = R.drawable.ic_t_icons, keywords = "tabler glyph symbol",

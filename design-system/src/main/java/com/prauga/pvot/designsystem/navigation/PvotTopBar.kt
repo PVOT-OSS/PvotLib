@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.lerp
@@ -52,6 +54,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.R
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+import com.prauga.pvot.designsystem.effects.PvotGlassMaterial
+import com.prauga.pvot.designsystem.effects.pvotGlass
 import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.motion.PvotMotion
@@ -109,6 +116,23 @@ public object PvotTopBarDefaults {
     /** Bar colors from the theme's color scheme. */
     @Composable
     public fun themeColors(): PvotTopBarColors = colors(MaterialTheme.colorScheme)
+
+    /**
+     * Bar colors for a bar drawn as glass over a backdrop: no fill of its own, the glass is the
+     * fill, with the title and content in the surface's colors.
+     */
+    @Composable
+    public fun glassColors(): PvotTopBarColors = colors(
+        MaterialTheme.colorScheme,
+        containerColor = Color.Transparent,
+        compactContainerColor = Color.Transparent,
+        titleColor = MaterialTheme.colorScheme.onSurface,
+    )
+
+    /** How much the glass is frosted: enough for the title to read over anything. */
+    public val Material: PvotGlassMaterial = PvotGlassMaterial.Regular
+
+    internal val HairlineAlpha: Float = 0.3f
 }
 
 /**
@@ -140,10 +164,19 @@ public fun rememberPvotTopBarCompact(
  * scrolling under it stays apart. Drive [compact] from the list with
  * [rememberPvotTopBarCompact]. The bar pads itself below the status bar.
  *
+ * Over a [backdrop] the compact bar is glass: the content scrolling under it shows through,
+ * frosted, with a hairline along its bottom edge. While expanded the title sits straight on the
+ * background with no glass to pay for; the glass fades in as the bar folds. The glass runs up
+ * under the status bar too.
+ *
  * @param title Title of the screen
  * @param modifier Modifier for the bar
  * @param onBack Called when the back button is tapped, or null for a top-level screen without one
  * @param compact Whether the bar is folded to a single row
+ * @param backdrop The content behind the bar, marked with
+ * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the
+ * compact bar as glass over it; null for a filled bar. The scaffold's backdrop by default
+ * @param material How much the glass is frosted, only meaningful with [backdrop]
  * @param colors The bar's colors
  * @param windowInsets The insets the bar pads itself by
  * @param actions The screen's actions at the end of the bar, typically [PvotTopBarAction]s
@@ -154,7 +187,10 @@ public fun PvotTopBar(
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     compact: Boolean = false,
-    colors: PvotTopBarColors = PvotTopBarDefaults.themeColors(),
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
+    material: PvotGlassMaterial = PvotTopBarDefaults.Material,
+    colors: PvotTopBarColors =
+        if (backdrop != null) PvotTopBarDefaults.glassColors() else PvotTopBarDefaults.themeColors(),
     windowInsets: WindowInsets = PvotTopBarDefaults.windowInsets,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
@@ -165,8 +201,50 @@ public fun PvotTopBar(
         label = "pvotTopBarCompact"
     )
     CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
-        Column(
-            modifier = modifier
+        Box(modifier.fillMaxWidth()) {
+            if (backdrop != null) {
+                // Composed only while folding or folded, so an expanded bar records no glass.
+                val folding by remember { derivedStateOf { progress.value > 0f } }
+                if (folding) {
+                    val hairline = MaterialTheme.colorScheme.outlineVariant
+                    Box(
+                        Modifier
+                            .matchParentSize()
+                            .graphicsLayer { alpha = progress.value }
+                            .pvotGlass(
+                                backdrop,
+                                cornerRadius = 0.dp,
+                                style = PvotGlassDefaults.style(PvotGlassDefaults.currentIntensity(), material)
+                            )
+                            .drawBehind {
+                                val y = size.height - 0.5.dp.toPx()
+                                drawLine(
+                                    hairline.copy(alpha = PvotTopBarDefaults.HairlineAlpha),
+                                    Offset(0f, y),
+                                    Offset(size.width, y),
+                                    strokeWidth = 1.dp.toPx()
+                                )
+                            }
+                    )
+                }
+            }
+            TopBarColumn(title, onBack, compact, colors, windowInsets, progress, actions)
+        }
+    }
+}
+
+@Composable
+private fun TopBarColumn(
+    title: String,
+    onBack: (() -> Unit)?,
+    compact: Boolean,
+    colors: PvotTopBarColors,
+    windowInsets: WindowInsets,
+    progress: State<Float>,
+    actions: @Composable RowScope.() -> Unit,
+) {
+    Column(
+            modifier = Modifier
                 .fillMaxWidth()
                 .drawBehind {
                     drawRect(lerp(colors.containerColor, colors.compactContainerColor, progress.value))
@@ -230,7 +308,6 @@ public fun PvotTopBar(
                         else Modifier.semantics { heading() }
                     )
             )
-        }
     }
 }
 

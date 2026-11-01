@@ -693,5 +693,19 @@ internal fun GlassPage(onBack: () -> Unit) {
         DemoSection(title = "Live demo", caption = "Glass card and button over a moving background", framed = false) {
             GlassDemo()
         }
+        DemoSection(
+            title = "Materials",
+            caption = "Pick by what sits on the glass: text only on Regular or Thick, whose surface tint keeps it readable",
+            framed = false
+        ) {
+            GlassMaterialsDemo()
+        }
+        DemoSection(
+            title = "Build your own",
+            caption = "Modifier.pvotGlassSurface is the recipe every glass control uses: press, shadow, edge, glass, rim, click",
+            framed = false
+        ) {
+            BuildYourOwnGlassDemo()
+        }
     }
 }

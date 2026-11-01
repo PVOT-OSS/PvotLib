@@ -26,7 +26,9 @@ import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
-import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.components.PvotScreenScaffold
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.ProvidePvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.platform.PvotBaseActivity
@@ -59,7 +61,6 @@ class MainActivity : PvotBaseActivity() {
             val newUi by PreferencesManager.newUiEnabled.collectAsState()
             val glassIntensity by PreferencesManager.glassIntensity.collectAsState()
             CompositionLocalProvider(
-                LocalPvotGlassIntensity provides glassIntensity,
                 LocalNewUi provides newUi,
                 LocalAppIcons provides if (newUi) NewIcons else LegacyIcons
             ) {
@@ -67,7 +68,10 @@ class MainActivity : PvotBaseActivity() {
                     dynamicColor = dynamicColor,
                     colorScheme = catalogColorScheme(newUi, dynamicColor)
                 ) {
-                    DesignSystemShowcase()
+                    // The preference, held to the device: solid under battery saver.
+                    ProvidePvotGlassIntensity(glassIntensity) {
+                        DesignSystemShowcase()
+                    }
                 }
             }
         }
@@ -94,7 +98,6 @@ fun DesignSystemShowcase() {
     // The old UI is the glass demo as it was: a live background behind glass cards and a glass
     // bar. The new UI keeps the glass bar and cards over the plain background the app has always had.
     val newUi = LocalNewUi.current
-    val backdrop = rememberPvotGlassBackdrop()
     val backgroundBackdrop = rememberPvotGlassBackdrop()
 
     val icons = LocalAppIcons.current
@@ -121,9 +124,18 @@ fun DesignSystemShowcase() {
         )
     )
 
-    Scaffold(
+    // The scaffold holds the backdrop, the opaque background and the glass nav bar over it.
+    PvotScreenScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Transparent,
+        background = {
+            if (!newUi) {
+                LiveBackground(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .pvotGlassBackdrop(backgroundBackdrop)
+                )
+            }
+        },
         bottomBar = {
             CatalogNavBar(
                 selectedTab = selectedTab,
@@ -133,25 +145,11 @@ fun DesignSystemShowcase() {
                 },
                 tabs = tabs,
                 compact = navCompact,
-                backdrop = backdrop
+                backdrop = LocalPvotGlassBackdrop.current
             )
         }
     ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                // The background goes inside the backdrop: glass frosts what is recorded there, and a
-                // backdrop with no opaque background lets the sharp content show through the glass.
-                .pvotGlassBackdrop(backdrop)
-                .background(MaterialTheme.colorScheme.background)
-        ) {
-            if (!newUi) {
-                LiveBackground(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pvotGlassBackdrop(backgroundBackdrop)
-                )
-            }
+        run {
             CompositionLocalProvider(
                 LocalBackgroundBackdrop provides if (newUi) null else backgroundBackdrop
             ) {

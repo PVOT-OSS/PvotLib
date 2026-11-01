@@ -39,6 +39,7 @@ import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
 import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+import com.prauga.pvot.designsystem.effects.PvotGlassIntensity
 import com.prauga.pvot.catalog.data.model.GithubUser
 import com.prauga.pvot.catalog.data.repository.GithubRepository
 import com.prauga.pvot.designsystem.components.PvotScreen
@@ -287,8 +288,15 @@ fun AboutScreen(
                             value = intensity.coerceAtMost(max),
                             onValueChange = { PreferencesManager.setGlassIntensity(it) },
                             valueRange = 0f..max,
-                            steps = if (max >= 1f) 3 else 0,
                             modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+                    if (PvotGlassIntensity.isReduced()) {
+                        Text(
+                            text = stringResource(R.string.about_glass_reduced),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                 }
@@ -331,7 +339,8 @@ fun AboutScreen(
 
 /** The name of each stop of the glass slider, from the cheapest to the full effect. */
 private fun glassLabel(intensity: Float): String = when {
-    intensity <= 0f -> "Frosted"
+    intensity <= PvotGlassDefaults.SolidIntensity -> "Solid"
+    intensity <= PvotGlassDefaults.FrostedIntensity + 0.02f -> "Frosted"
     intensity <= 0.34f -> "Light"
     intensity <= 0.67f -> "Medium"
     intensity < 1f -> "Rich"

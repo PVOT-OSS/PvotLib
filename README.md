@@ -49,7 +49,7 @@ then the libraries, for example through the version catalog:
 
 ```toml
 [versions]
-pvot = "0.1.0"
+pvot = "0.2.0-SNAPSHOT"
 
 [libraries]
 pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
@@ -304,7 +304,10 @@ Release with the AARs, their sources and the catalog APK.
 | PvotClockPicker | Wheel-based time picker | Done |
 | PvotDurationPicker | Wheel-based duration picker | Done |
 | PvotTopBar | Top bar whose large title folds in on scroll | Done |
-| PvotCard | Styled card with elevation variants | Planned |
+| PvotCard | Styled card with elevation variants | Done |
+| PvotGlassCard / PvotGlassIconButton / PvotGlassSurface | Glass over a backdrop, and the recipe to build your own | Done |
+| PvotScreenScaffold | The frame of a glass screen: backdrop, background, bars and overlays | Done |
+| PvotLiveBackground / PvotGradientBackground / PvotPhotoBackground | Backgrounds for glass to refract | Done |
 | PvotButton | Filled, tonal, text and destructive buttons | Done |
 | PvotTextField | Floating-label text field | Done |
 | PvotDialog | Animated modal dialogs | Done |
@@ -323,7 +326,7 @@ Release with the AARs, their sources and the catalog APK.
 - Custom font integration
 - Dark/Light mode previews
 - Color palette generator
-- Semantic color tokens (success, warning, error)
+- ~~Semantic color tokens (success, warning)~~ Done: `PvotTheme.extendedColors`
 - Motion/animation tokens
 - Spacing scale tokens
 

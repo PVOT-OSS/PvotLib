@@ -85,11 +85,26 @@ as `PvotLightColorScheme` and `PvotDarkColorScheme`.
 
 | Role | Light | Dark |
 |---|---|---|
-| primary | `#6B66FF` | `#CBBEFF` |
-| secondary | `#605B71` | `#CAC3DC` |
-| tertiary | `#7D5260` | `#EFB8C8` |
+| primary | `#5A4BFF` | `#8577FF` |
+| secondary | `#1F6FFF` | `#6FA3FF` |
+| tertiary | `#E5287A` | `#FF6BA6` |
 | error | `#BA1A1A` | `#FFB4AB` |
 | background / surface | `#FFFFFF` | `#000000` |
+| surfaceVariant | `#EEE9FF` | `#231F36` |
+
+**Semantic roles.** Material has no success or warning role, so `PvotTheme.extendedColors` adds
+them: `success`, `onSuccess`, `successContainer`, `onSuccessContainer` and the four `warning`
+roles, arranged as the Material roles are (`PvotLightExtendedColors`, `PvotDarkExtendedColors`,
+passed to `PvotAppTheme` as `extendedColors`). Success is an answer button or a saved state;
+warning a caution that is not an error, such as a call on hold. Errors keep `colorScheme.error`.
+The hues stay the same under dynamic color. Every pair meets 4.5:1.
+
+| Role | Light | Dark |
+|---|---|---|
+| success | `#137A3F` | `#5FD48A` |
+| successContainer | `#B9F0C8` | `#005A2C` |
+| warning | `#8A5A00` | `#F5C451` |
+| warningContainer | `#FFDEA6` | `#634100` |
 
 Component colors come from each component's `*Defaults` object and are never read from the theme
 directly; see [Components](#6-components).
@@ -182,18 +197,70 @@ Box {
 | 11 and older | the tint alone |
 
 **How much glass:** `LocalPvotGlassIntensity` (0 to 1, default 1) is read by every glass in the tree,
-including `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton`. Provide it near the root and let
-the user choose. 1 is the full effect; 0 is the cheapest, a frosted blur with a surface-colored
-tint and no edge lens, rim or light, which is what a frosted header or bar looks like. Below
-`PvotGlassDefaults.LensThreshold` the edge lens is switched off entirely, so the glass stops paying
-for it. For a style of your own, `PvotGlassDefaults.style(intensity, base)` returns `base` at that
-intensity, and `pvotGlassRim(alpha = intensity)` fades the rim. Apps should keep glass to a few
-floating surfaces (bars, sheets); at 0 the catalog turns its cards back into plain cards.
+including `PvotNavBar`, `PvotTopBar`, `PvotGlassCard` and `PvotGlassIconButton`. 1 is the full
+effect. `PvotGlassDefaults.FrostedIntensity` (0.1) is a frosted blur with a surface-colored tint and
+no edge lens, rim or light, which is what a frosted header or bar looks like.
+`PvotGlassDefaults.SolidIntensity` (0) is an opaque surface with no blur at all, which costs
+nothing: the stop for a user who wants no transparency. Below `PvotGlassDefaults.LensThreshold`
+the edge lens is switched off entirely, so the glass stops paying for it. For a style of your own,
+`PvotGlassDefaults.style(intensity, base)` returns `base` at that intensity, and
+`pvotGlassRim(alpha = intensity)` fades the rim.
+
+Let the user choose, and let the device cap it: persist a `Float`, offer Solid / Frosted / Glass
+(or a slider up to `PvotGlassDefaults.maxIntensity()`), and wrap the root in
+`ProvidePvotGlassIntensity(preference)`. It provides `PvotGlassIntensity.effective(preference)`:
+solid while battery saver is on or the device cannot blur, observed live, else the preference held
+to the device. Apps should keep glass to a few floating surfaces (bars, sheets); at 0 the catalog
+turns its cards back into plain cards.
 
 `PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
 the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width,
 `CapsuleRadius`, and the press and shadow values of the glass components. The glass can't show
 other windows or the wallpaper.
+
+**Materials:** `PvotGlassMaterial` says how much a glass hides what is behind it. Pick it by what
+sits on the glass, not by taste: text is readable only on `Regular` (a surface tint at about half
+strength, a deeper blur: bars, search fields, titled cards) or `Thick` (a nearly opaque tint, the
+deepest blur: sheets and dialogs with body text); `Clear` (the faint haze, today's look) is for
+controls that carry an icon alone, and for controls over a photo the screen already dims.
+`PvotGlassDefaults.style(intensity, material)` is `style(intensity, base)` with the material's
+tint, `PvotGlassDefaults.materialFill(material, colorScheme)`; the tint stays at every intensity.
+With the tint, `onSurface` text on `Thick` keeps at least 4.5:1 and on `Regular` 3:1 over any blob
+of the live background, which a unit test holds the palette to; over a photo, the photo
+background's scrim is the guard.
+
+**Budget:** glass costs with its area and with every frame of whatever moves behind it, and each
+frame of the backdrop re-records every glass over it. Keep to two glass surfaces on a screen (a
+bar and a sheet, a bar and a floating control), never put glass under body text or in list rows,
+and keep the live background slow. `Modifier.pvotGlassSurface` is the recipe every glass control
+is built from (press swell, shadow, hairline edge, glass, clip, rim, click); use it, or
+`PvotGlassSurface`, for a control of your own rather than composing the pieces.
+
+**Backgrounds:** glass needs something to refract. `PvotLiveBackground` is the screen's
+background with a slow drift of soft color across it, from the scheme's container roles; it moves
+at about fifteen frames a second (`PvotBackgroundMotion.Slow`), and not at all when animations
+are off or the device asks for less glass (`PvotBackgroundDefaults.motion()`).
+`PvotGradientBackground` is the still version. `PvotPhotoBackground` draws a photo blurred and
+dimmed, for a screen about that photo, such as a call; blur it once with
+`preparePvotPhotoBackground` off the main thread and pass the result, so the backdrop never blurs
+again.
+
+**Scaffold:** `PvotScreenScaffold` wires it all: the background and the content inside one
+backdrop, with the opaque background first, and the top bar, bottom bar, floating action,
+snackbar host and overlays over it, each getting the backdrop through `LocalPvotGlassBackdrop`
+(which `PvotNavBar`, `PvotTopBar`, `PvotGlassCard`, `PvotGlassIconButton` and `PvotGlassSurface`
+read by default). Its content receives the padding that clears the top bar; `PvotScreen` clears
+the nav bar on its own. Inside the content the local is null, since glass inside its own backdrop
+shows only its fill; glass that belongs with the content goes in the `overlay` slot.
+
+```kotlin
+PvotScreenScaffold(
+    topBar = { PvotTopBar(title, compact = compact) },
+    bottomBar = { PvotNavBar(selected, onSelect, tabs) },
+) { padding ->
+    PvotScreen(contentPadding = PvotScreenDefaults.contentPadding(top = padding.calculateTopPadding())) { … }
+}
+```
 
 Glass belongs to the layer that floats over the content: the nav bar, buttons and cards over a
 screen that scrolls under them. Mark the whole screen as the backdrop and pass it to
@@ -213,6 +280,11 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotCard` | `components` | Rounded, translucent surface; pass `onClick` to make it a button with press feedback |
 | `PvotGlassCard` | `components` | Card of glass over a backdrop, with a tilt-following rim; pass `onClick` to make it a button |
 | `PvotGlassIconButton` | `components` | Round glass button for an icon floating over a backdrop |
+| `PvotGlassSurface`, `Modifier.pvotGlassSurface` | `components` | The recipe every glass control is built from: press swell, shadow, hairline edge, glass, clip, rim and click; for a glass control of your own |
+| `PvotScreenScaffold` | `components` | The frame of a glass screen: background and content inside one backdrop, bars, floating action, snackbars and overlays over it, each glass over that backdrop by default |
+| `PvotLiveBackground` | `components.background` | The screen's background with a slow drift of soft color across it, for glass to refract; still when animations are off |
+| `PvotGradientBackground` | `components.background` | The still version: a gradient across the background |
+| `PvotPhotoBackground` | `components.background` | A photo blurred once with `preparePvotPhotoBackground` and dimmed, as the background of a screen about it |
 | `PvotScreen` | `components` | `LazyColumn` with screen padding that clears the floating nav bar |
 | `PvotSkeleton` | `components` | Shimmering placeholder shown while content loads |
 | `PvotDialog` | `components` | Centered dialog that eases in and out over its own scrim; icon, title (optional), message, optional content and stacked `PvotDialogAction` buttons. Driven by `visible` |
@@ -225,7 +297,7 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
 | `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
-| `PvotTopBar` | `navigation` | Back button, title and actions; the large title folds into the bar when `compact`, driven by `rememberPvotTopBarCompact(listState)`. `PvotTopBarAction` for its icon buttons |
+| `PvotTopBar` | `navigation` | Back button, title and actions; the large title folds into the bar when `compact`, driven by `rememberPvotTopBarCompact(listState)`; over a `backdrop` the compact bar is glass. `PvotTopBarAction` for its icon buttons |
 | `PvotButton` | `components.button` | Pill button in four `PvotButtonStyle`s: `Filled`, `Tonal`, `Text`, `Destructive`; optional icon |
 | `PvotFab` | `components.button` | Floating action button; with `text` it is a pill whose label folds away when `expanded` is false |
 | `PvotListRow` | `components.list` | Leading slot (avatar, `PvotLetterTile`, icon), title, supporting text, trailing slot; optional `onClick`, `onLongClick` and `selected`. A slot overload takes rich title and supporting text |
@@ -253,11 +325,14 @@ default comes from its `*Defaults` object:
 | Picker colors | `PvotPickerDefaults.themeColors()`, derived from the color scheme | `PvotPickerDefaults.colors(...)`, `PvotPickerDefaults.colors(colorScheme)` |
 | Card | `PvotCardDefaults.shape`, `.colors()`, `.elevation()` | parameters of `PvotCard` |
 | Glass card | `PvotGlassCardDefaults.CornerRadius`, `.ContentPadding`, `PvotGlassDefaults.Style` | parameters of `PvotGlassCard` |
+| Glass materials | `PvotGlassDefaults.ClearStyle`, `.RegularStyle`, `.ThickStyle`; `.style(intensity, material)` | a `PvotGlassStyle` of your own as `base` |
+| Backgrounds | `PvotBackgroundDefaults.colors()`, `.motion()`, `.PhotoScrimAlpha`, `.PhotoBlurRadius` | parameters of each background |
+| Scaffold | `PvotScreenScaffoldDefaults.FloatingActionMargin` | slots of `PvotScreenScaffold` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
 | Screen | `PvotScreenDefaults.contentPadding()`, `.VerticalArrangement` | parameters of `PvotScreen` |
 | Button colors | `PvotButtonDefaults.themeColors(style)` | `PvotButtonDefaults.colors(colorScheme, style)`, or a `PvotButtonColors` |
 | FAB colors | `PvotFabDefaults.themeColors()` | `PvotFabDefaults.colors(colorScheme, ...)` |
-| Top bar colors | `PvotTopBarDefaults.themeColors()`; `.windowInsets` (status bar) | `PvotTopBarDefaults.colors(colorScheme, ...)` |
+| Top bar colors | `PvotTopBarDefaults.themeColors()`, or `.glassColors()` over a backdrop; `.windowInsets` (status bar); `.Material` | `PvotTopBarDefaults.colors(colorScheme, ...)` |
 | Row colors (list, switch, preference) | `PvotListRowDefaults.themeColors()` | `PvotListRowDefaults.colors(colorScheme, ...)`; switch: `PvotSettingsRowDefaults.switchColors()` |
 | Letter tile | `PvotLetterTileDefaults.themePalette()`, the container roles | `PvotLetterTileDefaults.palette(colorScheme)` or a list of `PvotLetterTileColors` |
 | Swipe actions | `PvotSwipeRowDefaults.action(...)` (primary), `.destructiveAction(...)` (error, removes the row) | their color parameters, or `PvotSwipeAction(...)` |

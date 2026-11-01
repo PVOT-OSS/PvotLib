@@ -5,8 +5,10 @@
 package com.prauga.pvot.designsystem.effects
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ProvidableCompositionLocal
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
@@ -39,6 +41,16 @@ public class PvotGlassBackdrop internal constructor() {
         glasses.forEach { it.invalidateDraw() }
     }
 }
+
+/**
+ * The backdrop the glass components draw over by default, or null for the tint alone.
+ *
+ * [PvotScreenScaffold][com.prauga.pvot.designsystem.components.PvotScreenScaffold] provides its
+ * backdrop to its bars, floating action and overlays, and null to its content, since glass inside
+ * its own backdrop shows only its fill.
+ */
+public val LocalPvotGlassBackdrop: ProvidableCompositionLocal<PvotGlassBackdrop?> =
+    staticCompositionLocalOf { null }
 
 /** Remembers a [PvotGlassBackdrop] for this composition. */
 @Composable

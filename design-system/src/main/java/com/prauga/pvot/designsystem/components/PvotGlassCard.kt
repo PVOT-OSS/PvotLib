@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
@@ -37,7 +38,7 @@ public object PvotGlassCardDefaults {
  *
  * @param backdrop The content behind the card, marked with
  * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for
- * the tint alone
+ * the tint alone; the scaffold's by default
  * @param modifier Modifier for the card
  * @param onClick Called when the card is tapped, or null for a non-clickable card
  * @param enabled Whether the card responds to taps, only meaningful with [onClick]
@@ -50,7 +51,7 @@ public object PvotGlassCardDefaults {
  */
 @Composable
 public fun PvotGlassCard(
-    backdrop: PvotGlassBackdrop?,
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     enabled: Boolean = true,
@@ -61,7 +62,7 @@ public fun PvotGlassCard(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable ColumnScope.() -> Unit
 ) {
-    val cardModifier = modifier.glassSurface(
+    val cardModifier = modifier.pvotGlassSurface(
         backdrop = backdrop,
         cornerRadius = cornerRadius,
         style = style,
