@@ -45,6 +45,7 @@ added after 0.1.0 only exist in a newer release or when including from source; c
 // libs.versions.toml
 pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
 pvot-core-ui       = { group = "com.prauga.pvot", name = "core-ui", version.ref = "pvot" }
+pvot-design-system-views = { group = "com.prauga.pvot", name = "design-system-views", version.ref = "pvot" }  // XML apps
 ```
 
 Compose UI, Material 3 and Activity Compose come with the library. Remove any duplicate declarations
@@ -63,6 +64,22 @@ Everything else depends on this being right.
    old color has no role, pick the nearest role; do not add a new color.
 5. Build, run, screenshot. Even before any component changes the app should look recognisably Pvot:
    violet primary, tinted surfaces, black dark background.
+
+**A View-based app** (XML layouts, Material Components or AppCompat widgets) takes the theme first and
+Compose later:
+
+1. Add `design-system-views` and re-parent the app's base theme on `PvotTheme` (or `PvotTheme.Light`
+   / `PvotTheme.Dark` where the app picks the mode itself, `PvotTheme.Dialog` for dialog activities).
+   If the base theme was AppCompat, Material Components widgets now work; AppCompat widgets keep
+   working.
+2. Point the app's own theme attributes at Pvot roles instead of its old colors: backgrounds to
+   `?android:colorBackground` or `?attr/colorSurface`, dividers to `?attr/colorOutlineVariant`,
+   soft fills (message bubbles, search fields) to `?attr/colorSurfaceVariant`, accents to
+   `?attr/colorPrimary`. Delete the old color definitions as they fall out of use.
+3. Check every style that set `android:background` to `?attr/colorPrimary` to mean "the toolbar
+   color": under `PvotTheme` primary is the violet accent, so toolbars want `?attr/colorSurface`.
+4. Build, run, screenshot every screen in light and dark. Then continue with step 3 below only for
+   screens being reworked, each hosted in a `ComposeView` under `PvotAppTheme`.
 
 ## 3. Scaffold and navigation
 

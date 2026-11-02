@@ -86,6 +86,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
 `PvotTheme.isDynamicColor` tells components whether dynamic color is in effect;
 `PvotThemeDefaults.isDynamicColorSupported` whether the device can supply it.
 
+A View-based app does not need Compose to look Pvot: see [XML and View-based apps](#9-xml-and-view-based-apps).
+
 ## 2. Color
 
 Read colors from `MaterialTheme.colorScheme`. The Pvot palette fills every Material role in a
@@ -414,3 +416,58 @@ matching on the message.
 4. An entry in `CHANGELOG.md` under the unreleased version.
 5. `./gradlew apiDump`, then `./gradlew build`.
 6. Look at it on a phone: `./gradlew :catalog:installDebug`.
+
+## 9. XML and View-based apps
+
+`design-system-views` (`com.prauga.pvot:design-system-views`) carries the same tokens as the
+Compose library into XML resources, on top of Material Components for Android. It has no Compose
+dependency, so an app with XML layouts adopts the look first and moves to Compose screen by screen.
+
+```toml
+pvot-design-system-views = { group = "com.prauga.pvot", name = "design-system-views", version.ref = "pvot" }
+```
+
+**Theme.** Parent the app's theme on `PvotTheme`, which follows the system's dark mode, or pick
+`PvotTheme.Light` / `PvotTheme.Dark` when the app chooses itself; dialog activities use
+`PvotTheme.Dialog` and its `.Light.Dialog` / `.Dark.Dialog` forms. Every Material Components widget
+then takes the palette, shapes and type with no layout change. The themes are Material 3, so
+`?attr/colorPrimary`, `?attr/colorSurface`, `?android:textColorPrimary` and the other role
+attributes resolve to the Pvot palette; `android:textColorTertiary` is set too, since Material 3
+leaves it alone. System bars are transparent with light or dark icons, as `PvotBaseActivity`
+does for Compose; call `enableEdgeToEdge()` in the activity.
+
+```xml
+<style name="AppTheme" parent="PvotTheme" />
+```
+
+For dynamic color parity with `PvotAppTheme(dynamicColor = true)`, call
+`DynamicColors.applyToActivitiesIfAvailable(application)` or wrap a context with
+`DynamicColors.wrapContextIfAvailable`; the overlay sits on top of `PvotTheme`.
+
+**Tokens in XML.** Generated from the Kotlin tokens, so the two never drift:
+
+| Kotlin | XML |
+|---|---|
+| `PvotPrimaryLight`, `PvotOnSurfaceDark`, ... | `@color/pvot_primary_light`, `@color/pvot_on_surface_dark`, ... (55 colors) |
+| `PvotShapes.Small` / `Card` / `Selection` | `@dimen/pvot_corner_small` / `pvot_corner_card` / `pvot_corner_selection`; `PvotShapeAppearance.Small` / `.Card` / `.Selection` / `.Overlay` (28dp) / `.Pill` |
+| `PvotSpacing.XS` ... `L` | `@dimen/pvot_spacing_xs` ... `pvot_spacing_l`; `pvot_spacing_section` (28dp), `pvot_touch_target` (48dp) |
+| `PvotDurations.Short` / `Medium` / `Long` | `@integer/pvot_duration_short` / `_medium` / `_long` |
+| `PvotMotion.Settle` | `@interpolator/pvot_settle` |
+| `PvotTypography.bodyLarge` | `PvotTextAppearance.BodyLarge`, set as `textAppearanceBodyLarge` |
+| `PvotCardDefaults` | `PvotWidget.CardView`, set as `materialCardViewStyle` (16dp, surface variant at half alpha, no stroke or shadow) |
+
+The theme also maps the Material 3 shape scale to the Pvot corners (extra small and small 8dp,
+medium 16dp, large 20dp, extra large 28dp), sets `toolbarStyle` to the surface toolbar and turns
+off app bar lift-on-scroll, so nothing casts a shadow.
+
+**Keeping the tokens in step.** `design-system-views/src/main/res/values/pvot_tokens.xml` is
+written by `./gradlew tokensDump` from `theme/Color.kt`, `Shape.kt`, `Spacing.kt` and
+`motion/PvotDurations.kt`; `tokensCheck` runs in `check` and in CI and fails when the file is
+stale. After changing a token in Kotlin, run `tokensDump` and commit the result; never edit the
+file by hand. The hand-written files (`pvot_themes.xml`, `pvot_styles.xml`, `pvot_dimens.xml`,
+the color state lists and the interpolator) hold what has no Kotlin counterpart.
+
+**What it does not do.** Pvot components (`PvotNavBar`, `PvotCard`, pickers, sliders, glass) exist
+only in Compose; host them in a `ComposeView` under `PvotAppTheme` when a View screen needs one.
+Style names start with `Pvot` because lint's `ResourceName` check accepts the camel-case form of the
+`pvot_` prefix for styles.

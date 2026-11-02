@@ -33,3 +33,5 @@ include(":catalog")
 include(":design-system")
 
 include(":core-ui")
+
+include(":design-system-views")

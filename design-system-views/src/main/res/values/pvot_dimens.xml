@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <dimen name="pvot_corner_overlay">28dp</dimen>
+    <dimen name="pvot_spacing_section">28dp</dimen>
+    <dimen name="pvot_touch_target">48dp</dimen>
+</resources>

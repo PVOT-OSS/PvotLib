@@ -98,6 +98,14 @@ together under one version.
     `pvot_state_off` and `pvot_keypad_backspace`.
   - `design-system/src/test`: the first JVM unit tests (materials, extended colors, background
     phase, photo blur), and instrumented tests for the glass surface, top bar and scaffold.
+- `design-system-views`, a new library (`com.prauga.pvot:design-system-views`) for apps with XML
+  layouts. `PvotTheme` (and `.Light`, `.Dark`, `.Dialog`) is a Material 3 theme for Material
+  Components for Android carrying the Pvot palette, corner scale, body type, a filled card style and
+  transparent system bars; `@color/pvot_*`, `@dimen/pvot_corner_*`, `@dimen/pvot_spacing_*`,
+  `@integer/pvot_duration_*` and `@interpolator/pvot_settle` expose the tokens. The colors, corners,
+  spacing and durations are generated from the Kotlin tokens by `tokensDump`; `tokensCheck` fails
+  the build when they drift. Builds in AOSP as `PvotDesignSystemViews`.
+- `catalog`: an "XML theme" page inflating stock Material Components widgets under `PvotTheme`.
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a
     `PvotGlassBackdrop` (`rememberPvotGlassBackdrop`, `Modifier.pvotGlassBackdrop`): frosted
