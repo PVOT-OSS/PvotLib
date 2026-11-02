@@ -30,71 +30,67 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.catalog.BuildConfig
 import com.prauga.pvot.catalog.R
-import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.components.DeveloperCard
 import com.prauga.pvot.catalog.components.DeveloperCardSkeleton
 import com.prauga.pvot.catalog.components.GlassPanel
+import com.prauga.pvot.catalog.data.model.GithubUser
+import com.prauga.pvot.catalog.data.repository.GithubRepository
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
+import com.prauga.pvot.catalog.utils.Constants
+import com.prauga.pvot.catalog.utils.PreferencesManager
+import com.prauga.pvot.coreui.PvotSectionHeader
+import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassIntensity
-import com.prauga.pvot.catalog.data.model.GithubUser
-import com.prauga.pvot.catalog.data.repository.GithubRepository
-import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.motion.pvotReveal
-import com.prauga.pvot.catalog.utils.Constants
-import com.prauga.pvot.catalog.utils.PreferencesManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 
-data class TeamMember(
-    val username: String,
-    val role: String
-)
+data class TeamMember(val username: String, val role: String)
 
-private val teamMembers = listOf(
-    TeamMember("danascape", "Lead Developer"),
-    TeamMember("sxivansx", "Lead Designer"),
-    TeamMember("debz-g", "Silver Developer")
-)
+private val teamMembers =
+    listOf(
+        TeamMember("danascape", "Lead Developer"),
+        TeamMember("sxivansx", "Lead Designer"),
+        TeamMember("debz-g", "Silver Developer"),
+    )
 
-data class ProjectLink(
-    val titleRes: Int,
-    val url: String,
-    val iconRes: Int
-)
-
+data class ProjectLink(val titleRes: Int, val url: String, val iconRes: Int)
 
 @Composable
-fun AboutScreen(
-    label: String,
-    modifier: Modifier = Modifier
-) {
+fun AboutScreen(label: String, modifier: Modifier = Modifier) {
     val icons = LocalAppIcons.current
-    val projectLinks = remember(icons) {
-        listOf(
-            ProjectLink(R.string.about_link_github_repo, Constants.GITHUB_REPO_URL, icons.github),
-            ProjectLink(R.string.about_link_github_org, Constants.GITHUB_ORG_URL, icons.github),
-            ProjectLink(R.string.about_link_website, Constants.WEBSITE_URL, icons.link)
-        )
-    }
+    val projectLinks =
+        remember(icons) {
+            listOf(
+                ProjectLink(
+                    R.string.about_link_github_repo,
+                    Constants.GITHUB_REPO_URL,
+                    icons.github,
+                ),
+                ProjectLink(R.string.about_link_github_org, Constants.GITHUB_ORG_URL, icons.github),
+                ProjectLink(R.string.about_link_website, Constants.WEBSITE_URL, icons.link),
+            )
+        }
     var teamUsers by remember { mutableStateOf<Map<String, GithubUser>>(emptyMap()) }
     var isLoading by remember { mutableStateOf(true) }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        teamUsers = coroutineScope {
-            teamMembers
-                .map { member ->
-                    async { member.username to GithubRepository.getUser(member.username) }
+        teamUsers =
+            coroutineScope {
+                    teamMembers
+                        .map { member ->
+                            async { member.username to GithubRepository.getUser(member.username) }
+                        }
+                        .awaitAll()
                 }
-                .awaitAll()
-        }.mapNotNull { (username, result) ->
-            result.getOrNull()?.let { username to it }
-        }.toMap()
+                .mapNotNull { (username, result) -> result.getOrNull()?.let { username to it } }
+                .toMap()
         isLoading = false
     }
 
@@ -104,7 +100,7 @@ fun AboutScreen(
                 text = label,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
@@ -112,28 +108,26 @@ fun AboutScreen(
         item {
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    modifier = Modifier.fillMaxWidth().padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(R.string.about_app_name),
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Text(
                         text = stringResource(R.string.about_version, BuildConfig.VERSION_NAME),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp),
                     )
                     Text(
                         text = stringResource(R.string.about_description),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = 16.dp)
+                        modifier = Modifier.padding(top = 16.dp),
                     )
                 }
             }
@@ -143,14 +137,12 @@ fun AboutScreen(
         item {
             PvotSectionHeader(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.about_section_team)
+                title = stringResource(R.string.about_section_team),
             )
         }
 
         if (isLoading) {
-            items(teamMembers.size) {
-                DeveloperCardSkeleton()
-            }
+            items(teamMembers.size) { DeveloperCardSkeleton() }
         } else {
             itemsIndexed(teamMembers) { index, member ->
                 teamUsers[member.username]?.let { user ->
@@ -161,7 +153,7 @@ fun AboutScreen(
                         onClick = {
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(user.htmlUrl))
                             context.startActivity(intent)
-                        }
+                        },
                     )
                 }
             }
@@ -171,37 +163,33 @@ fun AboutScreen(
         item {
             PvotSectionHeader(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.about_section_links)
+                title = stringResource(R.string.about_section_links),
             )
         }
 
         itemsIndexed(projectLinks) { index, link ->
             GlassPanel(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .pvotReveal(index),
+                modifier = Modifier.fillMaxWidth().pvotReveal(index),
                 onClick = {
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link.url))
                     context.startActivity(intent)
-                }
+                },
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
                         painter = painterResource(id = link.iconRes),
                         contentDescription = null,
                         modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                     Text(
                         text = stringResource(link.titleRes),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface,
-                        modifier = Modifier.padding(start = 16.dp)
+                        modifier = Modifier.padding(start = 16.dp),
                     )
                 }
             }
@@ -211,7 +199,7 @@ fun AboutScreen(
         item {
             PvotSectionHeader(
                 modifier = Modifier.fillMaxWidth(),
-                title = stringResource(R.string.about_section_settings)
+                title = stringResource(R.string.about_section_settings),
             )
         }
 
@@ -220,28 +208,26 @@ fun AboutScreen(
 
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = stringResource(R.string.about_new_ui_title),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
                             text = stringResource(R.string.about_new_ui_subtitle),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                     Switch(
                         checked = newUiEnabled,
-                        onCheckedChange = { PreferencesManager.setNewUiEnabled(it) }
+                        onCheckedChange = { PreferencesManager.setNewUiEnabled(it) },
                     )
                 }
             }
@@ -251,35 +237,37 @@ fun AboutScreen(
             val intensity by PreferencesManager.glassIntensity.collectAsState()
 
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                ) {
+                Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
                                 text = stringResource(R.string.about_glass_title),
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.onSurface,
                             )
                             Text(
-                                text = stringResource(
-                                    when {
-                                        PvotGlassDefaults.isLensSupported -> R.string.about_glass_subtitle
-                                        PvotGlassDefaults.isBlurSupported -> R.string.about_glass_subtitle_blur
-                                        else -> R.string.about_glass_subtitle_flat
-                                    }
-                                ),
+                                text =
+                                    stringResource(
+                                        when {
+                                            PvotGlassDefaults.isLensSupported ->
+                                                R.string.about_glass_subtitle
+                                            PvotGlassDefaults.isBlurSupported ->
+                                                R.string.about_glass_subtitle_blur
+                                            else -> R.string.about_glass_subtitle_flat
+                                        }
+                                    ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(top = 4.dp)
+                                modifier = Modifier.padding(top = 4.dp),
                             )
                         }
                         Text(
-                            text = glassLabel(intensity.coerceAtMost(PvotGlassDefaults.maxIntensity())),
+                            text =
+                                glassLabel(
+                                    intensity.coerceAtMost(PvotGlassDefaults.maxIntensity())
+                                ),
                             style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                     val max = PvotGlassDefaults.maxIntensity()
@@ -288,7 +276,7 @@ fun AboutScreen(
                             value = intensity.coerceAtMost(max),
                             onValueChange = { PreferencesManager.setGlassIntensity(it) },
                             valueRange = 0f..max,
-                            modifier = Modifier.padding(top = 8.dp)
+                            modifier = Modifier.padding(top = 8.dp),
                         )
                     }
                     if (PvotGlassIntensity.isReduced()) {
@@ -296,7 +284,7 @@ fun AboutScreen(
                             text = stringResource(R.string.about_glass_reduced),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                 }
@@ -308,28 +296,26 @@ fun AboutScreen(
 
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = stringResource(R.string.about_dynamic_colors_title),
                             style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
                             text = stringResource(R.string.about_dynamic_colors_subtitle),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 4.dp)
+                            modifier = Modifier.padding(top = 4.dp),
                         )
                     }
                     Switch(
                         checked = dynamicColorEnabled,
-                        onCheckedChange = { PreferencesManager.setDynamicColorEnabled(it) }
+                        onCheckedChange = { PreferencesManager.setDynamicColorEnabled(it) },
                     )
                 }
             }
@@ -338,11 +324,12 @@ fun AboutScreen(
 }
 
 /** The name of each stop of the glass slider, from the cheapest to the full effect. */
-private fun glassLabel(intensity: Float): String = when {
-    intensity <= PvotGlassDefaults.SolidIntensity -> "Solid"
-    intensity <= PvotGlassDefaults.FrostedIntensity + 0.02f -> "Frosted"
-    intensity <= 0.34f -> "Light"
-    intensity <= 0.67f -> "Medium"
-    intensity < 1f -> "Rich"
-    else -> "Full"
-}
+private fun glassLabel(intensity: Float): String =
+    when {
+        intensity <= PvotGlassDefaults.SolidIntensity -> "Solid"
+        intensity <= PvotGlassDefaults.FrostedIntensity + 0.02f -> "Frosted"
+        intensity <= 0.34f -> "Light"
+        intensity <= 0.67f -> "Medium"
+        intensity < 1f -> "Rich"
+        else -> "Full"
+    }

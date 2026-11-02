@@ -23,24 +23,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.coreui.PvotEmptyContent
-import com.prauga.pvot.coreui.PvotErrorContent
-import com.prauga.pvot.coreui.UiState
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.FeedCard
 import com.prauga.pvot.catalog.components.FeedCardSkeleton
 import com.prauga.pvot.catalog.data.model.FeedEntry
 import com.prauga.pvot.catalog.data.repository.FeedRepository
+import com.prauga.pvot.coreui.PvotEmptyContent
+import com.prauga.pvot.coreui.PvotErrorContent
+import com.prauga.pvot.coreui.UiState
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.motion.pvotReveal
 
 private const val SkeletonCount = 4
 
 @Composable
-fun HomeScreen(
-    label: String,
-    modifier: Modifier = Modifier
-) {
+fun HomeScreen(label: String, modifier: Modifier = Modifier) {
     var uiState by remember { mutableStateOf<UiState<List<FeedEntry>>>(UiState.Loading) }
     val context = LocalContext.current
 
@@ -49,10 +46,11 @@ fun HomeScreen(
     LaunchedEffect(retryCount) {
         uiState = UiState.Loading
         val result = FeedRepository.getFeedEntries()
-        uiState = result.fold(
-            onSuccess = { UiState.Success(it) },
-            onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
-        )
+        uiState =
+            result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Unknown error", it) },
+            )
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -68,7 +66,7 @@ fun HomeScreen(
                     title = stringResource(R.string.home_error_title),
                     message = state.message,
                     onRetry = { retryCount++ },
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             }
 
@@ -76,7 +74,7 @@ fun HomeScreen(
                 if (state.data.isEmpty()) {
                     PvotEmptyContent(
                         message = stringResource(R.string.home_empty_title),
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 } else {
                     PvotScreen(modifier = Modifier.fillMaxSize()) {
@@ -85,7 +83,7 @@ fun HomeScreen(
                                 text = label,
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = 8.dp),
                             )
                         }
                         itemsIndexed(state.data) { index, entry ->
@@ -95,7 +93,7 @@ fun HomeScreen(
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(entry.link))
                                     context.startActivity(intent)
-                                }
+                                },
                             )
                         }
                     }

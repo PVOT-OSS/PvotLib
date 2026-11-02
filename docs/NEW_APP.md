@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Building a new app on PvotLib
 
 A playbook for starting a Pvot app from nothing. The design system decides the look, motion and
@@ -48,7 +53,8 @@ Components added after 0.1.0 (dialog, sheet, slider, text field, new nav bar beh
 that contains them or a source include (`include(":design-system")`). Check CHANGELOG.
 
 - App-level notices: add `THIRD_PARTY_NOTICES.md` crediting Tabler Icons (MIT) once icons are used,
-  and keep the SPDX header convention (`SPDX-License-Identifier: Apache-2.0`) on every source file.
+  and keep the SPDX header convention (copyright line plus the `Apache-2.0` identifier) on every
+  source file.
 
 ## 2. The skeleton
 

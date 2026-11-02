@@ -27,7 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.components.PvotGlassSurface
@@ -47,59 +46,70 @@ internal fun BackgroundsPage(onBack: () -> Unit) {
     var motion by remember { mutableStateOf(PvotBackgroundMotion.Slow) }
     DetailPage(
         title = "Backgrounds",
-        summary = "What glass refracts: the screen's background with a slow drift of color, a still " +
-            "gradient, or a photo blurred once and dimmed.",
+        summary =
+            "What glass refracts: the screen's background with a slow drift of color, a still " +
+                "gradient, or a photo blurred once and dimmed.",
         onBack = onBack,
-        code = "PvotScreenScaffold(\n    background = { PvotLiveBackground(Modifier.fillMaxSize()) },\n" +
-            "    bottomBar = { PvotNavBar(selected, onSelect, tabs) },\n) { padding -> … }"
+        code =
+            "PvotScreenScaffold(\n    background = { PvotLiveBackground(Modifier.fillMaxSize()) },\n" +
+                "    bottomBar = { PvotNavBar(selected, onSelect, tabs) },\n) { padding -> … }",
     ) {
-        DemoSection(title = "Live", caption = "Five blobs of the scheme's container colors drift across the background", framed = false) {
+        DemoSection(
+            title = "Live",
+            caption = "Five blobs of the scheme's container colors drift across the background",
+            framed = false,
+        ) {
             ChoiceChips(
                 options = PvotBackgroundMotion.entries,
                 selected = motion,
                 onSelect = { motion = it },
-                label = { it.name }
+                label = { it.name },
             )
             BackgroundFrame { backdropModifier ->
                 PvotLiveBackground(backdropModifier, motion = motion)
             }
         }
-        DemoSection(title = "Gradient", caption = "The still version, for a screen that must not move", framed = false) {
+        DemoSection(
+            title = "Gradient",
+            caption = "The still version, for a screen that must not move",
+            framed = false,
+        ) {
             BackgroundFrame { backdropModifier -> PvotGradientBackground(backdropModifier) }
         }
-        DemoSection(title = "Photo", caption = "Blurred once off the main thread, then drawn under a scrim", framed = false) {
+        DemoSection(
+            title = "Photo",
+            caption = "Blurred once off the main thread, then drawn under a scrim",
+            framed = false,
+        ) {
             val density = LocalDensity.current
             val source = remember { samplePhoto() }
             var blurred by remember { mutableStateOf<ImageBitmap?>(null) }
-            LaunchedEffect(source) { blurred = preparePvotPhotoBackground(source, density, downscale = 1) }
+            LaunchedEffect(source) {
+                blurred = preparePvotPhotoBackground(source, density, downscale = 1)
+            }
             BackgroundFrame { backdropModifier -> PvotPhotoBackground(blurred, backdropModifier) }
         }
     }
 }
 
-/** A clipped frame with a glass card over [background], so each background is seen through glass. */
+/**
+ * A clipped frame with a glass card over [background], so each background is seen through glass.
+ */
 @Composable
 private fun BackgroundFrame(background: @Composable (Modifier) -> Unit) {
     val backdrop = rememberPvotGlassBackdrop()
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp)
-            .clip(PvotShapes.Card)
-    ) {
+    Box(modifier = Modifier.fillMaxWidth().height(220.dp).clip(PvotShapes.Card)) {
         background(Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
         PvotGlassSurface(
             backdrop = backdrop,
-            modifier = Modifier
-                .align(Alignment.Center)
-                .fillMaxWidth(0.7f),
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth(0.7f),
             cornerRadius = 16.dp,
-            contentPadding = androidx.compose.foundation.layout.PaddingValues(PvotSpacing.L)
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(PvotSpacing.L),
         ) {
             Text(
                 text = "Glass over it",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -126,39 +136,37 @@ private fun samplePhoto(): Bitmap {
 @Composable
 internal fun GlassMaterialsDemo(modifier: Modifier = Modifier) {
     val backdrop = rememberPvotGlassBackdrop()
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .clip(PvotShapes.Card)
-    ) {
+    Box(modifier = modifier.fillMaxWidth().height(200.dp).clip(PvotShapes.Card)) {
         PvotLiveBackground(Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(PvotSpacing.M),
+            modifier = Modifier.fillMaxSize().padding(PvotSpacing.M),
             horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             PvotGlassMaterial.entries.forEach { material ->
                 PvotGlassSurface(
                     backdrop = backdrop,
                     modifier = Modifier.weight(1f).height(120.dp),
                     cornerRadius = 16.dp,
-                    style = com.prauga.pvot.designsystem.effects.PvotGlassDefaults.styleOf(material)
-                        .copy(fillColor = com.prauga.pvot.designsystem.effects.PvotGlassDefaults.materialFill(material, MaterialTheme.colorScheme)),
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(PvotSpacing.S)
+                    style =
+                        com.prauga.pvot.designsystem.effects.PvotGlassDefaults.styleOf(material)
+                            .copy(
+                                fillColor =
+                                    com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+                                        .materialFill(material, MaterialTheme.colorScheme)
+                            ),
+                    contentPadding = androidx.compose.foundation.layout.PaddingValues(PvotSpacing.S),
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
                             text = material.name,
                             style = MaterialTheme.typography.titleSmall,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                         Text(
                             text = "Body text",
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                 }
@@ -172,30 +180,28 @@ internal fun GlassMaterialsDemo(modifier: Modifier = Modifier) {
 internal fun BuildYourOwnGlassDemo(modifier: Modifier = Modifier) {
     val backdrop = rememberPvotGlassBackdrop()
     var picked by remember { mutableStateOf(0) }
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(120.dp)
-            .clip(RoundedCornerShape(16.dp))
-    ) {
+    Box(modifier = modifier.fillMaxWidth().height(120.dp).clip(RoundedCornerShape(16.dp))) {
         PvotGradientBackground(Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
         Row(
             modifier = Modifier.align(Alignment.Center),
-            horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)
+            horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S),
         ) {
             listOf("All", "Missed", "Voicemail").forEachIndexed { index, label ->
                 PvotGlassSurface(
                     backdrop = backdrop,
                     onClick = { picked = index },
-                    contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                        horizontal = PvotSpacing.L, vertical = PvotSpacing.S
-                    )
+                    contentPadding =
+                        androidx.compose.foundation.layout.PaddingValues(
+                            horizontal = PvotSpacing.L,
+                            vertical = PvotSpacing.S,
+                        ),
                 ) {
                     Text(
                         text = label,
                         style = MaterialTheme.typography.labelLarge,
-                        color = if (picked == index) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface
+                        color =
+                            if (picked == index) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }

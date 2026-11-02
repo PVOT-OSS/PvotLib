@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Privacy Policy — What's in Pvot
 
 _Effective 30 October 2026_

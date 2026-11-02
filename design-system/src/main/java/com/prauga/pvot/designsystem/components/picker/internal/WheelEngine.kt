@@ -60,9 +60,7 @@ private const val MAX_ROTATION_DEGREES = 60f
 private const val MIN_SCALE = 0.7f
 private const val MIN_ALPHA = 0.3f
 
-/**
- * Wheel engine that handles scrolling, snapping, and rendering with 3D cylindrical effect.
- */
+/** Wheel engine that handles scrolling, snapping, and rendering with 3D cylindrical effect. */
 @Composable
 internal fun WheelEngine(
     config: WheelConfig,
@@ -70,7 +68,7 @@ internal fun WheelEngine(
     modifier: Modifier = Modifier,
     colors: PvotPickerColors = PvotPickerDefaults.themeColors(),
     itemHeight: Dp = DefaultItemHeight,
-    visibleItemsCount: Int = DefaultVisibleItems
+    visibleItemsCount: Int = DefaultVisibleItems,
 ) {
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = config.initialIndex)
     val flingBehavior = rememberSnapFlingBehavior(listState)
@@ -84,9 +82,11 @@ internal fun WheelEngine(
     val wheelName = config.descriptionRes?.let { stringResource(it) }.orEmpty()
     val nextLabel = stringResource(R.string.pvot_picker_action_next)
     val previousLabel = stringResource(R.string.pvot_picker_action_previous)
-    val selectedLabel = config.values.getOrNull(lastSelectedIndex)
-        ?.let { listOfNotNull(config.label(it), suffix.ifEmpty { null }).joinToString(" ") }
-        .orEmpty()
+    val selectedLabel =
+        config.values
+            .getOrNull(lastSelectedIndex)
+            ?.let { listOfNotNull(config.label(it), suffix.ifEmpty { null }).joinToString(" ") }
+            .orEmpty()
 
     val density = LocalDensity.current
     val itemHeightPx = with(density) { itemHeight.toPx() }
@@ -114,33 +114,33 @@ internal fun WheelEngine(
     }
 
     Box(
-        modifier = modifier
-            .height(itemHeight * visibleItemsCount)
-            .width(DefaultWheelWidth)
-            .semantics(mergeDescendants = true) {
+        modifier =
+            modifier.height(itemHeight * visibleItemsCount).width(DefaultWheelWidth).semantics(
+                mergeDescendants = true
+            ) {
                 contentDescription = wheelName
                 stateDescription = selectedLabel
-                customActions = listOf(
-                    CustomAccessibilityAction(nextLabel) {
-                        val target = (lastSelectedIndex + 1).coerceAtMost(config.values.lastIndex)
-                        scope.launch { listState.animateScrollToItem(target) }
-                        true
-                    },
-                    CustomAccessibilityAction(previousLabel) {
-                        val target = (lastSelectedIndex - 1).coerceAtLeast(0)
-                        scope.launch { listState.animateScrollToItem(target) }
-                        true
-                    }
-                )
+                customActions =
+                    listOf(
+                        CustomAccessibilityAction(nextLabel) {
+                            val target =
+                                (lastSelectedIndex + 1).coerceAtMost(config.values.lastIndex)
+                            scope.launch { listState.animateScrollToItem(target) }
+                            true
+                        },
+                        CustomAccessibilityAction(previousLabel) {
+                            val target = (lastSelectedIndex - 1).coerceAtLeast(0)
+                            scope.launch { listState.animateScrollToItem(target) }
+                            true
+                        },
+                    )
             }
     ) {
         LazyColumn(
             state = listState,
             flingBehavior = flingBehavior,
             contentPadding = PaddingValues(vertical = itemHeight * (visibleItemsCount / 2)),
-            modifier = Modifier
-                .fillMaxSize()
-                .clearAndSetSemantics { }
+            modifier = Modifier.fillMaxSize().clearAndSetSemantics {},
         ) {
             items(config.values.size) { index ->
                 WheelItem(
@@ -148,25 +148,23 @@ internal fun WheelEngine(
                     suffix = suffix,
                     colors = colors,
                     normalizedDistance = {
-                        val distanceFromCenter = (index - listState.firstVisibleItemIndex) -
-                            (listState.firstVisibleItemScrollOffset / itemHeightPx)
+                        val distanceFromCenter =
+                            (index - listState.firstVisibleItemIndex) -
+                                (listState.firstVisibleItemScrollOffset / itemHeightPx)
                         (distanceFromCenter / halfVisibleItems).coerceIn(-1f, 1f)
                     },
-                    modifier = Modifier.height(itemHeight)
+                    modifier = Modifier.height(itemHeight),
                 )
             }
         }
 
         // Selection indicator
         Box(
-            modifier = Modifier
-                .align(Alignment.Center)
-                .height(itemHeight)
-                .fillMaxWidth()
-                .background(
-                    colors.selectionBackgroundColor,
-                    PvotShapes.Selection
-                )
+            modifier =
+                Modifier.align(Alignment.Center)
+                    .height(itemHeight)
+                    .fillMaxWidth()
+                    .background(colors.selectionBackgroundColor, PvotShapes.Selection)
         )
     }
 }
@@ -174,8 +172,8 @@ internal fun WheelEngine(
 /**
  * A single wheel row.
  *
- * [normalizedDistance] is read in the draw phase, so scrolling re-runs the layer
- * block rather than recomposing every visible row.
+ * [normalizedDistance] is read in the draw phase, so scrolling re-runs the layer block rather than
+ * recomposing every visible row.
  */
 @Composable
 private fun WheelItem(
@@ -183,12 +181,11 @@ private fun WheelItem(
     suffix: String,
     colors: PvotPickerColors,
     normalizedDistance: () -> Float,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .graphicsLayer {
+        modifier =
+            modifier.fillMaxWidth().graphicsLayer {
                 val distance = normalizedDistance()
                 val itemScale = 1f - (abs(distance) * (1f - MIN_SCALE))
                 this.rotationX = distance * MAX_ROTATION_DEGREES
@@ -198,44 +195,32 @@ private fun WheelItem(
                 this.transformOrigin = TransformOrigin.Center
                 this.cameraDistance = 12f * density
             },
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Row(verticalAlignment = Alignment.Bottom) {
-            Text(
-                text = text,
-                fontSize = 28.sp,
-                color = colors.textColor
-            )
+            Text(text = text, fontSize = 28.sp, color = colors.textColor)
             if (suffix.isNotEmpty()) {
                 Spacer(Modifier.width(PvotSpacing.XS))
-                Text(
-                    text = suffix,
-                    fontSize = 16.sp,
-                    color = colors.textSecondaryColor
-                )
+                Text(text = suffix, fontSize = 16.sp, color = colors.textSecondaryColor)
             }
         }
     }
 }
 
-/**
- * Composable that renders multiple wheels in a row.
- */
+/** Composable that renders multiple wheels in a row. */
 @Composable
 internal fun MultiWheelEngine(
     configs: List<WheelConfig>,
     onValuesSelected: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors(),
 ) {
-    val selectedValues = remember(configs) {
-        configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()
-    }
+    val selectedValues =
+        remember(configs) {
+            configs.map { it.values.getOrElse(it.initialIndex) { 0 } }.toMutableList()
+        }
 
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        modifier = modifier.fillMaxWidth()
-    ) {
+    Row(horizontalArrangement = Arrangement.Center, modifier = modifier.fillMaxWidth()) {
         configs.forEachIndexed { index, config ->
             WheelEngine(
                 config = config,
@@ -243,7 +228,7 @@ internal fun MultiWheelEngine(
                     selectedValues[index] = value
                     onValuesSelected(selectedValues.toList())
                 },
-                colors = colors
+                colors = colors,
             )
         }
     }

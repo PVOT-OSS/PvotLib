@@ -3,7 +3,6 @@
 
 package com.prauga.pvot.catalog.hub
 
-import com.prauga.pvot.catalog.components.GlassPanel
 import androidx.activity.compose.BackHandler
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedContent
@@ -52,9 +51,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
+import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.coreui.PvotEmptyContent
 import com.prauga.pvot.coreui.PvotSectionHeader
-import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.PvotSnackbarHost
 import com.prauga.pvot.designsystem.components.textfield.PvotTextField
@@ -72,13 +71,13 @@ internal class CatalogEntry(
     val group: CatalogGroup,
     @DrawableRes val icon: Int,
     val keywords: String = "",
-    val page: @Composable (onBack: () -> Unit) -> Unit
+    val page: @Composable (onBack: () -> Unit) -> Unit,
 )
 
 internal enum class CatalogGroup(val title: String) {
     Foundations("Foundations"),
     Components("Pvot components"),
-    Material("Material elements")
+    Material("Material elements"),
 }
 
 /**
@@ -99,14 +98,14 @@ internal fun CatalogHub(modifier: Modifier = Modifier) {
 
     CompositionLocalProvider(
         LocalCatalogSnackbar provides snackbar,
-        LocalContentColor provides MaterialTheme.colorScheme.onBackground
+        LocalContentColor provides MaterialTheme.colorScheme.onBackground,
     ) {
         Box(modifier = modifier.fillMaxSize()) {
             AnimatedContent(
                 targetState = openId,
                 modifier = Modifier.fillMaxSize(),
                 transitionSpec = { pageTransition(forward = targetState != null) },
-                label = "catalogPage"
+                label = "catalogPage",
             ) { id ->
                 val entry = entries.firstOrNull { it.id == id }
                 if (entry == null) {
@@ -115,7 +114,7 @@ internal fun CatalogHub(modifier: Modifier = Modifier) {
                         query = query,
                         onQueryChange = { query = it },
                         listState = listState,
-                        onOpen = { openId = it.id }
+                        onOpen = { openId = it.id },
                     )
                 } else {
                     entry.page { openId = null }
@@ -123,11 +122,11 @@ internal fun CatalogHub(modifier: Modifier = Modifier) {
             }
             PvotSnackbarHost(
                 hostState = snackbar,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .navigationBarsPadding()
-                    .padding(bottom = navBarHeight + PvotSpacing.M * 2 + PvotSpacing.S)
-                    .padding(horizontal = PvotSpacing.L)
+                modifier =
+                    Modifier.align(Alignment.BottomCenter)
+                        .navigationBarsPadding()
+                        .padding(bottom = navBarHeight + PvotSpacing.M * 2 + PvotSpacing.S)
+                        .padding(horizontal = PvotSpacing.L),
             )
         }
     }
@@ -139,12 +138,13 @@ private fun pageTransition(forward: Boolean): ContentTransform {
     val fadeIn = fadeIn(tween(PvotDurations.Long, easing = PvotMotion.Settle))
     val fadeOut = fadeOut(tween(PvotDurations.Short))
     return if (forward) {
-        (slideInHorizontally(slide) { it / 4 } + fadeIn) togetherWith
-            (slideOutHorizontally(slide) { -it / 8 } + fadeOut)
-    } else {
-        (slideInHorizontally(slide) { -it / 8 } + fadeIn) togetherWith
-            (slideOutHorizontally(slide) { it / 4 } + fadeOut)
-    }.apply { targetContentZIndex = if (forward) 1f else -1f }
+            (slideInHorizontally(slide) { it / 4 } + fadeIn) togetherWith
+                (slideOutHorizontally(slide) { -it / 8 } + fadeOut)
+        } else {
+            (slideInHorizontally(slide) { -it / 8 } + fadeIn) togetherWith
+                (slideOutHorizontally(slide) { it / 4 } + fadeOut)
+        }
+        .apply { targetContentZIndex = if (forward) 1f else -1f }
 }
 
 @Composable
@@ -153,38 +153,40 @@ private fun CatalogIndex(
     query: String,
     onQueryChange: (String) -> Unit,
     listState: LazyListState,
-    onOpen: (CatalogEntry) -> Unit
+    onOpen: (CatalogEntry) -> Unit,
 ) {
     val needle = query.trim()
-    val visible = if (needle.isEmpty()) entries else entries.filter {
-        it.title.contains(needle, ignoreCase = true) ||
-            it.summary.contains(needle, ignoreCase = true) ||
-            it.keywords.contains(needle, ignoreCase = true)
-    }
+    val visible =
+        if (needle.isEmpty()) entries
+        else
+            entries.filter {
+                it.title.contains(needle, ignoreCase = true) ||
+                    it.summary.contains(needle, ignoreCase = true) ||
+                    it.keywords.contains(needle, ignoreCase = true)
+            }
 
     PvotScreen(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         state = listState,
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(ItemGap)
+        verticalArrangement = Arrangement.spacedBy(ItemGap),
     ) {
         item(key = "title") {
             Column(
                 modifier = Modifier.padding(bottom = PvotSpacing.XS),
-                verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS)
+                verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS),
             ) {
                 Text(
                     text = "Design Catalog",
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Text(
-                    text = "${entries.size} pages across tokens, Pvot components and the Material " +
-                        "elements the theme styles.",
+                    text =
+                        "${entries.size} pages across tokens, Pvot components and the Material " +
+                            "elements the theme styles.",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -193,10 +195,8 @@ private fun CatalogIndex(
         if (visible.isEmpty()) {
             item(key = "empty") {
                 Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = SectionGap),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxWidth().padding(top = SectionGap),
+                    contentAlignment = Alignment.Center,
                 ) {
                     PvotEmptyContent(message = "Nothing matches \"$needle\"")
                 }
@@ -209,11 +209,8 @@ private fun CatalogIndex(
             if (inGroup.isEmpty()) return@forEach
             item(key = "header-${group.name}") {
                 PvotSectionHeader(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = PvotSpacing.M)
-                        .animateItem(),
-                    title = group.title
+                    modifier = Modifier.fillMaxWidth().padding(top = PvotSpacing.M).animateItem(),
+                    title = group.title,
                 )
             }
             inGroup.forEach { entry ->
@@ -222,9 +219,7 @@ private fun CatalogIndex(
                     EntryRow(
                         entry = entry,
                         onClick = { onOpen(entry) },
-                        modifier = Modifier
-                            .animateItem()
-                            .pvotReveal(index)
+                        modifier = Modifier.animateItem().pvotReveal(index),
                     )
                 }
             }
@@ -249,18 +244,18 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
             AnimatedVisibility(
                 visible = query.isNotEmpty(),
                 enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut()
+                exit = fadeOut() + scaleOut(),
             ) {
                 IconButton(onClick = { onQueryChange("") }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_t_x),
-                        contentDescription = "Clear search"
+                        contentDescription = "Clear search",
                     )
                 }
             }
         },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() })
+        keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() }),
     )
 }
 
@@ -268,30 +263,31 @@ private fun SearchField(query: String, onQueryChange: (String) -> Unit) {
 private fun EntryRow(entry: CatalogEntry, onClick: () -> Unit, modifier: Modifier = Modifier) {
     GlassPanel(modifier = modifier.fillMaxWidth(), onClick = onClick) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(PvotSpacing.L),
+            modifier = Modifier.fillMaxWidth().padding(PvotSpacing.L),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L)
+            horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L),
         ) {
             IconBadge(icon = entry.icon)
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 Text(
                     text = entry.title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     text = entry.summary,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 2
+                    maxLines = 2,
                 )
             }
             Icon(
                 painter = painterResource(R.drawable.ic_t_chevron_right),
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
     }

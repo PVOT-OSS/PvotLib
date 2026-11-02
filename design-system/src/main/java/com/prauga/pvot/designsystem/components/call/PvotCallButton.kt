@@ -67,7 +67,7 @@ public data class PvotCallButtonColors(
     val contentColor: Color,
     val checkedContainerColor: Color,
     val checkedContentColor: Color,
-    val labelColor: Color
+    val labelColor: Color,
 )
 
 /** Defaults for [PvotCallButton]. */
@@ -90,17 +90,19 @@ public object PvotCallButtonDefaults {
 
     /** Tonal colors, for buttons on a solid surface or grouped on one glass card. */
     @Composable
-    public fun colors(): PvotCallButtonColors = PvotCallButtonColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        checkedContainerColor = MaterialTheme.colorScheme.primary,
-        checkedContentColor = MaterialTheme.colorScheme.onPrimary,
-        labelColor = MaterialTheme.colorScheme.onSurfaceVariant
-    )
+    public fun colors(): PvotCallButtonColors =
+        PvotCallButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            checkedContainerColor = MaterialTheme.colorScheme.primary,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+            labelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
 
     /** Colors for a button that is its own glass: the glass is the fill while the button is off. */
     @Composable
-    public fun glassColors(): PvotCallButtonColors = colors().copy(containerColor = Color.Transparent)
+    public fun glassColors(): PvotCallButtonColors =
+        colors().copy(containerColor = Color.Transparent)
 }
 
 /**
@@ -141,84 +143,94 @@ public fun PvotCallButton(
     contentDescription: String? = null,
     backdrop: PvotGlassBackdrop? = null,
     material: PvotGlassMaterial = PvotGlassMaterial.Clear,
-    colors: PvotCallButtonColors = if (backdrop != null) {
-        PvotCallButtonDefaults.glassColors()
-    } else {
-        PvotCallButtonDefaults.colors()
-    }
+    colors: PvotCallButtonColors =
+        if (backdrop != null) {
+            PvotCallButtonDefaults.glassColors()
+        } else {
+            PvotCallButtonDefaults.colors()
+        },
 ) {
     val source = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
     val on = checked == true
     val spec = tween<Color>(PvotDurations.Medium, easing = PvotMotion.Settle)
-    val container by animateColorAsState(
-        if (on) colors.checkedContainerColor else colors.containerColor, spec, label = "callButtonFill"
-    )
-    val content by animateColorAsState(
-        if (on) colors.checkedContentColor else colors.contentColor, spec, label = "callButtonIcon"
-    )
-    val corner by animateDpAsState(
-        if (on) PvotCallButtonDefaults.CheckedCornerRadius else PvotCallButtonDefaults.Size / 2,
-        tween(PvotDurations.Medium, easing = PvotMotion.Settle),
-        label = "callButtonShape"
-    )
+    val container by
+        animateColorAsState(
+            if (on) colors.checkedContainerColor else colors.containerColor,
+            spec,
+            label = "callButtonFill",
+        )
+    val content by
+        animateColorAsState(
+            if (on) colors.checkedContentColor else colors.contentColor,
+            spec,
+            label = "callButtonIcon",
+        )
+    val corner by
+        animateDpAsState(
+            if (on) PvotCallButtonDefaults.CheckedCornerRadius else PvotCallButtonDefaults.Size / 2,
+            tween(PvotDurations.Medium, easing = PvotMotion.Settle),
+            label = "callButtonShape",
+        )
     val stateOn = stringResource(R.string.pvot_state_on)
     val stateOff = stringResource(R.string.pvot_state_off)
     val description = contentDescription ?: label
     val alpha = if (enabled) 1f else PvotCallButtonDefaults.DisabledAlpha
     Column(
-        modifier = modifier
-            .width(PvotCallButtonDefaults.Width)
-            .pvotPressScale(source)
-            .combinedClickable(
-                interactionSource = source,
-                indication = null,
-                enabled = enabled,
-                role = if (checked != null) Role.Switch else Role.Button,
-                onLongClick = onLongClick,
-                onClick = {
+        modifier =
+            modifier
+                .width(PvotCallButtonDefaults.Width)
+                .pvotPressScale(source)
+                .combinedClickable(
+                    interactionSource = source,
+                    indication = null,
+                    enabled = enabled,
+                    role = if (checked != null) Role.Switch else Role.Button,
+                    onLongClick = onLongClick,
+                    onClick = {
+                        if (checked != null) {
+                            haptics.performHapticFeedback(
+                                if (checked) HapticFeedbackType.ToggleOff
+                                else HapticFeedbackType.ToggleOn
+                            )
+                        }
+                        onClick()
+                    },
+                )
+                .semantics(mergeDescendants = true) {
+                    this.contentDescription = description
                     if (checked != null) {
-                        haptics.performHapticFeedback(
-                            if (checked) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn
-                        )
+                        toggleableState = ToggleableState(checked)
+                        stateDescription = if (checked) stateOn else stateOff
                     }
-                    onClick()
-                }
-            )
-            .semantics(mergeDescendants = true) {
-                this.contentDescription = description
-                if (checked != null) {
-                    toggleableState = ToggleableState(checked)
-                    stateDescription = if (checked) stateOn else stateOff
-                }
-            },
-        horizontalAlignment = Alignment.CenterHorizontally
+                },
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val shape = RoundedCornerShape(corner)
-        val circle = if (backdrop != null) {
-            Modifier.pvotGlassSurface(
-                backdrop = backdrop,
-                cornerRadius = corner,
-                style = PvotGlassDefaults.materialStyle(material),
-                role = null
-            )
-        } else {
-            Modifier
-        }
+        val circle =
+            if (backdrop != null) {
+                Modifier.pvotGlassSurface(
+                    backdrop = backdrop,
+                    cornerRadius = corner,
+                    style = PvotGlassDefaults.materialStyle(material),
+                    role = null,
+                )
+            } else {
+                Modifier
+            }
         Box(
-            modifier = Modifier
-                .size(PvotCallButtonDefaults.Size)
-                .alpha(alpha)
-                .then(circle)
-                .clip(shape)
-                .background(container, shape),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier.size(PvotCallButtonDefaults.Size)
+                    .alpha(alpha)
+                    .then(circle)
+                    .clip(shape)
+                    .background(container, shape),
+            contentAlignment = Alignment.Center,
         ) {
             Icon(painter = icon, contentDescription = null, tint = content)
             if (badge) {
                 Box(
-                    Modifier
-                        .align(Alignment.BottomEnd)
+                    Modifier.align(Alignment.BottomEnd)
                         .padding(PvotSpacing.S)
                         .size(PvotCallButtonDefaults.BadgeSize)
                         .background(content, CircleShape)
@@ -231,7 +243,7 @@ public fun PvotCallButton(
             color = colors.labelColor.copy(alpha = colors.labelColor.alpha * alpha),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            modifier = Modifier.padding(top = PvotSpacing.S)
+            modifier = Modifier.padding(top = PvotSpacing.S),
         )
     }
 }

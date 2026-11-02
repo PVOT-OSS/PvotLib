@@ -39,13 +39,12 @@ public object PvotSettingsRowDefaults {
     public val ChevronSize: Dp = 20.dp
 
     /** Colors of the switch in a [PvotSwitchRow], the theme's own switch. */
-    @Composable
-    public fun switchColors(): SwitchColors = SwitchDefaults.colors()
+    @Composable public fun switchColors(): SwitchColors = SwitchDefaults.colors()
 }
 
 /**
- * A settings row that turns something on or off: an optional icon, a title, a summary and a
- * switch at the end.
+ * A settings row that turns something on or off: an optional icon, a title, a summary and a switch
+ * at the end.
  *
  * The whole row is the touch target, not just the switch, and TalkBack reads it as one switch.
  *
@@ -71,21 +70,22 @@ public fun PvotSwitchRow(
     iconStyle: PvotRowIconStyle = PvotRowIconStyle.Contained,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
-    switchColors: SwitchColors = PvotSettingsRowDefaults.switchColors()
+    switchColors: SwitchColors = PvotSettingsRowDefaults.switchColors(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     PvotRowLayout(
-        modifier = modifier
-            .pvotPressScale(interactionSource)
-            .clip(PvotListRowDefaults.Shape)
-            .toggleable(
-                value = checked,
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = enabled,
-                role = Role.Switch,
-                onValueChange = onCheckedChange
-            ),
+        modifier =
+            modifier
+                .pvotPressScale(interactionSource)
+                .clip(PvotListRowDefaults.Shape)
+                .toggleable(
+                    value = checked,
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Switch,
+                    onValueChange = onCheckedChange,
+                ),
         title = { Text(text = title, maxLines = 2, overflow = TextOverflow.Ellipsis) },
         supportingText = summary?.let { { Text(text = it) } },
         leading = icon?.let { { PvotRowIcon(colors, it, iconStyle) } },
@@ -95,22 +95,21 @@ public fun PvotSwitchRow(
                 checked = checked,
                 onCheckedChange = null,
                 enabled = enabled,
-                colors = switchColors
+                colors = switchColors,
             )
         },
         selected = false,
         enabled = enabled,
-        colors = colors
+        colors = colors,
     )
 }
 
 /**
- * A settings row that opens something: an optional icon, a title, a summary, the current value
- * and a chevron.
+ * A settings row that opens something: an optional icon, a title, a summary, the current value and
+ * a chevron.
  *
- * Use it for a setting chosen on another screen, in a dialog or in a sheet. The current value
- * sits at the end in the brand color, cut short if it is long; put long values in [summary]
- * instead.
+ * Use it for a setting chosen on another screen, in a dialog or in a sheet. The current value sits
+ * at the end in the brand color, cut short if it is long; put long values in [summary] instead.
  *
  * @param title What the setting is
  * @param onClick Called when the row is tapped
@@ -136,58 +135,61 @@ public fun PvotPreferenceRow(
     showChevron: Boolean = true,
     chevron: PvotRowChevron = PvotRowChevron.Chevron,
     enabled: Boolean = true,
-    colors: PvotListRowColors = PvotListRowDefaults.themeColors()
+    colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val trailing: (@Composable () -> Unit)? = if (value != null || showChevron) {
-        {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(PvotSpacing.XS)
-            ) {
-                if (value != null) {
-                    Text(
-                        text = value,
-                        color = colors.valueColor,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.widthIn(max = PvotSettingsRowDefaults.ValueMaxWidth)
-                    )
-                }
-                if (showChevron) {
-                    Icon(
-                        painter = painterResource(
-                            when (chevron) {
-                                PvotRowChevron.Chevron -> R.drawable.pvot_ic_chevron_right
-                                PvotRowChevron.Arrow -> R.drawable.pvot_ic_arrow_right
-                            }
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier.size(PvotSettingsRowDefaults.ChevronSize)
-                    )
+    val trailing: (@Composable () -> Unit)? =
+        if (value != null || showChevron) {
+            {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(PvotSpacing.XS),
+                ) {
+                    if (value != null) {
+                        Text(
+                            text = value,
+                            color = colors.valueColor,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.widthIn(max = PvotSettingsRowDefaults.ValueMaxWidth),
+                        )
+                    }
+                    if (showChevron) {
+                        Icon(
+                            painter =
+                                painterResource(
+                                    when (chevron) {
+                                        PvotRowChevron.Chevron -> R.drawable.pvot_ic_chevron_right
+                                        PvotRowChevron.Arrow -> R.drawable.pvot_ic_arrow_right
+                                    }
+                                ),
+                            contentDescription = null,
+                            modifier = Modifier.size(PvotSettingsRowDefaults.ChevronSize),
+                        )
+                    }
                 }
             }
+        } else {
+            null
         }
-    } else {
-        null
-    }
     PvotRowLayout(
-        modifier = modifier
-            .pvotPressScale(interactionSource)
-            .clip(PvotListRowDefaults.Shape)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            ),
+        modifier =
+            modifier
+                .pvotPressScale(interactionSource)
+                .clip(PvotListRowDefaults.Shape)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                ),
         title = { Text(text = title, maxLines = 2, overflow = TextOverflow.Ellipsis) },
         supportingText = summary?.let { { Text(text = it) } },
         leading = icon?.let { { PvotRowIcon(colors, it, iconStyle) } },
         trailing = trailing,
         selected = false,
         enabled = enabled,
-        colors = colors
+        colors = colors,
     )
 }

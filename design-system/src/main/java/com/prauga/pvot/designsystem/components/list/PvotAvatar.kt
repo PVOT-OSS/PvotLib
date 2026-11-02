@@ -51,8 +51,8 @@ public object PvotAvatarDefaults {
 /**
  * A person's picture: their photo, or a [PvotLetterTile] with their initial when there is none.
  *
- * The library loads no images; pass the photo as a [painter] from whatever loader the app uses.
- * A [ring] in a state color, such as the call's, goes round the avatar, and [badge] draws at its
+ * The library loads no images; pass the photo as a [painter] from whatever loader the app uses. A
+ * [ring] in a state color, such as the call's, goes round the avatar, and [badge] draws at its
  * bottom end, such as a call type icon. The avatar is decorative unless [contentDescription] is
  * set: the row or screen next to it already says the name.
  *
@@ -74,35 +74,35 @@ public fun PvotAvatar(
     size: Dp = PvotAvatarDefaults.Small,
     ring: Color? = null,
     contentDescription: String? = null,
-    badge: (@Composable BoxScope.() -> Unit)? = null
+    badge: (@Composable BoxScope.() -> Unit)? = null,
 ) {
-    val ringPadding = if (ring != null) PvotAvatarDefaults.RingWidth + PvotAvatarDefaults.RingGap else 0.dp
-    val semantics = if (contentDescription != null) {
-        Modifier.semantics { this.contentDescription = contentDescription }
-    } else {
-        Modifier.clearAndSetSemantics {}
-    }
+    val ringPadding =
+        if (ring != null) PvotAvatarDefaults.RingWidth + PvotAvatarDefaults.RingGap else 0.dp
+    val semantics =
+        if (contentDescription != null) {
+            Modifier.semantics { this.contentDescription = contentDescription }
+        } else {
+            Modifier.clearAndSetSemantics {}
+        }
     Box(modifier.then(semantics)) {
         Box(
-            modifier = Modifier
-                .then(
-                    if (ring != null) {
-                        Modifier.border(PvotAvatarDefaults.RingWidth, ring, CircleShape)
-                    } else {
-                        Modifier
-                    }
-                )
-                .padding(ringPadding),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier.then(
+                        if (ring != null) {
+                            Modifier.border(PvotAvatarDefaults.RingWidth, ring, CircleShape)
+                        } else {
+                            Modifier
+                        }
+                    )
+                    .padding(ringPadding),
+            contentAlignment = Alignment.Center,
         ) {
             if (painter != null) {
                 Image(
                     painter = painter,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(size)
-                        .clip(CircleShape)
+                    modifier = Modifier.size(size).clip(CircleShape),
                 )
             } else {
                 PvotLetterTile(name = name, colorKey = colorKey, size = size)

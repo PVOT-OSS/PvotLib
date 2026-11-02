@@ -22,13 +22,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 /**
- * The message shown in place of a list or screen that has no content, with an optional icon
- * above it and an optional action below, such as "Add a contact".
+ * The message shown in place of a list or screen that has no content, with an optional icon above
+ * it and an optional action below, such as "Add a contact".
  *
  * @param message Text explaining why there is nothing to show
  * @param modifier Modifier for the column
- * @param icon Content of the tinted circle above the message, typically an `Icon`; it is tinted
- * for you
+ * @param icon Content of the tinted circle above the message, typically an `Icon`; it is tinted for
+ *   you
  * @param actionLabel Label of the button under the message; shown only with [onAction]
  * @param onAction Called when the button is tapped
  */
@@ -38,23 +38,26 @@ public fun PvotEmptyContent(
     modifier: Modifier = Modifier,
     icon: (@Composable () -> Unit)? = null,
     actionLabel: String? = null,
-    onAction: (() -> Unit)? = null
+    onAction: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (icon != null) {
             Box(
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.14f), CircleShape),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier.size(64.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary.copy(alpha = 0.14f),
+                            CircleShape,
+                        ),
+                contentAlignment = Alignment.Center,
             ) {
                 CompositionLocalProvider(
                     LocalContentColor provides MaterialTheme.colorScheme.primary,
-                    content = icon
+                    content = icon,
                 )
             }
         }
@@ -62,7 +65,7 @@ public fun PvotEmptyContent(
             text = message,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         if (actionLabel != null && onAction != null) {
             FilledTonalButton(onClick = onAction, modifier = Modifier.padding(top = 4.dp)) {
@@ -81,9 +84,6 @@ public fun PvotEmptyContent(
  */
 @Deprecated("Kept for binary compatibility.", level = DeprecationLevel.HIDDEN)
 @Composable
-public fun PvotEmptyContent(
-    message: String,
-    modifier: Modifier = Modifier
-) {
+public fun PvotEmptyContent(message: String, modifier: Modifier = Modifier) {
     PvotEmptyContent(message = message, modifier = modifier, icon = null)
 }

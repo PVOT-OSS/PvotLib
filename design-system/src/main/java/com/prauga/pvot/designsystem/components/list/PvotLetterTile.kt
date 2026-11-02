@@ -30,10 +30,7 @@ import kotlin.math.absoluteValue
  * @param contentColor Color of the letter or the fallback icon
  */
 @Immutable
-public data class PvotLetterTileColors(
-    val containerColor: Color,
-    val contentColor: Color
-)
+public data class PvotLetterTileColors(val containerColor: Color, val contentColor: Color)
 
 /** Defaults for [PvotLetterTile]. */
 public object PvotLetterTileDefaults {
@@ -45,11 +42,12 @@ public object PvotLetterTileDefaults {
      * The color pairs a tile picks from, the container roles of [colorScheme], so tiles follow the
      * theme and dynamic color.
      */
-    public fun palette(colorScheme: ColorScheme): List<PvotLetterTileColors> = listOf(
-        PvotLetterTileColors(colorScheme.primaryContainer, colorScheme.onPrimaryContainer),
-        PvotLetterTileColors(colorScheme.secondaryContainer, colorScheme.onSecondaryContainer),
-        PvotLetterTileColors(colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer)
-    )
+    public fun palette(colorScheme: ColorScheme): List<PvotLetterTileColors> =
+        listOf(
+            PvotLetterTileColors(colorScheme.primaryContainer, colorScheme.onPrimaryContainer),
+            PvotLetterTileColors(colorScheme.secondaryContainer, colorScheme.onSecondaryContainer),
+            PvotLetterTileColors(colorScheme.tertiaryContainer, colorScheme.onTertiaryContainer),
+        )
 
     /** The theme's palette for tiles. */
     @Composable
@@ -64,9 +62,9 @@ public object PvotLetterTileDefaults {
  * A round tile showing the first letter of a name, the leading visual of a contact or caller
  * without a photo.
  *
- * Its colors come from [palette] by [colorKey], so a contact keeps its color wherever it appears.
- * A name with no letter or digit to show, such as an unknown number's "+" or an empty name, gets
- * a person icon instead. The tile is decorative: the row next to it already says the name.
+ * Its colors come from [palette] by [colorKey], so a contact keeps its color wherever it appears. A
+ * name with no letter or digit to show, such as an unknown number's "+" or an empty name, gets a
+ * person icon instead. The tile is decorative: the row next to it already says the name.
  *
  * @param name The name to take the first letter from
  * @param modifier Modifier for the tile
@@ -80,37 +78,42 @@ public fun PvotLetterTile(
     modifier: Modifier = Modifier,
     colorKey: Any = name,
     size: Dp = PvotLetterTileDefaults.Size,
-    palette: List<PvotLetterTileColors> = PvotLetterTileDefaults.themePalette()
+    palette: List<PvotLetterTileColors> = PvotLetterTileDefaults.themePalette(),
 ) {
     val colors = PvotLetterTileDefaults.colorsFor(colorKey, palette)
     val initial = initialOf(name)
     Box(
-        modifier = modifier
-            .size(size)
-            .background(colors.containerColor, CircleShape)
-            .clearAndSetSemantics {},
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(size)
+                .background(colors.containerColor, CircleShape)
+                .clearAndSetSemantics {},
+        contentAlignment = Alignment.Center,
     ) {
         if (initial != null) {
             Text(
                 text = initial,
                 color = colors.contentColor,
                 style = MaterialTheme.typography.titleMedium,
-                // In dp, not sp: the tile does not grow with the font scale, so neither may the letter.
-                fontSize = with(LocalDensity.current) { (size * LetterFraction).toSp() }
+                // In dp, not sp: the tile does not grow with the font scale, so neither may the
+                // letter.
+                fontSize = with(LocalDensity.current) { (size * LetterFraction).toSp() },
             )
         } else {
             Icon(
                 painter = painterResource(R.drawable.pvot_ic_user),
                 contentDescription = null,
                 tint = colors.contentColor,
-                modifier = Modifier.size(size / 2)
+                modifier = Modifier.size(size / 2),
             )
         }
     }
 }
 
-/** The first letter or digit of [name], upper-cased, whole even outside the Basic Multilingual Plane. */
+/**
+ * The first letter or digit of [name], upper-cased, whole even outside the Basic Multilingual
+ * Plane.
+ */
 private fun initialOf(name: String): String? {
     var index = 0
     while (index < name.length) {

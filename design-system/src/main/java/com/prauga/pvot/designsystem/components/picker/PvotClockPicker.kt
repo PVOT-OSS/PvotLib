@@ -27,15 +27,13 @@ public fun PvotClockPicker(
     time: LocalTime,
     onTimeChange: (LocalTime) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors(),
 ) {
     MultiWheelEngine(
         configs = time.toWheelConfigs(),
-        onValuesSelected = { values ->
-            onTimeChange(wheelValuesToLocalTime(values))
-        },
+        onValuesSelected = { values -> onTimeChange(wheelValuesToLocalTime(values)) },
         modifier = modifier,
-        colors = colors
+        colors = colors,
     )
 }
 
@@ -44,16 +42,13 @@ public fun PvotClockPicker(
     showBackground = true,
     backgroundColor = 0xFF121212,
     widthDp = 360,
-    heightDp = 200
+    heightDp = 200,
 )
 @Composable
 private fun PvotClockPickerPreview() {
     PvotAppTheme {
         Surface(modifier = Modifier.fillMaxWidth()) {
-            PvotClockPicker(
-                time = LocalTime.of(0, 0),
-                onTimeChange = {}
-            )
+            PvotClockPicker(time = LocalTime.of(0, 0), onTimeChange = {})
         }
     }
 }

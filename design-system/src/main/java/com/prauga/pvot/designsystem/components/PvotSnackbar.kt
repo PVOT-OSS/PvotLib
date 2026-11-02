@@ -51,7 +51,7 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
 public data class PvotSnackbarColors(
     val containerColor: Color,
     val contentColor: Color,
-    val actionColor: Color
+    val actionColor: Color,
 )
 
 /** Defaults for [PvotSnackbar] and [PvotSnackbarHost]. */
@@ -74,20 +74,19 @@ public object PvotSnackbarDefaults {
         colorScheme: ColorScheme,
         containerColor: Color = colorScheme.inverseSurface,
         contentColor: Color = colorScheme.inverseOnSurface,
-        actionColor: Color = colorScheme.inversePrimary
+        actionColor: Color = colorScheme.inversePrimary,
     ): PvotSnackbarColors = PvotSnackbarColors(containerColor, contentColor, actionColor)
 
     /** Snackbar colors from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotSnackbarColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotSnackbarColors = colors(MaterialTheme.colorScheme)
 }
 
 /**
  * Shows the snackbars of [hostState] as [PvotSnackbar]s, one at a time, easing each in and out.
  *
  * Show one with `hostState.showSnackbar(message, actionLabel = "Undo")`, which suspends until the
- * snackbar goes and says whether its action was taken. Place the host above floating bars, such
- * as `PvotNavBar`, so it does not cover them.
+ * snackbar goes and says whether its action was taken. Place the host above floating bars, such as
+ * `PvotNavBar`, so it does not cover them.
  *
  * @param hostState The state that queues the snackbars
  * @param modifier Modifier for the host
@@ -97,14 +96,14 @@ public object PvotSnackbarDefaults {
 public fun PvotSnackbarHost(
     hostState: SnackbarHostState,
     modifier: Modifier = Modifier,
-    snackbar: @Composable (SnackbarData) -> Unit = { PvotSnackbar(it) }
+    snackbar: @Composable (SnackbarData) -> Unit = { PvotSnackbar(it) },
 ) {
     SnackbarHost(hostState = hostState, modifier = modifier, snackbar = snackbar)
 }
 
 /**
- * A brief message at the bottom of the screen, with an optional action such as Undo and an
- * optional close button. Normally drawn by [PvotSnackbarHost] rather than called directly.
+ * A brief message at the bottom of the screen, with an optional action such as Undo and an optional
+ * close button. Normally drawn by [PvotSnackbarHost] rather than called directly.
  *
  * @param data The message, its action and its callbacks, from [SnackbarHostState]
  * @param modifier Modifier for the snackbar
@@ -114,29 +113,28 @@ public fun PvotSnackbarHost(
 public fun PvotSnackbar(
     data: SnackbarData,
     modifier: Modifier = Modifier,
-    colors: PvotSnackbarColors = PvotSnackbarDefaults.themeColors()
+    colors: PvotSnackbarColors = PvotSnackbarDefaults.themeColors(),
 ) {
     val visuals = data.visuals
     Row(
-        modifier = modifier
-            .widthIn(max = PvotSnackbarDefaults.MaxWidth)
-            .fillMaxWidth()
-            .heightIn(min = PvotSnackbarDefaults.MinHeight)
-            .shadow(PvotSnackbarDefaults.Elevation, PvotSnackbarDefaults.Shape)
-            .clip(PvotSnackbarDefaults.Shape)
-            .background(colors.containerColor)
-            .padding(start = PvotSpacing.L, end = PvotSpacing.XS),
+        modifier =
+            modifier
+                .widthIn(max = PvotSnackbarDefaults.MaxWidth)
+                .fillMaxWidth()
+                .heightIn(min = PvotSnackbarDefaults.MinHeight)
+                .shadow(PvotSnackbarDefaults.Elevation, PvotSnackbarDefaults.Shape)
+                .clip(PvotSnackbarDefaults.Shape)
+                .background(colors.containerColor)
+                .padding(start = PvotSpacing.L, end = PvotSpacing.XS),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.XS)
+        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.XS),
     ) {
         Text(
             text = visuals.message,
             style = MaterialTheme.typography.bodyMedium,
             color = colors.contentColor,
             maxLines = 2,
-            modifier = Modifier
-                .weight(1f)
-                .padding(vertical = PvotSpacing.M)
+            modifier = Modifier.weight(1f).padding(vertical = PvotSpacing.M),
         )
         val actionLabel = visuals.actionLabel
         if (actionLabel != null) {
@@ -145,7 +143,7 @@ public fun PvotSnackbar(
                     text = actionLabel,
                     style = MaterialTheme.typography.labelLarge,
                     color = colors.actionColor,
-                    modifier = Modifier.padding(horizontal = PvotSpacing.M)
+                    modifier = Modifier.padding(horizontal = PvotSpacing.M),
                 )
             }
         }
@@ -155,9 +153,7 @@ public fun PvotSnackbar(
                     painter = painterResource(R.drawable.pvot_ic_x),
                     contentDescription = stringResource(R.string.pvot_snackbar_dismiss),
                     tint = colors.contentColor,
-                    modifier = Modifier
-                        .padding(horizontal = PvotSpacing.M)
-                        .size(20.dp)
+                    modifier = Modifier.padding(horizontal = PvotSpacing.M).size(20.dp),
                 )
             }
         }
@@ -169,18 +165,18 @@ public fun PvotSnackbar(
 private fun SnackbarButton(onClick: () -> Unit, content: @Composable () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = Modifier
-            .heightIn(min = 48.dp)
-            .widthIn(min = 48.dp)
-            .pvotPressScale(interactionSource)
-            .clip(PvotShapes.Pill)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                role = Role.Button,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier.heightIn(min = 48.dp)
+                .widthIn(min = 48.dp)
+                .pvotPressScale(interactionSource)
+                .clip(PvotShapes.Pill)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    role = Role.Button,
+                    onClick = onClick,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         content()
     }

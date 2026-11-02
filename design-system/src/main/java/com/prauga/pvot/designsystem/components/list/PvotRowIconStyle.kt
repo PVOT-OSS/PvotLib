@@ -8,8 +8,10 @@ public enum class PvotRowIconStyle {
     /** In a tinted circle, for rows standing on their own. */
     Contained,
 
-    /** Bare and tinted, for rows grouped in a [PvotListGroup], where circles would crowd the card. */
-    Plain
+    /**
+     * Bare and tinted, for rows grouped in a [PvotListGroup], where circles would crowd the card.
+     */
+    Plain,
 }
 
 /** What ends a [PvotPreferenceRow] that opens something. */
@@ -18,5 +20,5 @@ public enum class PvotRowChevron {
     Chevron,
 
     /** An arrow, for rows grouped in a [PvotListGroup]. */
-    Arrow
+    Arrow,
 }

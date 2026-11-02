@@ -39,29 +39,43 @@ import org.junit.Test
 
 class PvotCallSurfaceTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
     @Test
     fun aToggleCallButtonIsASwitchWithItsState() {
         composeTestRule.setContent {
             PvotAppTheme {
                 var on by remember { mutableStateOf(false) }
-                PvotCallButton(painterResource(R.drawable.pvot_ic_phone), "Mute", onClick = { on = !on }, checked = on)
+                PvotCallButton(
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Mute",
+                    onClick = { on = !on },
+                    checked = on,
+                )
             }
         }
         val button = composeTestRule.onNodeWithContentDescription("Mute")
         button.assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Switch))
-        button.assertIsOff().assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Off"))
+        button
+            .assertIsOff()
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "Off"))
         button.performClick()
-        button.assertIsOn().assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "On"))
+        button
+            .assertIsOn()
+            .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, "On"))
     }
 
     @Test
     fun aPlainCallButtonIsAButton() {
         var taps = 0
         composeTestRule.setContent {
-            PvotAppTheme { PvotCallButton(painterResource(R.drawable.pvot_ic_phone), "Add call", onClick = { taps++ }) }
+            PvotAppTheme {
+                PvotCallButton(
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Add call",
+                    onClick = { taps++ },
+                )
+            }
         }
         val button = composeTestRule.onNodeWithContentDescription("Add call")
         button.assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
@@ -74,7 +88,12 @@ class PvotCallSurfaceTest {
         var taps = 0
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotCallButton(painterResource(R.drawable.pvot_ic_phone), "Hold", onClick = { taps++ }, enabled = false)
+                PvotCallButton(
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Hold",
+                    onClick = { taps++ },
+                    enabled = false,
+                )
             }
         }
         composeTestRule.onNodeWithContentDescription("Hold").assertIsNotEnabled().performClick()
@@ -86,7 +105,12 @@ class PvotCallSurfaceTest {
         var taps = 0
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotCallActionButton(PvotCallAction.End, painterResource(R.drawable.pvot_ic_phone_off), "End call", { taps++ })
+                PvotCallActionButton(
+                    PvotCallAction.End,
+                    painterResource(R.drawable.pvot_ic_phone_off),
+                    "End call",
+                    { taps++ },
+                )
             }
         }
         composeTestRule.onNodeWithContentDescription("End call").performClick()
@@ -97,7 +121,9 @@ class PvotCallSurfaceTest {
     fun aKeyReportsDownThenUp() {
         val events = mutableListOf<Pair<String, Boolean>>()
         composeTestRule.setContent {
-            PvotAppTheme { PvotKeypad(onKeyPress = { key, pressed -> events += key.digit to pressed }) }
+            PvotAppTheme {
+                PvotKeypad(onKeyPress = { key, pressed -> events += key.digit to pressed })
+            }
         }
         composeTestRule.onNodeWithContentDescription("5, JKL").performClick()
         composeTestRule.waitForIdle()
@@ -112,11 +138,16 @@ class PvotCallSurfaceTest {
                 PvotKeypad(
                     onKeyPress = { _, _ -> },
                     keys = PvotKeypadDefaults.keys(zeroLongPressLabel = "Plus"),
-                    onKeyLongPress = { held = it.digit; true }
+                    onKeyLongPress = {
+                        held = it.digit
+                        true
+                    },
                 )
             }
         }
-        composeTestRule.onNodeWithContentDescription("0, +").performSemanticsAction(SemanticsActions.OnLongClick)
+        composeTestRule
+            .onNodeWithContentDescription("0, +")
+            .performSemanticsAction(SemanticsActions.OnLongClick)
         assertEquals("0", held)
     }
 
@@ -125,7 +156,13 @@ class PvotCallSurfaceTest {
         var taps = 0
         var holds = 0
         composeTestRule.setContent {
-            PvotAppTheme { PvotKeypadDisplay(digits = "555", onBackspace = { taps++ }, onBackspaceLongPress = { holds++ }) }
+            PvotAppTheme {
+                PvotKeypadDisplay(
+                    digits = "555",
+                    onBackspace = { taps++ },
+                    onBackspaceLongPress = { holds++ },
+                )
+            }
         }
         val backspace = composeTestRule.onNodeWithContentDescription("Backspace")
         backspace.performClick()
@@ -140,14 +177,17 @@ class PvotCallSurfaceTest {
         composeTestRule.setContent {
             PvotAppTheme {
                 PvotSlideToAct(
-                    painterResource(R.drawable.pvot_ic_phone), "Answer",
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Answer",
                     up = PvotSlideTarget("Answer", { answered = true }, 120.dp),
                     down = PvotSlideTarget("Decline", {}, 56.dp),
-                    nudge = false
+                    nudge = false,
                 )
             }
         }
-        composeTestRule.onNodeWithContentDescription("Answer").performTouchInput { swipeUp(centerY, centerY - 160.dp.toPx()) }
+        composeTestRule.onNodeWithContentDescription("Answer").performTouchInput {
+            swipeUp(centerY, centerY - 160.dp.toPx())
+        }
         composeTestRule.waitForIdle()
         assertTrue(answered)
     }
@@ -158,14 +198,17 @@ class PvotCallSurfaceTest {
         composeTestRule.setContent {
             PvotAppTheme {
                 PvotSlideToAct(
-                    painterResource(R.drawable.pvot_ic_phone), "Answer",
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Answer",
                     up = PvotSlideTarget("Answer", {}, 120.dp),
                     down = PvotSlideTarget("Decline", { declined = true }, 56.dp),
-                    nudge = false
+                    nudge = false,
                 )
             }
         }
-        composeTestRule.onNodeWithContentDescription("Answer").performTouchInput { swipeDown(centerY, centerY + 80.dp.toPx()) }
+        composeTestRule.onNodeWithContentDescription("Answer").performTouchInput {
+            swipeDown(centerY, centerY + 80.dp.toPx())
+        }
         composeTestRule.waitForIdle()
         assertTrue(declined)
     }
@@ -176,14 +219,18 @@ class PvotCallSurfaceTest {
         composeTestRule.setContent {
             PvotAppTheme {
                 PvotSlideToAct(
-                    painterResource(R.drawable.pvot_ic_phone), "Answer",
+                    painterResource(R.drawable.pvot_ic_phone),
+                    "Answer",
                     up = PvotSlideTarget("Answer", {}, 120.dp),
-                    down = PvotSlideTarget("Decline", { declined = true }, 56.dp)
+                    down = PvotSlideTarget("Decline", { declined = true }, 56.dp),
                 )
             }
         }
-        val actions = composeTestRule.onNodeWithContentDescription("Answer").fetchSemanticsNode()
-            .config[SemanticsActions.CustomActions]
+        val actions =
+            composeTestRule
+                .onNodeWithContentDescription("Answer")
+                .fetchSemanticsNode()
+                .config[SemanticsActions.CustomActions]
         assertEquals(listOf("Answer", "Decline"), actions.map { it.label })
         composeTestRule.runOnIdle { actions[1].action() }
         assertTrue(declined)
@@ -194,6 +241,8 @@ class PvotCallSurfaceTest {
         composeTestRule.setContent {
             PvotAppTheme { PvotAvatar(name = "Ada Lovelace", contentDescription = "Ada's photo") }
         }
-        composeTestRule.onNodeWithContentDescription("Ada's photo").assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.ContentDescription))
+        composeTestRule
+            .onNodeWithContentDescription("Ada's photo")
+            .assert(SemanticsMatcher.keyIsDefined(SemanticsProperties.ContentDescription))
     }
 }

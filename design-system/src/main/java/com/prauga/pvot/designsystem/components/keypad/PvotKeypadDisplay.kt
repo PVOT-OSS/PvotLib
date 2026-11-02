@@ -76,13 +76,11 @@ public fun PvotKeypadDisplay(
     modifier: Modifier = Modifier,
     backspaceEnabled: Boolean = true,
     backspaceModifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(PvotKeypadDisplayDefaults.Height),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.fillMaxWidth().height(PvotKeypadDisplayDefaults.Height),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(PvotKeypadDisplayDefaults.ButtonSize))
         Box(Modifier.weight(1f), contentAlignment = Alignment.Center, content = content)
@@ -91,8 +89,8 @@ public fun PvotKeypadDisplay(
 }
 
 /**
- * A [PvotKeypadDisplay] showing [digits] as text, shrinking to one line with the start cut off
- * when the number is too long.
+ * A [PvotKeypadDisplay] showing [digits] as text, shrinking to one line with the start cut off when
+ * the number is too long.
  *
  * @param digits The number being typed
  * @param onBackspace Called when backspace is tapped
@@ -106,13 +104,13 @@ public fun PvotKeypadDisplay(
     onBackspace: () -> Unit,
     onBackspaceLongPress: () -> Unit,
     modifier: Modifier = Modifier,
-    textStyle: TextStyle = MaterialTheme.typography.headlineMedium
+    textStyle: TextStyle = MaterialTheme.typography.headlineMedium,
 ) {
     PvotKeypadDisplay(
         onBackspace = onBackspace,
         onBackspaceLongPress = onBackspaceLongPress,
         modifier = modifier,
-        backspaceEnabled = digits.isNotEmpty()
+        backspaceEnabled = digits.isNotEmpty(),
     ) {
         Text(
             text = digits,
@@ -120,7 +118,7 @@ public fun PvotKeypadDisplay(
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             maxLines = 1,
-            overflow = TextOverflow.StartEllipsis
+            overflow = TextOverflow.StartEllipsis,
         )
     }
 }
@@ -130,46 +128,55 @@ private fun BackspaceButton(
     enabled: Boolean,
     onBackspace: () -> Unit,
     onBackspaceLongPress: () -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
     val description = stringResource(R.string.pvot_keypad_backspace)
     val haptics = LocalHapticFeedback.current
     val tap by rememberUpdatedState(onBackspace)
     val hold by rememberUpdatedState(onBackspaceLongPress)
     Box(
-        modifier = modifier
-            .size(PvotKeypadDisplayDefaults.ButtonSize)
-            .clip(CircleShape)
-            .pointerInput(enabled) {
-                if (!enabled) return@pointerInput
-                awaitEachGesture {
-                    awaitFirstDown()
-                    try {
-                        withTimeout(viewConfiguration.longPressTimeoutMillis) {
-                            if (waitForUpOrCancellation() != null) tap()
+        modifier =
+            modifier
+                .size(PvotKeypadDisplayDefaults.ButtonSize)
+                .clip(CircleShape)
+                .pointerInput(enabled) {
+                    if (!enabled) return@pointerInput
+                    awaitEachGesture {
+                        awaitFirstDown()
+                        try {
+                            withTimeout(viewConfiguration.longPressTimeoutMillis) {
+                                if (waitForUpOrCancellation() != null) tap()
+                            }
+                        } catch (_: PointerEventTimeoutCancellationException) {
+                            haptics.performHapticFeedback(HapticFeedbackType.LongPress)
+                            hold()
+                            waitForUpOrCancellation()
                         }
-                    } catch (_: PointerEventTimeoutCancellationException) {
-                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                        hold()
-                        waitForUpOrCancellation()
                     }
                 }
-            }
-            .semantics {
-                role = Role.Button
-                contentDescription = description
-                if (enabled) {
-                    onClick { tap(); true }
-                    onLongClick { hold(); true }
-                }
-            },
-        contentAlignment = Alignment.Center
+                .semantics {
+                    role = Role.Button
+                    contentDescription = description
+                    if (enabled) {
+                        onClick {
+                            tap()
+                            true
+                        }
+                        onLongClick {
+                            hold()
+                            true
+                        }
+                    }
+                },
+        contentAlignment = Alignment.Center,
     ) {
         val tint = MaterialTheme.colorScheme.onSurfaceVariant
         Icon(
             painter = painterResource(R.drawable.pvot_ic_backspace),
             contentDescription = null,
-            tint = if (enabled) tint else tint.copy(alpha = tint.alpha * PvotKeypadDisplayDefaults.DisabledAlpha)
+            tint =
+                if (enabled) tint
+                else tint.copy(alpha = tint.alpha * PvotKeypadDisplayDefaults.DisabledAlpha),
         )
     }
 }

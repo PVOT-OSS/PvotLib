@@ -36,14 +36,10 @@ public object PvotMotion {
     public val PressSpring: SpringSpec<Float> = pressSpring()
 
     /** [PressSpring] for animations of other types. */
-    public fun <T> pressSpring(): SpringSpec<T> = spring(
-        dampingRatio = 0.55f,
-        stiffness = Spring.StiffnessMediumLow,
-    )
+    public fun <T> pressSpring(): SpringSpec<T> =
+        spring(dampingRatio = 0.55f, stiffness = Spring.StiffnessMediumLow)
 
     /** Springy overshoot for playful state changes, such as a nav item growing into its pill. */
-    public fun <T> bounceSpring(): SpringSpec<T> = spring(
-        dampingRatio = 0.6f,
-        stiffness = Spring.StiffnessMedium,
-    )
+    public fun <T> bounceSpring(): SpringSpec<T> =
+        spring(dampingRatio = 0.6f, stiffness = Spring.StiffnessMedium)
 }

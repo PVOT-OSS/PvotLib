@@ -17,20 +17,20 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
-import kotlinx.coroutines.CancellationException
-import kotlinx.serialization.json.Json
 import java.text.DateFormat
 import java.util.Date
+import kotlinx.coroutines.CancellationException
+import kotlinx.serialization.json.Json
 
 /** A GitHub request that failed, with a message that is fit to show the user. */
 class GithubException(message: String) : Exception(message)
 
 /**
- * Reads GitHub's public API, which allows only 60 requests an hour per IP address without a
- * token. To stay well under that, every response is cached on the device: a cached answer is
- * reused for [CacheTtlMillis] without asking GitHub, then revalidated with its ETag (a 304 does
- * not count against the limit), and an expired answer is still served when GitHub can't be
- * reached or has run out of requests.
+ * Reads GitHub's public API, which allows only 60 requests an hour per IP address without a token.
+ * To stay well under that, every response is cached on the device: a cached answer is reused for
+ * [CacheTtlMillis] without asking GitHub, then revalidated with its ETag (a 304 does not count
+ * against the limit), and an expired answer is still served when GitHub can't be reached or has run
+ * out of requests.
  */
 object GithubRepository {
     private const val PREFS_NAME = "github_cache"
@@ -55,22 +55,24 @@ object GithubRepository {
         }
 
     suspend fun getUser(username: String): Result<GithubUser> =
-        fetch(Constants.githubUserUrl(username)) { body ->
-            json.decodeFromString<GithubUser>(body)
-        }
+        fetch(Constants.githubUserUrl(username)) { body -> json.decodeFromString<GithubUser>(body) }
 
     private suspend fun <T> fetch(url: String, decode: (String) -> T): Result<T> {
         val cached = readCache(url)
         val now = System.currentTimeMillis()
         if (cached != null && now - cached.savedAt < CacheTtlMillis) {
-            runCatching { decode(cached.body) }.onSuccess { return Result.success(it) }
+            runCatching { decode(cached.body) }
+                .onSuccess {
+                    return Result.success(it)
+                }
         }
 
         return try {
-            val response = client.get(url) {
-                header(HttpHeaders.Accept, "application/vnd.github+json")
-                cached?.etag?.let { header(HttpHeaders.IfNoneMatch, it) }
-            }
+            val response =
+                client.get(url) {
+                    header(HttpHeaders.Accept, "application/vnd.github+json")
+                    cached?.etag?.let { header(HttpHeaders.IfNoneMatch, it) }
+                }
             when {
                 response.status == HttpStatusCode.NotModified && cached != null -> {
                     writeCache(url, cached.body, cached.etag)
@@ -94,18 +96,22 @@ object GithubRepository {
     private fun <T> staleOrFailure(
         cached: CachedResponse?,
         decode: (String) -> T,
-        message: String
+        message: String,
     ): Result<T> {
         val stale = cached?.let { runCatching { decode(it.body) }.getOrNull() }
-        return if (stale != null) Result.success(stale) else Result.failure(GithubException(message))
+        return if (stale != null) Result.success(stale)
+        else Result.failure(GithubException(message))
     }
 
     private fun failureMessage(response: HttpResponse): String {
-        val outOfRequests = response.headers["x-ratelimit-remaining"] == "0" ||
-            response.status == HttpStatusCode.TooManyRequests
+        val outOfRequests =
+            response.headers["x-ratelimit-remaining"] == "0" ||
+                response.status == HttpStatusCode.TooManyRequests
         if (!outOfRequests) return "GitHub answered with an error (${response.status.value})."
-        val resetAt = response.headers["x-ratelimit-reset"]?.toLongOrNull()
-            ?.let { DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it * 1000)) }
+        val resetAt =
+            response.headers["x-ratelimit-reset"]?.toLongOrNull()?.let {
+                DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it * 1000))
+            }
         return if (resetAt != null) {
             "GitHub's hourly limit for this network was reached. Try again after $resetAt."
         } else {
@@ -121,13 +127,14 @@ object GithubRepository {
         return CachedResponse(
             body = body,
             etag = prefs.getString("$url#etag", null),
-            savedAt = prefs.getLong("$url#time", 0L)
+            savedAt = prefs.getLong("$url#time", 0L),
         )
     }
 
     private fun writeCache(url: String, body: String, etag: String?) {
         if (!::prefs.isInitialized) return
-        prefs.edit()
+        prefs
+            .edit()
             .putString("$url#body", body)
             .putString("$url#etag", etag)
             .putLong("$url#time", System.currentTimeMillis())

@@ -34,8 +34,7 @@ public object PvotCapsuleDefaults {
     public val Material: PvotGlassMaterial = PvotGlassMaterial.Regular
 
     /** Fill of the capsule when it has no backdrop to be glass over. */
-    @Composable
-    public fun containerColor(): Color = MaterialTheme.colorScheme.surfaceContainer
+    @Composable public fun containerColor(): Color = MaterialTheme.colorScheme.surfaceContainer
 }
 
 /**
@@ -58,24 +57,23 @@ public fun PvotCapsule(
     contentPadding: Dp = PvotCapsuleDefaults.ContentPadding,
     spacing: Dp = PvotCapsuleDefaults.Spacing,
     containerColor: Color = PvotCapsuleDefaults.containerColor(),
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
-    val surface = if (backdrop != null) {
-        Modifier.pvotGlassSurface(
-            backdrop = backdrop,
-            cornerRadius = PvotGlassDefaults.CapsuleRadius,
-            style = PvotGlassDefaults.materialStyle(PvotCapsuleDefaults.Material),
-            role = null
-        )
-    } else {
-        Modifier.background(containerColor, PvotShapes.Pill)
-    }
+    val surface =
+        if (backdrop != null) {
+            Modifier.pvotGlassSurface(
+                backdrop = backdrop,
+                cornerRadius = PvotGlassDefaults.CapsuleRadius,
+                style = PvotGlassDefaults.materialStyle(PvotCapsuleDefaults.Material),
+                role = null,
+            )
+        } else {
+            Modifier.background(containerColor, PvotShapes.Pill)
+        }
     Row(
-        modifier = modifier
-            .then(surface)
-            .padding(contentPadding),
+        modifier = modifier.then(surface).padding(contentPadding),
         horizontalArrangement = Arrangement.spacedBy(spacing),
         verticalAlignment = Alignment.CenterVertically,
-        content = content
+        content = content,
     )
 }

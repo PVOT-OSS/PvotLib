@@ -71,7 +71,7 @@ import kotlin.math.roundToInt
  *
  * @param containerColor Fill of the bar while expanded, usually the screen's background
  * @param compactContainerColor Fill of the bar once compact, so it separates from the content
- * scrolling under it
+ *   scrolling under it
  * @param titleColor Color of the title
  * @param contentColor Color of the back button and the actions
  */
@@ -80,7 +80,7 @@ public data class PvotTopBarColors(
     val containerColor: Color,
     val compactContainerColor: Color,
     val titleColor: Color,
-    val contentColor: Color
+    val contentColor: Color,
 )
 
 /** Defaults for [PvotTopBar]. */
@@ -105,29 +105,30 @@ public object PvotTopBarDefaults {
         containerColor: Color = colorScheme.background,
         compactContainerColor: Color = colorScheme.surfaceContainer,
         titleColor: Color = colorScheme.onBackground,
-        contentColor: Color = colorScheme.onSurfaceVariant
-    ): PvotTopBarColors = PvotTopBarColors(
-        containerColor = containerColor,
-        compactContainerColor = compactContainerColor,
-        titleColor = titleColor,
-        contentColor = contentColor
-    )
+        contentColor: Color = colorScheme.onSurfaceVariant,
+    ): PvotTopBarColors =
+        PvotTopBarColors(
+            containerColor = containerColor,
+            compactContainerColor = compactContainerColor,
+            titleColor = titleColor,
+            contentColor = contentColor,
+        )
 
     /** Bar colors from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotTopBarColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotTopBarColors = colors(MaterialTheme.colorScheme)
 
     /**
      * Bar colors for a bar drawn as glass over a backdrop: no fill of its own, the glass is the
      * fill, with the title and content in the surface's colors.
      */
     @Composable
-    public fun glassColors(): PvotTopBarColors = colors(
-        MaterialTheme.colorScheme,
-        containerColor = Color.Transparent,
-        compactContainerColor = Color.Transparent,
-        titleColor = MaterialTheme.colorScheme.onSurface,
-    )
+    public fun glassColors(): PvotTopBarColors =
+        colors(
+            MaterialTheme.colorScheme,
+            containerColor = Color.Transparent,
+            compactContainerColor = Color.Transparent,
+            titleColor = MaterialTheme.colorScheme.onSurface,
+        )
 
     /** How much the glass is frosted: enough for the title to read over anything. */
     public val Material: PvotGlassMaterial = PvotGlassMaterial.Regular
@@ -145,37 +146,38 @@ public object PvotTopBarDefaults {
 @Composable
 public fun rememberPvotTopBarCompact(
     state: LazyListState,
-    threshold: Dp = PvotTopBarDefaults.CompactThreshold
+    threshold: Dp = PvotTopBarDefaults.CompactThreshold,
 ): Boolean {
     val thresholdPx = with(LocalDensity.current) { threshold.toPx() }
-    val compact by remember(state, thresholdPx) {
-        derivedStateOf {
-            state.firstVisibleItemIndex > 0 || state.firstVisibleItemScrollOffset > thresholdPx
+    val compact by
+        remember(state, thresholdPx) {
+            derivedStateOf {
+                state.firstVisibleItemIndex > 0 || state.firstVisibleItemScrollOffset > thresholdPx
+            }
         }
-    }
     return compact
 }
 
 /**
  * The bar at the top of a screen: a back button, the title and the screen's actions.
  *
- * Expanded, the title sits large under the bar, on the screen's own background. Compact, the
- * large title folds away into the bar and the bar takes a fill of its own, so the content
- * scrolling under it stays apart. Drive [compact] from the list with
- * [rememberPvotTopBarCompact]. The bar pads itself below the status bar.
+ * Expanded, the title sits large under the bar, on the screen's own background. Compact, the large
+ * title folds away into the bar and the bar takes a fill of its own, so the content scrolling under
+ * it stays apart. Drive [compact] from the list with [rememberPvotTopBarCompact]. The bar pads
+ * itself below the status bar.
  *
  * Over a [backdrop] the compact bar is glass: the content scrolling under it shows through,
  * frosted, with a hairline along its bottom edge. While expanded the title sits straight on the
- * background with no glass to pay for; the glass fades in as the bar folds. The glass runs up
- * under the status bar too.
+ * background with no glass to pay for; the glass fades in as the bar folds. The glass runs up under
+ * the status bar too.
  *
  * @param title Title of the screen
  * @param modifier Modifier for the bar
  * @param onBack Called when the back button is tapped, or null for a top-level screen without one
  * @param compact Whether the bar is folded to a single row
  * @param backdrop The content behind the bar, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the
- * compact bar as glass over it; null for a filled bar. The scaffold's backdrop by default
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the
+ *   compact bar as glass over it; null for a filled bar. The scaffold's backdrop by default
  * @param material How much the glass is frosted, only meaningful with [backdrop]
  * @param colors The bar's colors
  * @param windowInsets The insets the bar pads itself by
@@ -190,16 +192,18 @@ public fun PvotTopBar(
     backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
     material: PvotGlassMaterial = PvotTopBarDefaults.Material,
     colors: PvotTopBarColors =
-        if (backdrop != null) PvotTopBarDefaults.glassColors() else PvotTopBarDefaults.themeColors(),
+        if (backdrop != null) PvotTopBarDefaults.glassColors()
+        else PvotTopBarDefaults.themeColors(),
     windowInsets: WindowInsets = PvotTopBarDefaults.windowInsets,
-    actions: @Composable RowScope.() -> Unit = {}
+    actions: @Composable RowScope.() -> Unit = {},
 ) {
     // 0 is expanded, 1 compact. Read only in layout and draw, so the fold costs no recomposition.
-    val progress = animateFloatAsState(
-        targetValue = if (compact) 1f else 0f,
-        animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
-        label = "pvotTopBarCompact"
-    )
+    val progress =
+        animateFloatAsState(
+            targetValue = if (compact) 1f else 0f,
+            animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
+            label = "pvotTopBarCompact",
+        )
     CompositionLocalProvider(LocalContentColor provides colors.contentColor) {
         Box(modifier.fillMaxWidth()) {
             if (backdrop != null) {
@@ -208,13 +212,16 @@ public fun PvotTopBar(
                 if (folding) {
                     val hairline = MaterialTheme.colorScheme.outlineVariant
                     Box(
-                        Modifier
-                            .matchParentSize()
+                        Modifier.matchParentSize()
                             .graphicsLayer { alpha = progress.value }
                             .pvotGlass(
                                 backdrop,
                                 cornerRadius = 0.dp,
-                                style = PvotGlassDefaults.style(PvotGlassDefaults.currentIntensity(), material)
+                                style =
+                                    PvotGlassDefaults.style(
+                                        PvotGlassDefaults.currentIntensity(),
+                                        material,
+                                    ),
                             )
                             .drawBehind {
                                 val y = size.height - 0.5.dp.toPx()
@@ -222,7 +229,7 @@ public fun PvotTopBar(
                                     hairline.copy(alpha = PvotTopBarDefaults.HairlineAlpha),
                                     Offset(0f, y),
                                     Offset(size.width, y),
-                                    strokeWidth = 1.dp.toPx()
+                                    strokeWidth = 1.dp.toPx(),
                                 )
                             }
                     )
@@ -244,57 +251,59 @@ private fun TopBarColumn(
     actions: @Composable RowScope.() -> Unit,
 ) {
     Column(
-            modifier = Modifier
-                .fillMaxWidth()
+        modifier =
+            Modifier.fillMaxWidth()
                 .drawBehind {
-                    drawRect(lerp(colors.containerColor, colors.compactContainerColor, progress.value))
-                }
-                .windowInsetsPadding(windowInsets)
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(PvotTopBarDefaults.BarHeight)
-                    .padding(horizontal = PvotSpacing.XS),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (onBack != null) {
-                    PvotTopBarAction(
-                        icon = painterResource(R.drawable.pvot_ic_arrow_left),
-                        contentDescription = stringResource(R.string.pvot_top_bar_back),
-                        onClick = onBack
+                    drawRect(
+                        lerp(colors.containerColor, colors.compactContainerColor, progress.value)
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
+                .windowInsetsPadding(windowInsets)
+    ) {
+        Row(
+            modifier =
+                Modifier.fillMaxWidth()
+                    .height(PvotTopBarDefaults.BarHeight)
+                    .padding(horizontal = PvotSpacing.XS),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (onBack != null) {
+                PvotTopBarAction(
+                    icon = painterResource(R.drawable.pvot_ic_arrow_left),
+                    contentDescription = stringResource(R.string.pvot_top_bar_back),
+                    onClick = onBack,
+                )
+            }
+            Box(
+                modifier =
+                    Modifier.weight(1f)
                         .padding(horizontal = if (onBack != null) PvotSpacing.XS else PvotSpacing.M)
-                ) {
-                    Text(
-                        text = title,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = colors.titleColor,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
-                            .graphicsLayer { alpha = progress.value }
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = colors.titleColor,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier =
+                        Modifier.graphicsLayer { alpha = progress.value }
                             // One title for TalkBack: this one only once the large one has gone.
                             .then(
                                 if (compact) Modifier.semantics { heading() }
                                 else Modifier.clearAndSetSemantics {}
-                            )
-                    )
-                }
-                actions()
+                            ),
+                )
             }
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineMedium,
-                color = colors.titleColor,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth()
+            actions()
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.headlineMedium,
+            color = colors.titleColor,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+            modifier =
+                Modifier.fillMaxWidth()
                     .clipToBounds()
                     .layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
@@ -306,8 +315,8 @@ private fun TopBarColumn(
                     .then(
                         if (compact) Modifier.clearAndSetSemantics {}
                         else Modifier.semantics { heading() }
-                    )
-            )
+                    ),
+        )
     }
 }
 
@@ -327,28 +336,29 @@ public fun PvotTopBarAction(
     contentDescription: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = modifier
-            .size(PvotTopBarDefaults.ActionSize)
-            .pvotPressScale(interactionSource)
-            .clip(PvotShapes.Pill)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .semantics { this.contentDescription = contentDescription },
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(PvotTopBarDefaults.ActionSize)
+                .pvotPressScale(interactionSource)
+                .clip(PvotShapes.Pill)
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                )
+                .semantics { this.contentDescription = contentDescription },
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = LocalContentColor.current.copy(alpha = if (enabled) 1f else 0.38f)
+            tint = LocalContentColor.current.copy(alpha = if (enabled) 1f else 0.38f),
         )
     }
 }

@@ -77,7 +77,7 @@ public data class PvotSlideTarget(
     val onReached: () -> Unit,
     val distance: Dp,
     val hint: String? = null,
-    val color: Color? = null
+    val color: Color? = null,
 )
 
 /** Which way a released [PvotSlideToAct] puck went, from [PvotSlideToActDefaults.decide]. */
@@ -89,7 +89,7 @@ public enum class PvotSlideDecision {
     Down,
 
     /** Neither: the puck springs back. */
-    None
+    None,
 }
 
 /** Defaults for [PvotSlideToAct]. */
@@ -105,8 +105,8 @@ public object PvotSlideToActDefaults {
     public val UpDistance: Dp = 120.dp
 
     /**
-     * How far down the puck travels for the down action, such as declining: less than up, since
-     * the puck sits near the bottom of the screen.
+     * How far down the puck travels for the down action, such as declining: less than up, since the
+     * puck sits near the bottom of the screen.
      */
     public val DownDistance: Dp = 56.dp
 
@@ -130,30 +130,40 @@ public object PvotSlideToActDefaults {
      * @param down The down target's distance, or null for no down target
      * @param flingVelocity The speed that counts as a fling
      */
-    public fun decide(offset: Float, velocity: Float, up: Float?, down: Float?, flingVelocity: Float): PvotSlideDecision = when {
-        up != null && offset <= -up -> PvotSlideDecision.Up
-        down != null && offset >= down -> PvotSlideDecision.Down
-        up != null && velocity <= -flingVelocity && offset <= -up * FlingFraction -> PvotSlideDecision.Up
-        down != null && velocity >= flingVelocity && offset >= down * FlingFraction -> PvotSlideDecision.Down
-        else -> PvotSlideDecision.None
-    }
+    public fun decide(
+        offset: Float,
+        velocity: Float,
+        up: Float?,
+        down: Float?,
+        flingVelocity: Float,
+    ): PvotSlideDecision =
+        when {
+            up != null && offset <= -up -> PvotSlideDecision.Up
+            down != null && offset >= down -> PvotSlideDecision.Down
+            up != null && velocity <= -flingVelocity && offset <= -up * FlingFraction ->
+                PvotSlideDecision.Up
+            down != null && velocity >= flingVelocity && offset >= down * FlingFraction ->
+                PvotSlideDecision.Down
+            else -> PvotSlideDecision.None
+        }
 
     /**
      * Whether touch exploration, such as TalkBack, is on: then show plain buttons instead of a
      * slide, which is hard to do by touch exploration.
      */
     public fun isTouchExplorationEnabled(context: Context): Boolean =
-        context.getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled == true
+        context.getSystemService(AccessibilityManager::class.java)?.isTouchExplorationEnabled ==
+            true
 }
 
 /**
  * A puck slid up or down to act, such as up to answer a call and down to decline it.
  *
- * The puck follows the finger and does an action when slid past a target's distance or flung
- * toward it; let go early, it springs back. It ticks a haptic as it crosses a target's distance,
- * takes on the target's color past halfway, and reports how far it is through [onProgress].
- * While idle it nudges up now and then to say it moves, unless animations are off. TalkBack gets
- * each target as an action on the puck, so nothing needs a slide; show plain buttons instead when
+ * The puck follows the finger and does an action when slid past a target's distance or flung toward
+ * it; let go early, it springs back. It ticks a haptic as it crosses a target's distance, takes on
+ * the target's color past halfway, and reports how far it is through [onProgress]. While idle it
+ * nudges up now and then to say it moves, unless animations are off. TalkBack gets each target as
+ * an action on the puck, so nothing needs a slide; show plain buttons instead when
  * [PvotSlideToActDefaults.isTouchExplorationEnabled].
  *
  * @param icon The puck's icon
@@ -180,7 +190,7 @@ public fun PvotSlideToAct(
     nudge: Boolean = true,
     puckColor: Color = PvotTheme.extendedColors.success,
     puckContentColor: Color = PvotTheme.extendedColors.onSuccess,
-    puckSize: Dp = PvotSlideToActDefaults.PuckSize
+    puckSize: Dp = PvotSlideToActDefaults.PuckSize,
 ) {
     val density = LocalDensity.current
     val haptics = LocalHapticFeedback.current
@@ -198,26 +208,30 @@ public fun PvotSlideToAct(
     val currentDown by rememberUpdatedState(down)
     val progress by rememberUpdatedState(onProgress)
     val animate = nudge && ValueAnimator.areAnimatorsEnabled()
-    val nudgeOffset = if (animate) {
-        val value by rememberInfiniteTransition(label = "slideNudge").animateFloat(
-            initialValue = 0f,
-            targetValue = 0f,
-            animationSpec = infiniteRepeatable(
-                keyframes {
-                    durationMillis = NudgeCycleMillis
-                    0f at 0
-                    0f at NudgeStartMillis
-                    -NudgeRise at NudgeStartMillis + 200
-                    0f at NudgeStartMillis + 500
-                },
-                RepeatMode.Restart
-            ),
-            label = "nudge"
-        )
-        value
-    } else {
-        0f
-    }
+    val nudgeOffset =
+        if (animate) {
+            val value by
+                rememberInfiniteTransition(label = "slideNudge")
+                    .animateFloat(
+                        initialValue = 0f,
+                        targetValue = 0f,
+                        animationSpec =
+                            infiniteRepeatable(
+                                keyframes {
+                                    durationMillis = NudgeCycleMillis
+                                    0f at 0
+                                    0f at NudgeStartMillis
+                                    -NudgeRise at NudgeStartMillis + 200
+                                    0f at NudgeStartMillis + 500
+                                },
+                                RepeatMode.Restart,
+                            ),
+                        label = "nudge",
+                    )
+            value
+        } else {
+            0f
+        }
 
     fun finish(target: PvotSlideTarget?) {
         if (target == null || done) return
@@ -226,84 +240,120 @@ public fun PvotSlideToAct(
         target.onReached()
     }
 
-    val pastHalfway = when {
-        downDistance != null && offset.value > downDistance / 2 -> down.color
-        upDistance != null && offset.value < -upDistance / 2 -> up.color
-        else -> null
-    }
-    val fill by animateColorAsState(pastHalfway ?: puckColor, tween(PvotDurations.Short), label = "puckColor")
+    val pastHalfway =
+        when {
+            downDistance != null && offset.value > downDistance / 2 -> down.color
+            upDistance != null && offset.value < -upDistance / 2 -> up.color
+            else -> null
+        }
+    val fill by
+        animateColorAsState(
+            pastHalfway ?: puckColor,
+            tween(PvotDurations.Short),
+            label = "puckColor",
+        )
     val restDistance = upDistance ?: downDistance ?: 1f
     val hintAlpha = 1f - (abs(offset.value) / restDistance).coerceIn(0f, 1f)
-    val actions = listOfNotNull(
-        up?.let { target -> CustomAccessibilityAction(target.label) { finish(currentUp); true } },
-        down?.let { target -> CustomAccessibilityAction(target.label) { finish(currentDown); true } }
-    )
+    val actions =
+        listOfNotNull(
+            up?.let { target ->
+                CustomAccessibilityAction(target.label) {
+                    finish(currentUp)
+                    true
+                }
+            },
+            down?.let { target ->
+                CustomAccessibilityAction(target.label) {
+                    finish(currentDown)
+                    true
+                }
+            },
+        )
 
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         up?.hint?.let { Hint(it, MaterialTheme.colorScheme.onSurface, hintAlpha) }
         Box(
-            modifier = Modifier
-                .padding(vertical = PvotSpacing.L)
-                .offset {
-                    val rest = if (dragging || done) 0f else nudgeOffset.dp.toPx()
-                    IntOffset(0, (offset.value + rest).roundToInt())
-                }
-                .size(puckSize)
-                .background(fill, CircleShape)
-                .draggable(
-                    state = rememberDraggableState { delta ->
-                        if (done) return@rememberDraggableState
-                        val min = -(upDistance ?: 0f) * PvotSlideToActDefaults.Overshoot
-                        val max = (downDistance ?: 0f) * PvotSlideToActDefaults.Overshoot
-                        val before = dragOffset
-                        val value = (dragOffset + delta).coerceIn(min, max)
-                        dragOffset = value
-                        scope.launch { offset.snapTo(value) }
-                        val crossedUp = upDistance != null && before > -upDistance && value <= -upDistance
-                        val crossedDown = downDistance != null && before < downDistance && value >= downDistance
-                        if (crossedUp || crossedDown) {
-                            haptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
-                        }
-                        progress(
-                            when {
-                                value < 0 && upDistance != null -> (-value / upDistance).coerceAtMost(1f)
-                                value > 0 && downDistance != null -> (-value / downDistance).coerceAtLeast(-1f)
-                                else -> 0f
-                            }
-                        )
-                    },
-                    orientation = Orientation.Vertical,
-                    enabled = enabled && !done,
-                    onDragStarted = {
-                        dragging = true
-                        dragOffset = offset.value
-                    },
-                    onDragStopped = { velocity ->
-                        dragging = false
-                        if (done) return@draggable
-                        when (PvotSlideToActDefaults.decide(dragOffset, velocity, upDistance, downDistance, flingVelocity)) {
-                            PvotSlideDecision.Up -> finish(currentUp)
-                            PvotSlideDecision.Down -> finish(currentDown)
-                            PvotSlideDecision.None -> {
-                                progress(0f)
-                                dragOffset = 0f
-                                offset.animateTo(0f, PvotMotion.bounceSpring())
-                            }
-                        }
+            modifier =
+                Modifier.padding(vertical = PvotSpacing.L)
+                    .offset {
+                        val rest = if (dragging || done) 0f else nudgeOffset.dp.toPx()
+                        IntOffset(0, (offset.value + rest).roundToInt())
                     }
-                )
-                .semantics {
-                    role = Role.Button
-                    this.contentDescription = contentDescription
-                    customActions = actions
-                },
-            contentAlignment = Alignment.Center
+                    .size(puckSize)
+                    .background(fill, CircleShape)
+                    .draggable(
+                        state =
+                            rememberDraggableState { delta ->
+                                if (done) return@rememberDraggableState
+                                val min = -(upDistance ?: 0f) * PvotSlideToActDefaults.Overshoot
+                                val max = (downDistance ?: 0f) * PvotSlideToActDefaults.Overshoot
+                                val before = dragOffset
+                                val value = (dragOffset + delta).coerceIn(min, max)
+                                dragOffset = value
+                                scope.launch { offset.snapTo(value) }
+                                val crossedUp =
+                                    upDistance != null &&
+                                        before > -upDistance &&
+                                        value <= -upDistance
+                                val crossedDown =
+                                    downDistance != null &&
+                                        before < downDistance &&
+                                        value >= downDistance
+                                if (crossedUp || crossedDown) {
+                                    haptics.performHapticFeedback(
+                                        HapticFeedbackType.GestureThresholdActivate
+                                    )
+                                }
+                                progress(
+                                    when {
+                                        value < 0 && upDistance != null ->
+                                            (-value / upDistance).coerceAtMost(1f)
+                                        value > 0 && downDistance != null ->
+                                            (-value / downDistance).coerceAtLeast(-1f)
+                                        else -> 0f
+                                    }
+                                )
+                            },
+                        orientation = Orientation.Vertical,
+                        enabled = enabled && !done,
+                        onDragStarted = {
+                            dragging = true
+                            dragOffset = offset.value
+                        },
+                        onDragStopped = { velocity ->
+                            dragging = false
+                            if (done) return@draggable
+                            when (
+                                PvotSlideToActDefaults.decide(
+                                    dragOffset,
+                                    velocity,
+                                    upDistance,
+                                    downDistance,
+                                    flingVelocity,
+                                )
+                            ) {
+                                PvotSlideDecision.Up -> finish(currentUp)
+                                PvotSlideDecision.Down -> finish(currentDown)
+                                PvotSlideDecision.None -> {
+                                    progress(0f)
+                                    dragOffset = 0f
+                                    offset.animateTo(0f, PvotMotion.bounceSpring())
+                                }
+                            }
+                        },
+                    )
+                    .semantics {
+                        role = Role.Button
+                        this.contentDescription = contentDescription
+                        customActions = actions
+                    },
+            contentAlignment = Alignment.Center,
         ) {
             Icon(
                 painter = icon,
                 contentDescription = null,
                 tint = puckContentColor,
-                modifier = Modifier.size(PvotSlideToActDefaults.IconSize)
+                modifier = Modifier.size(PvotSlideToActDefaults.IconSize),
             )
         }
         down?.hint?.let { Hint(it, MaterialTheme.colorScheme.onSurfaceVariant, hintAlpha) }
@@ -317,7 +367,7 @@ private fun Hint(text: String, color: Color, alpha: Float) {
         style = MaterialTheme.typography.bodyMedium,
         color = color,
         textAlign = TextAlign.Center,
-        modifier = Modifier.alpha(alpha)
+        modifier = Modifier.alpha(alpha),
     )
 }
 

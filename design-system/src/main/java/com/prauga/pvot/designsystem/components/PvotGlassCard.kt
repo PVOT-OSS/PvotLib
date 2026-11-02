@@ -37,8 +37,8 @@ public object PvotGlassCardDefaults {
  * Pass [onClick] to make the whole card act as a button; leave it null for a static card.
  *
  * @param backdrop The content behind the card, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for
- * the tint alone; the scaffold's by default
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ *   tint alone; the scaffold's by default
  * @param modifier Modifier for the card
  * @param onClick Called when the card is tapped, or null for a non-clickable card
  * @param enabled Whether the card responds to taps, only meaningful with [onClick]
@@ -46,8 +46,8 @@ public object PvotGlassCardDefaults {
  * @param style How the glass looks
  * @param rim Whether to draw the rim of light round the card
  * @param contentPadding Padding round the card's content
- * @param interactionSource The source driving the press animation, hoist it to react to
- * presses elsewhere
+ * @param interactionSource The source driving the press animation, hoist it to react to presses
+ *   elsewhere
  */
 @Composable
 public fun PvotGlassCard(
@@ -60,19 +60,17 @@ public fun PvotGlassCard(
     rim: Boolean = true,
     contentPadding: PaddingValues = PvotGlassCardDefaults.ContentPadding,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    val cardModifier = modifier.pvotGlassSurface(
-        backdrop = backdrop,
-        cornerRadius = cornerRadius,
-        style = style,
-        rim = rim,
-        onClick = onClick,
-        enabled = enabled,
-        interactionSource = interactionSource
-    )
-    Column(
-        modifier = cardModifier.padding(contentPadding),
-        content = content
-    )
+    val cardModifier =
+        modifier.pvotGlassSurface(
+            backdrop = backdrop,
+            cornerRadius = cornerRadius,
+            style = style,
+            rim = rim,
+            onClick = onClick,
+            enabled = enabled,
+            interactionSource = interactionSource,
+        )
+    Column(modifier = cardModifier.padding(contentPadding), content = content)
 }

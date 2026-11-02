@@ -15,5 +15,5 @@ data class GithubUser(
     val bio: String?,
     val company: String?,
     val location: String?,
-    val blog: String?
+    val blog: String?,
 )

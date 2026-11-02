@@ -19,8 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.catalog.R
 import coil3.compose.AsyncImage
+import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.data.model.GithubUser
 
 @Composable
@@ -28,41 +28,30 @@ fun DeveloperCard(
     user: GithubUser,
     role: String,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    GlassPanel(
-        modifier = modifier,
-        onClick = onClick
-    ) {
+    GlassPanel(modifier = modifier, onClick = onClick) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
                 model = user.avatarUrl,
                 contentDescription = stringResource(R.string.cd_avatar, user.name ?: user.login),
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                modifier = Modifier.size(64.dp).clip(CircleShape),
+                contentScale = ContentScale.Crop,
             )
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp)
-            ) {
+            Column(modifier = Modifier.weight(1f).padding(start = 16.dp)) {
                 Text(
                     text = user.name ?: user.login,
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
                     text = role,
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier.padding(top = 2.dp),
                 )
                 user.bio?.let { bio ->
                     Text(
@@ -71,7 +60,7 @@ fun DeveloperCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp),
                     )
                 }
             }

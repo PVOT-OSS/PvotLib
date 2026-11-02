@@ -19,5 +19,5 @@ internal data class WheelConfig(
     val label: (Int) -> String = { it.toString() },
     @StringRes val suffixRes: Int? = null,
     @StringRes val descriptionRes: Int? = null,
-    val initialIndex: Int = 0
+    val initialIndex: Int = 0,
 )

@@ -8,17 +8,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.longClick
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.longClick
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
@@ -31,10 +31,12 @@ import org.junit.Test
 
 class PvotGlassSurfaceTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
-    private fun show(intensity: Float = PvotGlassDefaults.SolidIntensity, surface: @Composable () -> Unit) {
+    private fun show(
+        intensity: Float = PvotGlassDefaults.SolidIntensity,
+        surface: @Composable () -> Unit,
+    ) {
         composeTestRule.setContent {
             PvotAppTheme {
                 CompositionLocalProvider(LocalPvotGlassIntensity provides intensity) { surface() }
@@ -46,9 +48,14 @@ class PvotGlassSurfaceTest {
     fun aSurfaceWithOnClickIsAButton() {
         var clicks = 0
         show {
-            Box(Modifier.size(48.dp).testTag("glass").pvotGlassSurface(backdrop = null, onClick = { clicks++ }))
+            Box(
+                Modifier.size(48.dp)
+                    .testTag("glass")
+                    .pvotGlassSurface(backdrop = null, onClick = { clicks++ })
+            )
         }
-        composeTestRule.onNodeWithTag("glass")
+        composeTestRule
+            .onNodeWithTag("glass")
             .assertHasClickAction()
             .assert(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Button))
             .performClick()
@@ -59,7 +66,15 @@ class PvotGlassSurfaceTest {
     fun aDisabledSurfaceIgnoresTaps() {
         var clicked = false
         show {
-            Box(Modifier.size(48.dp).testTag("glass").pvotGlassSurface(backdrop = null, onClick = { clicked = true }, enabled = false))
+            Box(
+                Modifier.size(48.dp)
+                    .testTag("glass")
+                    .pvotGlassSurface(
+                        backdrop = null,
+                        onClick = { clicked = true },
+                        enabled = false,
+                    )
+            )
         }
         composeTestRule.onNodeWithTag("glass").performClick()
         assertFalse(clicked)
@@ -70,7 +85,8 @@ class PvotGlassSurfaceTest {
         var held = false
         show {
             Box(
-                Modifier.size(48.dp).testTag("glass")
+                Modifier.size(48.dp)
+                    .testTag("glass")
                     .pvotGlassSurface(backdrop = null, onClick = {}, onLongClick = { held = true })
             )
         }

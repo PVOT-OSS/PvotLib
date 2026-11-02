@@ -4,12 +4,12 @@
 package com.prauga.pvot.designsystem.components.progress
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -33,10 +33,7 @@ import com.prauga.pvot.designsystem.theme.PvotShapes
  * @param trackColor The rest of the bar
  */
 @Immutable
-public data class PvotProportionBarColors(
-    val segmentColors: List<Color>,
-    val trackColor: Color
-)
+public data class PvotProportionBarColors(val segmentColors: List<Color>, val trackColor: Color)
 
 /** Defaults for [PvotProportionBar]. */
 public object PvotProportionBarDefaults {
@@ -51,17 +48,15 @@ public object PvotProportionBarDefaults {
     public val TonalSteps: List<Float> = listOf(0f, 0.25f, 0.45f, 0.6f)
 
     /**
-     * Steps of one hue, [base] first and each next one blended further toward [track], so the
-     * parts of one bar read as one family; use these rather than a different hue per part.
+     * Steps of one hue, [base] first and each next one blended further toward [track], so the parts
+     * of one bar read as one family; use these rather than a different hue per part.
      */
     @Composable
     public fun tonalColors(
         base: Color = MaterialTheme.colorScheme.primary,
-        track: Color = MaterialTheme.colorScheme.surfaceContainerHigh
-    ): PvotProportionBarColors = PvotProportionBarColors(
-        segmentColors = tonalSteps(base, track),
-        trackColor = track
-    )
+        track: Color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ): PvotProportionBarColors =
+        PvotProportionBarColors(segmentColors = tonalSteps(base, track), trackColor = track)
 
     /** The [TonalSteps] of [base] toward [track], with any transparency settled over the track. */
     public fun tonalSteps(base: Color, track: Color): List<Color> =
@@ -70,12 +65,7 @@ public object PvotProportionBarDefaults {
     /** A dot in a segment's color, for a legend under the bar. */
     @Composable
     public fun LegendDot(color: Color, modifier: Modifier = Modifier) {
-        Box(
-            modifier
-                .size(LegendDotSize)
-                .clip(CircleShape)
-                .background(color)
-        )
+        Box(modifier.size(LegendDotSize).clip(CircleShape).background(color))
     }
 }
 
@@ -98,15 +88,10 @@ public fun PvotProportionBar(
     segments: List<Float>,
     modifier: Modifier = Modifier,
     height: Dp = PvotProportionBarDefaults.Height,
-    colors: PvotProportionBarColors = PvotProportionBarDefaults.tonalColors()
+    colors: PvotProportionBarColors = PvotProportionBarDefaults.tonalColors(),
 ) {
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
-    Canvas(
-        modifier
-            .fillMaxWidth()
-            .height(height)
-            .clip(PvotShapes.Pill)
-    ) {
+    Canvas(modifier.fillMaxWidth().height(height).clip(PvotShapes.Pill)) {
         drawRect(colors.trackColor)
         var start = 0f
         segments.forEachIndexed { index, fraction ->

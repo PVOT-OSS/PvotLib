@@ -15,14 +15,11 @@ import androidx.compose.ui.Modifier
  * @param modifier Modifier for the text
  */
 @Composable
-public fun PvotSectionHeader(
-    title: String,
-    modifier: Modifier = Modifier
-) {
+public fun PvotSectionHeader(title: String, modifier: Modifier = Modifier) {
     Text(
         text = title,
         style = MaterialTheme.typography.titleMedium,
         color = MaterialTheme.colorScheme.onBackground,
-        modifier = modifier
+        modifier = modifier,
     )
 }

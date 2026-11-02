@@ -57,14 +57,14 @@ import kotlin.math.sign
  * What swiping a [PvotSwipeRow] one way does. Make one with [PvotSwipeRowDefaults.action] or
  * [PvotSwipeRowDefaults.destructiveAction].
  *
- * @param label What the action does, such as "Call" or "Delete"; TalkBack offers it as an action
- * on the row, since a swipe is not available to everyone
+ * @param label What the action does, such as "Call" or "Delete"; TalkBack offers it as an action on
+ *   the row, since a swipe is not available to everyone
  * @param icon Icon shown in the gap the row leaves as it slides
  * @param onSwipe Called once the swipe passes the threshold and the finger lifts
  * @param containerColor Fill behind the row while it slides
  * @param contentColor Tint of the icon
  * @param removesRow Whether the row slides off and stays off, for an action that removes it.
- * Otherwise the row springs back once the action has run.
+ *   Otherwise the row springs back once the action has run.
  */
 @Stable
 public class PvotSwipeAction(
@@ -73,7 +73,7 @@ public class PvotSwipeAction(
     public val onSwipe: () -> Unit,
     public val containerColor: Color,
     public val contentColor: Color,
-    public val removesRow: Boolean = false
+    public val removesRow: Boolean = false,
 )
 
 /**
@@ -111,7 +111,7 @@ public class PvotSwipeRowState {
                 initialValue = offset,
                 targetValue = target,
                 initialVelocity = velocity,
-                animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle)
+                animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
             ) { value, _ ->
                 dragBy(value - previous)
                 previous = value
@@ -160,8 +160,9 @@ public object PvotSwipeRowDefaults {
         onSwipe: () -> Unit,
         containerColor: Color = MaterialTheme.colorScheme.primary,
         contentColor: Color = MaterialTheme.colorScheme.onPrimary,
-        removesRow: Boolean = false
-    ): PvotSwipeAction = PvotSwipeAction(label, icon, onSwipe, containerColor, contentColor, removesRow)
+        removesRow: Boolean = false,
+    ): PvotSwipeAction =
+        PvotSwipeAction(label, icon, onSwipe, containerColor, contentColor, removesRow)
 
     /**
      * A swipe action in the error color that removes the row, such as Delete. Offer Undo after it
@@ -181,20 +182,21 @@ public object PvotSwipeRowDefaults {
         onSwipe: () -> Unit,
         containerColor: Color = MaterialTheme.colorScheme.error,
         contentColor: Color = MaterialTheme.colorScheme.onError,
-        removesRow: Boolean = true
-    ): PvotSwipeAction = PvotSwipeAction(label, icon, onSwipe, containerColor, contentColor, removesRow)
+        removesRow: Boolean = true,
+    ): PvotSwipeAction =
+        PvotSwipeAction(label, icon, onSwipe, containerColor, contentColor, removesRow)
 }
 
 /**
- * A row that slides sideways to reveal an action: [startAction] when swiped from the start
- * toward the end, [endAction] the other way.
+ * A row that slides sideways to reveal an action: [startAction] when swiped from the start toward
+ * the end, [endAction] the other way.
  *
- * Past [PvotSwipeRowDefaults.ThresholdFraction] of its width the icon swells and the haptics
- * tick; lifting the finger there runs the action. An action that [removes the
- * row][PvotSwipeAction.removesRow] slides it off, then calls [PvotSwipeAction.onSwipe]: remove
- * the item there and offer Undo, for example with a snackbar. Key the row by the item, so a row
- * brought back by Undo is a new row and starts settled. Any other action springs the row back.
- * Each action is also offered to TalkBack as an action on the row.
+ * Past [PvotSwipeRowDefaults.ThresholdFraction] of its width the icon swells and the haptics tick;
+ * lifting the finger there runs the action. An action that
+ * [removes the row][PvotSwipeAction.removesRow] slides it off, then calls
+ * [PvotSwipeAction.onSwipe]: remove the item there and offer Undo, for example with a snackbar. Key
+ * the row by the item, so a row brought back by Undo is a new row and starts settled. Any other
+ * action springs the row back. Each action is also offered to TalkBack as an action on the row.
  *
  * @param modifier Modifier for the row
  * @param startAction What a swipe toward the end does, or null for none
@@ -214,7 +216,7 @@ public fun PvotSwipeRow(
     enabled: Boolean = true,
     shape: Shape = PvotSwipeRowDefaults.Shape,
     containerColor: Color = PvotSwipeRowDefaults.containerColor,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
     val rtl = LocalLayoutDirection.current == LayoutDirection.Rtl
@@ -228,95 +230,102 @@ public fun PvotSwipeRow(
     state.minOffset = if (endAction != null) -width.toFloat() else 0f
 
     val direction by remember(state) { derivedStateOf { sign(state.offset) } }
-    val armed by remember(state, threshold) {
-        derivedStateOf { threshold > 0f && abs(state.offset) >= threshold }
-    }
-    val revealed = when {
-        direction > 0f -> startAction
-        direction < 0f -> endAction
-        else -> null
-    }
-    val iconScale by animateFloatAsState(
-        targetValue = if (armed) PvotSwipeRowDefaults.ArmedIconScale else 1f,
-        animationSpec = PvotMotion.PressSpring,
-        label = "pvotSwipeIcon"
-    )
+    val armed by
+        remember(state, threshold) {
+            derivedStateOf { threshold > 0f && abs(state.offset) >= threshold }
+        }
+    val revealed =
+        when {
+            direction > 0f -> startAction
+            direction < 0f -> endAction
+            else -> null
+        }
+    val iconScale by
+        animateFloatAsState(
+            targetValue = if (armed) PvotSwipeRowDefaults.ArmedIconScale else 1f,
+            animationSpec = PvotMotion.PressSpring,
+            label = "pvotSwipeIcon",
+        )
     LaunchedEffect(armed) {
         if (armed && !state.isDismissed) {
             haptics.performHapticFeedback(HapticFeedbackType.GestureThresholdActivate)
         }
     }
 
-    val a11yActions = listOfNotNull(startAction, endAction).map { action ->
-        CustomAccessibilityAction(action.label) {
-            action.onSwipe()
-            true
+    val a11yActions =
+        listOfNotNull(startAction, endAction).map { action ->
+            CustomAccessibilityAction(action.label) {
+                action.onSwipe()
+                true
+            }
         }
-    }
 
     Box(
-        modifier = modifier
-            .onSizeChanged { width = it.width }
-            .clip(shape)
-            .semantics { if (enabled) customActions = a11yActions }
-            .draggable(
-                state = state.draggableState,
-                orientation = Orientation.Horizontal,
-                enabled = enabled && !state.isDismissed && (startAction != null || endAction != null),
-                // Offsets run toward the end, so in a right-to-left layout a drag left is positive.
-                reverseDirection = rtl,
-                onDragStopped = { velocity ->
-                    val offset = state.offset
-                    val action = if (offset > 0f) start else if (offset < 0f) end else null
-                    val fling = abs(velocity) >= flingVelocity && sign(velocity) == sign(offset)
-                    val passed = abs(offset) >= threshold || (fling && abs(offset) >= threshold / 2)
-                    when {
-                        action == null || !passed -> state.settleTo(0f, velocity)
-                        action.removesRow -> {
-                            state.settleTo(sign(offset) * width, velocity)
-                            state.isDismissed = true
-                            action.onSwipe()
+        modifier =
+            modifier
+                .onSizeChanged { width = it.width }
+                .clip(shape)
+                .semantics { if (enabled) customActions = a11yActions }
+                .draggable(
+                    state = state.draggableState,
+                    orientation = Orientation.Horizontal,
+                    enabled =
+                        enabled && !state.isDismissed && (startAction != null || endAction != null),
+                    // Offsets run toward the end, so in a right-to-left layout a drag left is
+                    // positive.
+                    reverseDirection = rtl,
+                    onDragStopped = { velocity ->
+                        val offset = state.offset
+                        val action = if (offset > 0f) start else if (offset < 0f) end else null
+                        val fling = abs(velocity) >= flingVelocity && sign(velocity) == sign(offset)
+                        val passed =
+                            abs(offset) >= threshold || (fling && abs(offset) >= threshold / 2)
+                        when {
+                            action == null || !passed -> state.settleTo(0f, velocity)
+                            action.removesRow -> {
+                                state.settleTo(sign(offset) * width, velocity)
+                                state.isDismissed = true
+                                action.onSwipe()
+                            }
+                            else -> {
+                                action.onSwipe()
+                                state.settleTo(0f, velocity)
+                            }
                         }
-                        else -> {
-                            action.onSwipe()
-                            state.settleTo(0f, velocity)
-                        }
-                    }
-                }
-            )
+                    },
+                )
     ) {
         if (revealed != null) {
             Box(
-                modifier = Modifier
-                    .matchParentSize()
-                    .background(revealed.containerColor),
-                contentAlignment = if (direction > 0f) Alignment.CenterStart else Alignment.CenterEnd
+                modifier = Modifier.matchParentSize().background(revealed.containerColor),
+                contentAlignment =
+                    if (direction > 0f) Alignment.CenterStart else Alignment.CenterEnd,
             ) {
                 Icon(
                     painter = revealed.icon,
                     contentDescription = null,
                     tint = revealed.contentColor,
-                    modifier = Modifier
-                        .padding(horizontal = PvotSpacing.L * 1.5f)
-                        .graphicsLayer {
-                            val progress = if (threshold > 0f) {
-                                (abs(state.offset) / threshold).coerceAtMost(1f)
-                            } else {
-                                0f
-                            }
+                    modifier =
+                        Modifier.padding(horizontal = PvotSpacing.L * 1.5f).graphicsLayer {
+                            val progress =
+                                if (threshold > 0f) {
+                                    (abs(state.offset) / threshold).coerceAtMost(1f)
+                                } else {
+                                    0f
+                                }
                             alpha = progress
                             scaleX = iconScale * (0.6f + 0.4f * progress)
                             scaleY = scaleX
-                        }
+                        },
                 )
             }
         }
         // Filled square: the row's own clip rounds the corners. A rounded fill here would leave
         // the action's color showing at the corners still inside the clip while the row slides.
         Box(
-            modifier = Modifier
-                .offset { IntOffset(state.offset.roundToInt(), 0) }
-                .background(containerColor)
+            modifier =
+                Modifier.offset { IntOffset(state.offset.roundToInt(), 0) }
+                    .background(containerColor)
         ) {
             content()
         }

@@ -1,0 +1,11 @@
+# SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: DCO
+
+on:
+  pull_request:
+
+jobs:
+  dco:
+    uses: PVOT-OSS/workflows/.github/workflows/dco.yml@main

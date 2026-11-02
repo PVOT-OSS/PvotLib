@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.Color
  * warning, each with its content color and a container pair, as the Material roles are arranged.
  *
  * Read them through [PvotTheme.extendedColors]. Success is for an answer button or a saved state;
- * warning for a caution that is not an error, such as a call on hold or a weak signal. Errors
- * keep using `colorScheme.error`.
+ * warning for a caution that is not an error, such as a call on hold or a weak signal. Errors keep
+ * using `colorScheme.error`.
  *
  * @param success A filled success surface, such as an answer button
  * @param onSuccess Content on [success]
@@ -37,27 +37,29 @@ public data class PvotExtendedColors(
 )
 
 /** The extended roles arranged for a light background. */
-public val PvotLightExtendedColors: PvotExtendedColors = PvotExtendedColors(
-    success = PvotSuccessLight,
-    onSuccess = PvotOnSuccessLight,
-    successContainer = PvotSuccessContainerLight,
-    onSuccessContainer = PvotOnSuccessContainerLight,
-    warning = PvotWarningLight,
-    onWarning = PvotOnWarningLight,
-    warningContainer = PvotWarningContainerLight,
-    onWarningContainer = PvotOnWarningContainerLight,
-)
+public val PvotLightExtendedColors: PvotExtendedColors =
+    PvotExtendedColors(
+        success = PvotSuccessLight,
+        onSuccess = PvotOnSuccessLight,
+        successContainer = PvotSuccessContainerLight,
+        onSuccessContainer = PvotOnSuccessContainerLight,
+        warning = PvotWarningLight,
+        onWarning = PvotOnWarningLight,
+        warningContainer = PvotWarningContainerLight,
+        onWarningContainer = PvotOnWarningContainerLight,
+    )
 
 /** The extended roles arranged for a dark background. */
-public val PvotDarkExtendedColors: PvotExtendedColors = PvotExtendedColors(
-    success = PvotSuccessDark,
-    onSuccess = PvotOnSuccessDark,
-    successContainer = PvotSuccessContainerDark,
-    onSuccessContainer = PvotOnSuccessContainerDark,
-    warning = PvotWarningDark,
-    onWarning = PvotOnWarningDark,
-    warningContainer = PvotWarningContainerDark,
-    onWarningContainer = PvotOnWarningContainerDark,
-)
+public val PvotDarkExtendedColors: PvotExtendedColors =
+    PvotExtendedColors(
+        success = PvotSuccessDark,
+        onSuccess = PvotOnSuccessDark,
+        successContainer = PvotSuccessContainerDark,
+        onSuccessContainer = PvotOnSuccessContainerDark,
+        warning = PvotWarningDark,
+        onWarning = PvotOnWarningDark,
+        warningContainer = PvotWarningContainerDark,
+        onWarningContainer = PvotOnWarningContainerDark,
+    )
 
 internal val LocalPvotExtendedColors = staticCompositionLocalOf { PvotDarkExtendedColors }

@@ -3,12 +3,12 @@
 
 package com.prauga.pvot.designsystem.components.background
 
+import kotlin.math.PI
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.math.PI
 
 /** The live background's drift steps at its frame rate, and the photo blur spreads color. */
 class PvotBackgroundsTest {
@@ -17,12 +17,25 @@ class PvotBackgroundsTest {
 
     @Test
     fun aFrameTooSoonAfterTheLastIsSkipped() {
-        assertNull(PvotBackgroundDefaults.stepPhase(nowNanos = 30 * ms, startNanos = 0, lastFrameNanos = 0, frameMillis = 66))
+        assertNull(
+            PvotBackgroundDefaults.stepPhase(
+                nowNanos = 30 * ms,
+                startNanos = 0,
+                lastFrameNanos = 0,
+                frameMillis = 66,
+            )
+        )
     }
 
     @Test
     fun aFrameAtTheIntervalAdvancesThePhase() {
-        val phase = PvotBackgroundDefaults.stepPhase(nowNanos = 66 * ms, startNanos = 0, lastFrameNanos = 0, frameMillis = 66)
+        val phase =
+            PvotBackgroundDefaults.stepPhase(
+                nowNanos = 66 * ms,
+                startNanos = 0,
+                lastFrameNanos = 0,
+                frameMillis = 66,
+            )
         assertNotNull(phase)
         assertTrue(phase!! > 0f)
     }

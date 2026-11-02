@@ -50,8 +50,8 @@ import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.motion.PvotMotion
 import com.prauga.pvot.designsystem.theme.PvotShapes
 import com.prauga.pvot.designsystem.theme.PvotSpacing
-import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 /**
  * A section a [PvotFastScroller] can jump to, such as the contacts starting with one letter.
@@ -59,8 +59,7 @@ import kotlin.math.roundToInt
  * @param label Short text shown in the bubble while the section is picked, usually one letter
  * @param index Index in the list of the section's first item, usually its header
  */
-@Immutable
-public data class PvotFastScrollSection(val label: String, val index: Int)
+@Immutable public data class PvotFastScrollSection(val label: String, val index: Int)
 
 /**
  * Colors of a [PvotFastScroller].
@@ -75,7 +74,7 @@ public data class PvotFastScrollerColors(
     val thumbColor: Color,
     val activeThumbColor: Color,
     val bubbleContainerColor: Color,
-    val bubbleContentColor: Color
+    val bubbleContentColor: Color,
 )
 
 /** Defaults for [PvotFastScroller]. */
@@ -100,27 +99,27 @@ public object PvotFastScrollerDefaults {
     public const val HideDelayMillis: Int = 1200
 
     /** The scroller's colors taken from [colorScheme]. */
-    public fun colors(colorScheme: ColorScheme): PvotFastScrollerColors = PvotFastScrollerColors(
-        thumbColor = colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-        activeThumbColor = colorScheme.primary,
-        bubbleContainerColor = colorScheme.primary,
-        bubbleContentColor = colorScheme.onPrimary
-    )
+    public fun colors(colorScheme: ColorScheme): PvotFastScrollerColors =
+        PvotFastScrollerColors(
+            thumbColor = colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+            activeThumbColor = colorScheme.primary,
+            bubbleContainerColor = colorScheme.primary,
+            bubbleContentColor = colorScheme.onPrimary,
+        )
 
     /** The scroller's colors for the current theme. */
-    @Composable
-    public fun themeColors(): PvotFastScrollerColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotFastScrollerColors = colors(MaterialTheme.colorScheme)
 }
 
 /**
  * A fast scroller for a long list split into sections, such as contacts by first letter.
  *
- * Place it over the end edge of the list, for example with `Modifier.align(Alignment.CenterEnd)`
- * in a `Box` that holds the list. A thin thumb shows while the list scrolls and fades away when it
+ * Place it over the end edge of the list, for example with `Modifier.align(Alignment.CenterEnd)` in
+ * a `Box` that holds the list. A thin thumb shows while the list scrolls and fades away when it
  * stops. Touching or dragging along the end edge jumps to the section under the finger, shows its
- * label in a bubble beside the finger and ticks the phone on each new section. It hides itself
- * when the list fits on screen. TalkBack users scroll the list itself, so the scroller is hidden
- * from accessibility services.
+ * label in a bubble beside the finger and ticks the phone on each new section. It hides itself when
+ * the list fits on screen. TalkBack users scroll the list itself, so the scroller is hidden from
+ * accessibility services.
  *
  * @param state The state of the list the scroller moves
  * @param sections The list's sections, in list order
@@ -132,11 +131,10 @@ public fun PvotFastScroller(
     state: LazyListState,
     sections: List<PvotFastScrollSection>,
     modifier: Modifier = Modifier,
-    colors: PvotFastScrollerColors = PvotFastScrollerDefaults.themeColors()
+    colors: PvotFastScrollerColors = PvotFastScrollerDefaults.themeColors(),
 ) {
-    val scrollable by remember(state) {
-        derivedStateOf { state.canScrollForward || state.canScrollBackward }
-    }
+    val scrollable by
+        remember(state) { derivedStateOf { state.canScrollForward || state.canScrollBackward } }
     if (!scrollable || sections.isEmpty()) return
 
     var dragging by remember { mutableStateOf(false) }
@@ -146,37 +144,47 @@ public fun PvotFastScroller(
     val haptics = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 
-    val listFraction by remember(state) {
-        derivedStateOf {
-            val info = state.layoutInfo
-            val hidden = info.totalItemsCount - info.visibleItemsInfo.size
-            if (hidden <= 0) 0f else (state.firstVisibleItemIndex.toFloat() / hidden).coerceIn(0f, 1f)
+    val listFraction by
+        remember(state) {
+            derivedStateOf {
+                val info = state.layoutInfo
+                val hidden = info.totalItemsCount - info.visibleItemsInfo.size
+                if (hidden <= 0) 0f
+                else (state.firstVisibleItemIndex.toFloat() / hidden).coerceIn(0f, 1f)
+            }
         }
-    }
     val shown = dragging || state.isScrollInProgress
-    val alpha by animateFloatAsState(
-        targetValue = if (shown) 1f else 0f,
-        animationSpec = if (shown) {
-            tween(PvotDurations.Short)
-        } else {
-            tween(PvotDurations.Long, delayMillis = PvotFastScrollerDefaults.HideDelayMillis)
-        },
-        label = "fastScrollerAlpha"
-    )
-    val thumbWidth by animateDpAsState(
-        targetValue = if (dragging) {
-            PvotFastScrollerDefaults.ActiveThumbWidth
-        } else {
-            PvotFastScrollerDefaults.ThumbWidth
-        },
-        animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
-        label = "fastScrollerThumbWidth"
-    )
-    val thumbColor by animateColorAsState(
-        targetValue = if (dragging) colors.activeThumbColor else colors.thumbColor,
-        animationSpec = tween(PvotDurations.Short),
-        label = "fastScrollerThumbColor"
-    )
+    val alpha by
+        animateFloatAsState(
+            targetValue = if (shown) 1f else 0f,
+            animationSpec =
+                if (shown) {
+                    tween(PvotDurations.Short)
+                } else {
+                    tween(
+                        PvotDurations.Long,
+                        delayMillis = PvotFastScrollerDefaults.HideDelayMillis,
+                    )
+                },
+            label = "fastScrollerAlpha",
+        )
+    val thumbWidth by
+        animateDpAsState(
+            targetValue =
+                if (dragging) {
+                    PvotFastScrollerDefaults.ActiveThumbWidth
+                } else {
+                    PvotFastScrollerDefaults.ThumbWidth
+                },
+            animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
+            label = "fastScrollerThumbWidth",
+        )
+    val thumbColor by
+        animateColorAsState(
+            targetValue = if (dragging) colors.activeThumbColor else colors.thumbColor,
+            animationSpec = tween(PvotDurations.Short),
+            label = "fastScrollerThumbColor",
+        )
 
     BoxWithConstraints(modifier = modifier.fillMaxHeight().clearAndSetSemantics {}) {
         val density = LocalDensity.current
@@ -199,52 +207,54 @@ public fun PvotFastScroller(
         if (dragging && picked != null) {
             val centerY = (dragFraction * heightPx).coerceIn(bubblePx / 2, heightPx - bubblePx / 2)
             Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset { IntOffset(0, (centerY - bubblePx / 2).roundToInt()) }
-                    .padding(end = PvotFastScrollerDefaults.TouchWidth + PvotSpacing.S)
-                    .size(PvotFastScrollerDefaults.BubbleSize)
-                    .background(colors.bubbleContainerColor, CircleShape),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier.align(Alignment.TopEnd)
+                        .offset { IntOffset(0, (centerY - bubblePx / 2).roundToInt()) }
+                        .padding(end = PvotFastScrollerDefaults.TouchWidth + PvotSpacing.S)
+                        .size(PvotFastScrollerDefaults.BubbleSize)
+                        .background(colors.bubbleContainerColor, CircleShape),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = picked?.label.orEmpty(),
                     style = MaterialTheme.typography.headlineSmall,
                     color = colors.bubbleContentColor,
                     textAlign = TextAlign.Center,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
         }
 
         Box(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .fillMaxHeight()
-                .width(PvotFastScrollerDefaults.TouchWidth)
-                .pointerInput(state, heightPx) {
-                    awaitEachGesture {
-                        val down = awaitFirstDown()
-                        dragging = true
-                        picked = null
-                        pick(down.position.y)
-                        down.consume()
-                        drag(down.id) { change ->
-                            pick(change.position.y)
-                            change.consume()
+            modifier =
+                Modifier.align(Alignment.TopEnd)
+                    .fillMaxHeight()
+                    .width(PvotFastScrollerDefaults.TouchWidth)
+                    .pointerInput(state, heightPx) {
+                        awaitEachGesture {
+                            val down = awaitFirstDown()
+                            dragging = true
+                            picked = null
+                            pick(down.position.y)
+                            down.consume()
+                            drag(down.id) { change ->
+                                pick(change.position.y)
+                                change.consume()
+                            }
+                            dragging = false
                         }
-                        dragging = false
                     }
-                }
         ) {
             Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .offset { IntOffset(0, (fraction * (heightPx - thumbHeightPx)).roundToInt()) }
-                    .padding(end = PvotSpacing.XS)
-                    .alpha(alpha)
-                    .size(width = thumbWidth, height = PvotFastScrollerDefaults.ThumbHeight)
-                    .background(thumbColor, PvotShapes.Pill)
+                modifier =
+                    Modifier.align(Alignment.TopEnd)
+                        .offset {
+                            IntOffset(0, (fraction * (heightPx - thumbHeightPx)).roundToInt())
+                        }
+                        .padding(end = PvotSpacing.XS)
+                        .alpha(alpha)
+                        .size(width = thumbWidth, height = PvotFastScrollerDefaults.ThumbHeight)
+                        .background(thumbColor, PvotShapes.Pill)
             )
         }
     }

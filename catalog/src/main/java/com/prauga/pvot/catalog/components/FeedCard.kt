@@ -21,32 +21,21 @@ import java.time.format.DateTimeParseException
 import java.util.Locale
 
 @Composable
-fun FeedCard(
-    entry: FeedEntry,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    GlassPanel(
-        modifier = modifier,
-        onClick = onClick
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
+fun FeedCard(entry: FeedEntry, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    GlassPanel(modifier = modifier, onClick = onClick) {
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
             if (entry.category != null) {
                 Text(
                     text = entry.category.uppercase(),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(bottom = 4.dp)
+                    modifier = Modifier.padding(bottom = 4.dp),
                 )
             }
             Text(
                 text = entry.title,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.onSurface,
             )
             if (entry.summary.isNotEmpty()) {
                 Text(
@@ -55,26 +44,24 @@ fun FeedCard(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp),
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 entry.author?.let { author ->
                     Text(
                         text = author,
                         style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Text(
                     text = formatDate(entry.published),
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }

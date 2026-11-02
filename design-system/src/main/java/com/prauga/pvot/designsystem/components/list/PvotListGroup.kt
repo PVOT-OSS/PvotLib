@@ -29,11 +29,7 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param titleColor Color of the title over the card
  * @param dividerColor Color of the hairline between rows
  */
-@Immutable
-public data class PvotListGroupColors(
-    val titleColor: Color,
-    val dividerColor: Color
-)
+@Immutable public data class PvotListGroupColors(val titleColor: Color, val dividerColor: Color)
 
 /** Defaults for [PvotListGroup]. */
 public object PvotListGroupDefaults {
@@ -45,17 +41,21 @@ public object PvotListGroupDefaults {
     public val DividerInset: Dp = PvotSpacing.L
 
     /** Padding inside the card, round its rows. */
-    public val ContentPadding: PaddingValues = PaddingValues(horizontal = PvotSpacing.XS, vertical = PvotSpacing.XS)
+    public val ContentPadding: PaddingValues =
+        PaddingValues(horizontal = PvotSpacing.XS, vertical = PvotSpacing.XS)
 
     /** Opacity of the divider color over the card. */
     public const val DividerAlpha: Float = 0.6f
 
-    /** Colors from the theme: the title in `onSurfaceVariant`, dividers in a faint `outlineVariant`. */
+    /**
+     * Colors from the theme: the title in `onSurfaceVariant`, dividers in a faint `outlineVariant`.
+     */
     @Composable
-    public fun colors(): PvotListGroupColors = PvotListGroupColors(
-        titleColor = MaterialTheme.colorScheme.onSurfaceVariant,
-        dividerColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = DividerAlpha)
-    )
+    public fun colors(): PvotListGroupColors =
+        PvotListGroupColors(
+            titleColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            dividerColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = DividerAlpha),
+        )
 }
 
 /** Where the rows of a [PvotListGroup] are added. */
@@ -67,6 +67,7 @@ public interface PvotListGroupScope {
 
 private class PvotListGroupScopeImpl : PvotListGroupScope {
     val items = mutableListOf<@Composable () -> Unit>()
+
     override fun item(content: @Composable () -> Unit) {
         items += content
     }
@@ -76,8 +77,8 @@ private class PvotListGroupScopeImpl : PvotListGroupScope {
  * Rows that belong together on one card, with a hairline between each, under an optional title.
  *
  * A settings screen, the actions on a number, the calls on a day: each is a group. Rows inside are
- * typically [PvotPreferenceRow]s and [PvotSwitchRow]s with
- * [plain icons][PvotRowIconStyle.Plain], or [PvotListRow]s.
+ * typically [PvotPreferenceRow]s and [PvotSwitchRow]s with [plain icons][PvotRowIconStyle.Plain],
+ * or [PvotListRow]s.
  *
  * ```
  * PvotListGroup(title = "General") {
@@ -99,7 +100,7 @@ public fun PvotListGroup(
     title: String? = null,
     dividerInset: Dp = PvotListGroupDefaults.DividerInset,
     colors: PvotListGroupColors = PvotListGroupDefaults.colors(),
-    content: PvotListGroupScope.() -> Unit
+    content: PvotListGroupScope.() -> Unit,
 ) {
     val items = PvotListGroupScopeImpl().apply(content).items
     Column(modifier) {
@@ -108,9 +109,13 @@ public fun PvotListGroup(
                 text = title,
                 style = MaterialTheme.typography.titleSmall,
                 color = colors.titleColor,
-                modifier = Modifier
-                    .padding(start = PvotSpacing.L, end = PvotSpacing.L, bottom = PvotSpacing.S)
-                    .semantics { heading() }
+                modifier =
+                    Modifier.padding(
+                            start = PvotSpacing.L,
+                            end = PvotSpacing.L,
+                            bottom = PvotSpacing.S,
+                        )
+                        .semantics { heading() },
             )
         }
         PvotCard(Modifier.fillMaxWidth()) {
@@ -118,8 +123,7 @@ public fun PvotListGroup(
                 items.forEachIndexed { index, item ->
                     if (index > 0) {
                         Box(
-                            Modifier
-                                .padding(horizontal = dividerInset)
+                            Modifier.padding(horizontal = dividerInset)
                                 .fillMaxWidth()
                                 .height(PvotListGroupDefaults.DividerThickness)
                                 .background(colors.dividerColor)

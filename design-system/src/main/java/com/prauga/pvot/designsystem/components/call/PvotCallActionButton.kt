@@ -54,7 +54,7 @@ public enum class PvotCallAction {
     Decline,
 
     /** End the call in progress: the error color. */
-    End
+    End,
 }
 
 /**
@@ -68,7 +68,7 @@ public enum class PvotCallAction {
 public data class PvotCallActionButtonColors(
     val containerColor: Color,
     val contentColor: Color,
-    val labelColor: Color
+    val labelColor: Color,
 )
 
 /** Defaults for [PvotCallActionButton]. */
@@ -100,33 +100,44 @@ public object PvotCallActionButtonDefaults {
      * red, the same vivid fills in light and dark.
      */
     @Composable
-    public fun colors(action: PvotCallAction): PvotCallActionButtonColors = when (action) {
-        PvotCallAction.Answer -> PvotCallActionButtonColors(
-            containerColor = PvotCallAnswer,
-            contentColor = PvotOnCallAnswer,
-            labelColor = MaterialTheme.colorScheme.onSurface
-        )
-        PvotCallAction.Decline, PvotCallAction.End -> PvotCallActionButtonColors(
-            containerColor = PvotCallEnd,
-            contentColor = PvotOnCallEnd,
-            labelColor = MaterialTheme.colorScheme.onSurface
-        )
-    }
+    public fun colors(action: PvotCallAction): PvotCallActionButtonColors =
+        when (action) {
+            PvotCallAction.Answer ->
+                PvotCallActionButtonColors(
+                    containerColor = PvotCallAnswer,
+                    contentColor = PvotOnCallAnswer,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                )
+            PvotCallAction.Decline,
+            PvotCallAction.End ->
+                PvotCallActionButtonColors(
+                    containerColor = PvotCallEnd,
+                    contentColor = PvotOnCallEnd,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                )
+        }
 
-    /** The theme's own success and error colors, for an app that wants the call buttons to follow its palette. */
+    /**
+     * The theme's own success and error colors, for an app that wants the call buttons to follow
+     * its palette.
+     */
     @Composable
-    public fun themeColors(action: PvotCallAction): PvotCallActionButtonColors = when (action) {
-        PvotCallAction.Answer -> PvotCallActionButtonColors(
-            containerColor = PvotTheme.extendedColors.success,
-            contentColor = PvotTheme.extendedColors.onSuccess,
-            labelColor = MaterialTheme.colorScheme.onSurface
-        )
-        PvotCallAction.Decline, PvotCallAction.End -> PvotCallActionButtonColors(
-            containerColor = MaterialTheme.colorScheme.error,
-            contentColor = MaterialTheme.colorScheme.onError,
-            labelColor = MaterialTheme.colorScheme.onSurface
-        )
-    }
+    public fun themeColors(action: PvotCallAction): PvotCallActionButtonColors =
+        when (action) {
+            PvotCallAction.Answer ->
+                PvotCallActionButtonColors(
+                    containerColor = PvotTheme.extendedColors.success,
+                    contentColor = PvotTheme.extendedColors.onSuccess,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                )
+            PvotCallAction.Decline,
+            PvotCallAction.End ->
+                PvotCallActionButtonColors(
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError,
+                    labelColor = MaterialTheme.colorScheme.onSurface,
+                )
+        }
 }
 
 /**
@@ -161,48 +172,56 @@ public fun PvotCallActionButton(
     showLabel: Boolean = false,
     labelInside: Boolean = false,
     enabled: Boolean = true,
-    colors: PvotCallActionButtonColors = PvotCallActionButtonDefaults.colors(action)
+    colors: PvotCallActionButtonColors = PvotCallActionButtonDefaults.colors(action),
 ) {
     val source = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
     val alpha = if (enabled) 1f else PvotCallActionButtonDefaults.DisabledAlpha
     Column(
-        modifier = modifier
-            .pvotPressScale(source)
-            .clickable(
-                interactionSource = source,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = {
-                    // Answering confirms; declining and ending feel like a rejection.
-                    haptics.performHapticFeedback(
-                        if (action == PvotCallAction.Answer) HapticFeedbackType.Confirm else HapticFeedbackType.Reject
-                    )
-                    onClick()
-                }
-            )
-            .semantics(mergeDescendants = true) { contentDescription = label },
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier =
+            modifier
+                .pvotPressScale(source)
+                .clickable(
+                    interactionSource = source,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = {
+                        // Answering confirms; declining and ending feel like a rejection.
+                        haptics.performHapticFeedback(
+                            if (action == PvotCallAction.Answer) HapticFeedbackType.Confirm
+                            else HapticFeedbackType.Reject
+                        )
+                        onClick()
+                    },
+                )
+                .semantics(mergeDescendants = true) { contentDescription = label },
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (labelInside) {
             Row(
-                modifier = Modifier
-                    .height(PvotCallActionButtonDefaults.LabelledHeight)
-                    .widthIn(min = width)
-                    .alpha(alpha)
-                    .clip(CircleShape)
-                    .background(
-                        Brush.verticalGradient(
-                            listOf(
-                                colors.containerColor,
-                                lerp(colors.containerColor, Color.Black, PvotCallActionButtonDefaults.GradientDepth)
+                modifier =
+                    Modifier.height(PvotCallActionButtonDefaults.LabelledHeight)
+                        .widthIn(min = width)
+                        .alpha(alpha)
+                        .clip(CircleShape)
+                        .background(
+                            Brush.verticalGradient(
+                                listOf(
+                                    colors.containerColor,
+                                    lerp(
+                                        colors.containerColor,
+                                        Color.Black,
+                                        PvotCallActionButtonDefaults.GradientDepth,
+                                    ),
+                                )
                             )
                         )
-                    )
-                    .padding(horizontal = PvotCallActionButtonDefaults.LabelledHorizontalPadding),
+                        .padding(
+                            horizontal = PvotCallActionButtonDefaults.LabelledHorizontalPadding
+                        ),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
             ) {
                 Icon(painter = icon, contentDescription = null, tint = colors.contentColor)
                 Text(
@@ -211,23 +230,23 @@ public fun PvotCallActionButton(
                     fontWeight = FontWeight.SemiBold,
                     color = colors.contentColor,
                     maxLines = 1,
-                    modifier = Modifier.padding(start = PvotSpacing.S)
+                    modifier = Modifier.padding(start = PvotSpacing.S),
                 )
             }
         } else {
             Box(
-                modifier = Modifier
-                    .size(width = width, height = size)
-                    .alpha(alpha)
-                    .clip(CircleShape)
-                    .background(colors.containerColor, CircleShape),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier.size(width = width, height = size)
+                        .alpha(alpha)
+                        .clip(CircleShape)
+                        .background(colors.containerColor, CircleShape),
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     painter = icon,
                     contentDescription = null,
                     tint = colors.contentColor,
-                    modifier = Modifier.size(PvotCallActionButtonDefaults.IconSize)
+                    modifier = Modifier.size(PvotCallActionButtonDefaults.IconSize),
                 )
             }
         }
@@ -236,7 +255,7 @@ public fun PvotCallActionButton(
                 text = label,
                 style = MaterialTheme.typography.labelLarge,
                 color = colors.labelColor.copy(alpha = colors.labelColor.alpha * alpha),
-                modifier = Modifier.padding(top = PvotSpacing.S)
+                modifier = Modifier.padding(top = PvotSpacing.S),
             )
         }
     }

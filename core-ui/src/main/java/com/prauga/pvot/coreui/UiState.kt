@@ -23,11 +23,8 @@ public sealed interface UiState<out T> {
      * The content could not be loaded.
      *
      * @param message Text to show the user
-     * @param cause The underlying failure, kept so callers can tell a network error
-     * from a parse error without matching on [message]
+     * @param cause The underlying failure, kept so callers can tell a network error from a parse
+     *   error without matching on [message]
      */
-    public data class Error(
-        val message: String,
-        val cause: Throwable? = null
-    ) : UiState<Nothing>
+    public data class Error(val message: String, val cause: Throwable? = null) : UiState<Nothing>
 }

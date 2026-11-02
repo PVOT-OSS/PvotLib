@@ -68,7 +68,7 @@ public data class PvotListRowColors(
     val trailingColor: Color,
     val iconContainerColor: Color,
     val iconColor: Color,
-    val valueColor: Color
+    val valueColor: Color,
 )
 
 /** Defaults for [PvotListRow], [PvotSwitchRow] and [PvotPreferenceRow]. */
@@ -104,22 +104,22 @@ public object PvotListRowDefaults {
         trailingColor: Color = colorScheme.onSurfaceVariant,
         iconContainerColor: Color = colorScheme.primary.copy(alpha = 0.14f),
         iconColor: Color = colorScheme.primary,
-        valueColor: Color = colorScheme.primary
-    ): PvotListRowColors = PvotListRowColors(
-        containerColor = containerColor,
-        selectedContainerColor = selectedContainerColor,
-        titleColor = titleColor,
-        supportingTextColor = supportingTextColor,
-        leadingColor = leadingColor,
-        trailingColor = trailingColor,
-        iconContainerColor = iconContainerColor,
-        iconColor = iconColor,
-        valueColor = valueColor
-    )
+        valueColor: Color = colorScheme.primary,
+    ): PvotListRowColors =
+        PvotListRowColors(
+            containerColor = containerColor,
+            selectedContainerColor = selectedContainerColor,
+            titleColor = titleColor,
+            supportingTextColor = supportingTextColor,
+            leadingColor = leadingColor,
+            trailingColor = trailingColor,
+            iconContainerColor = iconContainerColor,
+            iconColor = iconColor,
+            valueColor = valueColor,
+        )
 
     /** Row colors from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotListRowColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotListRowColors = colors(MaterialTheme.colorScheme)
 }
 
 /**
@@ -156,14 +156,15 @@ public fun PvotListRow(
     selected: Boolean = false,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
-    interactionSource: MutableInteractionSource? = null
+    interactionSource: MutableInteractionSource? = null,
 ) {
     PvotListRow(
         title = { Text(text = title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         modifier = modifier,
-        supportingText = supportingText?.let {
-            { Text(text = it, maxLines = 2, overflow = TextOverflow.Ellipsis) }
-        },
+        supportingText =
+            supportingText?.let {
+                { Text(text = it, maxLines = 2, overflow = TextOverflow.Ellipsis) }
+            },
         leading = leading,
         trailing = trailing,
         onClick = onClick,
@@ -172,7 +173,7 @@ public fun PvotListRow(
         selected = selected,
         enabled = enabled,
         colors = colors,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     )
 }
 
@@ -210,26 +211,26 @@ public fun PvotListRow(
     selected: Boolean = false,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
-    interactionSource: MutableInteractionSource? = null
+    interactionSource: MutableInteractionSource? = null,
 ) {
     val clickable = onClick != null || onLongClick != null
     val source = interactionSource ?: remember { MutableInteractionSource() }
-    val touch = if (clickable) {
-        Modifier
-            .pvotPressScale(source)
-            .clip(PvotListRowDefaults.Shape)
-            .combinedClickable(
-                interactionSource = source,
-                indication = null,
-                enabled = enabled,
-                onClickLabel = onClickLabel,
-                role = if (onClick != null) Role.Button else null,
-                onLongClick = onLongClick,
-                onClick = onClick ?: {}
-            )
-    } else {
-        Modifier.clip(PvotListRowDefaults.Shape)
-    }
+    val touch =
+        if (clickable) {
+            Modifier.pvotPressScale(source)
+                .clip(PvotListRowDefaults.Shape)
+                .combinedClickable(
+                    interactionSource = source,
+                    indication = null,
+                    enabled = enabled,
+                    onClickLabel = onClickLabel,
+                    role = if (onClick != null) Role.Button else null,
+                    onLongClick = onLongClick,
+                    onClick = onClick ?: {},
+                )
+        } else {
+            Modifier.clip(PvotListRowDefaults.Shape)
+        }
     PvotRowLayout(
         modifier = modifier.then(touch),
         title = title,
@@ -238,7 +239,7 @@ public fun PvotListRow(
         trailing = trailing,
         selected = selected,
         enabled = enabled,
-        colors = colors
+        colors = colors,
     )
 }
 
@@ -255,37 +256,42 @@ internal fun PvotRowLayout(
     trailing: (@Composable () -> Unit)?,
     selected: Boolean,
     enabled: Boolean,
-    colors: PvotListRowColors
+    colors: PvotListRowColors,
 ) {
-    val container by animateColorAsState(
-        targetValue = if (selected) colors.selectedContainerColor else colors.containerColor,
-        animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
-        label = "pvotListRowContainer"
-    )
+    val container by
+        animateColorAsState(
+            targetValue = if (selected) colors.selectedContainerColor else colors.containerColor,
+            animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
+            label = "pvotListRowContainer",
+        )
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = PvotListRowDefaults.MinHeight)
-            .background(container)
-            .padding(PvotListRowDefaults.ContentPadding)
-            .alpha(if (enabled) 1f else PvotListRowDefaults.DisabledAlpha),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = PvotListRowDefaults.MinHeight)
+                .background(container)
+                .padding(PvotListRowDefaults.ContentPadding)
+                .alpha(if (enabled) 1f else PvotListRowDefaults.DisabledAlpha),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L)
+        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L),
     ) {
         if (leading != null) {
-            CompositionLocalProvider(LocalContentColor provides colors.leadingColor, content = leading)
+            CompositionLocalProvider(
+                LocalContentColor provides colors.leadingColor,
+                content = leading,
+            )
         }
         Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
             CompositionLocalProvider(
                 LocalContentColor provides colors.titleColor,
                 LocalTextStyle provides MaterialTheme.typography.bodyLarge,
-                content = title
+                content = title,
             )
             if (supportingText != null) {
                 CompositionLocalProvider(
                     LocalContentColor provides colors.supportingTextColor,
                     LocalTextStyle provides MaterialTheme.typography.bodyMedium,
-                    content = supportingText
+                    content = supportingText,
                 )
             }
         }
@@ -293,7 +299,7 @@ internal fun PvotRowLayout(
             CompositionLocalProvider(
                 LocalContentColor provides colors.trailingColor,
                 LocalTextStyle provides MaterialTheme.typography.labelLarge,
-                content = trailing
+                content = trailing,
             )
         }
     }
@@ -304,16 +310,17 @@ internal fun PvotRowLayout(
 internal fun PvotRowIcon(
     colors: PvotListRowColors,
     icon: @Composable () -> Unit,
-    style: PvotRowIconStyle = PvotRowIconStyle.Contained
+    style: PvotRowIconStyle = PvotRowIconStyle.Contained,
 ) {
     Box(
-        modifier = when (style) {
-            PvotRowIconStyle.Contained -> Modifier
-                .size(PvotListRowDefaults.LeadingSize)
-                .background(colors.iconContainerColor, CircleShape)
-            PvotRowIconStyle.Plain -> Modifier.size(PvotListRowDefaults.PlainIconSize)
-        },
-        contentAlignment = Alignment.Center
+        modifier =
+            when (style) {
+                PvotRowIconStyle.Contained ->
+                    Modifier.size(PvotListRowDefaults.LeadingSize)
+                        .background(colors.iconContainerColor, CircleShape)
+                PvotRowIconStyle.Plain -> Modifier.size(PvotListRowDefaults.PlainIconSize)
+            },
+        contentAlignment = Alignment.Center,
     ) {
         CompositionLocalProvider(LocalContentColor provides colors.iconColor, content = icon)
     }

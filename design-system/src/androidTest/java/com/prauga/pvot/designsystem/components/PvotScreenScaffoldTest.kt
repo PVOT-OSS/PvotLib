@@ -19,10 +19,10 @@ import com.prauga.pvot.designsystem.components.background.PvotLiveBackground
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassReduced
+import com.prauga.pvot.designsystem.effects.ProvidePvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassIntensity
-import com.prauga.pvot.designsystem.effects.ProvidePvotGlassIntensity
 import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -33,15 +33,19 @@ import org.junit.Test
 
 class PvotScreenScaffoldTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
     @Test
     fun theContentIsPaddedBelowTheTopBar() {
         var padding: PaddingValues? = null
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotScreenScaffold(background = StillBackground, topBar = { Box(Modifier.fillMaxWidth().height(64.dp)) }) { padding = it }
+                PvotScreenScaffold(
+                    background = StillBackground,
+                    topBar = { Box(Modifier.fillMaxWidth().height(64.dp)) },
+                ) {
+                    padding = it
+                }
             }
         }
         composeTestRule.waitForIdle()
@@ -57,7 +61,9 @@ class PvotScreenScaffoldTest {
                 PvotScreenScaffold(
                     background = StillBackground,
                     topBar = { barBackdrop = LocalPvotGlassBackdrop.current },
-                ) { contentBackdrop = LocalPvotGlassBackdrop.current }
+                ) {
+                    contentBackdrop = LocalPvotGlassBackdrop.current
+                }
             }
         }
         composeTestRule.waitForIdle()

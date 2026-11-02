@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 /**
  * A [ComponentActivity] that has already opted into edge-to-edge layout.
  *
- * Extend this instead of [ComponentActivity] to get the window setup every Pvot
- * screen expects, then set content with [setPvotContent].
+ * Extend this instead of [ComponentActivity] to get the window setup every Pvot screen expects,
+ * then set content with [setPvotContent].
  */
 public abstract class PvotBaseActivity : ComponentActivity() {
 

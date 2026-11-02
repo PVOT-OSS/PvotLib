@@ -42,15 +42,14 @@ public object PvotScreenScaffoldDefaults {
 
 /**
  * The frame of a screen with glass over it: the background and the content inside one glass
- * backdrop, and the bars, floating action, snackbars and overlays over it, each drawn as glass
- * over that backdrop by default.
+ * backdrop, and the bars, floating action, snackbars and overlays over it, each drawn as glass over
+ * that backdrop by default.
  *
  * It wires what every glass screen otherwise repeats: the backdrop, the opaque background inside
  * it, [LocalPvotGlassBackdrop] for the chrome, and the padding that keeps the content clear of the
- * top bar. Content scrolls under the bars, which is what makes the glass worth drawing; the
- * padding is for the first item, not a frame. Inside [content] the local is null, since glass
- * inside its own backdrop shows only its fill; glass that belongs with the content goes in
- * [overlay].
+ * top bar. Content scrolls under the bars, which is what makes the glass worth drawing; the padding
+ * is for the first item, not a frame. Inside [content] the local is null, since glass inside its
+ * own backdrop shows only its fill; glass that belongs with the content goes in [overlay].
  *
  * ```
  * PvotScreenScaffold(
@@ -67,15 +66,15 @@ public object PvotScreenScaffoldDefaults {
  * @param modifier Modifier for the scaffold, which fills the window edge to edge
  * @param backdrop The backdrop the chrome's glass shows; one per scaffold
  * @param background What draws over the theme background under the content, inside the backdrop.
- * Nothing by default: the design is glass over the plain background, refracting the content that
- * scrolls under it. Pass a `PvotPhotoBackground` for a screen about a photo, such as a call
+ *   Nothing by default: the design is glass over the plain background, refracting the content that
+ *   scrolls under it. Pass a `PvotPhotoBackground` for a screen about a photo, such as a call
  * @param topBar The bar at the top, over the content; typically a `PvotTopBar`
  * @param bottomBar The bar at the bottom, over the content; typically a `PvotNavBar`
  * @param floatingAction The floating action above the bottom bar's end; typically a `PvotFab`
  * @param snackbarHost The snackbar host above the bottom bar
  * @param overlay Sheets, dialogs and anything else drawn last, over everything
  * @param content The screen, given the padding that clears the top bar, or the status bar when
- *     there is no top bar
+ *   there is no top bar
  */
 @Composable
 public fun PvotScreenScaffold(
@@ -94,17 +93,19 @@ public fun PvotScreenScaffold(
     var bottomBarHeight by remember { mutableIntStateOf(0) }
     // A screen with no top bar still clears the status bar; a top bar already pads itself by it.
     val statusBar = WindowInsets.statusBars.getTop(density)
-    val contentPadding = with(density) { PaddingValues(top = maxOf(topBarHeight, statusBar).toDp()) }
+    val contentPadding =
+        with(density) { PaddingValues(top = maxOf(topBarHeight, statusBar).toDp()) }
     val aboveBottomBar = with(density) { bottomBarHeight.toDp() }
 
     Box(modifier.fillMaxSize()) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                // The background goes inside the backdrop: glass frosts what is recorded there,
-                // and a backdrop without an opaque background lets the content show through sharp.
-                .pvotGlassBackdrop(backdrop)
-                .background(MaterialTheme.colorScheme.background)
+            modifier =
+                Modifier.fillMaxSize()
+                    // The background goes inside the backdrop: glass frosts what is recorded there,
+                    // and a backdrop without an opaque background lets the content show through
+                    // sharp.
+                    .pvotGlassBackdrop(backdrop)
+                    .background(MaterialTheme.colorScheme.background)
         ) {
             background()
             CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
@@ -113,36 +114,43 @@ public fun PvotScreenScaffold(
         }
         CompositionLocalProvider(LocalPvotGlassBackdrop provides backdrop) {
             Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .onSizeChanged { topBarHeight = it.height }
-                    // TalkBack reads the top bar before the content it floats over.
-                    .semantics { isTraversalGroup = true; traversalIndex = -1f }
+                modifier =
+                    Modifier.align(Alignment.TopCenter)
+                        .onSizeChanged { topBarHeight = it.height }
+                        // TalkBack reads the top bar before the content it floats over.
+                        .semantics {
+                            isTraversalGroup = true
+                            traversalIndex = -1f
+                        }
             ) {
                 topBar()
             }
             Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .onSizeChanged { bottomBarHeight = it.height }
-                    .semantics { isTraversalGroup = true }
+                modifier =
+                    Modifier.align(Alignment.BottomCenter)
+                        .onSizeChanged { bottomBarHeight = it.height }
+                        .semantics { isTraversalGroup = true }
             ) {
                 bottomBar()
             }
             Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = aboveBottomBar)
-                    .then(if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier)
-                    .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
+                modifier =
+                    Modifier.align(Alignment.BottomEnd)
+                        .padding(bottom = aboveBottomBar)
+                        .then(
+                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
+                        )
+                        .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
             ) {
                 floatingAction()
             }
             Box(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = aboveBottomBar)
-                    .then(if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier)
+                modifier =
+                    Modifier.align(Alignment.BottomCenter)
+                        .padding(bottom = aboveBottomBar)
+                        .then(
+                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
+                        )
             ) {
                 snackbarHost()
             }

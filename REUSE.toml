@@ -11,3 +11,15 @@ path = ["fastlane/metadata/android/**/*.txt", "fastlane/metadata/android/**/*.pn
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 Saalim Quadri <danascape@gmail.com>"
 SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = ["assets/*.png", "catalog/src/main/res/mipmap-*/*.webp", "core-ui/api/core-ui.api", "design-system/api/design-system.api", "gradle/gradle-daemon-jvm.properties"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Saalim Quadri <danascape@gmail.com>"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "gradle/wrapper/**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2007-2023 Gradle, Inc."
+SPDX-License-Identifier = "Apache-2.0"

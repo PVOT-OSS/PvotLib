@@ -74,15 +74,15 @@ public object PvotBottomSheetDefaults {
  * navigation bar.
  *
  * Drag the sheet down, tap the scrim or go back to dismiss it. The sheet stays composed until it
- * has slid away, so setting [visible] to false animates it out as well. Long content scrolls
- * inside the sheet rather than pushing it off screen.
+ * has slid away, so setting [visible] to false animates it out as well. Long content scrolls inside
+ * the sheet rather than pushing it off screen.
  *
  * @param visible Whether the sheet is showing
  * @param onDismissRequest Called when the user drags the sheet away, taps the scrim or goes back
  * @param modifier Modifier for the sheet surface
  * @param title Heading above the content
  * @param skipPartiallyExpanded Whether the sheet opens straight to full height instead of stopping
- * at half
+ *   at half
  * @param content The sheet's content, typically [PvotSheetItem]s
  */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -93,7 +93,7 @@ public fun PvotBottomSheet(
     modifier: Modifier = Modifier,
     title: String? = null,
     skipPartiallyExpanded: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = skipPartiallyExpanded)
     var shown by remember { mutableStateOf(visible) }
@@ -118,29 +118,30 @@ public fun PvotBottomSheet(
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 0.dp,
         scrimColor = Color.Black.copy(alpha = PvotBottomSheetDefaults.ScrimAlpha),
-        dragHandle = { PvotSheetHandle() }
+        dragHandle = { PvotSheetHandle() },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 640.dp)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = PvotSpacing.L)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(bottom = PvotSpacing.L),
-            verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS)
+            modifier =
+                Modifier.fillMaxWidth()
+                    .heightIn(max = 640.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = PvotSpacing.L)
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .padding(bottom = PvotSpacing.L),
+            verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS),
         ) {
             if (title != null) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(
-                        start = PvotSpacing.S,
-                        end = PvotSpacing.S,
-                        top = PvotSpacing.XS,
-                        bottom = PvotSpacing.S
-                    )
+                    modifier =
+                        Modifier.padding(
+                            start = PvotSpacing.S,
+                            end = PvotSpacing.S,
+                            top = PvotSpacing.XS,
+                            bottom = PvotSpacing.S,
+                        ),
                 )
             }
             content()
@@ -151,10 +152,13 @@ public fun PvotBottomSheet(
 @Composable
 private fun PvotSheetHandle() {
     Box(
-        modifier = Modifier
-            .padding(vertical = PvotSpacing.M)
-            .size(PvotBottomSheetDefaults.HandleWidth, PvotBottomSheetDefaults.HandleHeight)
-            .background(MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f), CircleShape)
+        modifier =
+            Modifier.padding(vertical = PvotSpacing.M)
+                .size(PvotBottomSheetDefaults.HandleWidth, PvotBottomSheetDefaults.HandleHeight)
+                .background(
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                    CircleShape,
+                )
     )
 }
 
@@ -178,33 +182,32 @@ public fun PvotSheetItem(
     subtitle: String? = null,
     icon: (@Composable () -> Unit)? = null,
     destructive: Boolean = false,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     val colors = MaterialTheme.colorScheme
     val accent = if (destructive) colors.error else colors.primary
     val interactionSource = remember { MutableInteractionSource() }
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .pvotPressScale(interactionSource)
-            .clip(RoundedCornerShape(16.dp))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(horizontal = PvotSpacing.S, vertical = PvotSpacing.S),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .pvotPressScale(interactionSource)
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                )
+                .padding(horizontal = PvotSpacing.S, vertical = PvotSpacing.S),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L)
+        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L),
     ) {
         if (icon != null) {
             Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .background(accent.copy(alpha = 0.14f), CircleShape),
-                contentAlignment = Alignment.Center
+                modifier = Modifier.size(44.dp).background(accent.copy(alpha = 0.14f), CircleShape),
+                contentAlignment = Alignment.Center,
             ) {
                 CompositionLocalProvider(LocalContentColor provides accent, content = { icon() })
             }
@@ -213,13 +216,13 @@ public fun PvotSheetItem(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (destructive) colors.error else colors.onSurface
+                color = if (destructive) colors.error else colors.onSurface,
             )
             if (subtitle != null) {
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = colors.onSurfaceVariant
+                    color = colors.onSurfaceVariant,
                 )
             }
         }

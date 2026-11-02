@@ -60,7 +60,8 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
 import com.prauga.pvot.designsystem.theme.PvotTheme
 import kotlinx.coroutines.launch
 
-private val People = listOf("Ada Lovelace", "Grace Hopper", "Alan Turing", "Katherine Johnson", "Linus Torvalds")
+private val People =
+    listOf("Ada Lovelace", "Grace Hopper", "Alan Turing", "Katherine Johnson", "Linus Torvalds")
 
 // ───────────────────────────── List row ─────────────────────────────
 
@@ -70,36 +71,40 @@ internal fun ListRowPage(onBack: () -> Unit) {
     val selected = remember { mutableStateListOf<String>() }
     DetailPage(
         title = "List row",
-        summary = "A row with a leading avatar or letter tile, a title, supporting text and a trailing " +
-            "slot. The whole row is the target; long-press is there for selection.",
+        summary =
+            "A row with a leading avatar or letter tile, a title, supporting text and a trailing " +
+                "slot. The whole row is the target; long-press is there for selection.",
         onBack = onBack,
-        code = "PvotListRow(\n    title = contact.name,\n    supportingText = \"Mobile · 2 min ago\",\n" +
-            "    leading = { PvotLetterTile(contact.name, colorKey = contact.id) },\n" +
-            "    trailing = { Text(\"10:42\") },\n    onClick = { call(contact) },\n    onLongClick = { select(contact) }\n)"
+        code =
+            "PvotListRow(\n    title = contact.name,\n    supportingText = \"Mobile · 2 min ago\",\n" +
+                "    leading = { PvotLetterTile(contact.name, colorKey = contact.id) },\n" +
+                "    trailing = { Text(\"10:42\") },\n    onClick = { call(contact) },\n    onLongClick = { select(contact) }\n)",
     ) {
         DemoSection(
             title = "Contacts",
             caption = "Tap to open, long-press to select (${selected.size} selected)",
-            framed = false
+            framed = false,
         ) {
             GlassPanelColumn {
                 People.take(3).forEachIndexed { index, name ->
                     val isSelected = name in selected
                     PvotListRow(
                         title = name,
-                        supportingText = listOf("Mobile · 2 min ago", "Work · Yesterday", "Home · Monday")[index],
+                        supportingText =
+                            listOf("Mobile · 2 min ago", "Work · Yesterday", "Home · Monday")[
+                                index],
                         leading = {
                             if (isSelected) {
                                 Box(
-                                    modifier = Modifier
-                                        .clip(PvotShapes.Pill)
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .padding(PvotSpacing.S)
+                                    modifier =
+                                        Modifier.clip(PvotShapes.Pill)
+                                            .background(MaterialTheme.colorScheme.primary)
+                                            .padding(PvotSpacing.S)
                                 ) {
                                     Icon(
                                         painter = painterResource(R.drawable.ic_t_check),
                                         contentDescription = null,
-                                        tint = MaterialTheme.colorScheme.onPrimary
+                                        tint = MaterialTheme.colorScheme.onPrimary,
                                     )
                                 }
                             } else {
@@ -109,45 +114,63 @@ internal fun ListRowPage(onBack: () -> Unit) {
                         trailing = { Text(listOf("10:42", "Tue", "Mon")[index]) },
                         selected = isSelected,
                         onClick = {
-                            if (selected.isNotEmpty()) toggle(selected, name) else send("Open $name")
+                            if (selected.isNotEmpty()) toggle(selected, name)
+                            else send("Open $name")
                         },
-                        onLongClick = { toggle(selected, name) }
+                        onLongClick = { toggle(selected, name) },
                     )
                 }
             }
         }
-        DemoSection(title = "Letter tiles", caption = "The color follows the name; no letter shows a person") {
+        DemoSection(
+            title = "Letter tiles",
+            caption = "The color follows the name; no letter shows a person",
+        ) {
             Row(horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)) {
-                listOf("Ada", "Grace", "Émile", "7 Eleven", "+1 555", "").forEach { PvotLetterTile(it) }
+                listOf("Ada", "Grace", "Émile", "7 Eleven", "+1 555", "").forEach {
+                    PvotLetterTile(it)
+                }
             }
         }
-        DemoSection(title = "Avatars", caption = "A photo or the letter tile, from list row size to the call screen's, with an optional ring and badge") {
+        DemoSection(
+            title = "Avatars",
+            caption =
+                "A photo or the letter tile, from list row size to the call screen's, with an optional ring and badge",
+        ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M),
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 PvotAvatar(name = "Ada Lovelace", size = PvotAvatarDefaults.Small)
-                PvotAvatar(name = "Grace Hopper", size = PvotAvatarDefaults.Medium, ring = MaterialTheme.colorScheme.primary)
+                PvotAvatar(
+                    name = "Grace Hopper",
+                    size = PvotAvatarDefaults.Medium,
+                    ring = MaterialTheme.colorScheme.primary,
+                )
                 PvotAvatar(
                     name = "Alan Turing",
                     size = PvotAvatarDefaults.Large,
                     badge = {
                         Box(
-                            modifier = Modifier
-                                .clip(PvotShapes.Pill)
-                                .background(MaterialTheme.colorScheme.error)
-                                .padding(PvotSpacing.XS)
+                            modifier =
+                                Modifier.clip(PvotShapes.Pill)
+                                    .background(MaterialTheme.colorScheme.error)
+                                    .padding(PvotSpacing.XS)
                         ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_t_phone),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onError,
-                                modifier = Modifier.size(PvotSpacing.L)
+                                modifier = Modifier.size(PvotSpacing.L),
                             )
                         }
-                    }
+                    },
                 )
-                PvotAvatar(name = "Katherine Johnson", size = PvotAvatarDefaults.ExtraLarge, ring = PvotTheme.extendedColors.success)
+                PvotAvatar(
+                    name = "Katherine Johnson",
+                    size = PvotAvatarDefaults.ExtraLarge,
+                    ring = PvotTheme.extendedColors.success,
+                )
             }
         }
         DemoSection(title = "Static and disabled", framed = false) {
@@ -155,14 +178,14 @@ internal fun ListRowPage(onBack: () -> Unit) {
                 PvotListRow(
                     title = "Voicemail",
                     supportingText = "No onClick: a static row",
-                    leading = { Icon(painterResource(R.drawable.ic_t_message_circle), null) }
+                    leading = { Icon(painterResource(R.drawable.ic_t_message_circle), null) },
                 )
                 PvotListRow(
                     title = "Blocked numbers",
                     supportingText = "enabled = false dims it and ignores taps",
                     leading = { Icon(painterResource(R.drawable.ic_t_x), null) },
                     onClick = {},
-                    enabled = false
+                    enabled = false,
                 )
             }
         }
@@ -191,47 +214,59 @@ internal fun SwipeRowPage(onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
     DetailPage(
         title = "Swipe row",
-        summary = "Swipe toward the end to call, toward the start to delete. Past the threshold the icon " +
-            "swells and the phone ticks. Delete slides the row away and offers Undo; Call springs back.",
+        summary =
+            "Swipe toward the end to call, toward the start to delete. Past the threshold the icon " +
+                "swells and the phone ticks. Delete slides the row away and offers Undo; Call springs back.",
         onBack = onBack,
-        code = "key(entry.id) {\n    PvotSwipeRow(\n        startAction = PvotSwipeRowDefaults.action(\"Call\", phone, { call(entry) }),\n" +
-            "        endAction = PvotSwipeRowDefaults.destructiveAction(\"Delete\", trash, {\n" +
-            "            remove(entry); showUndo(entry)\n        })\n    ) { PvotListRow(entry.name, ...) }\n}"
+        code =
+            "key(entry.id) {\n    PvotSwipeRow(\n        startAction = PvotSwipeRowDefaults.action(\"Call\", phone, { call(entry) }),\n" +
+                "        endAction = PvotSwipeRowDefaults.destructiveAction(\"Delete\", trash, {\n" +
+                "            remove(entry); showUndo(entry)\n        })\n    ) { PvotListRow(entry.name, ...) }\n}",
     ) {
-        DemoSection(title = "Call log", caption = "TalkBack offers Call and Delete as actions on each row", framed = false) {
+        DemoSection(
+            title = "Call log",
+            caption = "TalkBack offers Call and Delete as actions on each row",
+            framed = false,
+        ) {
             people.toList().forEach { name ->
                 key(name) {
                     PvotSwipeRow(
-                        startAction = PvotSwipeRowDefaults.action(
-                            label = "Call",
-                            icon = painterResource(R.drawable.ic_t_phone),
-                            onSwipe = { send("Calling $name") }
-                        ),
-                        endAction = PvotSwipeRowDefaults.destructiveAction(
-                            label = "Delete",
-                            icon = painterResource(R.drawable.ic_t_trash),
-                            onSwipe = {
-                                val index = people.indexOf(name)
-                                people.remove(name)
-                                scope.launch {
-                                    snackbar.currentSnackbarData?.dismiss()
-                                    val result = snackbar.showSnackbar(
-                                        message = "$name deleted",
-                                        actionLabel = "Undo",
-                                        duration = SnackbarDuration.Short
-                                    )
-                                    if (result == SnackbarResult.ActionPerformed && name !in people) {
-                                        people.add(index.coerceAtMost(people.size), name)
+                        startAction =
+                            PvotSwipeRowDefaults.action(
+                                label = "Call",
+                                icon = painterResource(R.drawable.ic_t_phone),
+                                onSwipe = { send("Calling $name") },
+                            ),
+                        endAction =
+                            PvotSwipeRowDefaults.destructiveAction(
+                                label = "Delete",
+                                icon = painterResource(R.drawable.ic_t_trash),
+                                onSwipe = {
+                                    val index = people.indexOf(name)
+                                    people.remove(name)
+                                    scope.launch {
+                                        snackbar.currentSnackbarData?.dismiss()
+                                        val result =
+                                            snackbar.showSnackbar(
+                                                message = "$name deleted",
+                                                actionLabel = "Undo",
+                                                duration = SnackbarDuration.Short,
+                                            )
+                                        if (
+                                            result == SnackbarResult.ActionPerformed &&
+                                                name !in people
+                                        ) {
+                                            people.add(index.coerceAtMost(people.size), name)
+                                        }
                                     }
-                                }
-                            }
-                        )
+                                },
+                            ),
                     ) {
                         PvotListRow(
                             title = name,
                             supportingText = "Mobile · Today",
                             leading = { PvotLetterTile(name) },
-                            onClick = { send("Open $name") }
+                            onClick = { send("Open $name") },
                         )
                     }
                 }
@@ -240,7 +275,7 @@ internal fun SwipeRowPage(onBack: () -> Unit) {
                 PvotButton(
                     text = "Restore all",
                     onClick = { people.addAll(People) },
-                    style = PvotButtonStyle.Text
+                    style = PvotButtonStyle.Text,
                 )
             }
         }
@@ -257,11 +292,13 @@ internal fun SettingsRowsPage(onBack: () -> Unit) {
     var tone by remember { mutableIntStateOf(0) }
     DetailPage(
         title = "Settings rows",
-        summary = "PvotSwitchRow turns something on or off; the whole row toggles. PvotPreferenceRow " +
-            "opens something, with the current value and a chevron.",
+        summary =
+            "PvotSwitchRow turns something on or off; the whole row toggles. PvotPreferenceRow " +
+                "opens something, with the current value and a chevron.",
         onBack = onBack,
-        code = "PvotSwitchRow(\n    title = \"Vibrate for calls\",\n    checked = vibrate,\n    onCheckedChange = { vibrate = it }\n)\n" +
-            "PvotPreferenceRow(\n    title = \"Ringtone\",\n    value = tone,\n    onClick = { openPicker() }\n)"
+        code =
+            "PvotSwitchRow(\n    title = \"Vibrate for calls\",\n    checked = vibrate,\n    onCheckedChange = { vibrate = it }\n)\n" +
+                "PvotPreferenceRow(\n    title = \"Ringtone\",\n    value = tone,\n    onClick = { openPicker() }\n)",
     ) {
         DemoSection(title = "Switches", framed = false) {
             GlassPanelColumn {
@@ -270,41 +307,45 @@ internal fun SettingsRowsPage(onBack: () -> Unit) {
                     summary = "Also vibrate when the phone rings",
                     checked = vibrate,
                     onCheckedChange = { vibrate = it },
-                    icon = { Icon(painterResource(R.drawable.ic_t_bell), null) }
+                    icon = { Icon(painterResource(R.drawable.ic_t_bell), null) },
                 )
                 PvotSwitchRow(
                     title = "Dialpad tones",
                     checked = dtmf,
-                    onCheckedChange = { dtmf = it }
+                    onCheckedChange = { dtmf = it },
                 )
                 PvotSwitchRow(
                     title = "Disabled",
                     summary = "enabled = false",
                     checked = true,
                     onCheckedChange = {},
-                    enabled = false
+                    enabled = false,
                 )
             }
         }
-        DemoSection(title = "Preferences", caption = "Tap Ringtone to cycle its value", framed = false) {
+        DemoSection(
+            title = "Preferences",
+            caption = "Tap Ringtone to cycle its value",
+            framed = false,
+        ) {
             GlassPanelColumn {
                 PvotPreferenceRow(
                     title = "Ringtone",
                     value = tones[tone],
                     onClick = { tone = (tone + 1) % tones.size },
-                    icon = { Icon(painterResource(R.drawable.ic_t_wave_sine), null) }
+                    icon = { Icon(painterResource(R.drawable.ic_t_wave_sine), null) },
                 )
                 PvotPreferenceRow(
                     title = "Blocked numbers",
                     summary = "Calls and texts from these numbers are silenced",
                     onClick = {},
-                    icon = { Icon(painterResource(R.drawable.ic_t_x), null) }
+                    icon = { Icon(painterResource(R.drawable.ic_t_x), null) },
                 )
                 PvotPreferenceRow(
                     title = "Without a chevron",
                     value = "Off",
                     showChevron = false,
-                    onClick = {}
+                    onClick = {},
                 )
             }
         }
@@ -319,15 +360,22 @@ internal fun PvotButtonPage(onBack: () -> Unit) {
     var taps by remember { mutableIntStateOf(0) }
     DetailPage(
         title = "Button",
-        summary = "A pill button in four styles: one Filled for the main action, Tonal and Text for the " +
-            "rest, Destructive for what destroys. At least 48dp tall, squashes under the finger.",
+        summary =
+            "A pill button in four styles: one Filled for the main action, Tonal and Text for the " +
+                "rest, Destructive for what destroys. At least 48dp tall, squashes under the finger.",
         onBack = onBack,
-        code = "PvotButton(\n    text = \"Save\",\n    onClick = { save() },\n    style = PvotButtonStyle.Filled\n)"
+        code =
+            "PvotButton(\n    text = \"Save\",\n    onClick = { save() },\n    style = PvotButtonStyle.Filled\n)",
     ) {
         DemoSection(title = "Styles", caption = "Tapped $taps times") {
             OptionSwitch(label = "Enabled", checked = enabled, onCheckedChange = { enabled = it })
             PvotButtonStyle.entries.forEach { style ->
-                PvotButton(text = style.name, onClick = { taps++ }, style = style, enabled = enabled)
+                PvotButton(
+                    text = style.name,
+                    onClick = { taps++ },
+                    style = style,
+                    enabled = enabled,
+                )
             }
         }
         DemoSection(title = "With an icon, full width") {
@@ -336,7 +384,7 @@ internal fun PvotButtonPage(onBack: () -> Unit) {
                 onClick = { taps++ },
                 icon = painterResource(R.drawable.ic_t_plus),
                 enabled = enabled,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             PvotButton(
                 text = "Delete call log",
@@ -344,7 +392,7 @@ internal fun PvotButtonPage(onBack: () -> Unit) {
                 style = PvotButtonStyle.Destructive,
                 icon = painterResource(R.drawable.ic_t_trash),
                 enabled = enabled,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -358,22 +406,28 @@ internal fun TopBarPage(onBack: () -> Unit) {
     val send = rememberSnackbarSender()
     DetailPage(
         title = "Top bar",
-        summary = "Back, title and actions. Expanded, the title sits large under the bar; scroll the " +
-            "list and it folds into the bar, which takes a fill of its own.",
+        summary =
+            "Back, title and actions. Expanded, the title sits large under the bar; scroll the " +
+                "list and it folds into the bar, which takes a fill of its own.",
         onBack = onBack,
-        code = "val listState = rememberLazyListState()\nPvotTopBar(\n    title = \"Settings\",\n    onBack = ::finish,\n" +
-            "    compact = rememberPvotTopBarCompact(listState),\n    actions = {\n" +
-            "        PvotTopBarAction(searchIcon, \"Search\", onClick = { search() })\n    }\n)"
+        code =
+            "val listState = rememberLazyListState()\nPvotTopBar(\n    title = \"Settings\",\n    onBack = ::finish,\n" +
+                "    compact = rememberPvotTopBarCompact(listState),\n    actions = {\n" +
+                "        PvotTopBarAction(searchIcon, \"Search\", onClick = { search() })\n    }\n)",
     ) {
         DemoSection(title = "Scroll to compact", caption = "Scroll the list inside the frame") {
-            OptionSwitch(label = "Back button", checked = showBack, onCheckedChange = { showBack = it })
+            OptionSwitch(
+                label = "Back button",
+                checked = showBack,
+                onCheckedChange = { showBack = it },
+            )
             val listState = rememberLazyListState()
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(360.dp)
-                    .clip(PvotShapes.Card)
-                    .background(MaterialTheme.colorScheme.background)
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .height(360.dp)
+                        .clip(PvotShapes.Card)
+                        .background(MaterialTheme.colorScheme.background)
             ) {
                 PvotTopBar(
                     title = "Call settings",
@@ -384,13 +438,17 @@ internal fun TopBarPage(onBack: () -> Unit) {
                         PvotTopBarAction(
                             icon = painterResource(R.drawable.ic_t_search),
                             contentDescription = "Search",
-                            onClick = { send("Search") }
+                            onClick = { send("Search") },
                         )
-                    }
+                    },
                 )
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                     items((1..20).toList()) { index ->
-                        PvotListRow(title = "Setting $index", supportingText = "Detail", onClick = {})
+                        PvotListRow(
+                            title = "Setting $index",
+                            supportingText = "Detail",
+                            onClick = {},
+                        )
                     }
                 }
             }
@@ -406,20 +464,29 @@ internal fun SegmentedControlPage(onBack: () -> Unit) {
     var range by remember { mutableIntStateOf(1) }
     DetailPage(
         title = "Segmented control",
-        summary = "Mutually exclusive choices with a pill that slides to the selected one. Segments share " +
-            "the width; selecting ticks the haptics.",
+        summary =
+            "Mutually exclusive choices with a pill that slides to the selected one. Segments share " +
+                "the width; selecting ticks the haptics.",
         onBack = onBack,
-        code = "PvotSegmentedControl(\n    options = listOf(\"All\", \"Missed\"),\n    selectedIndex = filter,\n" +
-            "    onSelect = { filter = it }\n)"
+        code =
+            "PvotSegmentedControl(\n    options = listOf(\"All\", \"Missed\"),\n    selectedIndex = filter,\n" +
+                "    onSelect = { filter = it }\n)",
     ) {
-        DemoSection(title = "Two segments", caption = "Showing ${listOf("all calls", "missed calls")[filter]}") {
-            PvotSegmentedControl(options = listOf("All", "Missed"), selectedIndex = filter, onSelect = { filter = it })
+        DemoSection(
+            title = "Two segments",
+            caption = "Showing ${listOf("all calls", "missed calls")[filter]}",
+        ) {
+            PvotSegmentedControl(
+                options = listOf("All", "Missed"),
+                selectedIndex = filter,
+                onSelect = { filter = it },
+            )
         }
         DemoSection(title = "Three segments") {
             PvotSegmentedControl(
                 options = listOf("Day", "Week", "Month"),
                 selectedIndex = range,
-                onSelect = { range = it }
+                onSelect = { range = it },
             )
         }
         DemoSection(title = "Disabled") {
@@ -427,7 +494,7 @@ internal fun SegmentedControlPage(onBack: () -> Unit) {
                 options = listOf("Day", "Week", "Month"),
                 selectedIndex = range,
                 onSelect = {},
-                enabled = false
+                enabled = false,
             )
         }
     }
@@ -435,49 +502,100 @@ internal fun SegmentedControlPage(onBack: () -> Unit) {
 
 // ───────────────────────────── Fast scroller ─────────────────────────────
 
-private val Directory = listOf(
-    "Aanya", "Abel", "Ada", "Bea", "Bilal", "Bruno", "Chen", "Clara", "Dara", "Dev", "Diego", "Elif",
-    "Emeka", "Farah", "Felix", "Gita", "Hana", "Hugo", "Ines", "Ivan", "Jae", "Juno", "Kai", "Kiran",
-    "Lena", "Luca", "Maya", "Milo", "Nadia", "Noor", "Omar", "Priya", "Quinn", "Ravi", "Rosa", "Sana",
-    "Sven", "Tara", "Theo", "Uma", "Vera", "Wen", "Xavi", "Yara", "Zane", "Zoe"
-)
+private val Directory =
+    listOf(
+        "Aanya",
+        "Abel",
+        "Ada",
+        "Bea",
+        "Bilal",
+        "Bruno",
+        "Chen",
+        "Clara",
+        "Dara",
+        "Dev",
+        "Diego",
+        "Elif",
+        "Emeka",
+        "Farah",
+        "Felix",
+        "Gita",
+        "Hana",
+        "Hugo",
+        "Ines",
+        "Ivan",
+        "Jae",
+        "Juno",
+        "Kai",
+        "Kiran",
+        "Lena",
+        "Luca",
+        "Maya",
+        "Milo",
+        "Nadia",
+        "Noor",
+        "Omar",
+        "Priya",
+        "Quinn",
+        "Ravi",
+        "Rosa",
+        "Sana",
+        "Sven",
+        "Tara",
+        "Theo",
+        "Uma",
+        "Vera",
+        "Wen",
+        "Xavi",
+        "Yara",
+        "Zane",
+        "Zoe",
+    )
 
 @Composable
 internal fun FastScrollerPage(onBack: () -> Unit) {
     val send = rememberSnackbarSender()
     DetailPage(
         title = "Fast scroller",
-        summary = "Jumps through a long list by section. Drag along the end edge: a bubble shows the " +
-            "section under the finger and the phone ticks on each new one. It hides when the list fits.",
+        summary =
+            "Jumps through a long list by section. Drag along the end edge: a bubble shows the " +
+                "section under the finger and the phone ticks on each new one. It hides when the list fits.",
         onBack = onBack,
-        code = "Box {\n    LazyColumn(state = listState) { ... }\n    PvotFastScroller(\n" +
-            "        state = listState,\n        sections = sections, // PvotFastScrollSection(\"A\", index)\n" +
-            "        modifier = Modifier.align(Alignment.CenterEnd)\n    )\n}"
+        code =
+            "Box {\n    LazyColumn(state = listState) { ... }\n    PvotFastScroller(\n" +
+                "        state = listState,\n        sections = sections, // PvotFastScrollSection(\"A\", index)\n" +
+                "        modifier = Modifier.align(Alignment.CenterEnd)\n    )\n}",
     ) {
         DemoSection(title = "Contacts", caption = "Drag along the right edge of the frame") {
             val listState = rememberLazyListState()
             val names = remember { (Directory + Directory.map { "$it Jr." }).sorted() }
-            val sections = remember(names) {
-                names.withIndex()
-                    .distinctBy { it.value.first() }
-                    .map { PvotFastScrollSection(it.value.first().toString(), it.index) }
-            }
+            val sections =
+                remember(names) {
+                    names
+                        .withIndex()
+                        .distinctBy { it.value.first() }
+                        .map { PvotFastScrollSection(it.value.first().toString(), it.index) }
+                }
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(360.dp)
-                    .clip(PvotShapes.Card)
-                    .background(MaterialTheme.colorScheme.background)
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .height(360.dp)
+                        .clip(PvotShapes.Card)
+                        .background(MaterialTheme.colorScheme.background)
             ) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                     items(names) { name ->
-                        PvotListRow(title = name, leading = { PvotLetterTile(name) }, onClick = { send(name) })
+                        PvotListRow(
+                            title = name,
+                            leading = { PvotLetterTile(name) },
+                            onClick = { send(name) },
+                        )
                     }
                 }
                 PvotFastScroller(
                     state = listState,
                     sections = sections,
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier.align(Alignment.CenterEnd),
                 )
             }
         }
@@ -491,38 +609,40 @@ internal fun FabPage(onBack: () -> Unit) {
     val send = rememberSnackbarSender()
     DetailPage(
         title = "Floating action button",
-        summary = "The one main action of a screen. With a label it is a pill; set expanded to false, " +
-            "for example while the list scrolls, and the label folds into a round button.",
+        summary =
+            "The one main action of a screen. With a label it is a pill; set expanded to false, " +
+                "for example while the list scrolls, and the label folds into a round button.",
         onBack = onBack,
-        code = "PvotFab(\n    icon = painterResource(R.drawable.ic_dialpad),\n    contentDescription = \"Dialpad\",\n" +
-            "    text = \"Dialpad\",\n    expanded = !listState.isScrollInProgress,\n    onClick = { openDialpad() }\n)"
+        code =
+            "PvotFab(\n    icon = painterResource(R.drawable.ic_dialpad),\n    contentDescription = \"Dialpad\",\n" +
+                "    text = \"Dialpad\",\n    expanded = !listState.isScrollInProgress,\n    onClick = { openDialpad() }\n)",
     ) {
         DemoSection(title = "Round and extended") {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(PvotSpacing.L),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 PvotFab(
                     icon = painterResource(R.drawable.ic_t_plus),
                     contentDescription = "Add",
-                    onClick = { send("Add") }
+                    onClick = { send("Add") },
                 )
                 PvotFab(
                     icon = painterResource(R.drawable.ic_t_phone),
                     contentDescription = null,
                     text = "Call",
-                    onClick = { send("Call") }
+                    onClick = { send("Call") },
                 )
             }
         }
         DemoSection(title = "Folds while scrolling", caption = "Scroll the list inside the frame") {
             val listState = rememberLazyListState()
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(320.dp)
-                    .clip(PvotShapes.Card)
-                    .background(MaterialTheme.colorScheme.background)
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .height(320.dp)
+                        .clip(PvotShapes.Card)
+                        .background(MaterialTheme.colorScheme.background)
             ) {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                     items(People + People + People) { name ->
@@ -535,9 +655,7 @@ internal fun FabPage(onBack: () -> Unit) {
                     text = "Dialpad",
                     expanded = !listState.isScrollInProgress,
                     onClick = { send("Dialpad") },
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(PvotSpacing.L)
+                    modifier = Modifier.align(Alignment.BottomEnd).padding(PvotSpacing.L),
                 )
             }
         }
@@ -554,31 +672,44 @@ internal fun SnackbarPage(onBack: () -> Unit) {
     fun show(message: String, action: String? = null, dismiss: Boolean = false) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            val result = snackbar.showSnackbar(
-                message = message,
-                actionLabel = action,
-                withDismissAction = dismiss,
-                duration = if (dismiss) SnackbarDuration.Long else SnackbarDuration.Short
-            )
+            val result =
+                snackbar.showSnackbar(
+                    message = message,
+                    actionLabel = action,
+                    withDismissAction = dismiss,
+                    duration = if (dismiss) SnackbarDuration.Long else SnackbarDuration.Short,
+                )
             if (result == SnackbarResult.ActionPerformed) undone++
         }
     }
     DetailPage(
         title = "Snackbar",
-        summary = "A brief message at the bottom, with an optional action and close button. The catalog " +
-            "shows every message through PvotSnackbarHost.",
+        summary =
+            "A brief message at the bottom, with an optional action and close button. The catalog " +
+                "shows every message through PvotSnackbarHost.",
         onBack = onBack,
-        code = "val host = remember { SnackbarHostState() }\nPvotSnackbarHost(host)\n\n" +
-            "scope.launch {\n    if (host.showSnackbar(\"Deleted\", actionLabel = \"Undo\") ==\n" +
-            "        SnackbarResult.ActionPerformed) restore()\n}"
+        code =
+            "val host = remember { SnackbarHostState() }\nPvotSnackbarHost(host)\n\n" +
+                "scope.launch {\n    if (host.showSnackbar(\"Deleted\", actionLabel = \"Undo\") ==\n" +
+                "        SnackbarResult.ActionPerformed) restore()\n}",
     ) {
         DemoSection(title = "Show one", caption = "Undo tapped $undone times") {
-            PvotButton(text = "Message", onClick = { show("Call log cleared") }, style = PvotButtonStyle.Tonal)
-            PvotButton(text = "With Undo", onClick = { show("Contact deleted", action = "Undo") }, style = PvotButtonStyle.Tonal)
+            PvotButton(
+                text = "Message",
+                onClick = { show("Call log cleared") },
+                style = PvotButtonStyle.Tonal,
+            )
+            PvotButton(
+                text = "With Undo",
+                onClick = { show("Contact deleted", action = "Undo") },
+                style = PvotButtonStyle.Tonal,
+            )
             PvotButton(
                 text = "With close button",
-                onClick = { show("Blocked numbers are silenced on this phone only", dismiss = true) },
-                style = PvotButtonStyle.Tonal
+                onClick = {
+                    show("Blocked numbers are silenced on this phone only", dismiss = true)
+                },
+                style = PvotButtonStyle.Tonal,
             )
         }
     }

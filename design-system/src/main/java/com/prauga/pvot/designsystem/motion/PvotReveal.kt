@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.Dp
 /**
  * Fades and lifts content into place, staggered by [index].
  *
- * The delay stops growing past [maxStaggered] so a long list does not end up
- * waiting on an animation that started off screen.
+ * The delay stops growing past [maxStaggered] so a long list does not end up waiting on an
+ * animation that started off screen.
  *
  * @param index Position in the staggered sequence, usually the item's index
  * @param rise How far the content travels up into place
@@ -44,15 +44,17 @@ public fun Modifier.pvotReveal(
     val inspecting = LocalInspectionMode.current
     var appeared by remember { mutableStateOf(inspecting) }
 
-    val progress by animateFloatAsState(
-        targetValue = if (appeared) 1f else 0f,
-        animationSpec = tween(
-            durationMillis = durationMillis,
-            delayMillis = index.coerceAtMost(maxStaggered) * staggerStepMillis,
-            easing = easing,
-        ),
-        label = "pvotReveal",
-    )
+    val progress by
+        animateFloatAsState(
+            targetValue = if (appeared) 1f else 0f,
+            animationSpec =
+                tween(
+                    durationMillis = durationMillis,
+                    delayMillis = index.coerceAtMost(maxStaggered) * staggerStepMillis,
+                    easing = easing,
+                ),
+            label = "pvotReveal",
+        )
 
     LaunchedEffect(Unit) { appeared = true }
 

@@ -52,7 +52,7 @@ public data class PvotIconButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val checkedContainerColor: Color,
-    val checkedContentColor: Color
+    val checkedContentColor: Color,
 )
 
 /** Defaults for [PvotIconButton]. */
@@ -80,40 +80,44 @@ public object PvotIconButtonDefaults {
     @Composable
     public fun tonalColors(
         checkedContainerColor: Color = MaterialTheme.colorScheme.primary,
-        checkedContentColor: Color = MaterialTheme.colorScheme.onPrimary
-    ): PvotIconButtonColors = PvotIconButtonColors(
-        containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        checkedContainerColor = checkedContainerColor,
-        checkedContentColor = checkedContentColor
-    )
+        checkedContentColor: Color = MaterialTheme.colorScheme.onPrimary,
+    ): PvotIconButtonColors =
+        PvotIconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            checkedContainerColor = checkedContainerColor,
+            checkedContentColor = checkedContentColor,
+        )
 
     /** A primary circle, for the one action a row leads with. */
     @Composable
-    public fun filledColors(): PvotIconButtonColors = PvotIconButtonColors(
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        checkedContainerColor = MaterialTheme.colorScheme.primary,
-        checkedContentColor = MaterialTheme.colorScheme.onPrimary
-    )
+    public fun filledColors(): PvotIconButtonColors =
+        PvotIconButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            checkedContainerColor = MaterialTheme.colorScheme.primary,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+        )
 
     /** No circle: just the icon, for an action at the end of a list row. */
     @Composable
-    public fun plainColors(contentColor: Color = MaterialTheme.colorScheme.onSurface): PvotIconButtonColors =
+    public fun plainColors(
+        contentColor: Color = MaterialTheme.colorScheme.onSurface
+    ): PvotIconButtonColors =
         PvotIconButtonColors(
             containerColor = Color.Transparent,
             contentColor = contentColor,
             checkedContainerColor = MaterialTheme.colorScheme.primary,
-            checkedContentColor = MaterialTheme.colorScheme.onPrimary
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
         )
 }
 
 /**
  * A round button with an icon and no label, such as call back on a card, or mute in a call.
  *
- * With [checked] it is a toggle: the fill turns to the checked color, TalkBack reads it as a
- * switch with its state, and turning it on or off ticks the matching haptic. The circle is the
- * touch target; keep [size] at 48dp or more where it stands alone.
+ * With [checked] it is a toggle: the fill turns to the checked color, TalkBack reads it as a switch
+ * with its state, and turning it on or off ticks the matching haptic. The circle is the touch
+ * target; keep [size] at 48dp or more where it stands alone.
  *
  * @param icon The button's icon
  * @param contentDescription What TalkBack reads
@@ -134,55 +138,69 @@ public fun PvotIconButton(
     size: Dp = PvotIconButtonDefaults.Size,
     checked: Boolean? = null,
     enabled: Boolean = true,
-    iconSize: Dp = if (size < PvotIconButtonDefaults.Size) {
-        PvotIconButtonDefaults.SmallIconSize
-    } else {
-        PvotIconButtonDefaults.IconSize
-    },
-    colors: PvotIconButtonColors = PvotIconButtonDefaults.tonalColors()
+    iconSize: Dp =
+        if (size < PvotIconButtonDefaults.Size) {
+            PvotIconButtonDefaults.SmallIconSize
+        } else {
+            PvotIconButtonDefaults.IconSize
+        },
+    colors: PvotIconButtonColors = PvotIconButtonDefaults.tonalColors(),
 ) {
     val source = remember { MutableInteractionSource() }
     val haptics = LocalHapticFeedback.current
     val on = checked == true
     val spec = tween<Color>(PvotDurations.Medium, easing = PvotMotion.Settle)
-    val container by animateColorAsState(
-        if (on) colors.checkedContainerColor else colors.containerColor, spec, label = "iconButtonFill"
-    )
-    val content by animateColorAsState(
-        if (on) colors.checkedContentColor else colors.contentColor, spec, label = "iconButtonIcon"
-    )
+    val container by
+        animateColorAsState(
+            if (on) colors.checkedContainerColor else colors.containerColor,
+            spec,
+            label = "iconButtonFill",
+        )
+    val content by
+        animateColorAsState(
+            if (on) colors.checkedContentColor else colors.contentColor,
+            spec,
+            label = "iconButtonIcon",
+        )
     val stateOn = stringResource(R.string.pvot_state_on)
     val stateOff = stringResource(R.string.pvot_state_off)
     Box(
-        modifier = modifier
-            .size(size)
-            .alpha(if (enabled) 1f else PvotIconButtonDefaults.DisabledAlpha)
-            .pvotPressScale(source)
-            .clip(PvotShapes.Pill)
-            .background(container)
-            .clickable(
-                interactionSource = source,
-                indication = null,
-                enabled = enabled,
-                role = if (checked != null) Role.Switch else Role.Button,
-                onClick = {
+        modifier =
+            modifier
+                .size(size)
+                .alpha(if (enabled) 1f else PvotIconButtonDefaults.DisabledAlpha)
+                .pvotPressScale(source)
+                .clip(PvotShapes.Pill)
+                .background(container)
+                .clickable(
+                    interactionSource = source,
+                    indication = null,
+                    enabled = enabled,
+                    role = if (checked != null) Role.Switch else Role.Button,
+                    onClick = {
+                        if (checked != null) {
+                            haptics.performHapticFeedback(
+                                if (checked) HapticFeedbackType.ToggleOff
+                                else HapticFeedbackType.ToggleOn
+                            )
+                        }
+                        onClick()
+                    },
+                )
+                .semantics {
+                    this.contentDescription = contentDescription
                     if (checked != null) {
-                        haptics.performHapticFeedback(
-                            if (checked) HapticFeedbackType.ToggleOff else HapticFeedbackType.ToggleOn
-                        )
+                        toggleableState = ToggleableState(checked)
+                        stateDescription = if (checked) stateOn else stateOff
                     }
-                    onClick()
-                }
-            )
-            .semantics {
-                this.contentDescription = contentDescription
-                if (checked != null) {
-                    toggleableState = ToggleableState(checked)
-                    stateDescription = if (checked) stateOn else stateOff
-                }
-            },
-        contentAlignment = Alignment.Center
+                },
+        contentAlignment = Alignment.Center,
     ) {
-        Icon(painter = icon, contentDescription = null, tint = content, modifier = Modifier.size(iconSize))
+        Icon(
+            painter = icon,
+            contentDescription = null,
+            tint = content,
+            modifier = Modifier.size(iconSize),
+        )
     }
 }

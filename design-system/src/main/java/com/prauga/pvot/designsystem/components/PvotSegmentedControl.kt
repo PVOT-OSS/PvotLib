@@ -59,7 +59,7 @@ public data class PvotSegmentedControlColors(
     val trackColor: Color,
     val indicatorColor: Color,
     val selectedContentColor: Color,
-    val contentColor: Color
+    val contentColor: Color,
 )
 
 /** Defaults for [PvotSegmentedControl]. */
@@ -80,13 +80,14 @@ public object PvotSegmentedControlDefaults {
         trackColor: Color = colorScheme.onSurface.copy(alpha = 0.07f),
         indicatorColor: Color = colorScheme.primary,
         selectedContentColor: Color = colorScheme.onPrimary,
-        contentColor: Color = colorScheme.onSurfaceVariant
-    ): PvotSegmentedControlColors = PvotSegmentedControlColors(
-        trackColor = trackColor,
-        indicatorColor = indicatorColor,
-        selectedContentColor = selectedContentColor,
-        contentColor = contentColor
-    )
+        contentColor: Color = colorScheme.onSurfaceVariant,
+    ): PvotSegmentedControlColors =
+        PvotSegmentedControlColors(
+            trackColor = trackColor,
+            indicatorColor = indicatorColor,
+            selectedContentColor = selectedContentColor,
+            contentColor = contentColor,
+        )
 
     /** Control colors from the theme's color scheme. */
     @Composable
@@ -94,8 +95,8 @@ public object PvotSegmentedControlDefaults {
 }
 
 /**
- * A row of mutually exclusive choices, such as All and Missed, with a pill that slides to the
- * one selected.
+ * A row of mutually exclusive choices, such as All and Missed, with a pill that slides to the one
+ * selected.
  *
  * Segments share the width equally; keep labels short and to two to four segments. Selecting one
  * ticks the haptics. TalkBack reads the control as a group of radio buttons.
@@ -114,69 +115,75 @@ public fun PvotSegmentedControl(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: PvotSegmentedControlColors = PvotSegmentedControlDefaults.themeColors()
+    colors: PvotSegmentedControlColors = PvotSegmentedControlDefaults.themeColors(),
 ) {
     if (options.isEmpty()) return
     val haptics = LocalHapticFeedback.current
-    val position by animateFloatAsState(
-        targetValue = selectedIndex.coerceIn(0, options.lastIndex).toFloat(),
-        animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
-        label = "pvotSegmentIndicator"
-    )
+    val position by
+        animateFloatAsState(
+            targetValue = selectedIndex.coerceIn(0, options.lastIndex).toFloat(),
+            animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
+            label = "pvotSegmentIndicator",
+        )
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(PvotSegmentedControlDefaults.Height)
-            .alpha(if (enabled) 1f else 0.38f)
-            .clip(PvotSegmentedControlDefaults.Shape)
-            .background(colors.trackColor)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(PvotSegmentedControlDefaults.Height)
+                .alpha(if (enabled) 1f else 0.38f)
+                .clip(PvotSegmentedControlDefaults.Shape)
+                .background(colors.trackColor)
     ) {
         val segmentWidth = maxWidth / options.size
         Box(
-            modifier = Modifier
-                .width(segmentWidth)
-                .fillMaxHeight()
-                // Offset, not absoluteOffset: the pill follows the layout direction.
-                .offset { IntOffset((segmentWidth.toPx() * position).roundToInt(), 0) }
-                .padding(PvotSegmentedControlDefaults.IndicatorInset)
-                .background(colors.indicatorColor, PvotSegmentedControlDefaults.Shape)
+            modifier =
+                Modifier.width(segmentWidth)
+                    .fillMaxHeight()
+                    // Offset, not absoluteOffset: the pill follows the layout direction.
+                    .offset { IntOffset((segmentWidth.toPx() * position).roundToInt(), 0) }
+                    .padding(PvotSegmentedControlDefaults.IndicatorInset)
+                    .background(colors.indicatorColor, PvotSegmentedControlDefaults.Shape)
         )
         Row(modifier = Modifier.fillMaxWidth().fillMaxHeight().selectableGroup()) {
             options.forEachIndexed { index, label ->
                 val selected = index == selectedIndex
                 val interactionSource = remember { MutableInteractionSource() }
-                val content by animateColorAsState(
-                    targetValue = if (selected) colors.selectedContentColor else colors.contentColor,
-                    animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
-                    label = "pvotSegmentContent"
-                )
+                val content by
+                    animateColorAsState(
+                        targetValue =
+                            if (selected) colors.selectedContentColor else colors.contentColor,
+                        animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
+                        label = "pvotSegmentContent",
+                    )
                 Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .pvotPressScale(interactionSource)
-                        .selectable(
-                            selected = selected,
-                            interactionSource = interactionSource,
-                            indication = null,
-                            enabled = enabled,
-                            role = Role.RadioButton,
-                            onClick = {
-                                if (!selected) {
-                                    haptics.performHapticFeedback(HapticFeedbackType.SegmentTick)
-                                    onSelect(index)
-                                }
-                            }
-                        )
-                        .padding(horizontal = PvotSpacing.M),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier.weight(1f)
+                            .fillMaxHeight()
+                            .pvotPressScale(interactionSource)
+                            .selectable(
+                                selected = selected,
+                                interactionSource = interactionSource,
+                                indication = null,
+                                enabled = enabled,
+                                role = Role.RadioButton,
+                                onClick = {
+                                    if (!selected) {
+                                        haptics.performHapticFeedback(
+                                            HapticFeedbackType.SegmentTick
+                                        )
+                                        onSelect(index)
+                                    }
+                                },
+                            )
+                            .padding(horizontal = PvotSpacing.M),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(
                         text = label,
                         style = MaterialTheme.typography.labelLarge,
                         color = content,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             }

@@ -55,11 +55,13 @@ internal fun TabRowPage(onBack: () -> Unit) {
     var many by remember { mutableIntStateOf(0) }
     DetailPage(
         title = "Tab row",
-        summary = "Text tabs with a line under the selected one that slides to the tab tapped. A light " +
-            "way to switch what a list shows.",
+        summary =
+            "Text tabs with a line under the selected one that slides to the tab tapped. A light " +
+                "way to switch what a list shows.",
         onBack = onBack,
-        code = "PvotTabRow(\n    tabs = listOf(\"All\", \"Missed\", \"Contacts\", \"Blocked\"),\n" +
-            "    selectedIndex = filter,\n    onSelect = { filter = it }\n)"
+        code =
+            "PvotTabRow(\n    tabs = listOf(\"All\", \"Missed\", \"Contacts\", \"Blocked\"),\n" +
+                "    selectedIndex = filter,\n    onSelect = { filter = it }\n)",
     ) {
         DemoSection(title = "Shared width") {
             PvotTabRow(listOf("All", "Missed", "Contacts", "Blocked"), filter, { filter = it })
@@ -69,7 +71,7 @@ internal fun TabRowPage(onBack: () -> Unit) {
                 listOf("All voicemail", "New", "Archived", "From contacts", "Unknown"),
                 many,
                 { many = it },
-                scrollable = true
+                scrollable = true,
             )
         }
     }
@@ -83,29 +85,42 @@ internal fun ListGroupPage(onBack: () -> Unit) {
     var vibrate by remember { mutableStateOf(true) }
     DetailPage(
         title = "List group",
-        summary = "Rows that belong together on one card, with a hairline between each and an optional " +
-            "title. Rows in a group take plain icons and an arrow.",
+        summary =
+            "Rows that belong together on one card, with a hairline between each and an optional " +
+                "title. Rows in a group take plain icons and an arrow.",
         onBack = onBack,
-        code = "PvotListGroup(title = \"General\") {\n    item {\n        PvotPreferenceRow(\"Appearance\", onClick = ::open,\n" +
-            "            icon = { Icon(palette, null) }, iconStyle = PvotRowIconStyle.Plain,\n" +
-            "            chevron = PvotRowChevron.Arrow)\n    }\n}"
+        code =
+            "PvotListGroup(title = \"General\") {\n    item {\n        PvotPreferenceRow(\"Appearance\", onClick = ::open,\n" +
+                "            icon = { Icon(palette, null) }, iconStyle = PvotRowIconStyle.Plain,\n" +
+                "            chevron = PvotRowChevron.Arrow)\n    }\n}",
     ) {
         DemoSection(title = "Settings", framed = false) {
             Column(verticalArrangement = Arrangement.spacedBy(SectionGap)) {
                 PvotListGroup(title = "Call assist") {
-                    item { GroupRow("Caller ID and spam", R.drawable.ic_t_phone) { send("Caller ID") } }
+                    item {
+                        GroupRow("Caller ID and spam", R.drawable.ic_t_phone) { send("Caller ID") }
+                    }
                 }
                 PvotListGroup(title = "General") {
                     item { GroupRow("Appearance", R.drawable.ic_t_palette) { send("Appearance") } }
-                    item { GroupRow("Sounds and vibration", R.drawable.ic_t_volume) { send("Sounds") } }
-                    item { GroupRow("Notifications", R.drawable.ic_t_bell) { send("Notifications") } }
+                    item {
+                        GroupRow("Sounds and vibration", R.drawable.ic_t_volume) { send("Sounds") }
+                    }
+                    item {
+                        GroupRow("Notifications", R.drawable.ic_t_bell) { send("Notifications") }
+                    }
                     item {
                         PvotSwitchRow(
                             title = "Vibrate when ringing",
                             checked = vibrate,
                             onCheckedChange = { vibrate = it },
-                            icon = { Icon(painterResource(R.drawable.ic_t_wave_sine), contentDescription = null) },
-                            iconStyle = PvotRowIconStyle.Plain
+                            icon = {
+                                Icon(
+                                    painterResource(R.drawable.ic_t_wave_sine),
+                                    contentDescription = null,
+                                )
+                            },
+                            iconStyle = PvotRowIconStyle.Plain,
                         )
                     }
                 }
@@ -121,7 +136,7 @@ private fun GroupRow(title: String, icon: Int, onClick: () -> Unit) {
         onClick = onClick,
         icon = { Icon(painterResource(icon), contentDescription = null) },
         iconStyle = PvotRowIconStyle.Plain,
-        chevron = PvotRowChevron.Arrow
+        chevron = PvotRowChevron.Arrow,
     )
 }
 
@@ -135,28 +150,46 @@ internal fun PvotProgressPage(onBack: () -> Unit) {
         var last = 0L
         while (playing) {
             withFrameNanos { now ->
-                if (last != 0L) position = (position + (now - last) / 20_000_000_000f).let { if (it > 1f) 0f else it }
+                if (last != 0L)
+                    position =
+                        (position + (now - last) / 20_000_000_000f).let { if (it > 1f) 0f else it }
                 last = now
             }
         }
     }
     DetailPage(
         title = "Progress bars",
-        summary = "A thin bar for how far along something is, which can seek, and a bar split into " +
-            "shares whose parts are tonal steps of one hue.",
+        summary =
+            "A thin bar for how far along something is, which can seek, and a bar split into " +
+                "shares whose parts are tonal steps of one hue.",
         onBack = onBack,
-        code = "PvotLinearProgress(progress = { position }, onSeek = player::seekTo)\n" +
-            "PvotProportionBar(segments = listOf(incoming, outgoing, missed))"
+        code =
+            "PvotLinearProgress(progress = { position }, onSeek = player::seekTo)\n" +
+                "PvotProportionBar(segments = listOf(incoming, outgoing, missed))",
     ) {
-        DemoSection(title = "Seekable", caption = "Tap or drag along the bar · ${"%.0f".format(position * 100)}%") {
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M)) {
+        DemoSection(
+            title = "Seekable",
+            caption = "Tap or drag along the bar · ${"%.0f".format(position * 100)}%",
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M),
+            ) {
                 PvotIconButton(
-                    icon = painterResource(if (playing) R.drawable.ic_t_player_pause else R.drawable.ic_t_player_play),
+                    icon =
+                        painterResource(
+                            if (playing) R.drawable.ic_t_player_pause
+                            else R.drawable.ic_t_player_play
+                        ),
                     contentDescription = if (playing) "Pause" else "Play",
                     onClick = { playing = !playing },
-                    size = PvotIconButtonDefaults.SmallSize
+                    size = PvotIconButtonDefaults.SmallSize,
                 )
-                PvotLinearProgress(progress = { position }, onSeek = { position = it }, modifier = Modifier.weight(1f))
+                PvotLinearProgress(
+                    progress = { position },
+                    onSeek = { position = it },
+                    modifier = Modifier.weight(1f),
+                )
             }
         }
         DemoSection(title = "Shares", caption = "One hue, four steps") {
@@ -171,7 +204,7 @@ internal fun PvotProgressPage(onBack: () -> Unit) {
                         Text(
                             text = "$label · ${(shares[i] * 100).toInt()}%",
                             style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(start = PvotSpacing.S)
+                            modifier = Modifier.padding(start = PvotSpacing.S),
                         )
                     }
                 }
@@ -189,47 +222,97 @@ internal fun CapsulePage(onBack: () -> Unit) {
     var muted by remember { mutableStateOf(true) }
     DetailPage(
         title = "Icon buttons and capsule",
-        summary = "Round buttons with an icon, grouped on a capsule; as a call's controls with the end " +
-            "pill under them, its label inside.",
+        summary =
+            "Round buttons with an icon, grouped on a capsule; as a call's controls with the end " +
+                "pill under them, its label inside.",
         onBack = onBack,
-        code = "PvotCapsule {\n    PvotIconButton(mic, \"Mute\", ::toggleMute, size = PvotIconButtonDefaults.LargeSize,\n" +
-            "        checked = muted, colors = PvotIconButtonDefaults.tonalColors(checkedContainerColor = error))\n}\n" +
-            "PvotCallActionButton(PvotCallAction.End, phoneOff, \"End\", ::hangUp, labelInside = true)"
+        code =
+            "PvotCapsule {\n    PvotIconButton(mic, \"Mute\", ::toggleMute, size = PvotIconButtonDefaults.LargeSize,\n" +
+                "        checked = muted, colors = PvotIconButtonDefaults.tonalColors(checkedContainerColor = error))\n}\n" +
+                "PvotCallActionButton(PvotCallAction.End, phoneOff, \"End\", ::hangUp, labelInside = true)",
     ) {
         DemoSection(title = "Call controls", caption = "Mute turns red while on", framed = false) {
             Box(
-                Modifier
-                    .fillMaxWidth()
+                Modifier.fillMaxWidth()
                     .clip(PvotShapes.Card)
                     .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     .padding(vertical = PvotSpacing.L * 2),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     PvotCapsule {
                         val size = PvotIconButtonDefaults.LargeSize
-                        PvotIconButton(painterResource(R.drawable.ic_t_volume), "Speaker", { speaker = !speaker }, size = size, checked = speaker)
                         PvotIconButton(
-                            painterResource(R.drawable.ic_t_microphone_off), "Mute", { muted = !muted }, size = size, checked = muted,
-                            colors = PvotIconButtonDefaults.tonalColors(
-                                checkedContainerColor = MaterialTheme.colorScheme.error,
-                                checkedContentColor = MaterialTheme.colorScheme.onError
-                            )
+                            painterResource(R.drawable.ic_t_volume),
+                            "Speaker",
+                            { speaker = !speaker },
+                            size = size,
+                            checked = speaker,
                         )
-                        PvotIconButton(painterResource(R.drawable.ic_t_dialpad), "Keypad", { send("Keypad") }, size = size)
-                        PvotIconButton(painterResource(R.drawable.ic_t_dots_vertical), "More", { send("More") }, size = size)
+                        PvotIconButton(
+                            painterResource(R.drawable.ic_t_microphone_off),
+                            "Mute",
+                            { muted = !muted },
+                            size = size,
+                            checked = muted,
+                            colors =
+                                PvotIconButtonDefaults.tonalColors(
+                                    checkedContainerColor = MaterialTheme.colorScheme.error,
+                                    checkedContentColor = MaterialTheme.colorScheme.onError,
+                                ),
+                        )
+                        PvotIconButton(
+                            painterResource(R.drawable.ic_t_dialpad),
+                            "Keypad",
+                            { send("Keypad") },
+                            size = size,
+                        )
+                        PvotIconButton(
+                            painterResource(R.drawable.ic_t_dots_vertical),
+                            "More",
+                            { send("More") },
+                            size = size,
+                        )
                     }
                     Spacer(Modifier.height(PvotSpacing.L * 3))
-                    PvotCallActionButton(PvotCallAction.End, painterResource(R.drawable.ic_t_phone_off), "End", { send("End") }, labelInside = true)
+                    PvotCallActionButton(
+                        PvotCallAction.End,
+                        painterResource(R.drawable.ic_t_phone_off),
+                        "End",
+                        { send("End") },
+                        labelInside = true,
+                    )
                 }
             }
         }
         DemoSection(title = "Sizes and colors") {
-            Row(horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M), verticalAlignment = Alignment.CenterVertically) {
-                PvotIconButton(painterResource(R.drawable.ic_t_phone), "Call", { send("Call") }, colors = PvotIconButtonDefaults.filledColors())
-                PvotIconButton(painterResource(R.drawable.ic_t_user), "Contact", { send("Contact") })
-                PvotIconButton(painterResource(R.drawable.ic_t_phone), "Call", { send("Call") }, size = PvotIconButtonDefaults.SmallSize)
-                PvotIconButton(painterResource(R.drawable.ic_t_phone), "Call", { send("Call") }, colors = PvotIconButtonDefaults.plainColors())
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(PvotSpacing.M),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                PvotIconButton(
+                    painterResource(R.drawable.ic_t_phone),
+                    "Call",
+                    { send("Call") },
+                    colors = PvotIconButtonDefaults.filledColors(),
+                )
+                PvotIconButton(
+                    painterResource(R.drawable.ic_t_user),
+                    "Contact",
+                    { send("Contact") },
+                )
+                PvotIconButton(
+                    painterResource(R.drawable.ic_t_phone),
+                    "Call",
+                    { send("Call") },
+                    size = PvotIconButtonDefaults.SmallSize,
+                )
+                PvotIconButton(
+                    painterResource(R.drawable.ic_t_phone),
+                    "Call",
+                    { send("Call") },
+                    colors = PvotIconButtonDefaults.plainColors(),
+                )
                 Spacer(Modifier.width(PvotSpacing.S))
             }
         }

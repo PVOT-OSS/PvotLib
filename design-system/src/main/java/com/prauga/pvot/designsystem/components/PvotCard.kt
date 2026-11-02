@@ -39,15 +39,13 @@ public object PvotCardDefaults {
     ): CardColors = CardDefaults.cardColors(containerColor = containerColor)
 
     /** The card's default elevation. */
-    @Composable
-    public fun elevation(): CardElevation = CardDefaults.cardElevation()
+    @Composable public fun elevation(): CardElevation = CardDefaults.cardElevation()
 }
 
 /**
  * A rounded, translucent surface for grouping content.
  *
- * Pass [onClick] to make the whole card act as a button; leave it null for a
- * static card.
+ * Pass [onClick] to make the whole card act as a button; leave it null for a static card.
  *
  * @param modifier Modifier for the card
  * @param onClick Called when the card is tapped, or null for a non-clickable card
@@ -56,8 +54,8 @@ public object PvotCardDefaults {
  * @param colors The card's colors
  * @param elevation The card's elevation
  * @param border An optional border drawn around the card
- * @param interactionSource The source driving the press animation, hoist it to react
- * to presses elsewhere
+ * @param interactionSource The source driving the press animation, hoist it to react to presses
+ *   elsewhere
  */
 @Composable
 public fun PvotCard(
@@ -69,23 +67,21 @@ public fun PvotCard(
     elevation: CardElevation = PvotCardDefaults.elevation(),
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     if (onClick != null) {
         // The card's own click overload, so the press highlight is clipped to the card's shape. A
         // clickable around the card would draw it over the card's square bounds instead.
         Card(
             onClick = onClick,
-            modifier = modifier
-                .pvotPressScale(interactionSource)
-                .semantics { role = Role.Button },
+            modifier = modifier.pvotPressScale(interactionSource).semantics { role = Role.Button },
             enabled = enabled,
             shape = shape,
             colors = colors,
             elevation = elevation,
             border = border,
             interactionSource = interactionSource,
-            content = content
+            content = content,
         )
     } else {
         Card(
@@ -94,7 +90,7 @@ public fun PvotCard(
             colors = colors,
             elevation = elevation,
             border = border,
-            content = content
+            content = content,
         )
     }
 }

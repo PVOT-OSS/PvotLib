@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 public data class PvotPickerColors(
     val textColor: Color,
     val textSecondaryColor: Color,
-    val selectionBackgroundColor: Color
+    val selectionBackgroundColor: Color,
 )
 
 /** Defaults for [PvotClockPicker] and [PvotDurationPicker]. */
@@ -37,21 +37,22 @@ public object PvotPickerDefaults {
     public fun colors(
         textColor: Color = TextColor,
         textSecondaryColor: Color = TextSecondaryColor,
-        selectionBackgroundColor: Color = SelectionBackgroundColor
-    ): PvotPickerColors = PvotPickerColors(
-        textColor = textColor,
-        textSecondaryColor = textSecondaryColor,
-        selectionBackgroundColor = selectionBackgroundColor
-    )
+        selectionBackgroundColor: Color = SelectionBackgroundColor,
+    ): PvotPickerColors =
+        PvotPickerColors(
+            textColor = textColor,
+            textSecondaryColor = textSecondaryColor,
+            selectionBackgroundColor = selectionBackgroundColor,
+        )
 
     /** Picker colors derived from [colorScheme]. */
-    public fun colors(colorScheme: ColorScheme): PvotPickerColors = PvotPickerColors(
-        textColor = colorScheme.onBackground,
-        textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
-        selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f)
-    )
+    public fun colors(colorScheme: ColorScheme): PvotPickerColors =
+        PvotPickerColors(
+            textColor = colorScheme.onBackground,
+            textSecondaryColor = colorScheme.onBackground.copy(alpha = 0.7f),
+            selectionBackgroundColor = colorScheme.onBackground.copy(alpha = 0.1f),
+        )
 
     /** Picker colors derived from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotPickerColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotPickerColors = colors(MaterialTheme.colorScheme)
 }

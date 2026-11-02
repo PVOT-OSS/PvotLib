@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # Revamping an existing app onto PvotLib
 
 A playbook for moving an app (PvotMeasure, PvotCalculator, Messages, ...) from its current UI to the

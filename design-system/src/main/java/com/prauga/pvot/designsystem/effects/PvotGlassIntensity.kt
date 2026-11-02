@@ -25,8 +25,9 @@ import androidx.core.content.ContextCompat
  *
  * Provided by tests to force one answer; apps leave it alone.
  */
-public val LocalPvotGlassReduced: ProvidableCompositionLocal<Boolean?> =
-    staticCompositionLocalOf { null }
+public val LocalPvotGlassReduced: ProvidableCompositionLocal<Boolean?> = staticCompositionLocalOf {
+    null
+}
 
 /**
  * Holds an app's glass preference to what the device can and should draw.
@@ -39,28 +40,31 @@ public val LocalPvotGlassReduced: ProvidableCompositionLocal<Boolean?> =
 public object PvotGlassIntensity {
 
     /**
-     * Whether the device asks for less effect right now: battery saver is on, or the device
-     * cannot blur. Observed live, so the glass follows the battery saver switch.
+     * Whether the device asks for less effect right now: battery saver is on, or the device cannot
+     * blur. Observed live, so the glass follows the battery saver switch.
      */
     @Composable
     public fun isReduced(): Boolean {
-        LocalPvotGlassReduced.current?.let { return it }
+        LocalPvotGlassReduced.current?.let {
+            return it
+        }
         if (!PvotGlassDefaults.isBlurSupported) return true
         val context = LocalContext.current
         val powerManager = remember(context) { context.getSystemService(PowerManager::class.java) }
         var saving by remember { mutableStateOf(powerManager?.isPowerSaveMode == true) }
         DisposableEffect(context, powerManager) {
             if (powerManager == null) return@DisposableEffect onDispose {}
-            val receiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    saving = powerManager.isPowerSaveMode
+            val receiver =
+                object : BroadcastReceiver() {
+                    override fun onReceive(context: Context, intent: Intent) {
+                        saving = powerManager.isPowerSaveMode
+                    }
                 }
-            }
             ContextCompat.registerReceiver(
                 context,
                 receiver,
                 IntentFilter(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED),
-                ContextCompat.RECEIVER_NOT_EXPORTED
+                ContextCompat.RECEIVER_NOT_EXPORTED,
             )
             saving = powerManager.isPowerSaveMode
             onDispose { context.unregisterReceiver(receiver) }
@@ -69,8 +73,8 @@ public object PvotGlassIntensity {
     }
 
     /**
-     * [preferred] held to the device: [PvotGlassDefaults.SolidIntensity] while [isReduced], else
-     * at most [PvotGlassDefaults.maxIntensity].
+     * [preferred] held to the device: [PvotGlassDefaults.SolidIntensity] while [isReduced], else at
+     * most [PvotGlassDefaults.maxIntensity].
      *
      * @param preferred The app's preference, 0 to 1
      */
@@ -81,9 +85,9 @@ public object PvotGlassIntensity {
 }
 
 /**
- * Provides [LocalPvotGlassIntensity] to [content] as [PvotGlassIntensity.effective] of
- * [preferred]: the app's preference, held to what the device can draw and set to solid while
- * battery saver is on.
+ * Provides [LocalPvotGlassIntensity] to [content] as [PvotGlassIntensity.effective] of [preferred]:
+ * the app's preference, held to what the device can draw and set to solid while battery saver is
+ * on.
  *
  * @param preferred The app's glass preference, 0 to 1
  * @param content The tree whose glass reads the intensity
@@ -92,6 +96,6 @@ public object PvotGlassIntensity {
 public fun ProvidePvotGlassIntensity(preferred: Float, content: @Composable () -> Unit) {
     CompositionLocalProvider(
         LocalPvotGlassIntensity provides PvotGlassIntensity.effective(preferred),
-        content = content
+        content = content,
     )
 }

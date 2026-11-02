@@ -25,60 +25,47 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.prauga.pvot.catalog.R
-import com.prauga.pvot.catalog.legacy.LocalAppIcons
 import com.prauga.pvot.catalog.data.model.GithubRepo
+import com.prauga.pvot.catalog.legacy.LocalAppIcons
 
 @Composable
-fun AppCard(
-    repo: GithubRepo,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    GlassPanel(
-        modifier = modifier,
-        onClick = onClick
-    ) {
-        Column(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+fun AppCard(repo: GithubRepo, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    GlassPanel(modifier = modifier, onClick = onClick) {
+        Column(modifier = Modifier.fillMaxWidth()) {
             AsyncImage(
                 model = repo.socialPreviewUrl,
                 contentDescription = stringResource(R.string.cd_preview, repo.name),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(2f)
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                contentScale = ContentScale.Crop
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .aspectRatio(2f)
+                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                contentScale = ContentScale.Crop,
             )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
+            Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = repo.name,
                         style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
                         Icon(
                             painter = painterResource(id = LocalAppIcons.current.star),
                             contentDescription = stringResource(R.string.stars),
                             modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                         Text(
                             text = repo.stars.toString(),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
@@ -89,7 +76,7 @@ fun AppCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 8.dp),
                     )
                 }
             }

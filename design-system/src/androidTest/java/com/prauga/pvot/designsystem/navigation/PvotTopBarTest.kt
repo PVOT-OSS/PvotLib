@@ -23,16 +23,13 @@ import org.junit.Test
 
 class PvotTopBarTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
     private val isHeading = SemanticsMatcher.keyIsDefined(SemanticsProperties.Heading)
 
     @Test
     fun theTitleIsOneHeading() {
-        composeTestRule.setContent {
-            PvotAppTheme { PvotTopBar(title = "Calls", backdrop = null) }
-        }
+        composeTestRule.setContent { PvotAppTheme { PvotTopBar(title = "Calls", backdrop = null) } }
         composeTestRule.onAllNodes(isHeading).assertCountEquals(1)
     }
 
@@ -52,7 +49,10 @@ class PvotTopBarTest {
         composeTestRule.setContent {
             PvotAppTheme {
                 CompositionLocalProvider(LocalPvotGlassIntensity provides intensity) {
-                    PvotScreenScaffold(background = StillBackground, topBar = { PvotTopBar(title = "Calls", compact = true) }) {}
+                    PvotScreenScaffold(
+                        background = StillBackground,
+                        topBar = { PvotTopBar(title = "Calls", compact = true) },
+                    ) {}
                 }
             }
         }

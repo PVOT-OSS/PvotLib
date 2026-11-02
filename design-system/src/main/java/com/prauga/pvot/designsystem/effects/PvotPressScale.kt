@@ -15,11 +15,11 @@ import com.prauga.pvot.designsystem.motion.PvotMotion
 /**
  * Springs a surface down while pressed.
  *
- * For large filled surfaces — cards, grouped rows — where the shape is the
- * affordance and a ripple reads as a flash on top of it.
+ * For large filled surfaces — cards, grouped rows — where the shape is the affordance and a ripple
+ * reads as a flash on top of it.
  *
- * @param interactionSource The source whose press state drives the scale, the same
- * one passed to the clickable or selectable modifier on this element
+ * @param interactionSource The source whose press state drives the scale, the same one passed to
+ *   the clickable or selectable modifier on this element
  * @param pressedScale Scale factor held while pressed
  */
 @Composable
@@ -28,11 +28,12 @@ public fun Modifier.pvotPressScale(
     pressedScale: Float = PvotMotion.PressedScale,
 ): Modifier {
     val pressed by interactionSource.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) pressedScale else 1f,
-        animationSpec = PvotMotion.PressSpring,
-        label = "pvotPressScale",
-    )
+    val scale by
+        animateFloatAsState(
+            targetValue = if (pressed) pressedScale else 1f,
+            animationSpec = PvotMotion.PressSpring,
+            label = "pvotPressScale",
+        )
     return this.graphicsLayer {
         scaleX = scale
         scaleY = scale

@@ -39,16 +39,16 @@ import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.motion.PvotDurations
 
 /**
- * Draws this element as a glass control over [backdrop], the way every glass component does:
- * it swells while pressed, floats on a soft shadow, keeps a hairline edge where the rim's light
- * fades, is clipped to its shape, and, with [onClick], acts as a button.
+ * Draws this element as a glass control over [backdrop], the way every glass component does: it
+ * swells while pressed, floats on a soft shadow, keeps a hairline edge where the rim's light fades,
+ * is clipped to its shape, and, with [onClick], acts as a button.
  *
  * Use it to build a glass control the library has no component for; [PvotGlassCard] and
  * [PvotGlassIconButton] are built on it.
  *
  * @param backdrop The content behind the glass, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
- * tint alone
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ *   tint alone
  * @param cornerRadius The glass's corner radius, [PvotGlassDefaults.CapsuleRadius] for a capsule
  * @param style How the glass looks at full intensity
  * @param rim Whether to draw the rim of light that follows the phone's tilt
@@ -57,7 +57,7 @@ import com.prauga.pvot.designsystem.motion.PvotDurations
  * @param enabled Whether the element responds to taps
  * @param role What the element is to TalkBack, only meaningful with [onClick]
  * @param interactionSource The source driving the press animation, hoist it to react to presses
- * elsewhere; null to keep one here
+ *   elsewhere; null to keep one here
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -75,54 +75,59 @@ public fun Modifier.pvotGlassSurface(
     val source = interactionSource ?: remember { MutableInteractionSource() }
     val intensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(intensity, style)
-    val shape = if (cornerRadius.isFinite) {
-        RoundedCornerShape(cornerRadius)
-    } else {
-        RoundedCornerShape(percent = 50)
-    }
+    val shape =
+        if (cornerRadius.isFinite) {
+            RoundedCornerShape(cornerRadius)
+        } else {
+            RoundedCornerShape(percent = 50)
+        }
     val pressed by source.collectIsPressedAsState()
-    val fill by animateColorAsState(
-        targetValue = if (pressed) PvotGlassDefaults.PressedFillColor else glassStyle.fillColor,
-        animationSpec = tween(PvotDurations.Short),
-        label = "glassFill"
-    )
+    val fill by
+        animateColorAsState(
+            targetValue = if (pressed) PvotGlassDefaults.PressedFillColor else glassStyle.fillColor,
+            animationSpec = tween(PvotDurations.Short),
+            label = "glassFill",
+        )
     var modifier = this
     if (onClick != null) {
         modifier = modifier.pvotPressScale(source, PvotGlassDefaults.PressedScale)
     }
     if (backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val shadowColor = Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
-        modifier = modifier.shadow(
-            PvotGlassDefaults.ShadowElevation,
-            shape,
-            clip = false,
-            ambientColor = shadowColor,
-            spotColor = shadowColor
-        )
+        modifier =
+            modifier.shadow(
+                PvotGlassDefaults.ShadowElevation,
+                shape,
+                clip = false,
+                ambientColor = shadowColor,
+                spotColor = shadowColor,
+            )
     }
-    modifier = with(PvotGlassDefaults) { modifier.edge(intensity, shape) }
-        .pvotGlass(backdrop, cornerRadius, glassStyle.copy(fillColor = fill))
-        .clip(shape)
+    modifier =
+        with(PvotGlassDefaults) { modifier.edge(intensity, shape) }
+            .pvotGlass(backdrop, cornerRadius, glassStyle.copy(fillColor = fill))
+            .clip(shape)
     if (rim && intensity > 0f) modifier = modifier.pvotGlassRim(cornerRadius, alpha = intensity)
     if (onClick != null) {
-        modifier = if (onLongClick != null) {
-            modifier.combinedClickable(
-                interactionSource = source,
-                indication = LocalIndication.current,
-                enabled = enabled,
-                role = role,
-                onLongClick = onLongClick,
-                onClick = onClick
-            )
-        } else {
-            modifier.clickable(
-                interactionSource = source,
-                indication = LocalIndication.current,
-                enabled = enabled,
-                role = role,
-                onClick = onClick
-            )
-        }
+        modifier =
+            if (onLongClick != null) {
+                modifier.combinedClickable(
+                    interactionSource = source,
+                    indication = LocalIndication.current,
+                    enabled = enabled,
+                    role = role,
+                    onLongClick = onLongClick,
+                    onClick = onClick,
+                )
+            } else {
+                modifier.clickable(
+                    interactionSource = source,
+                    indication = LocalIndication.current,
+                    enabled = enabled,
+                    role = role,
+                    onClick = onClick,
+                )
+            }
     }
     return modifier
 }
@@ -138,8 +143,8 @@ public object PvotGlassSurfaceDefaults {
  * A box of glass over [backdrop], drawn with [pvotGlassSurface], for a glass control of your own.
  *
  * @param backdrop The content behind the glass, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
- * tint alone
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ *   tint alone
  * @param modifier Modifier for the surface
  * @param cornerRadius The glass's corner radius, [PvotGlassDefaults.CapsuleRadius] for a capsule
  * @param style How the glass looks at full intensity
@@ -161,20 +166,21 @@ public fun PvotGlassSurface(
     enabled: Boolean = true,
     contentAlignment: Alignment = Alignment.Center,
     contentPadding: PaddingValues = PvotGlassSurfaceDefaults.ContentPadding,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .pvotGlassSurface(
-                backdrop = backdrop,
-                cornerRadius = cornerRadius,
-                style = style,
-                rim = rim,
-                onClick = onClick,
-                enabled = enabled
-            )
-            .padding(contentPadding),
+        modifier =
+            modifier
+                .pvotGlassSurface(
+                    backdrop = backdrop,
+                    cornerRadius = cornerRadius,
+                    style = style,
+                    rim = rim,
+                    onClick = onClick,
+                    enabled = enabled,
+                )
+                .padding(contentPadding),
         contentAlignment = contentAlignment,
-        content = content
+        content = content,
     )
 }

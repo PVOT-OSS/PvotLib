@@ -50,7 +50,7 @@ public enum class PvotButtonStyle {
     Text,
 
     /** An action that destroys something, filled in the error color. */
-    Destructive
+    Destructive,
 }
 
 /**
@@ -66,7 +66,7 @@ public data class PvotButtonColors(
     val containerColor: Color,
     val contentColor: Color,
     val disabledContainerColor: Color,
-    val disabledContentColor: Color
+    val disabledContentColor: Color,
 )
 
 /** Defaults for [PvotButton]. */
@@ -97,30 +97,34 @@ public object PvotButtonDefaults {
         val disabledContent = colorScheme.onSurface.copy(alpha = 0.38f)
         val disabledContainer = colorScheme.onSurface.copy(alpha = 0.12f)
         return when (style) {
-            PvotButtonStyle.Filled -> PvotButtonColors(
-                containerColor = colorScheme.primary,
-                contentColor = colorScheme.onPrimary,
-                disabledContainerColor = disabledContainer,
-                disabledContentColor = disabledContent
-            )
-            PvotButtonStyle.Tonal -> PvotButtonColors(
-                containerColor = colorScheme.primary.copy(alpha = 0.14f),
-                contentColor = colorScheme.primary,
-                disabledContainerColor = disabledContainer,
-                disabledContentColor = disabledContent
-            )
-            PvotButtonStyle.Text -> PvotButtonColors(
-                containerColor = Color.Transparent,
-                contentColor = colorScheme.primary,
-                disabledContainerColor = Color.Transparent,
-                disabledContentColor = disabledContent
-            )
-            PvotButtonStyle.Destructive -> PvotButtonColors(
-                containerColor = colorScheme.error,
-                contentColor = colorScheme.onError,
-                disabledContainerColor = disabledContainer,
-                disabledContentColor = disabledContent
-            )
+            PvotButtonStyle.Filled ->
+                PvotButtonColors(
+                    containerColor = colorScheme.primary,
+                    contentColor = colorScheme.onPrimary,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
+                )
+            PvotButtonStyle.Tonal ->
+                PvotButtonColors(
+                    containerColor = colorScheme.primary.copy(alpha = 0.14f),
+                    contentColor = colorScheme.primary,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
+                )
+            PvotButtonStyle.Text ->
+                PvotButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = colorScheme.primary,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = disabledContent,
+                )
+            PvotButtonStyle.Destructive ->
+                PvotButtonColors(
+                    containerColor = colorScheme.error,
+                    contentColor = colorScheme.onError,
+                    disabledContainerColor = disabledContainer,
+                    disabledContentColor = disabledContent,
+                )
         }
     }
 
@@ -133,10 +137,10 @@ public object PvotButtonDefaults {
 /**
  * A pill-shaped button with a label and an optional icon before it.
  *
- * Pick how prominent it is with [style]: one [PvotButtonStyle.Filled] button for the main action
- * of a screen, [PvotButtonStyle.Tonal] or [PvotButtonStyle.Text] for the rest, and
- * [PvotButtonStyle.Destructive] for an action that destroys something. It squashes slightly
- * under the finger and is at least 48dp tall. Stretch it with `Modifier.fillMaxWidth()`.
+ * Pick how prominent it is with [style]: one [PvotButtonStyle.Filled] button for the main action of
+ * a screen, [PvotButtonStyle.Tonal] or [PvotButtonStyle.Text] for the rest, and
+ * [PvotButtonStyle.Destructive] for an action that destroys something. It squashes slightly under
+ * the finger and is at least 48dp tall. Stretch it with `Modifier.fillMaxWidth()`.
  *
  * @param text Label of the button
  * @param onClick Called when the button is tapped
@@ -157,47 +161,54 @@ public fun PvotButton(
     icon: Painter? = null,
     enabled: Boolean = true,
     colors: PvotButtonColors = PvotButtonDefaults.themeColors(style),
-    contentPadding: PaddingValues = if (style == PvotButtonStyle.Text) {
-        PvotButtonDefaults.TextContentPadding
-    } else {
-        PvotButtonDefaults.ContentPadding
-    },
-    interactionSource: MutableInteractionSource? = null
+    contentPadding: PaddingValues =
+        if (style == PvotButtonStyle.Text) {
+            PvotButtonDefaults.TextContentPadding
+        } else {
+            PvotButtonDefaults.ContentPadding
+        },
+    interactionSource: MutableInteractionSource? = null,
 ) {
     val source = interactionSource ?: remember { MutableInteractionSource() }
-    val container by animateColorAsState(
-        targetValue = if (enabled) colors.containerColor else colors.disabledContainerColor,
-        animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
-        label = "pvotButtonContainer"
-    )
-    val content by animateColorAsState(
-        targetValue = if (enabled) colors.contentColor else colors.disabledContentColor,
-        animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
-        label = "pvotButtonContent"
-    )
+    val container by
+        animateColorAsState(
+            targetValue = if (enabled) colors.containerColor else colors.disabledContainerColor,
+            animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
+            label = "pvotButtonContainer",
+        )
+    val content by
+        animateColorAsState(
+            targetValue = if (enabled) colors.contentColor else colors.disabledContentColor,
+            animationSpec = tween(PvotDurations.Short, easing = PvotMotion.Settle),
+            label = "pvotButtonContent",
+        )
     Row(
-        modifier = modifier
-            .pvotPressScale(source)
-            .defaultMinSize(minWidth = PvotButtonDefaults.MinWidth, minHeight = PvotButtonDefaults.MinHeight)
-            .clip(PvotButtonDefaults.Shape)
-            .background(container)
-            .clickable(
-                interactionSource = source,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(contentPadding),
+        modifier =
+            modifier
+                .pvotPressScale(source)
+                .defaultMinSize(
+                    minWidth = PvotButtonDefaults.MinWidth,
+                    minHeight = PvotButtonDefaults.MinHeight,
+                )
+                .clip(PvotButtonDefaults.Shape)
+                .background(container)
+                .clickable(
+                    interactionSource = source,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                )
+                .padding(contentPadding),
         horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S, Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         if (icon != null) {
             Icon(
                 painter = icon,
                 contentDescription = null,
                 tint = content,
-                modifier = Modifier.size(PvotButtonDefaults.IconSize)
+                modifier = Modifier.size(PvotButtonDefaults.IconSize),
             )
         }
         Text(
@@ -205,7 +216,7 @@ public fun PvotButton(
             style = MaterialTheme.typography.labelLarge,
             color = content,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }
