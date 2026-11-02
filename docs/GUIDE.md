@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+SPDX-License-Identifier: Apache-2.0
+-->
+
 # PvotLib guide
 
 The reference for the Pvot design system: how the libraries are laid out, every token, the motion
