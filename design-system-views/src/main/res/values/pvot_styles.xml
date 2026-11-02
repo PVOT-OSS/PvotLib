@@ -40,4 +40,17 @@
         <item name="liftOnScroll">false</item>
     </style>
 
+    <style name="PvotWidget.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="tint">?attr/colorOnPrimary</item>
+        <item name="shapeAppearance">@style/PvotShapeAppearance.Pill</item>
+    </style>
+
+    <style name="PvotWidget.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="shapeAppearance">@style/PvotShapeAppearance.Pill</item>
+    </style>
+
 </resources>

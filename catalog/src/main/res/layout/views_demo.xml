@@ -178,13 +178,29 @@
         android:layout_marginEnd="@dimen/pvot_spacing_l"
         android:indeterminate="true" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/pvot_spacing_m"
         android:layout_marginEnd="@dimen/pvot_spacing_l"
-        android:text="@string/views_demo_fab"
-        app:icon="@drawable/ic_t_plus" />
+        android:gravity="center_vertical"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/pvot_spacing_l">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/pvot_spacing_m"
+            android:contentDescription="@string/views_demo_fab"
+            app:srcCompat="@drawable/ic_t_plus" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/views_demo_fab"
+            app:icon="@drawable/ic_t_plus" />
+    </LinearLayout>
 
 </LinearLayout>

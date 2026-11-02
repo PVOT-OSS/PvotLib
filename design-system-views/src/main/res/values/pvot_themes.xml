@@ -21,6 +21,8 @@
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
+        <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
+        <item name="extendedFloatingActionButtonStyle">@style/PvotWidget.ExtendedFloatingActionButton</item>
     </style>
 
     <style name="PvotTheme.Bars.Dark" parent="PvotTheme.Base.Dark" />
@@ -39,6 +41,8 @@
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
+        <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
+        <item name="extendedFloatingActionButtonStyle">@style/PvotWidget.ExtendedFloatingActionButton</item>
     </style>
 
     <style name="PvotTheme" parent="PvotTheme.Light" />

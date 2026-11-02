@@ -455,6 +455,7 @@ For dynamic color parity with `PvotAppTheme(dynamicColor = true)`, call
 | `PvotMotion.Settle` | `@interpolator/pvot_settle` |
 | `PvotTypography.bodyLarge` | `PvotTextAppearance.BodyLarge`, set as `textAppearanceBodyLarge` |
 | `PvotCardDefaults` | `PvotWidget.CardView`, set as `materialCardViewStyle` (16dp, surface variant at half alpha, no stroke or shadow) |
+| `PvotFabDefaults` | `PvotWidget.FloatingActionButton` / `.ExtendedFloatingActionButton`, set as `floatingActionButtonStyle` / `extendedFloatingActionButtonStyle` (pill, primary, 6dp shadow) |
 
 The theme also maps the Material 3 shape scale to the Pvot corners (extra small and small 8dp,
 medium 16dp, large 20dp, extra large 28dp), sets `toolbarStyle` to the surface toolbar and turns
