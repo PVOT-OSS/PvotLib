@@ -84,16 +84,16 @@ public enum class PvotDialogActionStyle {
     Neutral,
 
     /** An action that destroys something, a filled button in the error color. */
-    Destructive
+    Destructive,
 }
 
 /**
  * A centered dialog that eases in over a dimmed screen and eases back out.
  *
- * The dialog stays on screen while [visible] is true. Setting it to false plays the exit before
- * the dialog leaves composition, which a conditionally composed dialog could not do. The icon
- * (when given) sits in a tinted circle above a centered title and message, and the actions stack
- * as full-width buttons. Tapping outside, or the system back, calls [onDismissRequest].
+ * The dialog stays on screen while [visible] is true. Setting it to false plays the exit before the
+ * dialog leaves composition, which a conditionally composed dialog could not do. The icon (when
+ * given) sits in a tinted circle above a centered title and message, and the actions stack as
+ * full-width buttons. Tapping outside, or the system back, calls [onDismissRequest].
  *
  * @param visible Whether the dialog is showing
  * @param onDismissRequest Called when the user taps outside the dialog or goes back
@@ -102,7 +102,7 @@ public enum class PvotDialogActionStyle {
  * @param message Supporting text under the title
  * @param icon Content of the circle above the title, typically an `Icon`; it is tinted for you
  * @param destructive Whether the dialog is about something destructive, which tints the icon circle
- * in the error color
+ *   in the error color
  * @param dismissOnOutsideTap Whether tapping outside, or going back, dismisses the dialog
  * @param content Extra content between the message and the actions, such as a text field
  * @param actions The buttons, typically [PvotDialogAction]s, most important first
@@ -118,7 +118,7 @@ public fun PvotDialog(
     destructive: Boolean = false,
     dismissOnOutsideTap: Boolean = true,
     content: (@Composable ColumnScope.() -> Unit)? = null,
-    actions: @Composable ColumnScope.() -> Unit
+    actions: @Composable ColumnScope.() -> Unit,
 ) {
     val state = remember { MutableTransitionState(false) }
     state.targetState = visible
@@ -126,12 +126,13 @@ public fun PvotDialog(
 
     Dialog(
         onDismissRequest = { if (dismissOnOutsideTap) onDismissRequest() },
-        properties = DialogProperties(
-            dismissOnBackPress = dismissOnOutsideTap,
-            dismissOnClickOutside = false,
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
+        properties =
+            DialogProperties(
+                dismissOnBackPress = dismissOnOutsideTap,
+                dismissOnClickOutside = false,
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false,
+            ),
     ) {
         // The dialog draws its own scrim so it can animate it with the card.
         val window = (LocalView.current.parent as? DialogWindowProvider)?.window
@@ -141,104 +142,119 @@ public fun PvotDialog(
         }
 
         val transition = rememberTransition(state, label = "pvotDialog")
-        val scrim = transition.animateFloat(
-            transitionSpec = { tween(if (targetState) PvotDurations.Medium else PvotDurations.Short) },
-            label = "scrim"
-        ) { if (it) PvotDialogDefaults.ScrimAlpha else 0f }
-        val alpha = transition.animateFloat(
-            transitionSpec = {
-                if (targetState) tween(PvotDurations.Medium) else tween(PvotDurations.Short)
-            },
-            label = "alpha"
-        ) { if (it) 1f else 0f }
-        val scale = transition.animateFloat(
-            transitionSpec = {
-                if (targetState) tween(PvotDurations.Long, easing = PvotMotion.Settle)
-                else tween(PvotDurations.Short)
-            },
-            label = "scale"
-        ) { if (it) 1f else EnterScale }
+        val scrim =
+            transition.animateFloat(
+                transitionSpec = {
+                    tween(if (targetState) PvotDurations.Medium else PvotDurations.Short)
+                },
+                label = "scrim",
+            ) {
+                if (it) PvotDialogDefaults.ScrimAlpha else 0f
+            }
+        val alpha =
+            transition.animateFloat(
+                transitionSpec = {
+                    if (targetState) tween(PvotDurations.Medium) else tween(PvotDurations.Short)
+                },
+                label = "alpha",
+            ) {
+                if (it) 1f else 0f
+            }
+        val scale =
+            transition.animateFloat(
+                transitionSpec = {
+                    if (targetState) tween(PvotDurations.Long, easing = PvotMotion.Settle)
+                    else tween(PvotDurations.Short)
+                },
+                label = "scale",
+            ) {
+                if (it) 1f else EnterScale
+            }
 
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = scrim.value))
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    enabled = dismissOnOutsideTap,
-                    onClick = onDismissRequest
-                )
-                .safeDrawingPadding()
-                .imePadding()
-                .padding(PvotDialogDefaults.ScreenMargin),
-            contentAlignment = Alignment.Center
+            modifier =
+                Modifier.fillMaxSize()
+                    .background(Color.Black.copy(alpha = scrim.value))
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        enabled = dismissOnOutsideTap,
+                        onClick = onDismissRequest,
+                    )
+                    .safeDrawingPadding()
+                    .imePadding()
+                    .padding(PvotDialogDefaults.ScreenMargin),
+            contentAlignment = Alignment.Center,
         ) {
             Column(
-                modifier = modifier
-                    .widthIn(max = PvotDialogDefaults.MaxWidth)
-                    .fillMaxWidth()
-                    .heightIn(max = 560.dp)
-                    .graphicsLayer {
-                        scaleX = scale.value
-                        scaleY = scale.value
-                        this.alpha = alpha.value
-                    }
-                    .clip(PvotDialogDefaults.Shape)
-                    .background(PvotDialogDefaults.containerColor)
-                    // Taps on the dialog itself must not reach the scrim behind it.
-                    .pointerInput(Unit) { detectTapGestures { } }
-                    .padding(PvotSpacing.L * 1.5f),
+                modifier =
+                    modifier
+                        .widthIn(max = PvotDialogDefaults.MaxWidth)
+                        .fillMaxWidth()
+                        .heightIn(max = 560.dp)
+                        .graphicsLayer {
+                            scaleX = scale.value
+                            scaleY = scale.value
+                            this.alpha = alpha.value
+                        }
+                        .clip(PvotDialogDefaults.Shape)
+                        .background(PvotDialogDefaults.containerColor)
+                        // Taps on the dialog itself must not reach the scrim behind it.
+                        .pointerInput(Unit) { detectTapGestures {} }
+                        .padding(PvotSpacing.L * 1.5f),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(PvotSpacing.M)
+                verticalArrangement = Arrangement.spacedBy(PvotSpacing.M),
             ) {
                 if (icon != null) {
-                    val circle = if (destructive) {
-                        MaterialTheme.colorScheme.errorContainer
-                    } else {
-                        MaterialTheme.colorScheme.primaryContainer
-                    }
-                    val tint = if (destructive) {
-                        MaterialTheme.colorScheme.onErrorContainer
-                    } else {
-                        MaterialTheme.colorScheme.onPrimaryContainer
-                    }
+                    val circle =
+                        if (destructive) {
+                            MaterialTheme.colorScheme.errorContainer
+                        } else {
+                            MaterialTheme.colorScheme.primaryContainer
+                        }
+                    val tint =
+                        if (destructive) {
+                            MaterialTheme.colorScheme.onErrorContainer
+                        } else {
+                            MaterialTheme.colorScheme.onPrimaryContainer
+                        }
                     Box(
-                        modifier = Modifier
-                            .size(PvotDialogDefaults.IconCircleSize)
-                            .background(circle, CircleShape),
-                        contentAlignment = Alignment.Center
+                        modifier =
+                            Modifier.size(PvotDialogDefaults.IconCircleSize)
+                                .background(circle, CircleShape),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        CompositionLocalProvider(LocalContentColor provides tint, content = { icon() })
+                        CompositionLocalProvider(
+                            LocalContentColor provides tint,
+                            content = { icon() },
+                        )
                     }
                 }
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 if (message != null) {
                     Text(
                         text = message,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
                 if (content != null) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
-                        content = content
+                        content = content,
                     )
                 }
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = PvotSpacing.S),
+                    modifier = Modifier.fillMaxWidth().padding(top = PvotSpacing.S),
                     verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
-                    content = actions
+                    content = actions,
                 )
             }
         }
@@ -260,40 +276,44 @@ public fun PvotDialogAction(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     style: PvotDialogActionStyle = PvotDialogActionStyle.Neutral,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     val colors = MaterialTheme.colorScheme
-    val (container, content) = when (style) {
-        PvotDialogActionStyle.Primary -> colors.primary to colors.onPrimary
-        PvotDialogActionStyle.Destructive -> colors.error to colors.onError
-        PvotDialogActionStyle.Neutral -> colors.onSurface.copy(alpha = 0.08f) to colors.onSurface
-    }
+    val (container, content) =
+        when (style) {
+            PvotDialogActionStyle.Primary -> colors.primary to colors.onPrimary
+            PvotDialogActionStyle.Destructive -> colors.error to colors.onError
+            PvotDialogActionStyle.Neutral ->
+                colors.onSurface.copy(alpha = 0.08f) to colors.onSurface
+        }
     val interactionSource = remember { MutableInteractionSource() }
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-            .pvotPressScale(interactionSource)
-            .clip(CircleShape)
-            .background(if (enabled) container else container.copy(alpha = container.alpha * 0.4f))
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                enabled = enabled,
-                role = Role.Button,
-                onClick = onClick
-            )
-            .padding(horizontal = PvotSpacing.L, vertical = PvotSpacing.M),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp)
+                .pvotPressScale(interactionSource)
+                .clip(CircleShape)
+                .background(
+                    if (enabled) container else container.copy(alpha = container.alpha * 0.4f)
+                )
+                .clickable(
+                    interactionSource = interactionSource,
+                    indication = null,
+                    enabled = enabled,
+                    role = Role.Button,
+                    onClick = onClick,
+                )
+                .padding(horizontal = PvotSpacing.L, vertical = PvotSpacing.M),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelLarge,
             color = if (enabled) content else content.copy(alpha = 0.5f),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
 
 private const val EnterScale: Float = 0.88f
-

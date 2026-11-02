@@ -30,20 +30,17 @@ public object PvotScreenDefaults {
     public val BottomSpacing: Dp = 28.dp
 
     /** Gap between the screen's items. */
-    public val VerticalArrangement: Arrangement.HorizontalOrVertical = Arrangement.spacedBy(PvotSpacing.M)
+    public val VerticalArrangement: Arrangement.HorizontalOrVertical =
+        Arrangement.spacedBy(PvotSpacing.M)
 
     /** Padding around a screen's content that clears the nav bar below it. */
     @Composable
     public fun contentPadding(
         horizontal: Dp = HorizontalPadding,
         top: Dp = TopPadding,
-        bottom: Dp = LocalPvotNavBarSizes.current.barHeight + BottomSpacing
-    ): PaddingValues = PaddingValues(
-        start = horizontal,
-        end = horizontal,
-        top = top,
-        bottom = bottom
-    )
+        bottom: Dp = LocalPvotNavBarSizes.current.barHeight + BottomSpacing,
+    ): PaddingValues =
+        PaddingValues(start = horizontal, end = horizontal, top = top, bottom = bottom)
 }
 
 /**
@@ -62,7 +59,7 @@ public fun PvotScreen(
     contentPadding: PaddingValues = PvotScreenDefaults.contentPadding(),
     verticalArrangement: Arrangement.Vertical = PvotScreenDefaults.VerticalArrangement,
     horizontalAlignment: Alignment.Horizontal = Alignment.CenterHorizontally,
-    content: LazyListScope.() -> Unit
+    content: LazyListScope.() -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
@@ -70,6 +67,6 @@ public fun PvotScreen(
         contentPadding = contentPadding,
         horizontalAlignment = horizontalAlignment,
         verticalArrangement = verticalArrangement,
-        content = content
+        content = content,
     )
 }

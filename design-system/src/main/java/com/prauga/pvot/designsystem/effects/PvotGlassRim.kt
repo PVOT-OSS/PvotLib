@@ -23,20 +23,19 @@ import androidx.compose.ui.unit.Dp
 import kotlin.math.min
 
 /**
- * Draws a rim of light round this element: a fine white edge, brightest where the light
- * catches it (the top left while the phone is level), clear across the middle and with a
- * glint opposite. With [followTilt] the light turns as the phone tilts, and settles back once
- * it is held still.
+ * Draws a rim of light round this element: a fine white edge, brightest where the light catches it
+ * (the top left while the phone is level), clear across the middle and with a glint opposite. With
+ * [followTilt] the light turns as the phone tilts, and settles back once it is held still.
  *
- * Drawn over the element's content. The tilt reads the gravity sensor only while a rim that
- * follows it is shown, and stays still when animations are turned off.
+ * Drawn over the element's content. The tilt reads the gravity sensor only while a rim that follows
+ * it is shown, and stays still when animations are turned off.
  *
  * @param cornerRadius The element's corner radius, [PvotGlassDefaults.CapsuleRadius] for a capsule
  * @param width Width of the rim
  * @param softness How much the rim is blurred, 0 for a crisp line
  * @param followTilt Whether the light turns as the phone tilts
  * @param alpha How strong the rim is, 0 to 1; at 0 nothing is drawn and the tilt sensor is left
- * alone
+ *   alone
  */
 public fun Modifier.pvotGlassRim(
     cornerRadius: Dp = PvotGlassDefaults.CapsuleRadius,
@@ -54,7 +53,8 @@ private data class GlassRimElement(
     val alpha: Float,
 ) : ModifierNodeElement<GlassRimNode>() {
 
-    override fun create(): GlassRimNode = GlassRimNode(cornerRadius, width, softness, followTilt, alpha)
+    override fun create(): GlassRimNode =
+        GlassRimNode(cornerRadius, width, softness, followTilt, alpha)
 
     override fun update(node: GlassRimNode) {
         node.update(cornerRadius, width, softness, followTilt, alpha)
@@ -79,25 +79,28 @@ private class GlassRimNode(
 ) : Modifier.Node(), DrawModifierNode {
 
     private val onTilt = Runnable { invalidateDraw() }
-    private val shader = LinearGradient(
-        0f,
-        0f,
-        1f,
-        0f,
-        intArrayOf(LIT_COLOR, CLEAR_COLOR, GLINT_COLOR),
-        floatArrayOf(0f, 0.45f, 1f),
-        Shader.TileMode.CLAMP,
-    )
+    private val shader =
+        LinearGradient(
+            0f,
+            0f,
+            1f,
+            0f,
+            intArrayOf(LIT_COLOR, CLEAR_COLOR, GLINT_COLOR),
+            floatArrayOf(0f, 0.45f, 1f),
+            Shader.TileMode.CLAMP,
+        )
     private val matrix = Matrix()
     private val rect = RectF()
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.STROKE
-        shader = this@GlassRimNode.shader
-    }
-    private val evenPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        style = Paint.Style.STROKE
-        color = EVEN_COLOR
-    }
+    private val paint =
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            shader = this@GlassRimNode.shader
+        }
+    private val evenPaint =
+        Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            color = EVEN_COLOR
+        }
     private var paintKey: Any? = null
 
     private var tilting = false
@@ -149,14 +152,15 @@ private class GlassRimNode(
         val inset = stroke / 2f
         rect.set(inset, inset, size.width - inset, size.height - inset)
         val radius = min(cornerRadius.toPx(), size.minDimension / 2f) - inset
-        val lit = TiltLight.layRimGradient(
-            matrix,
-            rect.left,
-            rect.top,
-            rect.width(),
-            rect.height(),
-            followTilt,
-        )
+        val lit =
+            TiltLight.layRimGradient(
+                matrix,
+                rect.left,
+                rect.top,
+                rect.width(),
+                rect.height(),
+                followTilt,
+            )
         shader.setLocalMatrix(matrix)
         drawIntoCanvas { canvas ->
             val native = canvas.nativeCanvas

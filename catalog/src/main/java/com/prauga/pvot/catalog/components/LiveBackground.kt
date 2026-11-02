@@ -22,12 +22,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.catalog.legacy.LocalNewUi
 import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotGlassCard
-import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
 import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
 import kotlin.math.PI
@@ -42,7 +41,7 @@ private val PanelStyle = PvotGlassStyle(referenceSize = 120.dp, blur = 8.dp)
 fun GlassPanel(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     if (LocalBackgroundBackdrop.current == null) {
         // Glass shows what is behind it; with a plain background there is nothing to show, so
@@ -62,7 +61,7 @@ fun GlassPanel(
         onClick = onClick,
         style = PanelStyle,
         contentPadding = PaddingValues(0.dp),
-        content = content
+        content = content,
     )
 }
 
@@ -71,41 +70,47 @@ fun LiveBackground(modifier: Modifier = Modifier) {
     val colors = MaterialTheme.colorScheme
     // The old UI keeps the old brand gradient; the new one the vivid one.
     val newUi = LocalNewUi.current
-    val blobs = listOf(
-        if (newUi) PvotNavBarDefaults.GradientStart else LegacyGradientStart,
-        if (newUi) PvotNavBarDefaults.GradientEnd else LegacyGradientEnd,
-        colors.tertiaryContainer,
-        colors.primary,
-        colors.secondaryContainer
-    )
+    val blobs =
+        listOf(
+            if (newUi) PvotNavBarDefaults.GradientStart else LegacyGradientStart,
+            if (newUi) PvotNavBarDefaults.GradientEnd else LegacyGradientEnd,
+            colors.tertiaryContainer,
+            colors.primary,
+            colors.secondaryContainer,
+        )
     val base = colors.background
-    val phase by rememberInfiniteTransition(label = "liveBackground").animateFloat(
-        initialValue = 0f,
-        targetValue = 2f * PI.toFloat(),
-        animationSpec = infiniteRepeatable(
-            tween(BackgroundLoopMillis, easing = LinearEasing),
-            RepeatMode.Restart
-        ),
-        label = "phase"
-    )
+    val phase by
+        rememberInfiniteTransition(label = "liveBackground")
+            .animateFloat(
+                initialValue = 0f,
+                targetValue = 2f * PI.toFloat(),
+                animationSpec =
+                    infiniteRepeatable(
+                        tween(BackgroundLoopMillis, easing = LinearEasing),
+                        RepeatMode.Restart,
+                    ),
+                label = "phase",
+            )
     Canvas(modifier) {
         drawRect(base)
         blobs.forEachIndexed { index, color ->
             val speed = BlobSpeeds[index % BlobSpeeds.size]
             val angle = phase * speed + index * 1.3f
-            val center = Offset(
-                size.width * (0.5f + 0.4f * cos(angle)),
-                size.height * (0.5f + 0.4f * sin(angle * 2f + index))
-            )
+            val center =
+                Offset(
+                    size.width * (0.5f + 0.4f * cos(angle)),
+                    size.height * (0.5f + 0.4f * sin(angle * 2f + index)),
+                )
             val radius = size.width * (0.45f + 0.08f * sin(phase * 2f + index))
             drawCircle(
-                brush = Brush.radialGradient(
-                    listOf(color, color.copy(alpha = 0.6f), color.copy(alpha = 0f)),
-                    center = center,
-                    radius = radius
-                ),
+                brush =
+                    Brush.radialGradient(
+                        listOf(color, color.copy(alpha = 0.6f), color.copy(alpha = 0f)),
+                        center = center,
+                        radius = radius,
+                    ),
                 radius = radius,
-                center = center
+                center = center,
             )
         }
     }

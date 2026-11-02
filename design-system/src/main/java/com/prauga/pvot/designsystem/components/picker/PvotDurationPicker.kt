@@ -28,15 +28,13 @@ public fun PvotDurationPicker(
     duration: Duration,
     onDurationChange: (Duration) -> Unit,
     modifier: Modifier = Modifier,
-    colors: PvotPickerColors = PvotPickerDefaults.themeColors()
+    colors: PvotPickerColors = PvotPickerDefaults.themeColors(),
 ) {
     MultiWheelEngine(
         configs = duration.toWheelConfigs(),
-        onValuesSelected = { values ->
-            onDurationChange(wheelValuesToDuration(values))
-        },
+        onValuesSelected = { values -> onDurationChange(wheelValuesToDuration(values)) },
         modifier = modifier,
-        colors = colors
+        colors = colors,
     )
 }
 
@@ -45,16 +43,13 @@ public fun PvotDurationPicker(
     showBackground = true,
     backgroundColor = 0xFF000000,
     widthDp = 390,
-    heightDp = 240
+    heightDp = 240,
 )
 @Composable
 private fun PvotDurationPickerPreview() {
     PvotAppTheme {
         Surface(modifier = Modifier.fillMaxWidth()) {
-            PvotDurationPicker(
-                duration = 30.minutes,
-                onDurationChange = {}
-            )
+            PvotDurationPicker(duration = 30.minutes, onDurationChange = {})
         }
     }
 }

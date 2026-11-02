@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.semantics.clearAndSetSemantics
-import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.theme.PvotShapes
 
 /** Defaults for [PvotSkeleton]. */
@@ -46,17 +45,16 @@ public object PvotSkeletonDefaults {
 /**
  * A shimmering placeholder standing in for content that has not arrived.
  *
- * Lay these out in the shape of the real content so the screen does not jump when
- * the data lands, then reveal the content with pvotReveal.
+ * Lay these out in the shape of the real content so the screen does not jump when the data lands,
+ * then reveal the content with pvotReveal.
  *
  * The placeholder has no intrinsic size, so [modifier] must give it one:
- *
  * ```
  * PvotSkeleton(Modifier.fillMaxWidth().height(20.dp))
  * ```
  *
- * It is hidden from accessibility services, which should hear the loading state
- * from the screen rather than from each placeholder.
+ * It is hidden from accessibility services, which should hear the loading state from the screen
+ * rather than from each placeholder.
  *
  * @param modifier Modifier for the placeholder, which must set its size
  * @param shape The placeholder's shape
@@ -68,37 +66,41 @@ public fun PvotSkeleton(
     modifier: Modifier,
     shape: Shape = PvotSkeletonDefaults.Shape,
     baseColor: Color = PvotSkeletonDefaults.baseColor,
-    highlightColor: Color = PvotSkeletonDefaults.highlightColor
+    highlightColor: Color = PvotSkeletonDefaults.highlightColor,
 ) {
     val transition = rememberInfiniteTransition(label = "pvotSkeleton")
-    val progress = transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(PvotSkeletonDefaults.DurationMillis, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart
-        ),
-        label = "sweep"
-    )
+    val progress =
+        transition.animateFloat(
+            initialValue = 0f,
+            targetValue = 1f,
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(PvotSkeletonDefaults.DurationMillis, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart,
+                ),
+            label = "sweep",
+        )
 
     Box(
-        modifier = modifier
-            .clearAndSetSemantics { }
-            .clip(shape)
-            .drawBehind {
-                drawRect(baseColor)
+        modifier =
+            modifier
+                .clearAndSetSemantics {}
+                .clip(shape)
+                .drawBehind {
+                    drawRect(baseColor)
 
-                val bandWidth = size.width * PvotSkeletonDefaults.BandFraction
-                val startX = -bandWidth + progress.value * (size.width + bandWidth * 2f)
-                drawRect(
-                    brush = Brush.horizontalGradient(
-                        0f to Color.Transparent,
-                        0.5f to highlightColor,
-                        1f to Color.Transparent,
-                        startX = startX,
-                        endX = startX + bandWidth
+                    val bandWidth = size.width * PvotSkeletonDefaults.BandFraction
+                    val startX = -bandWidth + progress.value * (size.width + bandWidth * 2f)
+                    drawRect(
+                        brush =
+                            Brush.horizontalGradient(
+                                0f to Color.Transparent,
+                                0.5f to highlightColor,
+                                1f to Color.Transparent,
+                                startX = startX,
+                                endX = startX + bandWidth,
+                            )
                     )
-                )
-            }
+                }
     )
 }

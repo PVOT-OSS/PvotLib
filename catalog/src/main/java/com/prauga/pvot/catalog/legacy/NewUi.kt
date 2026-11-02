@@ -29,28 +29,30 @@ internal class AppIcons(
     @DrawableRes val about: Int,
     @DrawableRes val github: Int,
     @DrawableRes val link: Int,
-    @DrawableRes val star: Int
+    @DrawableRes val star: Int,
 )
 
-internal val NewIcons = AppIcons(
-    home = R.drawable.ic_home,
-    apps = R.drawable.ic_apps,
-    catalog = R.drawable.ic_catalog,
-    about = R.drawable.ic_about,
-    github = R.drawable.ic_github,
-    link = R.drawable.ic_link,
-    star = R.drawable.ic_star
-)
+internal val NewIcons =
+    AppIcons(
+        home = R.drawable.ic_home,
+        apps = R.drawable.ic_apps,
+        catalog = R.drawable.ic_catalog,
+        about = R.drawable.ic_about,
+        github = R.drawable.ic_github,
+        link = R.drawable.ic_link,
+        star = R.drawable.ic_star,
+    )
 
-internal val LegacyIcons = AppIcons(
-    home = R.drawable.ic_legacy_home,
-    apps = R.drawable.ic_legacy_apps,
-    catalog = R.drawable.ic_legacy_catalog,
-    about = R.drawable.ic_legacy_about,
-    github = R.drawable.ic_legacy_github,
-    link = R.drawable.ic_legacy_link,
-    star = R.drawable.ic_legacy_star
-)
+internal val LegacyIcons =
+    AppIcons(
+        home = R.drawable.ic_legacy_home,
+        apps = R.drawable.ic_legacy_apps,
+        catalog = R.drawable.ic_legacy_catalog,
+        about = R.drawable.ic_legacy_about,
+        github = R.drawable.ic_legacy_github,
+        link = R.drawable.ic_legacy_link,
+        star = R.drawable.ic_legacy_star,
+    )
 
 internal val LocalAppIcons = staticCompositionLocalOf { NewIcons }
 
@@ -74,7 +76,7 @@ internal fun CatalogNavBar(
     tabs: List<PvotTabItem>,
     modifier: Modifier = Modifier,
     compact: Boolean = false,
-    backdrop: PvotGlassBackdrop? = null
+    backdrop: PvotGlassBackdrop? = null,
 ) {
     if (LocalNewUi.current) {
         PvotNavBar(selectedTab, onTabClick, tabs, modifier, backdrop = backdrop, compact = compact)

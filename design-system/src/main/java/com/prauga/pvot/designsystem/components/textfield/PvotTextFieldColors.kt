@@ -38,7 +38,7 @@ public data class PvotTextFieldColors(
     val placeholderColor: Color,
     val supportingTextColor: Color,
     val cursorColor: Color,
-    val iconColor: Color
+    val iconColor: Color,
 )
 
 /** Defaults for [PvotTextField]. */
@@ -65,21 +65,21 @@ public object PvotTextFieldDefaults {
         placeholderColor: Color = colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         supportingTextColor: Color = colorScheme.onSurfaceVariant,
         cursorColor: Color = colorScheme.primary,
-        iconColor: Color = colorScheme.onSurfaceVariant
-    ): PvotTextFieldColors = PvotTextFieldColors(
-        containerColor = containerColor,
-        focusedBorderColor = focusedBorderColor,
-        errorColor = errorColor,
-        textColor = textColor,
-        labelColor = labelColor,
-        focusedLabelColor = focusedLabelColor,
-        placeholderColor = placeholderColor,
-        supportingTextColor = supportingTextColor,
-        cursorColor = cursorColor,
-        iconColor = iconColor
-    )
+        iconColor: Color = colorScheme.onSurfaceVariant,
+    ): PvotTextFieldColors =
+        PvotTextFieldColors(
+            containerColor = containerColor,
+            focusedBorderColor = focusedBorderColor,
+            errorColor = errorColor,
+            textColor = textColor,
+            labelColor = labelColor,
+            focusedLabelColor = focusedLabelColor,
+            placeholderColor = placeholderColor,
+            supportingTextColor = supportingTextColor,
+            cursorColor = cursorColor,
+            iconColor = iconColor,
+        )
 
     /** Text field colors from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotTextFieldColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotTextFieldColors = colors(MaterialTheme.colorScheme)
 }

@@ -15,14 +15,11 @@ import androidx.compose.ui.Modifier
  * @param modifier Modifier for the text
  */
 @Composable
-public fun PvotEmptyContent(
-    message: String,
-    modifier: Modifier = Modifier
-) {
+public fun PvotEmptyContent(message: String, modifier: Modifier = Modifier) {
     Text(
         text = message,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = modifier
+        modifier = modifier,
     )
 }

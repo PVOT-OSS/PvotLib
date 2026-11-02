@@ -10,16 +10,10 @@ plugins {
 
 android {
     namespace = "com.prauga.pvot.designsystem"
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-        }
-    }
+    publishing { singleVariant("release") { withSourcesJar() } }
 }
 
-kotlin {
-    explicitApi()
-}
+kotlin { explicitApi() }
 
 dependencies {
     implementation(libs.androidx.core.ktx)

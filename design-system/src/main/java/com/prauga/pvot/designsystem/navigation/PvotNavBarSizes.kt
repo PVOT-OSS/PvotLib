@@ -59,8 +59,11 @@ public data class PvotNavBarSizes(
     val itemSpacing: Dp = PvotSpacing.XS,
     val compactBarHeight: Dp = 52.dp,
     val compactItemSize: Dp = 40.dp,
-    val compactPillWidth: Dp = 60.dp
+    val compactPillWidth: Dp = 60.dp,
 )
 
 /** The [PvotNavBarSizes] in scope, read by PvotNavBar and PvotScreen for their defaults. */
-public val LocalPvotNavBarSizes: ProvidableCompositionLocal<PvotNavBarSizes> = staticCompositionLocalOf { PvotNavBarSizes() }
+public val LocalPvotNavBarSizes: ProvidableCompositionLocal<PvotNavBarSizes> =
+    staticCompositionLocalOf {
+        PvotNavBarSizes()
+    }

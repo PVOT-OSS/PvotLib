@@ -18,74 +18,76 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
 
 /** The Pvot palette arranged for a dark background. */
-public val PvotDarkColorScheme: ColorScheme = darkColorScheme(
-    primary = PvotPrimaryDark,
-    onPrimary = PvotOnPrimaryDark,
-    primaryContainer = PvotPrimaryContainerDark,
-    onPrimaryContainer = PvotOnPrimaryContainerDark,
-    secondary = PvotSecondaryDark,
-    onSecondary = PvotOnSecondaryDark,
-    secondaryContainer = PvotSecondaryContainerDark,
-    onSecondaryContainer = PvotOnSecondaryContainerDark,
-    tertiary = PvotTertiaryDark,
-    onTertiary = PvotOnTertiaryDark,
-    tertiaryContainer = PvotTertiaryContainerDark,
-    onTertiaryContainer = PvotOnTertiaryContainerDark,
-    error = PvotErrorDark,
-    onError = PvotOnErrorDark,
-    errorContainer = PvotErrorContainerDark,
-    onErrorContainer = PvotOnErrorContainerDark,
-    background = PvotBackgroundDark,
-    onBackground = PvotOnBackgroundDark,
-    surface = PvotSurfaceDark,
-    onSurface = PvotOnSurfaceDark,
-    surfaceVariant = PvotSurfaceVariantDark,
-    onSurfaceVariant = PvotOnSurfaceVariantDark,
-    outline = PvotOutlineDark,
-    outlineVariant = PvotOutlineVariantDark,
-    inverseSurface = PvotInverseSurfaceDark,
-    inverseOnSurface = PvotInverseOnSurfaceDark,
-    inversePrimary = PvotInversePrimaryDark,
-    scrim = PvotScrim
-)
+public val PvotDarkColorScheme: ColorScheme =
+    darkColorScheme(
+        primary = PvotPrimaryDark,
+        onPrimary = PvotOnPrimaryDark,
+        primaryContainer = PvotPrimaryContainerDark,
+        onPrimaryContainer = PvotOnPrimaryContainerDark,
+        secondary = PvotSecondaryDark,
+        onSecondary = PvotOnSecondaryDark,
+        secondaryContainer = PvotSecondaryContainerDark,
+        onSecondaryContainer = PvotOnSecondaryContainerDark,
+        tertiary = PvotTertiaryDark,
+        onTertiary = PvotOnTertiaryDark,
+        tertiaryContainer = PvotTertiaryContainerDark,
+        onTertiaryContainer = PvotOnTertiaryContainerDark,
+        error = PvotErrorDark,
+        onError = PvotOnErrorDark,
+        errorContainer = PvotErrorContainerDark,
+        onErrorContainer = PvotOnErrorContainerDark,
+        background = PvotBackgroundDark,
+        onBackground = PvotOnBackgroundDark,
+        surface = PvotSurfaceDark,
+        onSurface = PvotOnSurfaceDark,
+        surfaceVariant = PvotSurfaceVariantDark,
+        onSurfaceVariant = PvotOnSurfaceVariantDark,
+        outline = PvotOutlineDark,
+        outlineVariant = PvotOutlineVariantDark,
+        inverseSurface = PvotInverseSurfaceDark,
+        inverseOnSurface = PvotInverseOnSurfaceDark,
+        inversePrimary = PvotInversePrimaryDark,
+        scrim = PvotScrim,
+    )
 
 /** The Pvot palette arranged for a light background. */
-public val PvotLightColorScheme: ColorScheme = lightColorScheme(
-    primary = PvotPrimaryLight,
-    onPrimary = PvotOnPrimaryLight,
-    primaryContainer = PvotPrimaryContainerLight,
-    onPrimaryContainer = PvotOnPrimaryContainerLight,
-    secondary = PvotSecondaryLight,
-    onSecondary = PvotOnSecondaryLight,
-    secondaryContainer = PvotSecondaryContainerLight,
-    onSecondaryContainer = PvotOnSecondaryContainerLight,
-    tertiary = PvotTertiaryLight,
-    onTertiary = PvotOnTertiaryLight,
-    tertiaryContainer = PvotTertiaryContainerLight,
-    onTertiaryContainer = PvotOnTertiaryContainerLight,
-    error = PvotErrorLight,
-    onError = PvotOnErrorLight,
-    errorContainer = PvotErrorContainerLight,
-    onErrorContainer = PvotOnErrorContainerLight,
-    background = PvotBackgroundLight,
-    onBackground = PvotOnBackgroundLight,
-    surface = PvotSurfaceLight,
-    onSurface = PvotOnSurfaceLight,
-    surfaceVariant = PvotSurfaceVariantLight,
-    onSurfaceVariant = PvotOnSurfaceVariantLight,
-    outline = PvotOutlineLight,
-    outlineVariant = PvotOutlineVariantLight,
-    inverseSurface = PvotInverseSurfaceLight,
-    inverseOnSurface = PvotInverseOnSurfaceLight,
-    inversePrimary = PvotInversePrimaryLight,
-    scrim = PvotScrim
-)
+public val PvotLightColorScheme: ColorScheme =
+    lightColorScheme(
+        primary = PvotPrimaryLight,
+        onPrimary = PvotOnPrimaryLight,
+        primaryContainer = PvotPrimaryContainerLight,
+        onPrimaryContainer = PvotOnPrimaryContainerLight,
+        secondary = PvotSecondaryLight,
+        onSecondary = PvotOnSecondaryLight,
+        secondaryContainer = PvotSecondaryContainerLight,
+        onSecondaryContainer = PvotOnSecondaryContainerLight,
+        tertiary = PvotTertiaryLight,
+        onTertiary = PvotOnTertiaryLight,
+        tertiaryContainer = PvotTertiaryContainerLight,
+        onTertiaryContainer = PvotOnTertiaryContainerLight,
+        error = PvotErrorLight,
+        onError = PvotOnErrorLight,
+        errorContainer = PvotErrorContainerLight,
+        onErrorContainer = PvotOnErrorContainerLight,
+        background = PvotBackgroundLight,
+        onBackground = PvotOnBackgroundLight,
+        surface = PvotSurfaceLight,
+        onSurface = PvotOnSurfaceLight,
+        surfaceVariant = PvotSurfaceVariantLight,
+        onSurfaceVariant = PvotOnSurfaceVariantLight,
+        outline = PvotOutlineLight,
+        outlineVariant = PvotOutlineVariantLight,
+        inverseSurface = PvotInverseSurfaceLight,
+        inverseOnSurface = PvotInverseOnSurfaceLight,
+        inversePrimary = PvotInversePrimaryLight,
+        scrim = PvotScrim,
+    )
 
 /**
  * Accessor for the Pvot design system values in scope, alongside [MaterialTheme].
  *
- * Component parameters default to these, so read them here when you need a value
- * outside a component, or to derive one.
+ * Component parameters default to these, so read them here when you need a value outside a
+ * component, or to derive one.
  */
 public object PvotTheme {
     /** Whether the platform's dynamic colors are in effect. */
@@ -107,8 +109,8 @@ public object PvotThemeDefaults {
         dynamicColor && isDynamicColorSupported
 
     /**
-     * The wallpaper-derived scheme when [dynamicColor] is on and the platform
-     * supports it, and the Pvot palette otherwise.
+     * The wallpaper-derived scheme when [dynamicColor] is on and the platform supports it, and the
+     * Pvot palette otherwise.
      *
      * @param darkTheme Whether to resolve the dark arrangement
      * @param dynamicColor Whether to prefer the platform's dynamic colors
@@ -116,24 +118,24 @@ public object PvotThemeDefaults {
     @Composable
     public fun colorScheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
-        dynamicColor: Boolean = false
-    ): ColorScheme = when {
-        usingDynamicColor(dynamicColor) -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        dynamicColor: Boolean = false,
+    ): ColorScheme =
+        when {
+            usingDynamicColor(dynamicColor) -> {
+                val context = LocalContext.current
+                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            }
+            darkTheme -> PvotDarkColorScheme
+            else -> PvotLightColorScheme
         }
-        darkTheme -> PvotDarkColorScheme
-        else -> PvotLightColorScheme
-    }
 }
 
 /**
  * Applies the Pvot design system to [content].
  *
- * Wraps [MaterialTheme] and additionally provides whether dynamic color is in effect,
- * which Pvot components read for their defaults. Every value is overridable, so an
- * app can adopt the whole system or take it a piece at a time:
- *
+ * Wraps [MaterialTheme] and additionally provides whether dynamic color is in effect, which Pvot
+ * components read for their defaults. Every value is overridable, so an app can adopt the whole
+ * system or take it a piece at a time:
  * ```
  * PvotAppTheme(dynamicColor = true) {
  *     Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs) }) { ... }
@@ -151,15 +153,11 @@ public fun PvotAppTheme(
     dynamicColor: Boolean = false,
     colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
     typography: Typography = PvotTypography,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalPvotDynamicColor provides PvotThemeDefaults.usingDynamicColor(dynamicColor)
     ) {
-        MaterialTheme(
-            colorScheme = colorScheme,
-            typography = typography,
-            content = content
-        )
+        MaterialTheme(colorScheme = colorScheme, typography = typography, content = content)
     }
 }

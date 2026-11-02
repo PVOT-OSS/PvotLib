@@ -24,5 +24,5 @@ public data class PvotNavBarColors(
     val containerColor: Color,
     val iconSelectedColor: Color,
     val iconUnselectedColor: Color,
-    val rippleColor: Color
+    val rippleColor: Color,
 )

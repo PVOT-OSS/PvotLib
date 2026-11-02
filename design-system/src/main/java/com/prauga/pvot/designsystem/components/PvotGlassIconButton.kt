@@ -34,15 +34,15 @@ public object PvotGlassIconButtonDefaults {
  *
  * @param onClick Called when the button is tapped
  * @param backdrop The content behind the button, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for
- * the tint alone
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ *   tint alone
  * @param modifier Modifier for the button
  * @param enabled Whether the button responds to taps
  * @param size The button's diameter
  * @param style How the glass looks
  * @param contentColor Color of the icon, provided as [LocalContentColor]
- * @param interactionSource The source driving the press animation, hoist it to react to
- * presses elsewhere
+ * @param interactionSource The source driving the press animation, hoist it to react to presses
+ *   elsewhere
  * @param content The icon
  */
 @Composable
@@ -55,21 +55,22 @@ public fun PvotGlassIconButton(
     style: PvotGlassStyle = PvotGlassDefaults.Style,
     contentColor: Color = MaterialTheme.colorScheme.onSurface,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .size(size)
-            .glassSurface(
-                backdrop = backdrop,
-                cornerRadius = PvotGlassDefaults.CapsuleRadius,
-                style = style,
-                rim = true,
-                onClick = onClick,
-                enabled = enabled,
-                interactionSource = interactionSource
-            ),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(size)
+                .glassSurface(
+                    backdrop = backdrop,
+                    cornerRadius = PvotGlassDefaults.CapsuleRadius,
+                    style = style,
+                    rim = true,
+                    onClick = onClick,
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                ),
+        contentAlignment = Alignment.Center,
     ) {
         CompositionLocalProvider(LocalContentColor provides contentColor, content = content)
     }

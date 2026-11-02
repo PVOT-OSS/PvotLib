@@ -7,17 +7,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.prauga.pvot.designsystem.navigation.PvotNavBarColors
+import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import com.prauga.pvot.designsystem.navigation.PvotNavBarDefaults
-import com.prauga.pvot.designsystem.navigation.PvotNavBarColors
 
 class PvotAppThemeTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
     @Test
     fun theme_providesNavBarColors() {

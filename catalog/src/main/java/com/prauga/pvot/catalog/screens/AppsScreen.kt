@@ -24,24 +24,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.prauga.pvot.coreui.PvotEmptyContent
-import com.prauga.pvot.coreui.PvotErrorContent
-import com.prauga.pvot.coreui.UiState
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.AppCard
 import com.prauga.pvot.catalog.components.AppCardSkeleton
 import com.prauga.pvot.catalog.data.model.GithubRepo
 import com.prauga.pvot.catalog.data.repository.GithubRepository
+import com.prauga.pvot.coreui.PvotEmptyContent
+import com.prauga.pvot.coreui.PvotErrorContent
+import com.prauga.pvot.coreui.UiState
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.motion.pvotReveal
 
 private const val SkeletonCount = 3
 
 @Composable
-fun AppsScreen(
-    label: String,
-    modifier: Modifier = Modifier
-) {
+fun AppsScreen(label: String, modifier: Modifier = Modifier) {
     var uiState by remember { mutableStateOf<UiState<List<GithubRepo>>>(UiState.Loading) }
     val context = LocalContext.current
 
@@ -50,10 +47,11 @@ fun AppsScreen(
     LaunchedEffect(retryCount) {
         uiState = UiState.Loading
         val result = GithubRepository.getAppsRepos()
-        uiState = result.fold(
-            onSuccess = { UiState.Success(it) },
-            onFailure = { UiState.Error(it.message ?: "Unknown error", it) }
-        )
+        uiState =
+            result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Unknown error", it) },
+            )
     }
 
     Box(modifier = modifier.fillMaxSize()) {
@@ -69,7 +67,7 @@ fun AppsScreen(
                     title = stringResource(R.string.apps_error_title),
                     message = state.message,
                     onRetry = { retryCount++ },
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             }
 
@@ -77,14 +75,14 @@ fun AppsScreen(
                 if (state.data.isEmpty()) {
                     Column(
                         modifier = Modifier.align(Alignment.Center),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         PvotEmptyContent(message = stringResource(R.string.apps_empty_title))
                         Text(
                             text = stringResource(R.string.apps_empty_subtitle),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 8.dp)
+                            modifier = Modifier.padding(top = 8.dp),
                         )
                     }
                 } else {
@@ -94,7 +92,7 @@ fun AppsScreen(
                                 text = label,
                                 style = MaterialTheme.typography.titleLarge,
                                 color = MaterialTheme.colorScheme.onBackground,
-                                modifier = Modifier.padding(bottom = 8.dp)
+                                modifier = Modifier.padding(bottom = 8.dp),
                             )
                         }
                         itemsIndexed(state.data) { index, repo ->
@@ -104,7 +102,7 @@ fun AppsScreen(
                                 onClick = {
                                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repo.htmlUrl))
                                     context.startActivity(intent)
-                                }
+                                },
                             )
                         }
                     }

@@ -40,43 +40,48 @@ internal fun Modifier.glassSurface(
 ): Modifier {
     val intensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(intensity, style)
-    val shape = if (cornerRadius.isFinite) {
-        RoundedCornerShape(cornerRadius)
-    } else {
-        RoundedCornerShape(percent = 50)
-    }
+    val shape =
+        if (cornerRadius.isFinite) {
+            RoundedCornerShape(cornerRadius)
+        } else {
+            RoundedCornerShape(percent = 50)
+        }
     val pressed by interactionSource.collectIsPressedAsState()
-    val fill by animateColorAsState(
-        targetValue = if (pressed) PvotGlassDefaults.PressedFillColor else glassStyle.fillColor,
-        animationSpec = tween(PvotDurations.Short),
-        label = "glassFill"
-    )
+    val fill by
+        animateColorAsState(
+            targetValue = if (pressed) PvotGlassDefaults.PressedFillColor else glassStyle.fillColor,
+            animationSpec = tween(PvotDurations.Short),
+            label = "glassFill",
+        )
     var modifier = this
     if (onClick != null) {
         modifier = modifier.pvotPressScale(interactionSource, PvotGlassDefaults.PressedScale)
     }
     if (backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val shadowColor = Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
-        modifier = modifier.shadow(
-            PvotGlassDefaults.ShadowElevation,
-            shape,
-            clip = false,
-            ambientColor = shadowColor,
-            spotColor = shadowColor
-        )
+        modifier =
+            modifier.shadow(
+                PvotGlassDefaults.ShadowElevation,
+                shape,
+                clip = false,
+                ambientColor = shadowColor,
+                spotColor = shadowColor,
+            )
     }
-    modifier = with(PvotGlassDefaults) { modifier.edge(intensity, shape) }
-        .pvotGlass(backdrop, cornerRadius, glassStyle.copy(fillColor = fill))
-        .clip(shape)
+    modifier =
+        with(PvotGlassDefaults) { modifier.edge(intensity, shape) }
+            .pvotGlass(backdrop, cornerRadius, glassStyle.copy(fillColor = fill))
+            .clip(shape)
     if (rim && intensity > 0f) modifier = modifier.pvotGlassRim(cornerRadius, alpha = intensity)
     if (onClick != null) {
-        modifier = modifier.clickable(
-            interactionSource = interactionSource,
-            indication = LocalIndication.current,
-            enabled = enabled,
-            role = Role.Button,
-            onClick = onClick
-        )
+        modifier =
+            modifier.clickable(
+                interactionSource = interactionSource,
+                indication = LocalIndication.current,
+                enabled = enabled,
+                role = Role.Button,
+                onClick = onClick,
+            )
     }
     return modifier
 }

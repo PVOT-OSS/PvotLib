@@ -24,20 +24,16 @@ import com.prauga.pvot.designsystem.components.PvotSkeleton
 fun FeedCardSkeleton(modifier: Modifier = Modifier) {
     GlassPanel(modifier = modifier.fillMaxWidth()) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             PvotSkeleton(Modifier.fillMaxWidth(0.25f).height(10.dp))
             PvotSkeleton(Modifier.fillMaxWidth(0.7f).height(18.dp))
             PvotSkeleton(Modifier.fillMaxWidth().height(12.dp))
             PvotSkeleton(Modifier.fillMaxWidth(0.9f).height(12.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 PvotSkeleton(Modifier.fillMaxWidth(0.3f).height(10.dp))
                 PvotSkeleton(Modifier.fillMaxWidth(0.3f).height(10.dp))
@@ -52,21 +48,17 @@ fun AppCardSkeleton(modifier: Modifier = Modifier) {
     GlassPanel(modifier = modifier.fillMaxWidth()) {
         Column(modifier = Modifier.fillMaxWidth()) {
             PvotSkeleton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(2f),
-                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                modifier = Modifier.fillMaxWidth().aspectRatio(2f),
+                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
             )
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     PvotSkeleton(Modifier.fillMaxWidth(0.45f).height(18.dp))
                     PvotSkeleton(Modifier.fillMaxWidth(0.2f).height(14.dp))
@@ -82,20 +74,13 @@ fun AppCardSkeleton(modifier: Modifier = Modifier) {
 fun DeveloperCardSkeleton(modifier: Modifier = Modifier) {
     GlassPanel(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            PvotSkeleton(
-                modifier = Modifier.size(64.dp),
-                shape = CircleShape
-            )
+            PvotSkeleton(modifier = Modifier.size(64.dp), shape = CircleShape)
             Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(6.dp)
+                modifier = Modifier.weight(1f).padding(start = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 PvotSkeleton(Modifier.fillMaxWidth(0.5f).height(16.dp))
                 PvotSkeleton(Modifier.fillMaxWidth(0.35f).height(12.dp))

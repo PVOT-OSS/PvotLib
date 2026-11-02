@@ -9,5 +9,5 @@ data class FeedEntry(
     val published: String,
     val summary: String,
     val category: String?,
-    val author: String?
+    val author: String?,
 )

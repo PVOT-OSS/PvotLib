@@ -28,11 +28,10 @@ internal fun RowScope.PillNavItem(
     @StringRes expandedContentDescriptionRes: Int,
     sizes: PvotNavBarSizes,
     colors: PvotNavBarColors,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val iconRes = if (selected) expandedIconRes else tab.iconRes
-    val descriptionRes =
-        if (selected) expandedContentDescriptionRes else tab.contentDescriptionRes
+    val descriptionRes = if (selected) expandedContentDescriptionRes else tab.contentDescriptionRes
 
     PvotNavBarItem(
         selected = selected,
@@ -42,21 +41,26 @@ internal fun RowScope.PillNavItem(
         colors = colors,
         icon = {
             val description = stringResource(id = descriptionRes)
-            val badgeDescription = pluralStringResource(
-                R.plurals.pvot_nav_badge_description,
-                tab.badgeCount,
-                tab.badgeCount
-            )
+            val badgeDescription =
+                pluralStringResource(
+                    R.plurals.pvot_nav_badge_description,
+                    tab.badgeCount,
+                    tab.badgeCount,
+                )
             BadgedBox(
                 badge = {
                     if (tab.badgeCount > 0) {
                         Badge {
                             Text(
-                                text = if (tab.badgeCount > MaxBadgeCount) {
-                                    stringResource(R.string.pvot_nav_badge_overflow, MaxBadgeCount)
-                                } else {
-                                    tab.badgeCount.toString()
-                                }
+                                text =
+                                    if (tab.badgeCount > MaxBadgeCount) {
+                                        stringResource(
+                                            R.string.pvot_nav_badge_overflow,
+                                            MaxBadgeCount,
+                                        )
+                                    } else {
+                                        tab.badgeCount.toString()
+                                    }
                             )
                         }
                     }
@@ -64,18 +68,20 @@ internal fun RowScope.PillNavItem(
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
-                    contentDescription = if (tab.badgeCount > 0) {
-                        "$description, $badgeDescription"
-                    } else {
-                        description
-                    },
-                    modifier = Modifier.size(
-                        if (selected) sizes.expandedIconSize else sizes.collapsedIconSize
-                    )
+                    contentDescription =
+                        if (tab.badgeCount > 0) {
+                            "$description, $badgeDescription"
+                        } else {
+                            description
+                        },
+                    modifier =
+                        Modifier.size(
+                            if (selected) sizes.expandedIconSize else sizes.collapsedIconSize
+                        ),
                 )
             }
         },
-        label = { Text(text = stringResource(id = expandedLabelRes), maxLines = 1) }
+        label = { Text(text = stringResource(id = expandedLabelRes), maxLines = 1) },
     )
 }
 

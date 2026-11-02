@@ -45,12 +45,11 @@ import com.prauga.pvot.designsystem.effects.pvotGlassRim
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
-
 /**
  * A floating bottom navigation bar with an item that opens into a pill when selected.
  *
- * Dragging a finger along the bar previews each item it passes over, and lifting the finger
- * selects the item it ended on.
+ * Dragging a finger along the bar previews each item it passes over, and lifting the finger selects
+ * the item it ended on.
  *
  * When a tab is expanded, its content resolves as:
  * - icon: [expandedIconRes], else [PvotTabItem.expandedIconRes], else [PvotTabItem.iconRes]
@@ -64,12 +63,12 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param expandedIconRes Bar-level expanded icon override, or null to resolve per tab
  * @param expandedContentDescriptionRes Bar-level description override, or null to resolve per tab
  * @param backdrop The content behind the bar, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar
- * as glass over it; null for a plain bar
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar as
+ *   glass over it; null for a plain bar
  * @param sizes Size configuration for the bar and its items
  * @param colors Color configuration for the bar and its items
  * @param compact Whether to shrink the bar into its compact form: shorter, with smaller items and
- * no labels. The change animates, so drive it from scroll direction to get out of the way
+ *   no labels. The change animates, so drive it from scroll direction to get out of the way
  */
 @Composable
 public fun PvotNavBar(
@@ -82,10 +81,17 @@ public fun PvotNavBar(
     backdrop: PvotGlassBackdrop? = null,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
-        if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
+        if (backdrop != null) PvotNavBarDefaults.glassColors()
+        else PvotNavBarDefaults.themeColors(),
     compact: Boolean = false,
 ) {
-    PvotNavBar(modifier = modifier, backdrop = backdrop, sizes = sizes, colors = colors, compact = compact) {
+    PvotNavBar(
+        modifier = modifier,
+        backdrop = backdrop,
+        sizes = sizes,
+        colors = colors,
+        compact = compact,
+    ) {
         tabs.forEachIndexed { index, tab ->
             PillNavItem(
                 tab = tab,
@@ -93,10 +99,10 @@ public fun PvotNavBar(
                 onClick = { onTabClick(index) },
                 expandedIconRes = expandedIconRes ?: tab.expandedIconRes ?: tab.iconRes,
                 expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
-                expandedContentDescriptionRes = expandedContentDescriptionRes
-                    ?: tab.contentDescriptionRes,
+                expandedContentDescriptionRes =
+                    expandedContentDescriptionRes ?: tab.contentDescriptionRes,
                 sizes = sizes,
-                colors = colors
+                colors = colors,
             )
         }
     }
@@ -109,8 +115,8 @@ public fun PvotNavBar(
  *
  * @param modifier Modifier for the nav bar container
  * @param backdrop The content behind the bar, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar
- * as glass over it; null for a plain bar
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar as
+ *   glass over it; null for a plain bar
  * @param sizes Size configuration for the bar
  * @param colors Color configuration for the bar
  * @param compact Whether to shrink the bar into its compact form, see the tab-list overload
@@ -122,26 +128,29 @@ public fun PvotNavBar(
     backdrop: PvotGlassBackdrop? = null,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
-        if (backdrop != null) PvotNavBarDefaults.glassColors() else PvotNavBarDefaults.themeColors(),
+        if (backdrop != null) PvotNavBarDefaults.glassColors()
+        else PvotNavBarDefaults.themeColors(),
     compact: Boolean = false,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     val barShape = RoundedCornerShape(sizes.cornerRadius)
     val glassIntensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(glassIntensity)
-    val shadowColor = if (backdrop != null) {
-        Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
-    } else {
-        DefaultShadowColor
-    }
+    val shadowColor =
+        if (backdrop != null) {
+            Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
+        } else {
+            DefaultShadowColor
+        }
     val state = remember { NavBarState() }
     val haptics = LocalHapticFeedback.current
 
-    val compactFraction by animateFloatAsState(
-        targetValue = if (compact) 1f else 0f,
-        animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
-        label = "navBarCompact"
-    )
+    val compactFraction by
+        animateFloatAsState(
+            targetValue = if (compact) 1f else 0f,
+            animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
+            label = "navBarCompact",
+        )
     SideEffect { state.compactFraction = compactFraction }
     val barHeight = lerp(sizes.barHeight, sizes.compactBarHeight, compactFraction)
 
@@ -150,74 +159,76 @@ public fun PvotNavBar(
     }
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = sizes.horizontalPadding, vertical = PvotSpacing.M),
-        contentAlignment = Alignment.BottomCenter
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = sizes.horizontalPadding, vertical = PvotSpacing.M),
+        contentAlignment = Alignment.BottomCenter,
     ) {
         Surface(
-            modifier = Modifier
-                .barWidthModifier(sizes)
-                .height(barHeight)
-                .shadow(
-                    sizes.barShadowElevation,
-                    barShape,
-                    clip = false,
-                    ambientColor = shadowColor,
-                    spotColor = shadowColor
-                )
-                .then(
-                    if (backdrop != null) {
-                        with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
-                            .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
-                            .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
-                    } else {
-                        Modifier
-                    }
-                ),
+            modifier =
+                Modifier.barWidthModifier(sizes)
+                    .height(barHeight)
+                    .shadow(
+                        sizes.barShadowElevation,
+                        barShape,
+                        clip = false,
+                        ambientColor = shadowColor,
+                        spotColor = shadowColor,
+                    )
+                    .then(
+                        if (backdrop != null) {
+                            with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
+                                .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
+                                .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
+                        } else {
+                            Modifier
+                        }
+                    ),
             shape = barShape,
             color = if (backdrop != null) Color.Transparent else colors.containerColor,
             tonalElevation = 0.dp,
-            shadowElevation = 0.dp
+            shadowElevation = 0.dp,
         ) {
             CompositionLocalProvider(LocalNavBarState provides state) {
                 Row(
-                    modifier = Modifier
-                        .barWidthModifier(sizes)
-                        .height(barHeight)
-                        .selectableGroup()
-                        // Before the gestures, so their coordinates match the items' bounds.
-                        .padding(horizontal = sizes.contentPaddingHorizontal)
-                        .pointerInput(state) {
-                            detectHorizontalDragGestures(
-                                onDragStart = { offset -> state.hovered = state.entryAt(offset.x) },
-                                onDragEnd = {
-                                    state.hovered?.takeIf { !it.selected }?.onClick?.invoke()
-                                    state.hovered = null
-                                },
-                                onDragCancel = { state.hovered = null }
-                            ) { change, _ ->
-                                state.entryAt(change.position.x)?.let { state.hovered = it }
-                                change.consume()
-                            }
-                        },
+                    modifier =
+                        Modifier.barWidthModifier(sizes)
+                            .height(barHeight)
+                            .selectableGroup()
+                            // Before the gestures, so their coordinates match the items' bounds.
+                            .padding(horizontal = sizes.contentPaddingHorizontal)
+                            .pointerInput(state) {
+                                detectHorizontalDragGestures(
+                                    onDragStart = { offset ->
+                                        state.hovered = state.entryAt(offset.x)
+                                    },
+                                    onDragEnd = {
+                                        state.hovered?.takeIf { !it.selected }?.onClick?.invoke()
+                                        state.hovered = null
+                                    },
+                                    onDragCancel = { state.hovered = null },
+                                ) { change, _ ->
+                                    state.entryAt(change.position.x)?.let { state.hovered = it }
+                                    change.consume()
+                                }
+                            },
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(
-                        sizes.itemSpacing,
-                        Alignment.CenterHorizontally
-                    ),
-                    content = content
+                    horizontalArrangement =
+                        Arrangement.spacedBy(sizes.itemSpacing, Alignment.CenterHorizontally),
+                    content = content,
                 )
             }
         }
     }
 }
 
-private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier = this.then(
-    when {
-        sizes.barWidth != null -> Modifier.width(sizes.barWidth)
-        sizes.fillWidth -> Modifier.fillMaxWidth()
-        else -> Modifier.wrapContentWidth()
-    }
-)
+private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier =
+    this.then(
+        when {
+            sizes.barWidth != null -> Modifier.width(sizes.barWidth)
+            sizes.fillWidth -> Modifier.fillMaxWidth()
+            else -> Modifier.wrapContentWidth()
+        }
+    )

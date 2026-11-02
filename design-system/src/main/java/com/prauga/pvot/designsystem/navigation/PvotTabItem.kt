@@ -22,5 +22,5 @@ public data class PvotTabItem(
     @StringRes val contentDescriptionRes: Int,
     @DrawableRes val expandedIconRes: Int? = null,
     @StringRes val expandedLabelRes: Int? = null,
-    val badgeCount: Int = 0
+    val badgeCount: Int = 0,
 )

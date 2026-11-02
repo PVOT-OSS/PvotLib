@@ -23,8 +23,8 @@ import androidx.compose.ui.node.requireGraphicsContext
 import androidx.compose.ui.platform.InspectorInfo
 
 /**
- * What shows through [pvotGlass]: the content of the element marked with
- * [pvotGlassBackdrop], copied as it draws.
+ * What shows through [pvotGlass]: the content of the element marked with [pvotGlassBackdrop],
+ * copied as it draws.
  *
  * Create one with [rememberPvotGlassBackdrop], mark the content behind the glass with
  * [pvotGlassBackdrop], and pass it to each glass drawn over that content.
@@ -47,17 +47,16 @@ public fun rememberPvotGlassBackdrop(): PvotGlassBackdrop = remember { PvotGlass
 /**
  * Marks this element's content as [backdrop], what glass drawn over it shows through it.
  *
- * The glass must be drawn over this element, not inside it: glass inside its own backdrop
- * shows only its fill.
+ * The glass must be drawn over this element, not inside it: glass inside its own backdrop shows
+ * only its fill.
  *
  * @param backdrop The backdrop this content fills, passed to [pvotGlass]
  */
 public fun Modifier.pvotGlassBackdrop(backdrop: PvotGlassBackdrop): Modifier =
     this then GlassBackdropElement(backdrop)
 
-private data class GlassBackdropElement(
-    val backdrop: PvotGlassBackdrop,
-) : ModifierNodeElement<GlassBackdropNode>() {
+private data class GlassBackdropElement(val backdrop: PvotGlassBackdrop) :
+    ModifierNodeElement<GlassBackdropNode>() {
 
     override fun create(): GlassBackdropNode = GlassBackdropNode(backdrop)
 
@@ -71,11 +70,11 @@ private data class GlassBackdropElement(
     }
 }
 
-internal class GlassBackdropNode(
-    var backdrop: PvotGlassBackdrop,
-) : Modifier.Node(), DrawModifierNode, GlobalPositionAwareModifierNode, TraversableNode {
+internal class GlassBackdropNode(var backdrop: PvotGlassBackdrop) :
+    Modifier.Node(), DrawModifierNode, GlobalPositionAwareModifierNode, TraversableNode {
 
-    override val traverseKey: Any get() = TraverseKey
+    override val traverseKey: Any
+        get() = TraverseKey
 
     override fun onAttach() {
         backdrop.layer = requireGraphicsContext().createGraphicsLayer()

@@ -43,58 +43,43 @@ fun GlassDemo(modifier: Modifier = Modifier) {
     val intensity = PvotGlassDefaults.currentIntensity()
     var taps by remember { mutableIntStateOf(0) }
 
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(340.dp)
-                .clip(RoundedCornerShape(16.dp))
-        ) {
-            LiveBackground(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pvotGlassBackdrop(backdrop)
-            )
+    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(modifier = Modifier.fillMaxWidth().height(340.dp).clip(RoundedCornerShape(16.dp))) {
+            LiveBackground(modifier = Modifier.fillMaxSize().pvotGlassBackdrop(backdrop))
 
             Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(16.dp)
-                    .fillMaxWidth()
-                    .height(46.dp)
-                    .pvotGlass(backdrop, style = PvotGlassDefaults.style(intensity))
-                    .pvotGlassRim(alpha = intensity),
-                contentAlignment = Alignment.CenterStart
+                modifier =
+                    Modifier.align(Alignment.TopCenter)
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .height(46.dp)
+                        .pvotGlass(backdrop, style = PvotGlassDefaults.style(intensity))
+                        .pvotGlassRim(alpha = intensity),
+                contentAlignment = Alignment.CenterStart,
             ) {
                 Text(
                     text = stringResource(R.string.catalog_glass_search),
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    modifier = Modifier.padding(horizontal = 20.dp)
+                    modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
 
             GlassButtons(
                 backdrop = backdrop,
                 onClick = { taps++ },
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier.align(Alignment.Center),
             )
 
             PvotGlassCard(
                 backdrop = backdrop,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                onClick = { taps++ }
+                modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp).fillMaxWidth(),
+                onClick = { taps++ },
             ) {
                 Text(
                     text = stringResource(R.string.catalog_glass_card),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -102,7 +87,7 @@ fun GlassDemo(modifier: Modifier = Modifier) {
             text = stringResource(R.string.catalog_glass_taps, taps),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 12.dp)
+            modifier = Modifier.padding(top = 12.dp),
         )
     }
 }
@@ -111,18 +96,15 @@ fun GlassDemo(modifier: Modifier = Modifier) {
 private fun GlassButtons(
     backdrop: PvotGlassBackdrop,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
         listOf(R.drawable.ic_home, R.drawable.ic_apps, R.drawable.ic_catalog).forEach { icon ->
             PvotGlassIconButton(onClick = onClick, backdrop = backdrop) {
                 Icon(
                     painter = painterResource(icon),
                     contentDescription = null,
-                    modifier = Modifier.size(22.dp)
+                    modifier = Modifier.size(22.dp),
                 )
             }
         }

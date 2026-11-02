@@ -51,4 +51,3 @@ public final class com/prauga/pvot/coreui/UiState$Success : com/prauga/pvot/core
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
-

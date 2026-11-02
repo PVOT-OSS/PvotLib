@@ -26,7 +26,7 @@ public data class PvotSliderColors(
     val inactiveTrackColor: Color,
     val thumbColor: Color,
     val tickColor: Color,
-    val activeTickColor: Color
+    val activeTickColor: Color,
 )
 
 /** Defaults for [PvotSlider] and [PvotRangeSlider]. */
@@ -54,16 +54,16 @@ public object PvotSliderDefaults {
         inactiveTrackColor: Color = colorScheme.onSurface.copy(alpha = 0.12f),
         thumbColor: Color = colorScheme.primary,
         tickColor: Color = colorScheme.onSurface.copy(alpha = 0.3f),
-        activeTickColor: Color = colorScheme.onPrimary.copy(alpha = 0.7f)
-    ): PvotSliderColors = PvotSliderColors(
-        activeTrackColor = activeTrackColor,
-        inactiveTrackColor = inactiveTrackColor,
-        thumbColor = thumbColor,
-        tickColor = tickColor,
-        activeTickColor = activeTickColor
-    )
+        activeTickColor: Color = colorScheme.onPrimary.copy(alpha = 0.7f),
+    ): PvotSliderColors =
+        PvotSliderColors(
+            activeTrackColor = activeTrackColor,
+            inactiveTrackColor = inactiveTrackColor,
+            thumbColor = thumbColor,
+            tickColor = tickColor,
+            activeTickColor = activeTickColor,
+        )
 
     /** Slider colors from the theme's color scheme. */
-    @Composable
-    public fun themeColors(): PvotSliderColors = colors(MaterialTheme.colorScheme)
+    @Composable public fun themeColors(): PvotSliderColors = colors(MaterialTheme.colorScheme)
 }

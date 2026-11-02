@@ -17,8 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 /**
- * A failure message with a retry affordance, shown in place of content that could
- * not be loaded.
+ * A failure message with a retry affordance, shown in place of content that could not be loaded.
  *
  * @param title Short summary of what failed
  * @param message The failure detail, typically the exception message
@@ -30,27 +29,25 @@ public fun PvotErrorContent(
     title: String,
     message: String,
     onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.error,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
-        Button(onClick = onRetry) {
-            Text(stringResource(R.string.pvot_retry))
-        }
+        Button(onClick = onRetry) { Text(stringResource(R.string.pvot_retry)) }
     }
 }

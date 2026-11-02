@@ -4,13 +4,13 @@
 package com.prauga.pvot.designsystem.components.slider
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.horizontalDrag
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,14 +41,15 @@ import kotlin.math.roundToInt
 /**
  * A minimal slider: a slim rounded track, one round thumb and nothing else.
  *
- * Touch anywhere on the track to jump there, or drag. The thumb swells slightly under the
- * finger on a spring. With [steps] the value snaps to evenly spaced stops, marked by dots, and
- * the device ticks as each is crossed. A horizontal drag claims the gesture, so a slider inside a
- * scrolling list never fights the list's own vertical scroll.
+ * Touch anywhere on the track to jump there, or drag. The thumb swells slightly under the finger on
+ * a spring. With [steps] the value snaps to evenly spaced stops, marked by dots, and the device
+ * ticks as each is crossed. A horizontal drag claims the gesture, so a slider inside a scrolling
+ * list never fights the list's own vertical scroll.
  *
  * @param value The current value, within [valueRange]
  * @param onValueChange Called as the user moves the thumb, with the new value
- * @param modifier Modifier for the slider; it fills the width and is [PvotSliderDefaults.TouchHeight] tall
+ * @param modifier Modifier for the slider; it fills the width and is
+ *   [PvotSliderDefaults.TouchHeight] tall
  * @param enabled Whether the slider responds to touch
  * @param valueRange The range [value] moves within
  * @param steps Number of stops strictly between the ends, or 0 for a continuous slider
@@ -64,7 +65,7 @@ public fun PvotSlider(
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     steps: Int = 0,
     onValueChangeFinished: (() -> Unit)? = null,
-    colors: PvotSliderColors = PvotSliderDefaults.themeColors()
+    colors: PvotSliderColors = PvotSliderDefaults.themeColors(),
 ) {
     require(steps >= 0) { "steps must not be negative" }
     val currentOnChange by rememberUpdatedState(onValueChange)
@@ -73,82 +74,108 @@ public fun PvotSlider(
     var pressed by remember { mutableStateOf(false) }
 
     val fraction = valueRange.toFraction(value, steps)
-    val thumbScale by animateFloatAsState(
-        targetValue = if (pressed) PvotSliderDefaults.PressedThumbScale else 1f,
-        animationSpec = PvotMotion.PressSpring,
-        label = "pvotSliderThumb"
-    )
+    val thumbScale by
+        animateFloatAsState(
+            targetValue = if (pressed) PvotSliderDefaults.PressedThumbScale else 1f,
+            animationSpec = PvotMotion.PressSpring,
+            label = "pvotSliderThumb",
+        )
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(PvotSliderDefaults.TouchHeight)
-            .semantics {
-                progressBarRangeInfo = ProgressBarRangeInfo(
-                    current = value.coerceIn(valueRange),
-                    range = valueRange,
-                    steps = steps
-                )
-                setProgress { target ->
-                    currentOnChange(valueRange.fromFraction(valueRange.toFraction(target, steps)))
-                    true
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(PvotSliderDefaults.TouchHeight)
+                .semantics {
+                    progressBarRangeInfo =
+                        ProgressBarRangeInfo(
+                            current = value.coerceIn(valueRange),
+                            range = valueRange,
+                            steps = steps,
+                        )
+                    setProgress { target ->
+                        currentOnChange(
+                            valueRange.fromFraction(valueRange.toFraction(target, steps))
+                        )
+                        true
+                    }
+                    if (!enabled) disabled()
                 }
-                if (!enabled) disabled()
-            }
-            .pointerInput(enabled, valueRange, steps) {
-                if (!enabled) return@pointerInput
-                val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                var last = Float.NaN
-                fun emit(x: Float) {
-                    val usable = (size.width - thumbPx).coerceAtLeast(1f)
-                    val snapped = valueRange.snap(((x - thumbPx / 2f) / usable).coerceIn(0f, 1f), steps)
-                    if (snapped != last) {
-                        if (!last.isNaN() && steps > 0) {
-                            haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                .pointerInput(enabled, valueRange, steps) {
+                    if (!enabled) return@pointerInput
+                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
+                    var last = Float.NaN
+                    fun emit(x: Float) {
+                        val usable = (size.width - thumbPx).coerceAtLeast(1f)
+                        val snapped =
+                            valueRange.snap(((x - thumbPx / 2f) / usable).coerceIn(0f, 1f), steps)
+                        if (snapped != last) {
+                            if (!last.isNaN() && steps > 0) {
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            }
+                            last = snapped
+                            currentOnChange(valueRange.fromFraction(snapped))
                         }
-                        last = snapped
-                        currentOnChange(valueRange.fromFraction(snapped))
                     }
-                }
-                awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    pressed = true
-                    last = valueRange.toFraction(value, steps)
-                    val slop = awaitHorizontalTouchSlopOrCancellation(down.id) { change, _ ->
-                        change.consume()
-                    }
-                    if (slop != null) {
-                        emit(slop.position.x)
-                        horizontalDrag(slop.id) { change ->
-                            change.consume()
-                            emit(change.position.x)
+                    awaitEachGesture {
+                        val down = awaitFirstDown(requireUnconsumed = false)
+                        pressed = true
+                        last = valueRange.toFraction(value, steps)
+                        val slop =
+                            awaitHorizontalTouchSlopOrCancellation(down.id) { change, _ ->
+                                change.consume()
+                            }
+                        if (slop != null) {
+                            emit(slop.position.x)
+                            horizontalDrag(slop.id) { change ->
+                                change.consume()
+                                emit(change.position.x)
+                            }
+                        } else {
+                            // No horizontal drag began: a tap if the finger lifted unclaimed.
+                            val lift = currentEvent.changes.firstOrNull { it.id == down.id }
+                            if (lift != null && lift.changedToUp() && !lift.isConsumed)
+                                emit(lift.position.x)
                         }
-                    } else {
-                        // No horizontal drag began: a tap if the finger lifted unclaimed.
-                        val lift = currentEvent.changes.firstOrNull { it.id == down.id }
-                        if (lift != null && lift.changedToUp() && !lift.isConsumed) emit(lift.position.x)
+                        pressed = false
+                        currentOnFinished?.invoke()
                     }
-                    pressed = false
-                    currentOnFinished?.invoke()
                 }
-            }
-            .drawWithCache {
-                val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                val trackH = PvotSliderDefaults.TrackHeight.toPx()
-                val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
-                onDrawBehind {
-                    val alpha = if (enabled) 1f else DisabledAlpha
-                    val centerY = size.height / 2f
-                    val usable = size.width - thumbPx
-                    val thumbX = thumbPx / 2f + fraction * usable
-                    drawTrack(colors.inactiveTrackColor.scaled(alpha), 0f, size.width, centerY, trackH)
-                    drawTrack(colors.activeTrackColor.scaled(alpha), 0f, thumbX, centerY, trackH)
-                    drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
-                        if (x <= thumbX) colors.activeTickColor.scaled(alpha) else colors.tickColor.scaled(alpha)
+                .drawWithCache {
+                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
+                    val trackH = PvotSliderDefaults.TrackHeight.toPx()
+                    val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
+                    onDrawBehind {
+                        val alpha = if (enabled) 1f else DisabledAlpha
+                        val centerY = size.height / 2f
+                        val usable = size.width - thumbPx
+                        val thumbX = thumbPx / 2f + fraction * usable
+                        drawTrack(
+                            colors.inactiveTrackColor.scaled(alpha),
+                            0f,
+                            size.width,
+                            centerY,
+                            trackH,
+                        )
+                        drawTrack(
+                            colors.activeTrackColor.scaled(alpha),
+                            0f,
+                            thumbX,
+                            centerY,
+                            trackH,
+                        )
+                        drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
+                            if (x <= thumbX) colors.activeTickColor.scaled(alpha)
+                            else colors.tickColor.scaled(alpha)
+                        }
+                        drawThumb(
+                            colors.thumbColor.scaled(alpha),
+                            thumbX,
+                            centerY,
+                            thumbPx / 2f * thumbScale,
+                        )
                     }
-                    drawThumb(colors.thumbColor.scaled(alpha), thumbX, centerY, thumbPx / 2f * thumbScale)
                 }
-            }
     )
 }
 
@@ -160,7 +187,8 @@ public fun PvotSlider(
  *
  * @param value The selected span, within [valueRange]
  * @param onValueChange Called as the user moves a thumb, with the new span
- * @param modifier Modifier for the slider; it fills the width and is [PvotSliderDefaults.TouchHeight] tall
+ * @param modifier Modifier for the slider; it fills the width and is
+ *   [PvotSliderDefaults.TouchHeight] tall
  * @param enabled Whether the slider responds to touch
  * @param valueRange The range the span moves within
  * @param steps Number of stops strictly between the ends, or 0 for a continuous slider
@@ -176,7 +204,7 @@ public fun PvotRangeSlider(
     valueRange: ClosedFloatingPointRange<Float> = 0f..1f,
     steps: Int = 0,
     onValueChangeFinished: (() -> Unit)? = null,
-    colors: PvotSliderColors = PvotSliderDefaults.themeColors()
+    colors: PvotSliderColors = PvotSliderDefaults.themeColors(),
 ) {
     require(steps >= 0) { "steps must not be negative" }
     val currentOnChange by rememberUpdatedState(onValueChange)
@@ -187,99 +215,135 @@ public fun PvotRangeSlider(
 
     val startFraction = valueRange.toFraction(value.start, steps)
     val endFraction = valueRange.toFraction(value.endInclusive, steps)
-    val startScale by animateFloatAsState(
-        targetValue = if (pressedThumb == 0) PvotSliderDefaults.PressedThumbScale else 1f,
-        animationSpec = PvotMotion.PressSpring,
-        label = "pvotRangeStartThumb"
-    )
-    val endScale by animateFloatAsState(
-        targetValue = if (pressedThumb == 1) PvotSliderDefaults.PressedThumbScale else 1f,
-        animationSpec = PvotMotion.PressSpring,
-        label = "pvotRangeEndThumb"
-    )
+    val startScale by
+        animateFloatAsState(
+            targetValue = if (pressedThumb == 0) PvotSliderDefaults.PressedThumbScale else 1f,
+            animationSpec = PvotMotion.PressSpring,
+            label = "pvotRangeStartThumb",
+        )
+    val endScale by
+        animateFloatAsState(
+            targetValue = if (pressedThumb == 1) PvotSliderDefaults.PressedThumbScale else 1f,
+            animationSpec = PvotMotion.PressSpring,
+            label = "pvotRangeEndThumb",
+        )
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(PvotSliderDefaults.TouchHeight)
-            .semantics {
-                progressBarRangeInfo = ProgressBarRangeInfo(
-                    current = value.endInclusive.coerceIn(valueRange),
-                    range = valueRange,
-                    steps = steps
-                )
-                if (!enabled) disabled()
-            }
-            .pointerInput(enabled, valueRange, steps) {
-                if (!enabled) return@pointerInput
-                val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                fun fractionAt(x: Float): Float {
-                    val usable = (size.width - thumbPx).coerceAtLeast(1f)
-                    return valueRange.snap(((x - thumbPx / 2f) / usable).coerceIn(0f, 1f), steps)
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(PvotSliderDefaults.TouchHeight)
+                .semantics {
+                    progressBarRangeInfo =
+                        ProgressBarRangeInfo(
+                            current = value.endInclusive.coerceIn(valueRange),
+                            range = valueRange,
+                            steps = steps,
+                        )
+                    if (!enabled) disabled()
                 }
-                fun nearestThumb(f: Float): Int {
-                    val s = valueRange.toFraction(currentValue.start, steps)
-                    val e = valueRange.toFraction(currentValue.endInclusive, steps)
-                    return when {
-                        f <= s -> 0
-                        f >= e -> 1
-                        abs(f - s) <= abs(f - e) -> 0
-                        else -> 1
+                .pointerInput(enabled, valueRange, steps) {
+                    if (!enabled) return@pointerInput
+                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
+                    fun fractionAt(x: Float): Float {
+                        val usable = (size.width - thumbPx).coerceAtLeast(1f)
+                        return valueRange.snap(
+                            ((x - thumbPx / 2f) / usable).coerceIn(0f, 1f),
+                            steps,
+                        )
                     }
-                }
-                fun move(thumb: Int, f: Float) {
-                    val s = valueRange.toFraction(currentValue.start, steps)
-                    val e = valueRange.toFraction(currentValue.endInclusive, steps)
-                    val next = if (thumb == 0) minOf(f, e) to e else s to maxOf(f, s)
-                    if (next.first != s || next.second != e) {
-                        if (steps > 0) haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                        currentOnChange(valueRange.fromFraction(next.first)..valueRange.fromFraction(next.second))
+                    fun nearestThumb(f: Float): Int {
+                        val s = valueRange.toFraction(currentValue.start, steps)
+                        val e = valueRange.toFraction(currentValue.endInclusive, steps)
+                        return when {
+                            f <= s -> 0
+                            f >= e -> 1
+                            abs(f - s) <= abs(f - e) -> 0
+                            else -> 1
+                        }
                     }
-                }
-                awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    var thumb = nearestThumb(fractionAt(down.position.x))
-                    pressedThumb = thumb
-                    val slop = awaitHorizontalTouchSlopOrCancellation(down.id) { change, _ ->
-                        change.consume()
+                    fun move(thumb: Int, f: Float) {
+                        val s = valueRange.toFraction(currentValue.start, steps)
+                        val e = valueRange.toFraction(currentValue.endInclusive, steps)
+                        val next = if (thumb == 0) minOf(f, e) to e else s to maxOf(f, s)
+                        if (next.first != s || next.second != e) {
+                            if (steps > 0)
+                                haptics.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                            currentOnChange(
+                                valueRange.fromFraction(next.first)..valueRange.fromFraction(
+                                        next.second
+                                    )
+                            )
+                        }
                     }
-                    if (slop != null) {
-                        thumb = nearestThumb(fractionAt(down.position.x))
+                    awaitEachGesture {
+                        val down = awaitFirstDown(requireUnconsumed = false)
+                        var thumb = nearestThumb(fractionAt(down.position.x))
                         pressedThumb = thumb
-                        move(thumb, fractionAt(slop.position.x))
-                        horizontalDrag(slop.id) { change ->
-                            change.consume()
-                            move(thumb, fractionAt(change.position.x))
+                        val slop =
+                            awaitHorizontalTouchSlopOrCancellation(down.id) { change, _ ->
+                                change.consume()
+                            }
+                        if (slop != null) {
+                            thumb = nearestThumb(fractionAt(down.position.x))
+                            pressedThumb = thumb
+                            move(thumb, fractionAt(slop.position.x))
+                            horizontalDrag(slop.id) { change ->
+                                change.consume()
+                                move(thumb, fractionAt(change.position.x))
+                            }
+                        } else {
+                            val lift = currentEvent.changes.firstOrNull { it.id == down.id }
+                            if (lift != null && lift.changedToUp() && !lift.isConsumed) {
+                                move(thumb, fractionAt(lift.position.x))
+                            }
                         }
-                    } else {
-                        val lift = currentEvent.changes.firstOrNull { it.id == down.id }
-                        if (lift != null && lift.changedToUp() && !lift.isConsumed) {
-                            move(thumb, fractionAt(lift.position.x))
+                        pressedThumb = -1
+                        currentOnFinished?.invoke()
+                    }
+                }
+                .drawWithCache {
+                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
+                    val trackH = PvotSliderDefaults.TrackHeight.toPx()
+                    val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
+                    onDrawBehind {
+                        val alpha = if (enabled) 1f else DisabledAlpha
+                        val centerY = size.height / 2f
+                        val usable = size.width - thumbPx
+                        val startX = thumbPx / 2f + startFraction * usable
+                        val endX = thumbPx / 2f + endFraction * usable
+                        drawTrack(
+                            colors.inactiveTrackColor.scaled(alpha),
+                            0f,
+                            size.width,
+                            centerY,
+                            trackH,
+                        )
+                        drawTrack(
+                            colors.activeTrackColor.scaled(alpha),
+                            startX,
+                            endX,
+                            centerY,
+                            trackH,
+                        )
+                        drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
+                            if (x in startX..endX) colors.activeTickColor.scaled(alpha)
+                            else colors.tickColor.scaled(alpha)
                         }
+                        drawThumb(
+                            colors.thumbColor.scaled(alpha),
+                            startX,
+                            centerY,
+                            thumbPx / 2f * startScale,
+                        )
+                        drawThumb(
+                            colors.thumbColor.scaled(alpha),
+                            endX,
+                            centerY,
+                            thumbPx / 2f * endScale,
+                        )
                     }
-                    pressedThumb = -1
-                    currentOnFinished?.invoke()
                 }
-            }
-            .drawWithCache {
-                val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                val trackH = PvotSliderDefaults.TrackHeight.toPx()
-                val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
-                onDrawBehind {
-                    val alpha = if (enabled) 1f else DisabledAlpha
-                    val centerY = size.height / 2f
-                    val usable = size.width - thumbPx
-                    val startX = thumbPx / 2f + startFraction * usable
-                    val endX = thumbPx / 2f + endFraction * usable
-                    drawTrack(colors.inactiveTrackColor.scaled(alpha), 0f, size.width, centerY, trackH)
-                    drawTrack(colors.activeTrackColor.scaled(alpha), startX, endX, centerY, trackH)
-                    drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
-                        if (x in startX..endX) colors.activeTickColor.scaled(alpha) else colors.tickColor.scaled(alpha)
-                    }
-                    drawThumb(colors.thumbColor.scaled(alpha), startX, centerY, thumbPx / 2f * startScale)
-                    drawThumb(colors.thumbColor.scaled(alpha), endX, centerY, thumbPx / 2f * endScale)
-                }
-            }
     )
 }
 
@@ -299,13 +363,19 @@ private fun ClosedFloatingPointRange<Float>.fromFraction(fraction: Float): Float
 private fun ClosedFloatingPointRange<Float>.snap(fraction: Float, steps: Int): Float =
     if (steps > 0) (fraction * (steps + 1)).roundToInt() / (steps + 1).toFloat() else fraction
 
-private fun DrawScope.drawTrack(color: Color, fromX: Float, toX: Float, centerY: Float, height: Float) {
+private fun DrawScope.drawTrack(
+    color: Color,
+    fromX: Float,
+    toX: Float,
+    centerY: Float,
+    height: Float,
+) {
     if (toX <= fromX) return
     drawRoundRect(
         color = color,
         topLeft = Offset(fromX, centerY - height / 2f),
         size = Size(toX - fromX, height),
-        cornerRadius = CornerRadius(height / 2f)
+        cornerRadius = CornerRadius(height / 2f),
     )
 }
 
@@ -315,7 +385,7 @@ private fun DrawScope.drawTicks(
     usable: Float,
     centerY: Float,
     radius: Float,
-    colorAt: (x: Float) -> Color
+    colorAt: (x: Float) -> Color,
 ) {
     if (steps <= 0) return
     for (i in 1..steps) {
@@ -326,6 +396,10 @@ private fun DrawScope.drawTicks(
 
 private fun DrawScope.drawThumb(color: Color, x: Float, centerY: Float, radius: Float) {
     // A faint halo keeps the thumb readable where it sits on the same-colored track.
-    drawCircle(Color.Black.copy(alpha = 0.18f), radius + 1.5.dp.toPx(), Offset(x, centerY + 0.5.dp.toPx()))
+    drawCircle(
+        Color.Black.copy(alpha = 0.18f),
+        radius + 1.5.dp.toPx(),
+        Offset(x, centerY + 0.5.dp.toPx()),
+    )
     drawCircle(color, radius, Offset(x, centerY))
 }

@@ -46,29 +46,33 @@ public object PvotNavBarDefaults {
         containerColor: Color = ContainerColor,
         iconSelectedColor: Color = IconSelectedColor,
         iconUnselectedColor: Color = IconUnselectedColor,
-        rippleColor: Color = RippleColor
-    ): PvotNavBarColors = PvotNavBarColors(
-        gradient = gradient,
-        collapsedChipColor = collapsedChipColor,
-        containerColor = containerColor,
-        iconSelectedColor = iconSelectedColor,
-        iconUnselectedColor = iconUnselectedColor,
-        rippleColor = rippleColor
-    )
+        rippleColor: Color = RippleColor,
+    ): PvotNavBarColors =
+        PvotNavBarColors(
+            gradient = gradient,
+            collapsedChipColor = collapsedChipColor,
+            containerColor = containerColor,
+            iconSelectedColor = iconSelectedColor,
+            iconUnselectedColor = iconUnselectedColor,
+            rippleColor = rippleColor,
+        )
 
     /** Nav bar colors derived from [colorScheme]: a solid primary pill on a tinted surface bar. */
-    public fun colors(colorScheme: ColorScheme): PvotNavBarColors = PvotNavBarColors(
-        gradient = SolidColor(colorScheme.primary),
-        collapsedChipColor = Color.Transparent,
-        containerColor = colorScheme.surfaceVariant,
-        iconSelectedColor = colorScheme.onPrimary,
-        iconUnselectedColor = colorScheme.onSurfaceVariant,
-        rippleColor = colorScheme.primary.copy(alpha = 0.16f)
-    )
+    public fun colors(colorScheme: ColorScheme): PvotNavBarColors =
+        PvotNavBarColors(
+            gradient = SolidColor(colorScheme.primary),
+            collapsedChipColor = Color.Transparent,
+            containerColor = colorScheme.surfaceVariant,
+            iconSelectedColor = colorScheme.onPrimary,
+            iconUnselectedColor = colorScheme.onSurfaceVariant,
+            rippleColor = colorScheme.primary.copy(alpha = 0.16f),
+        )
 
-    /** Nav bar colors derived from the theme's color scheme, so they follow light, dark and dynamic color. */
-    @Composable
-    public fun themeColors(): PvotNavBarColors = colors(MaterialTheme.colorScheme)
+    /**
+     * Nav bar colors derived from the theme's color scheme, so they follow light, dark and dynamic
+     * color.
+     */
+    @Composable public fun themeColors(): PvotNavBarColors = colors(MaterialTheme.colorScheme)
 
     /**
      * Nav bar colors for a bar drawn as glass: the [themeColors] selected item over a clear bar,
@@ -77,11 +81,12 @@ public object PvotNavBarDefaults {
     @Composable
     public fun glassColors(): PvotNavBarColors {
         val onSurface = MaterialTheme.colorScheme.onSurface
-        return themeColors().copy(
-            collapsedChipColor = Color.Transparent,
-            containerColor = Color.Transparent,
-            iconUnselectedColor = onSurface.copy(alpha = 0.8f),
-            rippleColor = onSurface.copy(alpha = 0.12f)
-        )
+        return themeColors()
+            .copy(
+                collapsedChipColor = Color.Transparent,
+                containerColor = Color.Transparent,
+                iconUnselectedColor = onSurface.copy(alpha = 0.8f),
+                rippleColor = onSurface.copy(alpha = 0.12f),
+            )
     }
 }

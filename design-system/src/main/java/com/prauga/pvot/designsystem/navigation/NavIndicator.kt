@@ -38,12 +38,14 @@ internal class NavBarState {
         get() = hovered ?: entries.firstOrNull { it.selected }
 
     /** The item whose bounds hold [x], or the nearest one when [x] is past either end. */
-    fun entryAt(x: Float): NavItemEntry? = entries
-        .filter { it.bounds != Rect.Zero }
-        .minByOrNull { entry ->
-            val b = entry.bounds
-            if (x in b.left..b.right) 0f else minOf(kotlin.math.abs(x - b.left), kotlin.math.abs(x - b.right))
-        }
+    fun entryAt(x: Float): NavItemEntry? =
+        entries
+            .filter { it.bounds != Rect.Zero }
+            .minByOrNull { entry ->
+                val b = entry.bounds
+                if (x in b.left..b.right) 0f
+                else minOf(kotlin.math.abs(x - b.left), kotlin.math.abs(x - b.right))
+            }
 }
 
 internal val LocalNavBarState = staticCompositionLocalOf<NavBarState?> { null }

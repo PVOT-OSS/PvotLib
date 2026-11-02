@@ -3,7 +3,6 @@
 
 package com.prauga.pvot.catalog.hub
 
-import com.prauga.pvot.catalog.components.GlassPanel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -42,7 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
-import com.prauga.pvot.designsystem.components.PvotCard
+import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.designsystem.components.PvotScreen
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
 import com.prauga.pvot.designsystem.theme.PvotSpacing
@@ -98,15 +97,13 @@ internal fun DetailPage(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
     code: String? = null,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     PvotScreen(
-        modifier = modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .imePadding(),
+        modifier =
+            modifier.fillMaxSize().background(MaterialTheme.colorScheme.background).imePadding(),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(SectionGap)
+        verticalArrangement = Arrangement.spacedBy(SectionGap),
     ) {
         item {
             Column(verticalArrangement = Arrangement.spacedBy(PvotSpacing.S)) {
@@ -114,21 +111,21 @@ internal fun DetailPage(
                     IconButton(onClick = onBack) {
                         Icon(
                             painter = painterResource(R.drawable.ic_t_arrow_left),
-                            contentDescription = "Back"
+                            contentDescription = "Back",
                         )
                     }
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(start = PvotSpacing.XS)
+                        modifier = Modifier.padding(start = PvotSpacing.XS),
                     )
                 }
                 Text(
                     text = summary,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = PvotSpacing.S)
+                    modifier = Modifier.padding(horizontal = PvotSpacing.S),
                 )
             }
         }
@@ -136,13 +133,11 @@ internal fun DetailPage(
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(SectionGap),
-                content = content
+                content = content,
             )
         }
         if (code != null) {
-            item {
-                DemoSection(title = "Usage") { CodeBlock(code) }
-            }
+            item { DemoSection(title = "Usage") { CodeBlock(code) } }
         }
     }
 }
@@ -157,35 +152,36 @@ internal fun DemoSection(
     modifier: Modifier = Modifier,
     caption: String? = null,
     framed: Boolean = true,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(ItemGap)) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(ItemGap),
+    ) {
         Column(
             modifier = Modifier.padding(horizontal = PvotSpacing.S),
-            verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS)
+            verticalArrangement = Arrangement.spacedBy(PvotSpacing.XS),
         ) {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             if (caption != null) {
                 Text(
                     text = caption,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
         if (framed) {
             GlassPanel(modifier = Modifier.fillMaxWidth()) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(PvotSpacing.L),
+                    modifier = Modifier.fillMaxWidth().padding(PvotSpacing.L),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(ItemGap),
-                    content = content
+                    content = content,
                 )
             }
         } else {
@@ -200,10 +196,10 @@ internal fun CodeBlock(code: String, modifier: Modifier = Modifier) {
     val copy = rememberCopier()
     GlassPanel(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = PvotSpacing.L, top = PvotSpacing.S, bottom = PvotSpacing.S),
-            verticalAlignment = Alignment.Top
+            modifier =
+                Modifier.fillMaxWidth()
+                    .padding(start = PvotSpacing.L, top = PvotSpacing.S, bottom = PvotSpacing.S),
+            verticalAlignment = Alignment.Top,
         ) {
             SelectionContainer(modifier = Modifier.weight(1f)) {
                 Text(
@@ -211,16 +207,16 @@ internal fun CodeBlock(code: String, modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
                     color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier
-                        .padding(top = PvotSpacing.S)
-                        .horizontalScroll(rememberScrollState())
+                    modifier =
+                        Modifier.padding(top = PvotSpacing.S)
+                            .horizontalScroll(rememberScrollState()),
                 )
             }
             IconButton(onClick = { copy(code, "Code copied") }) {
                 Icon(
                     painter = painterResource(R.drawable.ic_t_copy),
                     contentDescription = "Copy code",
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         }
@@ -234,17 +230,14 @@ internal fun OptionSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
         Switch(checked = checked, onCheckedChange = onCheckedChange, enabled = enabled)
     }
@@ -258,7 +251,7 @@ internal fun OptionSlider(
     onValueChange: (Float) -> Unit,
     valueRange: ClosedFloatingPointRange<Float>,
     valueText: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -266,12 +259,12 @@ internal fun OptionSlider(
                 text = label,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             Text(
                 text = valueText,
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         }
         PvotSlider(value = value, onValueChange = onValueChange, valueRange = valueRange)
@@ -285,20 +278,18 @@ internal fun <T> ChoiceChips(
     selected: T,
     onSelect: (T) -> Unit,
     label: (T) -> String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)
+        modifier = modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S),
     ) {
         options.forEach { option ->
             FilterChip(
                 selected = option == selected,
                 onClick = { onSelect(option) },
                 label = { Text(label(option)) },
-                shape = CircleShape
+                shape = CircleShape,
             )
         }
     }
@@ -308,16 +299,17 @@ internal fun <T> ChoiceChips(
 @Composable
 internal fun IconBadge(@DrawableRes icon: Int, modifier: Modifier = Modifier, size: Int = 44) {
     androidx.compose.foundation.layout.Box(
-        modifier = modifier
-            .size(size.dp)
-            .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(size.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             painter = painterResource(icon),
             contentDescription = null,
             modifier = Modifier.size((size / 2).dp),
-            tint = MaterialTheme.colorScheme.onPrimaryContainer
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }

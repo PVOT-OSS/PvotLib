@@ -22,19 +22,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.Surface
-import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
@@ -43,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
@@ -89,7 +89,7 @@ private class LegacyNavColors(
     val containerColor: Color = Color(0x1AFFFFFF),
     val iconSelectedColor: Color = Color.White,
     val iconUnselectedColor: Color = Color(0xFFECECEC),
-    val rippleColor: Color = Color.White.copy(alpha = 0.25f)
+    val rippleColor: Color = Color.White.copy(alpha = 0.25f),
 )
 
 private val LegacySizes = LegacyNavSizes()
@@ -102,20 +102,21 @@ internal fun LegacyNavBar(
     onTabClick: (Int) -> Unit,
     tabs: List<PvotTabItem>,
     modifier: Modifier = Modifier,
-    backdrop: PvotGlassBackdrop? = null
+    backdrop: PvotGlassBackdrop? = null,
 ) {
     val onSurface = MaterialTheme.colorScheme.onSurface
     // As a glass bar: no fill of its own, no chips behind unselected items.
-    val colors = if (backdrop != null) {
-        LegacyNavColors(
-            collapsedChipColor = Color.Transparent,
-            containerColor = Color.Transparent,
-            iconUnselectedColor = onSurface.copy(alpha = 0.8f),
-            rippleColor = onSurface.copy(alpha = 0.12f)
-        )
-    } else {
-        LegacyColors
-    }
+    val colors =
+        if (backdrop != null) {
+            LegacyNavColors(
+                collapsedChipColor = Color.Transparent,
+                containerColor = Color.Transparent,
+                iconUnselectedColor = onSurface.copy(alpha = 0.8f),
+                rippleColor = onSurface.copy(alpha = 0.12f),
+            )
+        } else {
+            LegacyColors
+        }
     LegacyBarContainer(modifier, backdrop, colors) {
         tabs.forEachIndexed { index, tab ->
             LegacyPillNavItem(
@@ -126,7 +127,7 @@ internal fun LegacyNavBar(
                 expandedLabelRes = tab.expandedLabelRes ?: tab.labelRes,
                 expandedContentDescriptionRes = tab.contentDescriptionRes,
                 sizes = LegacySizes,
-                colors = colors
+                colors = colors,
             )
         }
     }
@@ -137,61 +138,61 @@ private fun LegacyBarContainer(
     modifier: Modifier,
     backdrop: PvotGlassBackdrop?,
     colors: LegacyNavColors,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     val sizes = LegacySizes
     val barShape = RoundedCornerShape(sizes.cornerRadius)
     val glassIntensity = PvotGlassDefaults.currentIntensity()
     val glassStyle = PvotGlassDefaults.style(glassIntensity)
-    val shadowColor = if (backdrop != null) {
-        Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
-    } else {
-        DefaultShadowColor
-    }
+    val shadowColor =
+        if (backdrop != null) {
+            Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)
+        } else {
+            DefaultShadowColor
+        }
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(horizontal = sizes.horizontalPadding, vertical = PvotSpacing.M),
-        contentAlignment = Alignment.BottomCenter
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = sizes.horizontalPadding, vertical = PvotSpacing.M),
+        contentAlignment = Alignment.BottomCenter,
     ) {
         Surface(
-            modifier = Modifier
-                .wrapContentWidth()
-                .height(sizes.barHeight)
-                .shadow(
-                    sizes.barShadowElevation,
-                    barShape,
-                    clip = false,
-                    ambientColor = shadowColor,
-                    spotColor = shadowColor
-                )
-                .then(
-                    if (backdrop != null) {
-                        with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
-                            .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
-                            .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
-                    } else {
-                        Modifier
-                    }
-                ),
+            modifier =
+                Modifier.wrapContentWidth()
+                    .height(sizes.barHeight)
+                    .shadow(
+                        sizes.barShadowElevation,
+                        barShape,
+                        clip = false,
+                        ambientColor = shadowColor,
+                        spotColor = shadowColor,
+                    )
+                    .then(
+                        if (backdrop != null) {
+                            with(PvotGlassDefaults) { Modifier.edge(glassIntensity, barShape) }
+                                .pvotGlass(backdrop, sizes.cornerRadius, glassStyle)
+                                .pvotGlassRim(sizes.cornerRadius, alpha = glassIntensity)
+                        } else {
+                            Modifier
+                        }
+                    ),
             shape = barShape,
             color = if (backdrop != null) Color.Transparent else colors.containerColor,
             tonalElevation = 0.dp,
-            shadowElevation = 0.dp
+            shadowElevation = 0.dp,
         ) {
             Row(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .height(sizes.barHeight)
-                    .selectableGroup()
-                    .padding(horizontal = sizes.contentPaddingHorizontal),
+                modifier =
+                    Modifier.wrapContentWidth()
+                        .height(sizes.barHeight)
+                        .selectableGroup()
+                        .padding(horizontal = sizes.contentPaddingHorizontal),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(
-                    sizes.itemSpacing,
-                    Alignment.CenterHorizontally
-                ),
-                content = content
+                horizontalArrangement =
+                    Arrangement.spacedBy(sizes.itemSpacing, Alignment.CenterHorizontally),
+                content = content,
             )
         }
     }
@@ -200,16 +201,17 @@ private fun LegacyBarContainer(
 @Composable
 private fun legacyExpandedWidth(labelText: String, sizes: LegacyNavSizes): Dp {
     val textMeasurer = rememberTextMeasurer()
-    val textStyle = MaterialTheme.typography.labelMedium.copy(
-        fontWeight = FontWeight.SemiBold,
-        fontSize = sizes.labelFontSize
-    )
+    val textStyle =
+        MaterialTheme.typography.labelMedium.copy(
+            fontWeight = FontWeight.SemiBold,
+            fontSize = sizes.labelFontSize,
+        )
     val textWidth = textMeasurer.measure(labelText, textStyle).size.width
     val density = LocalDensity.current
     return with(density) {
-        sizes.expandedIconSize + PvotSpacing.S +
-            textWidth.toDp() + (PvotSpacing.L * 2)
-    }.coerceAtMost(sizes.maxExpandedWidth)
+            sizes.expandedIconSize + PvotSpacing.S + textWidth.toDp() + (PvotSpacing.L * 2)
+        }
+        .coerceAtMost(sizes.maxExpandedWidth)
 }
 
 @Composable
@@ -222,22 +224,24 @@ private fun LegacyPillNavItem(
     @StringRes expandedContentDescriptionRes: Int,
     sizes: LegacyNavSizes,
     colors: LegacyNavColors,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val labelText = stringResource(id = expandedLabelRes)
     val targetExpandedWidth = legacyExpandedWidth(labelText, sizes)
 
-    val width by animateDpAsState(
-        targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
-        animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
-        label = "itemWidth"
-    )
+    val width by
+        animateDpAsState(
+            targetValue = if (selected) targetExpandedWidth else sizes.collapsedItemSize,
+            animationSpec = tween(PvotDurations.Medium, easing = FastOutSlowInEasing),
+            label = "itemWidth",
+        )
 
-    val scale by animateFloatAsState(
-        targetValue = if (selected) 1f else 0.98f,
-        animationSpec = tween(PvotDurations.Short),
-        label = "scale"
-    )
+    val scale by
+        animateFloatAsState(
+            targetValue = if (selected) 1f else 0.98f,
+            animationSpec = tween(PvotDurations.Short),
+            label = "scale",
+        )
 
     val interactionSource = remember { MutableInteractionSource() }
     val iconTint = if (selected) colors.iconSelectedColor else colors.iconUnselectedColor
@@ -246,48 +250,50 @@ private fun LegacyPillNavItem(
         if (selected) expandedContentDescriptionRes else tab.contentDescriptionRes
 
     Box(
-        modifier = modifier
-            .width(width)
-            .height(sizes.collapsedItemSize)
-            .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else PvotShapes.Pill)
-            .background(
-                if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
-            )
-            .selectable(
-                selected = selected,
-                interactionSource = interactionSource,
-                indication = null,
-                role = Role.Tab,
-                onClick = onClick
-            )
-            .indication(
-                interactionSource = interactionSource,
-                indication = ripple(bounded = true, color = colors.rippleColor)
-            )
-            .graphicsLayer {
-                scaleX = scale
-                scaleY = scale
-            },
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .width(width)
+                .height(sizes.collapsedItemSize)
+                .clip(if (selected) RoundedCornerShape(sizes.itemCornerRadius) else PvotShapes.Pill)
+                .background(
+                    if (selected) colors.gradient else SolidColor(colors.collapsedChipColor)
+                )
+                .selectable(
+                    selected = selected,
+                    interactionSource = interactionSource,
+                    indication = null,
+                    role = Role.Tab,
+                    onClick = onClick,
+                )
+                .indication(
+                    interactionSource = interactionSource,
+                    indication = ripple(bounded = true, color = colors.rippleColor),
+                )
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                },
+        contentAlignment = Alignment.Center,
     ) {
         Row(
-            modifier = Modifier.padding(
-                horizontal = if (selected) PvotSpacing.L else 0.dp
-            ),
+            modifier = Modifier.padding(horizontal = if (selected) PvotSpacing.L else 0.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.Center,
         ) {
             Icon(
                 painter = painterResource(id = displayedIconRes),
                 contentDescription = stringResource(id = displayedContentDescriptionRes),
-                modifier = Modifier.size(if (selected) sizes.expandedIconSize else sizes.collapsedIconSize),
-                tint = iconTint
+                modifier =
+                    Modifier.size(
+                        if (selected) sizes.expandedIconSize else sizes.collapsedIconSize
+                    ),
+                tint = iconTint,
             )
 
             AnimatedVisibility(
                 visible = selected,
                 enter = fadeIn() + expandHorizontally(expandFrom = Alignment.Start),
-                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start)
+                exit = fadeOut() + shrinkHorizontally(shrinkTowards = Alignment.Start),
             ) {
                 Text(
                     text = labelText,
@@ -296,7 +302,7 @@ private fun LegacyPillNavItem(
                     style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = sizes.labelFontSize,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             }
         }

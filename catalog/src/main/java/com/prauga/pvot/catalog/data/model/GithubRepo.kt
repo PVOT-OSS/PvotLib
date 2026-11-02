@@ -7,10 +7,7 @@ import com.prauga.pvot.catalog.utils.Constants
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
-data class GithubOwner(
-    val login: String
-)
+@Serializable data class GithubOwner(val login: String)
 
 @Serializable
 data class GithubRepo(
@@ -19,7 +16,7 @@ data class GithubRepo(
     @SerialName("html_url") val htmlUrl: String,
     val topics: List<String>,
     @SerialName("stargazers_count") val stars: Int,
-    val owner: GithubOwner
+    val owner: GithubOwner,
 ) {
     val socialPreviewUrl: String
         get() = Constants.githubSocialPreviewUrl(owner.login, name)

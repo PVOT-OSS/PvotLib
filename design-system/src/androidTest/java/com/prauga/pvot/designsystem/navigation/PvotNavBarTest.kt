@@ -15,40 +15,34 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.test.R
+import com.prauga.pvot.designsystem.theme.PvotAppTheme
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import com.prauga.pvot.designsystem.test.R
-import com.prauga.pvot.designsystem.theme.PvotAppTheme
 
 class PvotNavBarTest {
 
-    @get:Rule
-    val composeTestRule = createComposeRule()
+    @get:Rule val composeTestRule = createComposeRule()
 
-    private val testTabs = listOf(
-        PvotTabItem(
-            iconRes = R.drawable.ic_test_home,
-            labelRes = R.string.test_tab_home,
-            contentDescriptionRes = R.string.test_cd_home
-        ),
-        PvotTabItem(
-            iconRes = R.drawable.ic_test_settings,
-            labelRes = R.string.test_tab_settings,
-            contentDescriptionRes = R.string.test_cd_settings
+    private val testTabs =
+        listOf(
+            PvotTabItem(
+                iconRes = R.drawable.ic_test_home,
+                labelRes = R.string.test_tab_home,
+                contentDescriptionRes = R.string.test_cd_home,
+            ),
+            PvotTabItem(
+                iconRes = R.drawable.ic_test_settings,
+                labelRes = R.string.test_tab_settings,
+                contentDescriptionRes = R.string.test_cd_settings,
+            ),
         )
-    )
 
     @Test
     fun navBar_displaysAllTabs() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = testTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
@@ -58,13 +52,7 @@ class PvotNavBarTest {
     @Test
     fun navBar_selectedTab_showsLabel() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = testTabs) }
         }
 
         composeTestRule.onNodeWithText("Home").assertIsDisplayed()
@@ -73,13 +61,7 @@ class PvotNavBarTest {
     @Test
     fun navBar_emptyTabs_doesNotCrash() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = emptyList()
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = emptyList()) }
         }
     }
 
@@ -88,13 +70,7 @@ class PvotNavBarTest {
         val singleTab = listOf(testTabs.first())
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = singleTab
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = singleTab) }
         }
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
@@ -107,11 +83,7 @@ class PvotNavBarTest {
 
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = { clickedIndex = it },
-                    tabs = testTabs
-                )
+                PvotNavBar(selectedTab = 0, onTabClick = { clickedIndex = it }, tabs = testTabs)
             }
         }
 
@@ -126,11 +98,7 @@ class PvotNavBarTest {
 
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 1,
-                    onTabClick = { clickedIndex = it },
-                    tabs = testTabs
-                )
+                PvotNavBar(selectedTab = 1, onTabClick = { clickedIndex = it }, tabs = testTabs)
             }
         }
 
@@ -145,11 +113,7 @@ class PvotNavBarTest {
 
         composeTestRule.setContent {
             PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = { clickCount++ },
-                    tabs = testTabs
-                )
+                PvotNavBar(selectedTab = 0, onTabClick = { clickCount++ }, tabs = testTabs)
             }
         }
 
@@ -167,7 +131,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = 0,
                     onTabClick = { clickedIndices.add(it) },
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -182,13 +146,7 @@ class PvotNavBarTest {
     @Test
     fun navBar_changesSelection_updatesLabel() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 1,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 1, onTabClick = {}, tabs = testTabs) }
         }
 
         composeTestRule.onNodeWithText("Settings").assertIsDisplayed()
@@ -203,7 +161,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = selectedTab,
                     onTabClick = { selectedTab = it },
-                    tabs = testTabs
+                    tabs = testTabs,
                 )
             }
         }
@@ -217,37 +175,32 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_fourTabs_displaysAllTabs() {
-        val fourTabs = listOf(
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_alarm,
-                contentDescriptionRes = R.string.test_cd_alarm
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_clock,
-                contentDescriptionRes = R.string.test_cd_clock
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_timer,
-                contentDescriptionRes = R.string.test_cd_timer
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_stopwatch,
-                contentDescriptionRes = R.string.test_cd_stopwatch
+        val fourTabs =
+            listOf(
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_alarm,
+                    contentDescriptionRes = R.string.test_cd_alarm,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_clock,
+                    contentDescriptionRes = R.string.test_cd_clock,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_timer,
+                    contentDescriptionRes = R.string.test_cd_timer,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_stopwatch,
+                    contentDescriptionRes = R.string.test_cd_stopwatch,
+                ),
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = fourTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = fourTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Alarm tab").assertIsDisplayed()
@@ -258,37 +211,32 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_fourTabs_selectThirdTab_showsCorrectLabel() {
-        val fourTabs = listOf(
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_alarm,
-                contentDescriptionRes = R.string.test_cd_alarm
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_clock,
-                contentDescriptionRes = R.string.test_cd_clock
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_timer,
-                contentDescriptionRes = R.string.test_cd_timer
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_stopwatch,
-                contentDescriptionRes = R.string.test_cd_stopwatch
+        val fourTabs =
+            listOf(
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_alarm,
+                    contentDescriptionRes = R.string.test_cd_alarm,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_clock,
+                    contentDescriptionRes = R.string.test_cd_clock,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_timer,
+                    contentDescriptionRes = R.string.test_cd_timer,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_stopwatch,
+                    contentDescriptionRes = R.string.test_cd_stopwatch,
+                ),
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 2,
-                    onTabClick = {},
-                    tabs = fourTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 2, onTabClick = {}, tabs = fourTabs) }
         }
 
         composeTestRule.onNodeWithText("Timer").assertIsDisplayed()
@@ -296,29 +244,24 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_expandedIconOverride_usesOverrideWhenSelected() {
-        val tabsWithOverride = listOf(
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_home,
-                contentDescriptionRes = R.string.test_cd_home,
-                expandedIconRes = R.drawable.ic_test_add,
-                expandedLabelRes = R.string.test_tab_add_new
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_settings,
-                contentDescriptionRes = R.string.test_cd_settings
+        val tabsWithOverride =
+            listOf(
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_home,
+                    contentDescriptionRes = R.string.test_cd_home,
+                    expandedIconRes = R.drawable.ic_test_add,
+                    expandedLabelRes = R.string.test_tab_add_new,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_settings,
+                    contentDescriptionRes = R.string.test_cd_settings,
+                ),
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = tabsWithOverride
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = tabsWithOverride) }
         }
 
         composeTestRule.onNodeWithText("Add New").assertIsDisplayed()
@@ -326,20 +269,21 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_expandedLabelOverride_changesWithSelection() {
-        val tabsWithOverride = listOf(
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_alarm,
-                contentDescriptionRes = R.string.test_cd_alarm,
-                expandedLabelRes = R.string.test_tab_add_alarm
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_timer,
-                contentDescriptionRes = R.string.test_cd_timer,
-                expandedLabelRes = R.string.test_tab_add_timer
+        val tabsWithOverride =
+            listOf(
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_alarm,
+                    contentDescriptionRes = R.string.test_cd_alarm,
+                    expandedLabelRes = R.string.test_tab_add_alarm,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_timer,
+                    contentDescriptionRes = R.string.test_cd_timer,
+                    expandedLabelRes = R.string.test_tab_add_timer,
+                ),
             )
-        )
 
         var selectedTab by mutableIntStateOf(0)
 
@@ -348,7 +292,7 @@ class PvotNavBarTest {
                 PvotNavBar(
                     selectedTab = selectedTab,
                     onTabClick = { selectedTab = it },
-                    tabs = tabsWithOverride
+                    tabs = tabsWithOverride,
                 )
             }
         }
@@ -368,7 +312,7 @@ class PvotNavBarTest {
                     selectedTab = 0,
                     onTabClick = {},
                     tabs = testTabs,
-                    expandedIconRes = R.drawable.ic_test_add
+                    expandedIconRes = R.drawable.ic_test_add,
                 )
             }
         }
@@ -381,22 +325,17 @@ class PvotNavBarTest {
         var expandedLabel by mutableIntStateOf(R.string.test_tab_start)
 
         composeTestRule.setContent {
-            val dynamicTabs = listOf(
-                PvotTabItem(
-                    iconRes = R.drawable.ic_test_home,
-                    labelRes = R.string.test_tab_stopwatch,
-                    contentDescriptionRes = R.string.test_cd_stopwatch,
-                    expandedLabelRes = expandedLabel
+            val dynamicTabs =
+                listOf(
+                    PvotTabItem(
+                        iconRes = R.drawable.ic_test_home,
+                        labelRes = R.string.test_tab_stopwatch,
+                        contentDescriptionRes = R.string.test_cd_stopwatch,
+                        expandedLabelRes = expandedLabel,
+                    )
                 )
-            )
 
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = dynamicTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = dynamicTabs) }
         }
 
         composeTestRule.onNodeWithText("Start").assertIsDisplayed()
@@ -414,17 +353,18 @@ class PvotNavBarTest {
                     selectedTab = 0,
                     onTabClick = {},
                     tabs = testTabs,
-                    sizes = PvotNavBarSizes(
-                        barHeight = 72.dp,
-                        barWidth = 367.dp,
-                        collapsedItemSize = 56.dp,
-                        expandedWidth = 169.dp,
-                        cornerRadius = 100.dp,
-                        itemCornerRadius = 28.dp,
-                        horizontalPadding = 22.dp,
-                        contentPaddingHorizontal = 9.dp,
-                        itemSpacing = 4.dp
-                    )
+                    sizes =
+                        PvotNavBarSizes(
+                            barHeight = 72.dp,
+                            barWidth = 367.dp,
+                            collapsedItemSize = 56.dp,
+                            expandedWidth = 169.dp,
+                            cornerRadius = 100.dp,
+                            itemCornerRadius = 28.dp,
+                            horizontalPadding = 22.dp,
+                            contentPaddingHorizontal = 9.dp,
+                            itemSpacing = 4.dp,
+                        ),
                 )
             }
         }
@@ -441,10 +381,7 @@ class PvotNavBarTest {
                     selectedTab = 0,
                     onTabClick = {},
                     tabs = testTabs,
-                    sizes = PvotNavBarSizes(
-                        minExpandedWidth = 120.dp,
-                        maxExpandedWidth = 200.dp
-                    )
+                    sizes = PvotNavBarSizes(minExpandedWidth = 120.dp, maxExpandedWidth = 200.dp),
                 )
             }
         }
@@ -454,32 +391,27 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_threeTabs_displaysAllTabs() {
-        val threeTabs = listOf(
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_alarm,
-                contentDescriptionRes = R.string.test_cd_alarm
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_clock,
-                contentDescriptionRes = R.string.test_cd_clock
-            ),
-            PvotTabItem(
-                iconRes = R.drawable.ic_test_home,
-                labelRes = R.string.test_tab_timer,
-                contentDescriptionRes = R.string.test_cd_timer
+        val threeTabs =
+            listOf(
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_alarm,
+                    contentDescriptionRes = R.string.test_cd_alarm,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_clock,
+                    contentDescriptionRes = R.string.test_cd_clock,
+                ),
+                PvotTabItem(
+                    iconRes = R.drawable.ic_test_home,
+                    labelRes = R.string.test_tab_timer,
+                    contentDescriptionRes = R.string.test_cd_timer,
+                ),
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = threeTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = threeTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Alarm tab").assertIsDisplayed()
@@ -489,30 +421,33 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_fiveTabs_displaysAllTabs() {
-        val fiveTabs = listOf(
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_alarm, R.string.test_cd_alarm),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_clock,
-                R.string.test_cd_clock
-            ),
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_timer, R.string.test_cd_timer),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_stopwatch,
-                R.string.test_cd_stopwatch
-            ),
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home)
-        )
+        val fiveTabs =
+            listOf(
+                PvotTabItem(
+                    R.drawable.ic_test_home,
+                    R.string.test_tab_alarm,
+                    R.string.test_cd_alarm,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_clock,
+                    R.string.test_cd_clock,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_home,
+                    R.string.test_tab_timer,
+                    R.string.test_cd_timer,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_stopwatch,
+                    R.string.test_cd_stopwatch,
+                ),
+                PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home),
+            )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 4,
-                    onTabClick = {},
-                    tabs = fiveTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 4, onTabClick = {}, tabs = fiveTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Alarm tab").assertIsDisplayed()
@@ -525,35 +460,38 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_sixTabs_selectLastTab_showsCorrectLabel() {
-        val sixTabs = listOf(
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_alarm, R.string.test_cd_alarm),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_clock,
-                R.string.test_cd_clock
-            ),
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_timer, R.string.test_cd_timer),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_stopwatch,
-                R.string.test_cd_stopwatch
-            ),
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_settings,
-                R.string.test_cd_settings
+        val sixTabs =
+            listOf(
+                PvotTabItem(
+                    R.drawable.ic_test_home,
+                    R.string.test_tab_alarm,
+                    R.string.test_cd_alarm,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_clock,
+                    R.string.test_cd_clock,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_home,
+                    R.string.test_tab_timer,
+                    R.string.test_cd_timer,
+                ),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_stopwatch,
+                    R.string.test_cd_stopwatch,
+                ),
+                PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_settings,
+                    R.string.test_cd_settings,
+                ),
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 5,
-                    onTabClick = {},
-                    tabs = sixTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 5, onTabClick = {}, tabs = sixTabs) }
         }
 
         composeTestRule.onNodeWithText("Settings").assertIsDisplayed()
@@ -561,34 +499,35 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_dynamicTabList_updatesWhenTabsChange() {
-        var tabs by mutableStateOf(
-            listOf(
-                PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home)
+        var tabs by
+            mutableStateOf(
+                listOf(
+                    PvotTabItem(
+                        R.drawable.ic_test_home,
+                        R.string.test_tab_home,
+                        R.string.test_cd_home,
+                    )
+                )
             )
-        )
 
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 0,
-                    onTabClick = {},
-                    tabs = tabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 0, onTabClick = {}, tabs = tabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
-        composeTestRule.onAllNodesWithContentDescription("Navigate to settings")
+        composeTestRule
+            .onAllNodesWithContentDescription("Navigate to settings")
             .assertCountEquals(0)
 
-        tabs = listOf(
-            PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home),
-            PvotTabItem(
-                R.drawable.ic_test_settings,
-                R.string.test_tab_settings,
-                R.string.test_cd_settings
+        tabs =
+            listOf(
+                PvotTabItem(R.drawable.ic_test_home, R.string.test_tab_home, R.string.test_cd_home),
+                PvotTabItem(
+                    R.drawable.ic_test_settings,
+                    R.string.test_tab_settings,
+                    R.string.test_cd_settings,
+                ),
             )
-        )
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription("Navigate to settings").assertIsDisplayed()
@@ -596,22 +535,19 @@ class PvotNavBarTest {
 
     @Test
     fun navBar_manyTabs_doesNotCrash() {
-        val manyTabs = (0 until 10).map { index ->
-            PvotTabItem(
-                iconRes = if (index % 2 == 0) R.drawable.ic_test_home else R.drawable.ic_test_settings,
-                labelRes = R.string.test_tab_home,
-                contentDescriptionRes = R.string.test_cd_home
-            )
-        }
-
-        composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 5,
-                    onTabClick = {},
-                    tabs = manyTabs
+        val manyTabs =
+            (0 until 10).map { index ->
+                PvotTabItem(
+                    iconRes =
+                        if (index % 2 == 0) R.drawable.ic_test_home
+                        else R.drawable.ic_test_settings,
+                    labelRes = R.string.test_tab_home,
+                    contentDescriptionRes = R.string.test_cd_home,
                 )
             }
+
+        composeTestRule.setContent {
+            PvotAppTheme { PvotNavBar(selectedTab = 5, onTabClick = {}, tabs = manyTabs) }
         }
 
         // Should not crash with many tabs
@@ -620,13 +556,7 @@ class PvotNavBarTest {
     @Test
     fun navBar_outOfBoundsSelectedTab_doesNotCrash() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = 999,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = 999, onTabClick = {}, tabs = testTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()
@@ -635,13 +565,7 @@ class PvotNavBarTest {
     @Test
     fun navBar_negativeSelectedTab_doesNotCrash() {
         composeTestRule.setContent {
-            PvotAppTheme {
-                PvotNavBar(
-                    selectedTab = -1,
-                    onTabClick = {},
-                    tabs = testTabs
-                )
-            }
+            PvotAppTheme { PvotNavBar(selectedTab = -1, onTabClick = {}, tabs = testTabs) }
         }
 
         composeTestRule.onNodeWithContentDescription("Navigate to home").assertIsDisplayed()

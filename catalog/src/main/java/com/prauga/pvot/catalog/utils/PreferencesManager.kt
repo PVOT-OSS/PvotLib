@@ -30,11 +30,12 @@ object PreferencesManager {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         _dynamicColorEnabled.value = prefs.getBoolean(KEY_DYNAMIC_COLOR, false)
         _newUiEnabled.value = prefs.getBoolean(KEY_NEW_UI, true)
-        _glassIntensity.value = if (prefs.contains(KEY_GLASS)) {
-            prefs.getFloat(KEY_GLASS, 1f)
-        } else {
-            PvotGlassDefaults.defaultIntensity()
-        }
+        _glassIntensity.value =
+            if (prefs.contains(KEY_GLASS)) {
+                prefs.getFloat(KEY_GLASS, 1f)
+            } else {
+                PvotGlassDefaults.defaultIntensity()
+            }
     }
 
     fun setDynamicColorEnabled(enabled: Boolean) {
