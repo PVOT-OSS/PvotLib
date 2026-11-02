@@ -457,6 +457,7 @@ For dynamic color parity with `PvotAppTheme(dynamicColor = true)`, call
 | `PvotCardDefaults` | `PvotWidget.CardView`, set as `materialCardViewStyle` (16dp, surface variant at half alpha, no stroke or shadow) |
 | `PvotFabDefaults` | `PvotWidget.FloatingActionButton` / `.ExtendedFloatingActionButton`, set as `floatingActionButtonStyle` / `extendedFloatingActionButtonStyle` (pill, primary, 6dp shadow) |
 | `PvotDialogDefaults`, `PvotDialogAction` | `PvotThemeOverlay.Dialog.Alert` / `.MaterialAlertDialog`, set as `alertDialogTheme` / `materialAlertDialogTheme`, and on `PvotTheme.Dialog` itself: surface variant, 28dp corners, 48dp pill actions (positive filled primary, negative and neutral `onSurface` at 8%) |
+| (no Compose menu yet) | `pvot_popup_background`, set as `popupMenuBackground` for popup and overflow menus (surface variant, 8dp corners) |
 
 The theme also maps the Material 3 shape scale to the Pvot corners (extra small and small 8dp,
 medium 16dp, large 20dp, extra large 28dp), sets `toolbarStyle` to the surface toolbar and turns

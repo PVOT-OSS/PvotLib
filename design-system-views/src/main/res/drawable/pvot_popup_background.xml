@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="@dimen/pvot_corner_small" />
+    <solid android:color="?attr/colorSurfaceVariant" />
+    <padding
+        android:bottom="@dimen/pvot_spacing_s"
+        android:top="@dimen/pvot_spacing_s" />
+</shape>

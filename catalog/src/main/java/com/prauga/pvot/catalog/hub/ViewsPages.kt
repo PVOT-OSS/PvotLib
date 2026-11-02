@@ -15,6 +15,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.viewinterop.AndroidView
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.prauga.pvot.catalog.R
@@ -53,6 +54,10 @@ internal fun ViewsPage(onBack: () -> Unit) {
                         var themed: Context = ContextThemeWrapper(context, themeRes)
                         if (dynamic) themed = DynamicColors.wrapContextIfAvailable(themed)
                         LayoutInflater.from(themed).inflate(R.layout.views_demo, null).apply {
+                            findViewById<MaterialToolbar>(R.id.views_demo_toolbar).menu.apply {
+                                add(R.string.views_demo_menu_mark_read)
+                                add(R.string.views_demo_menu_settings)
+                            }
                             findViewById<View>(R.id.views_demo_alert).setOnClickListener {
                                 AlertDialog.Builder(themed).showDemoDialog()
                             }
