@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/pvot_spacing_l">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_t_arrow_left"
+            app:title="@string/views_demo_toolbar_title" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/pvot_spacing_l"
+        android:paddingTop="@dimen/pvot_spacing_m"
+        android:paddingEnd="@dimen/pvot_spacing_l">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/pvot_spacing_s"
+            android:layout_weight="1"
+            android:text="@string/views_demo_send" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/views_demo_archive" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/pvot_spacing_l"
+        android:paddingEnd="@dimen/pvot_spacing_l">
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/pvot_spacing_s"
+            android:layout_weight="1"
+            android:text="@string/views_demo_block" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/views_demo_cancel" />
+    </LinearLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/pvot_spacing_l"
+        android:paddingTop="@dimen/pvot_spacing_s"
+        android:paddingEnd="@dimen/pvot_spacing_l"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/views_demo_chip_unread" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/views_demo_chip_starred" />
+
+        <com.google.android.material.chip.Chip
+            style="@style/Widget.Material3.Chip.Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/views_demo_chip_groups" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pvot_spacing_l"
+        android:layout_marginTop="@dimen/pvot_spacing_m"
+        android:layout_marginEnd="@dimen/pvot_spacing_l">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/pvot_spacing_l">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/views_demo_card_title"
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/pvot_spacing_xs"
+                android:text="@string/views_demo_card_body"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?android:attr/textColorSecondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/pvot_spacing_m"
+        android:checked="true"
+        android:minHeight="@dimen/pvot_touch_target"
+        android:paddingStart="@dimen/pvot_spacing_l"
+        android:paddingEnd="@dimen/pvot_spacing_l"
+        android:text="@string/views_demo_switch" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:minHeight="@dimen/pvot_touch_target"
+        android:paddingStart="@dimen/pvot_spacing_m"
+        android:paddingEnd="@dimen/pvot_spacing_l"
+        android:text="@string/views_demo_checkbox" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pvot_spacing_l"
+        android:layout_marginTop="@dimen/pvot_spacing_s"
+        android:layout_marginEnd="@dimen/pvot_spacing_l"
+        android:hint="@string/views_demo_input_hint">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences|textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.slider.Slider
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pvot_spacing_l"
+        android:layout_marginTop="@dimen/pvot_spacing_s"
+        android:layout_marginEnd="@dimen/pvot_spacing_l"
+        android:value="40"
+        android:valueFrom="0"
+        android:valueTo="100" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/pvot_spacing_l"
+        android:layout_marginTop="@dimen/pvot_spacing_s"
+        android:layout_marginEnd="@dimen/pvot_spacing_l"
+        android:indeterminate="true" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/pvot_spacing_m"
+        android:layout_marginEnd="@dimen/pvot_spacing_l"
+        android:text="@string/views_demo_fab"
+        app:icon="@drawable/ic_t_plus" />
+
+</LinearLayout>

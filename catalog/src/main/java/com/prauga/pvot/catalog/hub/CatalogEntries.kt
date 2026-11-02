@@ -288,6 +288,15 @@ internal fun catalogEntries(): List<CatalogEntry> =
             page = { GlassPage(it) },
         ),
         CatalogEntry(
+            id = "views",
+            title = "XML theme",
+            group = CatalogGroup.Components,
+            summary = "PvotTheme for View-based apps: Material Components widgets, restyled.",
+            icon = R.drawable.ic_t_layout_navbar,
+            keywords = "xml views material components theme design-system-views PvotTheme",
+            page = { ViewsPage(it) },
+        ),
+        CatalogEntry(
             id = "states",
             title = "State content",
             group = CatalogGroup.Components,
