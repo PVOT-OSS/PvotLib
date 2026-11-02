@@ -7,4 +7,5 @@
     <dimen name="pvot_corner_overlay">28dp</dimen>
     <dimen name="pvot_spacing_section">28dp</dimen>
     <dimen name="pvot_touch_target">48dp</dimen>
+    <dimen name="pvot_dialog_action_height">56dp</dimen>
 </resources>

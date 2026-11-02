@@ -54,13 +54,11 @@
     </style>
 
     <style name="PvotWidget.Button.Dialog" parent="Widget.Material3.Button">
-        <item name="android:minHeight">@dimen/pvot_touch_target</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">@dimen/pvot_dialog_action_height</item>
+        <item name="android:insetTop">@dimen/pvot_spacing_xs</item>
+        <item name="android:insetBottom">@dimen/pvot_spacing_xs</item>
         <item name="android:layout_marginLeft">@dimen/pvot_spacing_s</item>
         <item name="android:layout_marginStart">@dimen/pvot_spacing_s</item>
-        <item name="android:layout_marginTop">@dimen/pvot_spacing_xs</item>
-        <item name="android:layout_marginBottom">@dimen/pvot_spacing_xs</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="backgroundTint">@color/pvot_dialog_action_primary</item>
@@ -68,13 +66,11 @@
     </style>
 
     <style name="PvotWidget.Button.Dialog.Neutral" parent="Widget.Material3.Button.TonalButton">
-        <item name="android:minHeight">@dimen/pvot_touch_target</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">@dimen/pvot_dialog_action_height</item>
+        <item name="android:insetTop">@dimen/pvot_spacing_xs</item>
+        <item name="android:insetBottom">@dimen/pvot_spacing_xs</item>
         <item name="android:layout_marginLeft">@dimen/pvot_spacing_s</item>
         <item name="android:layout_marginStart">@dimen/pvot_spacing_s</item>
-        <item name="android:layout_marginTop">@dimen/pvot_spacing_xs</item>
-        <item name="android:layout_marginBottom">@dimen/pvot_spacing_xs</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="backgroundTint">@color/pvot_dialog_action_neutral</item>
