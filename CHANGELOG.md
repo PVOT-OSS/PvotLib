@@ -108,7 +108,8 @@ together under one version.
   the other libraries' 27, so apps that still support Android 7 can use it. Floating action buttons
   are pill-shaped in the primary color, like `PvotFab`. Alert dialogs (AppCompat and
   `MaterialAlertDialogBuilder`, and any dialog on `PvotTheme.Dialog`) use the `PvotDialog` surface and
-  pill actions: a filled primary positive button, soft neutral negative and neutral buttons.
+  pill actions: a filled primary positive button, soft neutral negative and neutral buttons. Popup
+  and overflow menus sit on the surface variant with 8dp corners.
 - `catalog`: an "XML theme" page inflating stock Material Components widgets under `PvotTheme`.
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a

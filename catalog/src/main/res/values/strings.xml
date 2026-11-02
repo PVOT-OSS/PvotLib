@@ -105,4 +105,6 @@
     <string name="views_demo_dialog_message">Its messages and attachments are removed from this device.</string>
     <string name="views_demo_dialog_delete">Delete</string>
     <string name="views_demo_dialog_archive">Archive instead</string>
+    <string name="views_demo_menu_mark_read">Mark all as read</string>
+    <string name="views_demo_menu_settings">Settings</string>
 </resources>

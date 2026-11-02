@@ -19,6 +19,7 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
         <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
@@ -41,6 +42,7 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
         <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
@@ -60,6 +62,7 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
         <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
@@ -78,6 +81,7 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
         <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
