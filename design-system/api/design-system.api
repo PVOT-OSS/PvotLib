@@ -789,6 +789,7 @@ public final class com/prauga/pvot/designsystem/components/list/PvotSwipeAction 
 public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowDefaults {
 	public static final field $stable I
 	public static final field ArmedIconScale F
+	public static final field DragResistance F
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowDefaults;
 	public static final field ThresholdFraction F
 	public final fun action-jB83MbM (Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;JJZLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;
@@ -799,7 +800,7 @@ public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowDefa
 }
 
 public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowKt {
-	public static final fun PvotSwipeRow-3csKH6Y (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowState;ZLandroidx/compose/ui/graphics/Shape;JLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotSwipeRow-ueL0Wzs (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowState;ZLandroidx/compose/ui/graphics/Shape;JFFLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun rememberPvotSwipeRowState (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowState;
 }
 

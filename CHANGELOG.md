@@ -27,9 +27,15 @@ together under one version.
 - The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
   and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
   adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
+- `PvotSwipeRow` takes `thresholdFraction` and `dragResistance`
+  (`PvotSwipeRowDefaults.DragResistance`), so a list can make its swipes heavier and harder to set
+  off by accident; the defaults keep today's feel. Source-compatible, binary-incompatible.
 
 ### Fixed
 - `PvotSwipeRow`: no slivers of the action's color at the row's corners while it slides.
+- `PvotSwipeRow` no longer leaves a thin arc of the action's color at the row's corners after a
+  short swipe springs back: the row settles exactly in place, and the action's color fills only
+  the gap the row leaves, never under it.
 - The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
   compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
   whole shader, so the glass drew nothing and the content behind showed through sharp.
