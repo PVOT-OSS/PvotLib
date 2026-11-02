@@ -64,6 +64,8 @@
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
         <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
+        <item name="android:windowMinWidthMajor">@dimen/pvot_dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/pvot_dialog_min_width_minor</item>
         <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
@@ -83,6 +85,8 @@
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
         <item name="popupMenuBackground">@drawable/pvot_popup_background</item>
         <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
+        <item name="android:windowMinWidthMajor">@dimen/pvot_dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@dimen/pvot_dialog_min_width_minor</item>
         <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
         <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
         <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>

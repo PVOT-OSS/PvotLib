@@ -8,4 +8,6 @@
     <dimen name="pvot_spacing_section">28dp</dimen>
     <dimen name="pvot_touch_target">48dp</dimen>
     <dimen name="pvot_dialog_action_height">56dp</dimen>
+    <item name="pvot_dialog_min_width_major" type="dimen">65%</item>
+    <item name="pvot_dialog_min_width_minor" type="dimen">95%</item>
 </resources>
