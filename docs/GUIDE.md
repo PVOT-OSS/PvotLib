@@ -12,7 +12,7 @@ specs, each component, and the rules for working on the libraries. To add PvotLi
 - **Artifacts:** `com.prauga.pvot:design-system` and `com.prauga.pvot:core-ui`, released together
   under one version
 - **Packages:** `com.prauga.pvot.designsystem`, `com.prauga.pvot.coreui`
-- **Min SDK:** 27 · **Compile SDK:** 37.1
+- **Min SDK:** 27 (24 for `design-system-views`) · **Compile SDK:** 37.1
 - **Depends on (exposed as `api`):** Compose BOM, Compose UI, Material 3, Activity Compose
 - **AOSP:** built inline as `PvotDesignSystem` and `PvotCoreUi` (`Android.bp`)
 - **Catalog app:** `catalog/` shows every component on a phone

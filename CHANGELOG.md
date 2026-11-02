@@ -104,7 +104,8 @@ together under one version.
   transparent system bars; `@color/pvot_*`, `@dimen/pvot_corner_*`, `@dimen/pvot_spacing_*`,
   `@integer/pvot_duration_*` and `@interpolator/pvot_settle` expose the tokens. The colors, corners,
   spacing and durations are generated from the Kotlin tokens by `tokensDump`; `tokensCheck` fails
-  the build when they drift. Builds in AOSP as `PvotDesignSystemViews`.
+  the build when they drift. Builds in AOSP as `PvotDesignSystemViews`. Its minimum SDK is 24, below
+  the other libraries' 27, so apps that still support Android 7 can use it.
 - `catalog`: an "XML theme" page inflating stock Material Components widgets under `PvotTheme`.
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a

@@ -9,6 +9,7 @@ plugins {
 
 android {
     namespace = "com.prauga.pvot.designsystem.views"
+    defaultConfig { minSdk = 24 }
     publishing { singleVariant("release") { withSourcesJar() } }
 }
 

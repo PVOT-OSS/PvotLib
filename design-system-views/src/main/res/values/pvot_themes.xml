@@ -5,12 +5,12 @@
 -->
 <resources>
 
-    <style name="PvotTheme.Light" parent="PvotTheme.Base.Light">
+    <style name="PvotTheme.Bars.Light" parent="PvotTheme.Base.Light" />
+
+    <style name="PvotTheme.Light" parent="PvotTheme.Bars.Light">
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
         <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
         <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
@@ -23,12 +23,12 @@
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
     </style>
 
-    <style name="PvotTheme.Dark" parent="PvotTheme.Base.Dark">
+    <style name="PvotTheme.Bars.Dark" parent="PvotTheme.Base.Dark" />
+
+    <style name="PvotTheme.Dark" parent="PvotTheme.Bars.Dark">
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
         <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
         <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
         <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
