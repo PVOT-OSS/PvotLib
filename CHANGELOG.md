@@ -19,7 +19,7 @@ together under one version.
   `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton` default their `backdrop` to
   `LocalPvotGlassBackdrop`: source-compatible, binary-incompatible, like the nav bar's `backdrop`
   before.
-- The toolchain moves to Android Gradle Plugin 9.4.0, Kotlin 2.4.21 and Java 21 (library bytecode
+- The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
   and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
   adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
 
