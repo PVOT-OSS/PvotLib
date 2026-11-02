@@ -29,6 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
@@ -105,17 +108,18 @@ public class PvotSwipeRowState {
     }
 
     internal suspend fun settleTo(target: Float, velocity: Float) {
+        // Lands exactly on the target: a row left a fraction of a pixel off would keep drawing its
+        // action's fill.
         draggableState.drag {
-            var previous = offset
             animate(
                 initialValue = offset,
                 targetValue = target,
                 initialVelocity = velocity,
                 animationSpec = tween(PvotDurations.Medium, easing = PvotMotion.Settle),
             ) { value, _ ->
-                dragBy(value - previous)
-                previous = value
+                offset = value
             }
+            offset = target
         }
     }
 }
@@ -229,7 +233,10 @@ public fun PvotSwipeRow(
     state.maxOffset = if (startAction != null) width.toFloat() else 0f
     state.minOffset = if (endAction != null) -width.toFloat() else 0f
 
-    val direction by remember(state) { derivedStateOf { sign(state.offset) } }
+    val direction by
+        remember(state) {
+            derivedStateOf { if (abs(state.offset) < 0.5f) 0f else sign(state.offset) }
+        }
     val armed by
         remember(state, threshold) {
             derivedStateOf { threshold > 0f && abs(state.offset) >= threshold }
@@ -296,8 +303,20 @@ public fun PvotSwipeRow(
                 )
     ) {
         if (revealed != null) {
+            // Fills only the gap the row leaves, never under the row: a fill under it would bleed
+            // through the anti-aliased edge where the clip rounds the row's corners.
+            val fillsFromLeft = (direction > 0f) != rtl
             Box(
-                modifier = Modifier.matchParentSize().background(revealed.containerColor),
+                modifier =
+                    Modifier.matchParentSize().drawBehind {
+                        val gap =
+                            (abs(state.offset).roundToInt() + 1).toFloat().coerceAtMost(size.width)
+                        drawRect(
+                            color = revealed.containerColor,
+                            topLeft = Offset(if (fillsFromLeft) 0f else size.width - gap, 0f),
+                            size = Size(gap, size.height),
+                        )
+                    },
                 contentAlignment =
                     if (direction > 0f) Alignment.CenterStart else Alignment.CenterEnd,
             ) {
