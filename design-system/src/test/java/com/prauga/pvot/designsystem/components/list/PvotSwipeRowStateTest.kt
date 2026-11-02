@@ -30,14 +30,25 @@ class PvotSwipeRowStateTest {
         }
 
     @Test
+    fun aDragMovesTheRowByItsResistance() {
+        state.draggableState.dispatchRawDelta(100f)
+        assertEquals(100f, state.offset, 0f)
+
+        state.dragResistance = 0.5f
+        state.draggableState.dispatchRawDelta(-300f)
+        assertEquals(-50f, state.offset, 0f)
+    }
+
+    @Test
     fun aDragStopsAtTheRowsEdge() {
         state.draggableState.dispatchRawDelta(5000f)
         assertEquals(1000f, state.offset, 0f)
     }
 
     @Test
-    fun aSettleLandsExactlyOnItsTarget() = runBlocking {
+    fun aSettleLandsExactlyOnItsTargetWhateverTheResistance() = runBlocking {
         state.draggableState.dispatchRawDelta(123.4567f)
+        state.dragResistance = 0.3f
         withContext(clock) { state.settleTo(0f, velocity = -800f) }
         assertEquals(0f, state.offset, 0f)
     }

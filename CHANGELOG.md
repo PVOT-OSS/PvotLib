@@ -27,6 +27,9 @@ together under one version.
 - The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
   and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
   adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
+- `PvotSwipeRow` takes `thresholdFraction` and `dragResistance`
+  (`PvotSwipeRowDefaults.DragResistance`), so a list can make its swipes heavier and harder to set
+  off by accident; the defaults keep today's feel. Source-compatible, binary-incompatible.
 
 ### Fixed
 - `PvotSwipeRow`: no slivers of the action's color at the row's corners while it slides.

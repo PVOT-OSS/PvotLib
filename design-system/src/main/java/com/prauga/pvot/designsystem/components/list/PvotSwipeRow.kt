@@ -92,9 +92,12 @@ public class PvotSwipeRowState {
     internal var minOffset: Float = 0f
     internal var maxOffset: Float = 0f
 
+    /** How far the row moves per pixel the finger drags. */
+    internal var dragResistance: Float = 1f
+
     /** Runs drags and settles; a new drag cancels a settle in flight. */
     internal val draggableState: DraggableState = DraggableState { delta ->
-        offset = (offset + delta).coerceIn(minOffset, maxOffset)
+        offset = (offset + delta * dragResistance).coerceIn(minOffset, maxOffset)
     }
 
     /** Whether the row has slid away by an action that [removes it][PvotSwipeAction.removesRow]. */
@@ -108,8 +111,9 @@ public class PvotSwipeRowState {
     }
 
     internal suspend fun settleTo(target: Float, velocity: Float) {
-        // Lands exactly on the target: a row left a fraction of a pixel off would keep drawing its
-        // action's fill.
+        // Sets the offset directly rather than dragging, so the drag resistance doesn't slow the
+        // settle, and lands exactly on the target: a row left a fraction of a pixel off would keep
+        // drawing its action's fill.
         draggableState.drag {
             animate(
                 initialValue = offset,
@@ -136,6 +140,9 @@ public object PvotSwipeRowDefaults {
 
     /** How far across the row, as a fraction of its width, a swipe must go to count. */
     public const val ThresholdFraction: Float = 0.35f
+
+    /** How far the row moves per pixel the finger drags; 1 follows the finger. */
+    public const val DragResistance: Float = 1f
 
     /** A fling at least this fast, per second, counts from half the threshold. */
     public val FlingVelocity: Dp = 600.dp
@@ -209,6 +216,10 @@ public object PvotSwipeRowDefaults {
  * @param enabled Whether the row can be swiped
  * @param shape Shape of the row and the fill behind it
  * @param containerColor Fill of the row, opaque so the action only shows in the gap
+ * @param thresholdFraction How far across the row, as a fraction of its width, a swipe must go to
+ *   count
+ * @param dragResistance How far the row moves per pixel the finger drags, from 0 to 1; lower makes
+ *   the swipe feel heavier and harder to set off by accident
  * @param content The row, typically a [PvotListRow]
  */
 @Composable
@@ -220,6 +231,8 @@ public fun PvotSwipeRow(
     enabled: Boolean = true,
     shape: Shape = PvotSwipeRowDefaults.Shape,
     containerColor: Color = PvotSwipeRowDefaults.containerColor,
+    thresholdFraction: Float = PvotSwipeRowDefaults.ThresholdFraction,
+    dragResistance: Float = PvotSwipeRowDefaults.DragResistance,
     content: @Composable () -> Unit,
 ) {
     val haptics = LocalHapticFeedback.current
@@ -228,8 +241,9 @@ public fun PvotSwipeRow(
     val start by rememberUpdatedState(startAction)
     val end by rememberUpdatedState(endAction)
     var width by remember { mutableIntStateOf(0) }
-    val threshold = width * PvotSwipeRowDefaults.ThresholdFraction
+    val threshold = width * thresholdFraction
 
+    state.dragResistance = dragResistance
     state.maxOffset = if (startAction != null) width.toFloat() else 0f
     state.minOffset = if (endAction != null) -width.toFloat() else 0f
 
