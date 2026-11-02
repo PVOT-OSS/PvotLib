@@ -8,6 +8,7 @@ import android.graphics.RuntimeShader
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -148,7 +149,83 @@ public object PvotGlassDefaults {
     /**
      * What an app should start with: full glass where the device can, the frosted look elsewhere.
      */
-    public fun defaultIntensity(): Float = if (isLensSupported) 1f else 0f
+    public fun defaultIntensity(): Float = if (isLensSupported) 1f else FrostedIntensity
+
+    /**
+     * The intensity at which glass is solid: an opaque surface, no blur and no lens, which costs
+     * nothing to draw. The stop for a user who wants no transparency, and what [PvotGlassIntensity]
+     * falls to under battery saver.
+     */
+    public const val SolidIntensity: Float = 0f
+
+    /** The intensity of a frosted blur and a tint alone, with none of the edge lens. */
+    public const val FrostedIntensity: Float = 0.1f
+
+    /** The look of [PvotGlassMaterial.Clear]: [Style], a faint haze and a light blur. */
+    public val ClearStyle: PvotGlassStyle = Style
+
+    /** The look of [PvotGlassMaterial.Regular]: a deeper blur and a softer bend. */
+    public val RegularStyle: PvotGlassStyle =
+        Style.copy(blur = 10.dp, strength = 8.dp, glow = 0.18f)
+
+    /** The look of [PvotGlassMaterial.Thick]: the deepest blur, with the lens held back. */
+    public val ThickStyle: PvotGlassStyle =
+        Style.copy(
+            blur = 18.dp,
+            strength = 5.dp,
+            aberration = 1.5.dp,
+            reflection = 0.5f,
+            vividMix = 0.5f,
+        )
+
+    /** The style of [material] at full intensity, before its tint is applied. */
+    public fun styleOf(material: PvotGlassMaterial): PvotGlassStyle =
+        when (material) {
+            PvotGlassMaterial.Clear -> ClearStyle
+            PvotGlassMaterial.Regular -> RegularStyle
+            PvotGlassMaterial.Thick -> ThickStyle
+        }
+
+    /**
+     * The tint of [material] at full intensity: the faint haze for [PvotGlassMaterial.Clear], and
+     * [colorScheme]'s `surfaceVariant` at about half strength for [PvotGlassMaterial.Regular] or
+     * nearly opaque for [PvotGlassMaterial.Thick], which is what keeps text on them readable.
+     */
+    public fun materialFill(material: PvotGlassMaterial, colorScheme: ColorScheme): Color =
+        when (material) {
+            PvotGlassMaterial.Clear -> FillColor
+            PvotGlassMaterial.Regular -> colorScheme.surfaceVariant.copy(alpha = RegularFillAlpha)
+            PvotGlassMaterial.Thick -> colorScheme.surfaceVariant.copy(alpha = ThickFillAlpha)
+        }
+
+    /**
+     * [base] at [intensity] with the tint of [material]: [style] with the material's fill, so a
+     * [PvotGlassMaterial.Regular] or [PvotGlassMaterial.Thick] glass keeps its surface color at any
+     * intensity.
+     *
+     * @param intensity How much glass, 0 to 1
+     * @param material How much the glass hides what is behind it
+     * @param base The style at full intensity; the material's by default
+     */
+    @Composable
+    public fun style(
+        intensity: Float,
+        material: PvotGlassMaterial,
+        base: PvotGlassStyle = styleOf(material),
+    ): PvotGlassStyle =
+        style(intensity, base.copy(fillColor = materialFill(material, MaterialTheme.colorScheme)))
+
+    /**
+     * The full-intensity style of [material] with its tint, for a glass that applies the intensity
+     * itself, such as `PvotGlassCard(style = PvotGlassDefaults.materialStyle(Regular))`.
+     */
+    @Composable
+    public fun materialStyle(material: PvotGlassMaterial): PvotGlassStyle =
+        styleOf(material).copy(fillColor = materialFill(material, MaterialTheme.colorScheme))
+
+    private const val RegularFillAlpha: Float = 0.45f
+
+    private const val ThickFillAlpha: Float = 0.78f
 
     /** The intensity in [LocalPvotGlassIntensity], held to what the device can draw. */
     @Composable
@@ -158,11 +235,13 @@ public object PvotGlassDefaults {
     private const val BlurOnlyIntensity: Float = 0.33f
 
     /**
-     * [base] at [intensity], from 0 (frosted blur and a tint, no lens) to 1 (as [base] is).
+     * [base] at [intensity], from 0 (a solid surface) through [FrostedIntensity] (a frosted blur
+     * and a tint, no lens) to 1 (as [base] is).
      *
      * The edge effects fade as the intensity falls, and under [LensThreshold] they are removed so
      * that the glass stops paying for the lens. The blur settles at [FrostBlur] and the tint turns
-     * into a surface-colored frost, so a bar still reads as glass with nothing else on it.
+     * into a surface-colored frost, so a bar still reads as glass with nothing else on it. At
+     * [SolidIntensity] there is no blur either: the glass is an opaque surface that costs nothing.
      *
      * @param intensity How much glass, 0 to 1
      * @param base The style at full intensity
@@ -170,8 +249,11 @@ public object PvotGlassDefaults {
     @Composable
     public fun style(intensity: Float, base: PvotGlassStyle = Style): PvotGlassStyle {
         val i = intensity.coerceIn(0f, maxIntensity())
-        val lens = if (i < LensThreshold || !isLensSupported) 0f else i
         val surface = MaterialTheme.colorScheme.surfaceVariant
+        if (i <= SolidIntensity) {
+            return solidStyle(base, surface)
+        }
+        val lens = if (i < LensThreshold || !isLensSupported) 0f else i
         val frost = surface.copy(alpha = FrostFillAlpha)
         return base.copy(
             strength = base.strength * lens,
@@ -194,6 +276,22 @@ public object PvotGlassDefaults {
             frostMix = 1f - i,
         )
     }
+
+    /** [base] with no lens and no blur: an opaque surface of [surface]'s color. */
+    private fun solidStyle(base: PvotGlassStyle, surface: Color): PvotGlassStyle =
+        base.copy(
+            strength = 0.dp,
+            aberration = 0.dp,
+            edgeBlur = 0.dp,
+            vividSpread = 0.dp,
+            reflection = 0f,
+            glow = 0f,
+            darkGlow = 0f,
+            vividMix = 0f,
+            fillColor = surface.copy(alpha = NoBlurFillAlpha),
+            frost = 0.dp,
+            frostMix = 1f,
+        )
 
     /**
      * A hairline edge for glass at [intensity], for the glass's [shape]. Without the rim's light

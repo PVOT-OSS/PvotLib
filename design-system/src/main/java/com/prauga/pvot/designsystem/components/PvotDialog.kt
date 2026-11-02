@@ -97,7 +97,7 @@ public enum class PvotDialogActionStyle {
  *
  * @param visible Whether the dialog is showing
  * @param onDismissRequest Called when the user taps outside the dialog or goes back
- * @param title Short summary of the decision
+ * @param title Short summary of the decision, or null for a dialog that only has a message
  * @param modifier Modifier for the dialog surface
  * @param message Supporting text under the title
  * @param icon Content of the circle above the title, typically an `Icon`; it is tinted for you
@@ -111,7 +111,7 @@ public enum class PvotDialogActionStyle {
 public fun PvotDialog(
     visible: Boolean,
     onDismissRequest: () -> Unit,
-    title: String,
+    title: String?,
     modifier: Modifier = Modifier,
     message: String? = null,
     icon: (@Composable () -> Unit)? = null,
@@ -186,78 +186,114 @@ public fun PvotDialog(
                     .padding(PvotDialogDefaults.ScreenMargin),
             contentAlignment = Alignment.Center,
         ) {
-            Column(
+            PvotDialogContent(
+                title = title,
                 modifier =
                     modifier
-                        .widthIn(max = PvotDialogDefaults.MaxWidth)
-                        .fillMaxWidth()
-                        .heightIn(max = 560.dp)
                         .graphicsLayer {
                             scaleX = scale.value
                             scaleY = scale.value
                             this.alpha = alpha.value
                         }
-                        .clip(PvotDialogDefaults.Shape)
-                        .background(PvotDialogDefaults.containerColor)
                         // Taps on the dialog itself must not reach the scrim behind it.
-                        .pointerInput(Unit) { detectTapGestures {} }
-                        .padding(PvotSpacing.L * 1.5f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(PvotSpacing.M),
+                        .pointerInput(Unit) { detectTapGestures {} },
+                message = message,
+                icon = icon,
+                destructive = destructive,
+                content = content,
+                actions = actions,
+            )
+        }
+    }
+}
+
+/**
+ * The card of a [PvotDialog] on its own: icon, title, message, extra content and actions on the
+ * dialog surface, without the window, scrim or entrance animation.
+ *
+ * Use it to give a dialog the Pvot look where the window comes from somewhere else, such as an
+ * `android.app.Dialog` that must keep platform window flags. Otherwise use [PvotDialog].
+ *
+ * @param title Short summary of the decision, or null for a dialog that only has a message
+ * @param modifier Modifier for the card
+ * @param message Supporting text under the title
+ * @param icon Content of the circle above the title, typically an `Icon`; it is tinted for you
+ * @param destructive Whether the dialog is about something destructive, which tints the icon circle
+ * @param content Extra content between the message and the actions, such as a text field
+ * @param actions The buttons, typically [PvotDialogAction]s, most important first
+ */
+@Composable
+public fun PvotDialogContent(
+    title: String?,
+    modifier: Modifier = Modifier,
+    message: String? = null,
+    icon: (@Composable () -> Unit)? = null,
+    destructive: Boolean = false,
+    content: (@Composable ColumnScope.() -> Unit)? = null,
+    actions: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier =
+            modifier
+                .widthIn(max = PvotDialogDefaults.MaxWidth)
+                .fillMaxWidth()
+                .heightIn(max = 560.dp)
+                .clip(PvotDialogDefaults.Shape)
+                .background(PvotDialogDefaults.containerColor)
+                .padding(PvotSpacing.L * 1.5f),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(PvotSpacing.M),
+    ) {
+        if (icon != null) {
+            val circle =
+                if (destructive) {
+                    MaterialTheme.colorScheme.errorContainer
+                } else {
+                    MaterialTheme.colorScheme.primaryContainer
+                }
+            val tint =
+                if (destructive) {
+                    MaterialTheme.colorScheme.onErrorContainer
+                } else {
+                    MaterialTheme.colorScheme.onPrimaryContainer
+                }
+            Box(
+                modifier =
+                    Modifier.size(PvotDialogDefaults.IconCircleSize)
+                        .background(circle, CircleShape),
+                contentAlignment = Alignment.Center,
             ) {
-                if (icon != null) {
-                    val circle =
-                        if (destructive) {
-                            MaterialTheme.colorScheme.errorContainer
-                        } else {
-                            MaterialTheme.colorScheme.primaryContainer
-                        }
-                    val tint =
-                        if (destructive) {
-                            MaterialTheme.colorScheme.onErrorContainer
-                        } else {
-                            MaterialTheme.colorScheme.onPrimaryContainer
-                        }
-                    Box(
-                        modifier =
-                            Modifier.size(PvotDialogDefaults.IconCircleSize)
-                                .background(circle, CircleShape),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        CompositionLocalProvider(
-                            LocalContentColor provides tint,
-                            content = { icon() },
-                        )
-                    }
-                }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    textAlign = TextAlign.Center,
-                )
-                if (message != null) {
-                    Text(
-                        text = message,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                    )
-                }
-                if (content != null) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
-                        content = content,
-                    )
-                }
-                Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = PvotSpacing.S),
-                    verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
-                    content = actions,
-                )
+                CompositionLocalProvider(LocalContentColor provides tint, content = { icon() })
             }
         }
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+            )
+        }
+        if (message != null) {
+            Text(
+                text = message,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
+        if (content != null) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
+                content = content,
+            )
+        }
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(top = PvotSpacing.S),
+            verticalArrangement = Arrangement.spacedBy(PvotSpacing.S),
+            content = actions,
+        )
     }
 }
 

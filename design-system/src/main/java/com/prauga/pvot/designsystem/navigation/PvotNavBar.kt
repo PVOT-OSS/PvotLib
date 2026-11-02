@@ -38,6 +38,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.pvotGlass
@@ -64,7 +65,7 @@ import com.prauga.pvot.designsystem.theme.PvotSpacing
  * @param expandedContentDescriptionRes Bar-level description override, or null to resolve per tab
  * @param backdrop The content behind the bar, marked with
  *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar as
- *   glass over it; null for a plain bar
+ *   glass over it; null for a plain bar. The scaffold's backdrop by default
  * @param sizes Size configuration for the bar and its items
  * @param colors Color configuration for the bar and its items
  * @param compact Whether to shrink the bar into its compact form: shorter, with smaller items and
@@ -78,7 +79,7 @@ public fun PvotNavBar(
     modifier: Modifier = Modifier,
     @DrawableRes expandedIconRes: Int? = null,
     @StringRes expandedContentDescriptionRes: Int? = null,
-    backdrop: PvotGlassBackdrop? = null,
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
         if (backdrop != null) PvotNavBarDefaults.glassColors()
@@ -116,7 +117,7 @@ public fun PvotNavBar(
  * @param modifier Modifier for the nav bar container
  * @param backdrop The content behind the bar, marked with
  *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], to draw the bar as
- *   glass over it; null for a plain bar
+ *   glass over it; null for a plain bar. The scaffold's backdrop by default
  * @param sizes Size configuration for the bar
  * @param colors Color configuration for the bar
  * @param compact Whether to shrink the bar into its compact form, see the tab-list overload
@@ -125,7 +126,7 @@ public fun PvotNavBar(
 @Composable
 public fun PvotNavBar(
     modifier: Modifier = Modifier,
-    backdrop: PvotGlassBackdrop? = null,
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
     sizes: PvotNavBarSizes = LocalPvotNavBarSizes.current,
     colors: PvotNavBarColors =
         if (backdrop != null) PvotNavBarDefaults.glassColors()

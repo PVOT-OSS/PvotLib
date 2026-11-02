@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
@@ -35,7 +36,7 @@ public object PvotGlassIconButtonDefaults {
  * @param onClick Called when the button is tapped
  * @param backdrop The content behind the button, marked with
  *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
- *   tint alone
+ *   tint alone; the scaffold's by default
  * @param modifier Modifier for the button
  * @param enabled Whether the button responds to taps
  * @param size The button's diameter
@@ -48,7 +49,7 @@ public object PvotGlassIconButtonDefaults {
 @Composable
 public fun PvotGlassIconButton(
     onClick: () -> Unit,
-    backdrop: PvotGlassBackdrop?,
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     size: Dp = PvotGlassIconButtonDefaults.Size,
@@ -61,7 +62,7 @@ public fun PvotGlassIconButton(
         modifier =
             modifier
                 .size(size)
-                .glassSurface(
+                .pvotGlassSurface(
                     backdrop = backdrop,
                     cornerRadius = PvotGlassDefaults.CapsuleRadius,
                     style = style,

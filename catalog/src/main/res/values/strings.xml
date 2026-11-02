@@ -74,7 +74,8 @@
     <string name="about_new_ui_title">Enable New UI</string>
     <string name="about_new_ui_subtitle">Tabler icons, vivid colors and the new navigation bar</string>
     <string name="about_glass_title">Liquid glass</string>
-    <string name="about_glass_subtitle">Frosted is the lightest; Full is the most glass</string>
+    <string name="about_glass_subtitle">Solid is the cheapest, then Frosted; Full is the most glass</string>
+    <string name="about_glass_reduced">Solid while Battery Saver is on</string>
     <string name="about_glass_subtitle_blur">This Android has the blur but not the edge glass (Android 13+)</string>
     <string name="about_glass_subtitle_flat">This Android cannot blur (Android 12+), so the glass is a flat frost</string>
     <string name="about_dynamic_colors_title">Dynamic Colors</string>

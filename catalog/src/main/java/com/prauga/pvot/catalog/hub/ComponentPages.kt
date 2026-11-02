@@ -56,6 +56,7 @@ import com.prauga.pvot.designsystem.components.PvotCard
 import com.prauga.pvot.designsystem.components.PvotDialog
 import com.prauga.pvot.designsystem.components.PvotDialogAction
 import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
+import com.prauga.pvot.designsystem.components.PvotDialogContent
 import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
@@ -366,7 +367,18 @@ internal fun StatesPage(onBack: () -> Unit) {
                 ) {
                     when (shown) {
                         DemoState.Loading -> PvotLoadingContent()
-                        DemoState.Empty -> PvotEmptyContent(message = "Nothing here yet")
+                        DemoState.Empty ->
+                            PvotEmptyContent(
+                                message = "No recent calls",
+                                icon = {
+                                    Icon(
+                                        painterResource(R.drawable.ic_t_phone),
+                                        contentDescription = null,
+                                    )
+                                },
+                                actionLabel = "Open dialpad",
+                                onAction = { state = DemoState.Success },
+                            )
                         DemoState.Error ->
                             PvotErrorContent(
                                 title = "Couldn't load",
@@ -395,6 +407,9 @@ internal fun StatesPage(onBack: () -> Unit) {
                     }
                 }
             }
+        }
+        DemoSection(title = "Empty, message only", caption = "Icon and action are optional") {
+            PvotEmptyContent(message = "Nothing here yet")
         }
         DemoSection(title = "Section header", caption = "Titles a group of items") {
             PvotSectionHeader(modifier = Modifier.fillMaxWidth(), title = "Recent apps")
@@ -524,6 +539,22 @@ internal fun OverlaysPage(onBack: () -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text("With a field")
+            }
+        }
+        DemoSection(
+            title = "Dialog card",
+            caption =
+                "PvotDialogContent: the card alone, for a window you already have. No title here",
+        ) {
+            PvotDialogContent(
+                title = null,
+                message = "Couldn't connect the call. Check the number and try again.",
+            ) {
+                PvotDialogAction(
+                    "OK",
+                    onClick = { send("Dismissed") },
+                    style = PvotDialogActionStyle.Primary,
+                )
             }
         }
         DemoSection(
@@ -821,6 +852,22 @@ internal fun GlassPage(onBack: () -> Unit) {
             framed = false,
         ) {
             GlassDemo()
+        }
+        DemoSection(
+            title = "Materials",
+            caption =
+                "Pick by what sits on the glass: text only on Regular or Thick, whose surface tint keeps it readable",
+            framed = false,
+        ) {
+            GlassMaterialsDemo()
+        }
+        DemoSection(
+            title = "Build your own",
+            caption =
+                "Modifier.pvotGlassSurface is the recipe every glass control uses: press, shadow, edge, glass, rim, click",
+            framed = false,
+        ) {
+            BuildYourOwnGlassDemo()
         }
     }
 }

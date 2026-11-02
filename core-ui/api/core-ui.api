@@ -1,5 +1,6 @@
 public final class com/prauga/pvot/coreui/PvotEmptyContentKt {
-	public static final fun PvotEmptyContent (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final synthetic fun PvotEmptyContent (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotEmptyContent (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/coreui/PvotErrorContentKt {

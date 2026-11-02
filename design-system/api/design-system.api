@@ -14,6 +14,19 @@ public final class com/prauga/pvot/designsystem/components/PvotBottomSheetKt {
 	public static final fun PvotSheetItem (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZZLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotCapsuleDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotCapsuleDefaults;
+	public final fun containerColor-WaAFU9c (Landroidx/compose/runtime/Composer;I)J
+	public final fun getContentPadding-D9Ej5fM ()F
+	public final fun getMaterial ()Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public final fun getSpacing-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotCapsuleKt {
+	public static final fun PvotCapsule-ypmoAuA (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FFJLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotCardDefaults {
 	public static final field $stable I
 	public static final field ContainerAlpha F
@@ -50,6 +63,7 @@ public final class com/prauga/pvot/designsystem/components/PvotDialogDefaults {
 public final class com/prauga/pvot/designsystem/components/PvotDialogKt {
 	public static final fun PvotDialog (ZLkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 	public static final fun PvotDialogAction (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/PvotDialogActionStyle;ZLandroidx/compose/runtime/Composer;II)V
+	public static final fun PvotDialogContent (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotGlassCardDefaults {
@@ -73,6 +87,17 @@ public final class com/prauga/pvot/designsystem/components/PvotGlassIconButtonKt
 	public static final fun PvotGlassIconButton-Y6xPZig (Lkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;ZFLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;JLandroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotGlassSurfaceDefaults;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceKt {
+	public static final fun PvotGlassSurface-yBXNGS4 (Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Alignment;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun pvotGlassSurface-bHDYGmc (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/semantics/Role;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotScreenDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotScreenDefaults;
@@ -87,6 +112,49 @@ public final class com/prauga/pvot/designsystem/components/PvotScreenKt {
 	public static final fun PvotScreen (Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/lazy/LazyListState;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/ui/Alignment$Horizontal;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotScreenScaffoldDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotScreenScaffoldDefaults;
+	public final fun getFloatingActionMargin-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotScreenScaffoldKt {
+	public static final fun PvotScreenScaffold (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSegmentedControlColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getIndicatorColor-0d7_KjU ()J
+	public final fun getSelectedContentColor-0d7_KjU ()J
+	public final fun getTrackColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSegmentedControlDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlDefaults;
+	public final fun colors--hDc7uY (Landroidx/compose/material3/ColorScheme;JJJJ)Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;
+	public static synthetic fun colors--hDc7uY$default (Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlDefaults;Landroidx/compose/material3/ColorScheme;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getIndicatorInset-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSegmentedControlKt {
+	public static final fun PvotSegmentedControl (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLcom/prauga/pvot/designsystem/components/PvotSegmentedControlColors;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotSkeletonDefaults {
 	public static final field $stable I
 	public static final field BandFraction F
@@ -99,6 +167,647 @@ public final class com/prauga/pvot/designsystem/components/PvotSkeletonDefaults 
 
 public final class com/prauga/pvot/designsystem/components/PvotSkeletonKt {
 	public static final fun PvotSkeleton-eaDK9VM (Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/Shape;JJLandroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSlideDecision : java/lang/Enum {
+	public static final field Down Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+	public static final field None Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+	public static final field Up Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSlideTarget {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function0;FLjava/lang/String;Landroidx/compose/ui/graphics/Color;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Lkotlin/jvm/functions/Function0;FLjava/lang/String;Landroidx/compose/ui/graphics/Color;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lkotlin/jvm/functions/Function0;
+	public final fun component3-D9Ej5fM ()F
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun copy-t2TSG6w (Ljava/lang/String;Lkotlin/jvm/functions/Function0;FLjava/lang/String;Landroidx/compose/ui/graphics/Color;)Lcom/prauga/pvot/designsystem/components/PvotSlideTarget;
+	public static synthetic fun copy-t2TSG6w$default (Lcom/prauga/pvot/designsystem/components/PvotSlideTarget;Ljava/lang/String;Lkotlin/jvm/functions/Function0;FLjava/lang/String;Landroidx/compose/ui/graphics/Color;ILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotSlideTarget;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getColor-QN2ZGVo ()Landroidx/compose/ui/graphics/Color;
+	public final fun getDistance-D9Ej5fM ()F
+	public final fun getHint ()Ljava/lang/String;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getOnReached ()Lkotlin/jvm/functions/Function0;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSlideToActDefaults {
+	public static final field $stable I
+	public static final field FlingFraction F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotSlideToActDefaults;
+	public static final field Overshoot F
+	public final fun decide (FFLjava/lang/Float;Ljava/lang/Float;F)Lcom/prauga/pvot/designsystem/components/PvotSlideDecision;
+	public final fun getDownDistance-D9Ej5fM ()F
+	public final fun getFlingVelocity-D9Ej5fM ()F
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getPuckSize-D9Ej5fM ()F
+	public final fun getUpDistance-D9Ej5fM ()F
+	public final fun isTouchExplorationEnabled (Landroid/content/Context;)Z
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSlideToActKt {
+	public static final fun PvotSlideToAct-dW-2gCk (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lcom/prauga/pvot/designsystem/components/PvotSlideTarget;Lcom/prauga/pvot/designsystem/components/PvotSlideTarget;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;ZZJJFLandroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSnackbarColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun copy-ysEtTa8 (JJJ)Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;
+	public static synthetic fun copy-ysEtTa8$default (Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;JJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionColor-0d7_KjU ()J
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSnackbarDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotSnackbarDefaults;
+	public final fun colors-zSO0fhY (Landroidx/compose/material3/ColorScheme;JJJ)Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;
+	public static synthetic fun colors-zSO0fhY$default (Lcom/prauga/pvot/designsystem/components/PvotSnackbarDefaults;Landroidx/compose/material3/ColorScheme;JJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;
+	public final fun getElevation-D9Ej5fM ()F
+	public final fun getMaxWidth-D9Ej5fM ()F
+	public final fun getMinHeight-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSnackbarKt {
+	public static final fun PvotSnackbar (Landroidx/compose/material3/SnackbarData;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/PvotSnackbarColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotSnackbarHost (Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTabRowColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/PvotTabRowColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/PvotTabRowColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotTabRowColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getDividerColor-0d7_KjU ()J
+	public final fun getIndicatorColor-0d7_KjU ()J
+	public final fun getSelectedContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTabRowDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotTabRowDefaults;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotTabRowColors;
+	public final fun getDividerHeight-D9Ej5fM ()F
+	public final fun getIndicatorHeight-D9Ej5fM ()F
+	public final fun getTabHeight-D9Ej5fM ()F
+	public final fun getTabHorizontalPadding-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTabRowKt {
+	public static final fun PvotTabRow (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLcom/prauga/pvot/designsystem/components/PvotTabRowColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/background/PhotoBlurKt {
+	public static final fun preparePvotPhotoBackground-2lqI77k (Landroid/graphics/Bitmap;Landroidx/compose/ui/unit/Density;IFLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun preparePvotPhotoBackground-2lqI77k$default (Landroid/graphics/Bitmap;Landroidx/compose/ui/unit/Density;IFLkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public final class com/prauga/pvot/designsystem/components/background/PvotBackgroundDefaults {
+	public static final field $stable I
+	public static final field BlobCount I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundDefaults;
+	public static final field LiveFrameMillis I
+	public static final field LoopMillis I
+	public static final field PhotoDownscale I
+	public static final field PhotoScrimAlpha F
+	public static final field SlowFrameMillis I
+	public final fun colors (Landroidx/compose/material3/ColorScheme;Landroidx/compose/runtime/Composer;II)Ljava/util/List;
+	public final fun getPhotoBlurRadius-D9Ej5fM ()F
+	public final fun motion (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+}
+
+public final class com/prauga/pvot/designsystem/components/background/PvotBackgroundMotion : java/lang/Enum {
+	public static final field Live Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+	public static final field Slow Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+	public static final field Still Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;
+}
+
+public final class com/prauga/pvot/designsystem/components/background/PvotBackgroundsKt {
+	public static final fun PvotGradientBackground-cf5BqRc (Landroidx/compose/ui/Modifier;Ljava/util/List;JFLandroidx/compose/runtime/Composer;II)V
+	public static final fun PvotLiveBackground-T042LqI (Landroidx/compose/ui/Modifier;Ljava/util/List;JLcom/prauga/pvot/designsystem/components/background/PvotBackgroundMotion;FLandroidx/compose/runtime/Composer;II)V
+	public static final fun PvotPhotoBackground-cf5BqRc (Landroidx/compose/ui/graphics/ImageBitmap;Landroidx/compose/ui/Modifier;JLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/button/PvotButtonColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/button/PvotButtonColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/button/PvotButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getDisabledContainerColor-0d7_KjU ()J
+	public final fun getDisabledContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotButtonDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/button/PvotButtonDefaults;
+	public final fun colors (Landroidx/compose/material3/ColorScheme;Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;)Lcom/prauga/pvot/designsystem/components/button/PvotButtonColors;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getMinHeight-D9Ej5fM ()F
+	public final fun getMinWidth-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public final fun getTextContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun themeColors (Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/button/PvotButtonColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotButtonKt {
+	public static final fun PvotButton (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;Landroidx/compose/ui/graphics/painter/Painter;ZLcom/prauga/pvot/designsystem/components/button/PvotButtonColors;Landroidx/compose/foundation/layout/PaddingValues;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotButtonStyle : java/lang/Enum {
+	public static final field Destructive Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+	public static final field Filled Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+	public static final field Text Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+	public static final field Tonal Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/button/PvotButtonStyle;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotFabColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotFabDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/button/PvotFabDefaults;
+	public final fun colors-WkMS-hQ (Landroidx/compose/material3/ColorScheme;JJ)Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;
+	public static synthetic fun colors-WkMS-hQ$default (Lcom/prauga/pvot/designsystem/components/button/PvotFabDefaults;Landroidx/compose/material3/ColorScheme;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;
+	public final fun getElevation-D9Ej5fM ()F
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public final fun getSize-D9Ej5fM ()F
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/button/PvotFabColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotFabKt {
+	public static final fun PvotFab (Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;ZLcom/prauga/pvot/designsystem/components/button/PvotFabColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotIconButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCheckedContainerColor-0d7_KjU ()J
+	public final fun getCheckedContentColor-0d7_KjU ()J
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotIconButtonDefaults {
+	public static final field $stable I
+	public static final field DisabledAlpha F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonDefaults;
+	public final fun filledColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getLargeSize-D9Ej5fM ()F
+	public final fun getSize-D9Ej5fM ()F
+	public final fun getSmallIconSize-D9Ej5fM ()F
+	public final fun getSmallSize-D9Ej5fM ()F
+	public final fun plainColors-Iv8Zu3U (JLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;
+	public final fun tonalColors-dgg9oW8 (JJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/button/PvotIconButtonKt {
+	public static final fun PvotIconButton-Ltcujgc (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FLjava/lang/Boolean;ZFLcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallAction : java/lang/Enum {
+	public static final field Answer Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
+	public static final field Decline Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
+	public static final field End Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun copy-ysEtTa8 (JJJ)Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;
+	public static synthetic fun copy-ysEtTa8$default (Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;JJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getLabelColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallActionButtonDefaults {
+	public static final field $stable I
+	public static final field DisabledAlpha F
+	public static final field GradientDepth F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonDefaults;
+	public final fun colors (Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;
+	public final fun getEndWidth-D9Ej5fM ()F
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getLabelledHeight-D9Ej5fM ()F
+	public final fun getLabelledHorizontalPadding-D9Ej5fM ()F
+	public final fun getSize-D9Ej5fM ()F
+	public final fun themeColors (Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallActionButtonKt {
+	public static final fun PvotCallActionButton-vCe147k (Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FFZZZLcom/prauga/pvot/designsystem/components/call/PvotCallActionButtonColors;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun copy-t635Npw (JJJJJ)Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;
+	public static synthetic fun copy-t635Npw$default (Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;JJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCheckedContainerColor-0d7_KjU ()J
+	public final fun getCheckedContentColor-0d7_KjU ()J
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getLabelColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallButtonDefaults {
+	public static final field $stable I
+	public static final field DisabledAlpha F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonDefaults;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;
+	public final fun getBadgeSize-D9Ej5fM ()F
+	public final fun getCheckedCornerRadius-D9Ej5fM ()F
+	public final fun getSize-D9Ej5fM ()F
+	public final fun getWidth-D9Ej5fM ()F
+	public final fun glassColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/call/PvotCallButtonKt {
+	public static final fun PvotCallButton (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/Boolean;ZLkotlin/jvm/functions/Function0;ZLjava/lang/String;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDigitColor-0d7_KjU ()J
+	public final fun getKeyColor-0d7_KjU ()J
+	public final fun getLettersColor-0d7_KjU ()J
+	public final fun getPressedKeyColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadDefaults {
+	public static final field $stable I
+	public static final field Columns I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadDefaults;
+	public final fun filledColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;
+	public final fun flatColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;
+	public final fun getKeySize-D9Ej5fM ()F
+	public final fun keys (Ljava/util/List;Ljava/lang/String;Ljava/lang/String;)Ljava/util/List;
+	public static synthetic fun keys$default (Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadDefaults;Ljava/util/List;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Ljava/util/List;
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadDisplayDefaults {
+	public static final field $stable I
+	public static final field DisabledAlpha F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadDisplayDefaults;
+	public final fun getButtonSize-D9Ej5fM ()F
+	public final fun getHeight-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadDisplayKt {
+	public static final fun PvotKeypadDisplay (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/text/TextStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotKeypadDisplay (Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadKey {
+	public static final field $stable I
+	public fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun copy (ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadKey;
+	public static synthetic fun copy$default (Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadKey;ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadKey;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentDescription ()Ljava/lang/String;
+	public final fun getDigit ()Ljava/lang/String;
+	public final fun getId ()I
+	public final fun getLetters ()Ljava/lang/String;
+	public final fun getLongPressLabel ()Ljava/lang/String;
+	public final fun getSecondaryLetters ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadKt {
+	public static final fun PvotKeypad-eHTjO5g (Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Ljava/util/List;Lkotlin/jvm/functions/Function1;ZFLkotlin/jvm/functions/Function1;Lcom/prauga/pvot/designsystem/components/keypad/PvotKeypadColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotAvatarDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotAvatarDefaults;
+	public final fun getExtraLarge-D9Ej5fM ()F
+	public final fun getHero-D9Ej5fM ()F
+	public final fun getLarge-D9Ej5fM ()F
+	public final fun getMedium-D9Ej5fM ()F
+	public final fun getRingGap-D9Ej5fM ()F
+	public final fun getRingWidth-D9Ej5fM ()F
+	public final fun getSmall-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotAvatarKt {
+	public static final fun PvotAvatar-msPkQVw (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/Object;FLandroidx/compose/ui/graphics/Color;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollSection {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;I)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()I
+	public final fun copy (Ljava/lang/String;I)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollSection;
+	public static synthetic fun copy$default (Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollSection;Ljava/lang/String;IILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollSection;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public final fun getLabel ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollerColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveThumbColor-0d7_KjU ()J
+	public final fun getBubbleContainerColor-0d7_KjU ()J
+	public final fun getBubbleContentColor-0d7_KjU ()J
+	public final fun getThumbColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollerDefaults {
+	public static final field $stable I
+	public static final field HideDelayMillis I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerDefaults;
+	public final fun colors (Landroidx/compose/material3/ColorScheme;)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;
+	public final fun getActiveThumbWidth-D9Ej5fM ()F
+	public final fun getBubbleSize-D9Ej5fM ()F
+	public final fun getThumbHeight-D9Ej5fM ()F
+	public final fun getThumbWidth-D9Ej5fM ()F
+	public final fun getTouchWidth-D9Ej5fM ()F
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollerKt {
+	public static final fun PvotFastScroller (Landroidx/compose/foundation/lazy/LazyListState;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotLetterTileColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/list/PvotLetterTileColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/list/PvotLetterTileColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotLetterTileColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotLetterTileDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotLetterTileDefaults;
+	public final fun colorsFor (Ljava/lang/Object;Ljava/util/List;)Lcom/prauga/pvot/designsystem/components/list/PvotLetterTileColors;
+	public final fun getSize-D9Ej5fM ()F
+	public final fun palette (Landroidx/compose/material3/ColorScheme;)Ljava/util/List;
+	public final fun themePalette (Landroidx/compose/runtime/Composer;I)Ljava/util/List;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotLetterTileKt {
+	public static final fun PvotLetterTile-hGBTI10 (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/Object;FLjava/util/List;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListGroupColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/list/PvotListGroupColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/list/PvotListGroupColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotListGroupColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDividerColor-0d7_KjU ()J
+	public final fun getTitleColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListGroupDefaults {
+	public static final field $stable I
+	public static final field DividerAlpha F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotListGroupDefaults;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/list/PvotListGroupColors;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getDividerInset-D9Ej5fM ()F
+	public final fun getDividerThickness-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListGroupKt {
+	public static final fun PvotListGroup-TN_CM5M (Landroidx/compose/ui/Modifier;Ljava/lang/String;FLcom/prauga/pvot/designsystem/components/list/PvotListGroupColors;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/prauga/pvot/designsystem/components/list/PvotListGroupScope {
+	public abstract fun item (Lkotlin/jvm/functions/Function2;)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListRowColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun component9-0d7_KjU ()J
+	public final fun copy-5r9EGqc (JJJJJJJJJ)Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;
+	public static synthetic fun copy-5r9EGqc$default (Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;JJJJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getIconColor-0d7_KjU ()J
+	public final fun getIconContainerColor-0d7_KjU ()J
+	public final fun getLeadingColor-0d7_KjU ()J
+	public final fun getSelectedContainerColor-0d7_KjU ()J
+	public final fun getSupportingTextColor-0d7_KjU ()J
+	public final fun getTitleColor-0d7_KjU ()J
+	public final fun getTrailingColor-0d7_KjU ()J
+	public final fun getValueColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListRowDefaults {
+	public static final field $stable I
+	public static final field DisabledAlpha F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotListRowDefaults;
+	public final fun colors-to1evps (Landroidx/compose/material3/ColorScheme;JJJJJJJJJ)Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;
+	public static synthetic fun colors-to1evps$default (Lcom/prauga/pvot/designsystem/components/list/PvotListRowDefaults;Landroidx/compose/material3/ColorScheme;JJJJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getLeadingSize-D9Ej5fM ()F
+	public final fun getMinHeight-D9Ej5fM ()F
+	public final fun getPlainIconSize-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/list/PvotListRowColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotListRowKt {
+	public static final fun PvotListRow (Ljava/lang/String;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/lang/String;ZZLcom/prauga/pvot/designsystem/components/list/PvotListRowColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PvotListRow (Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Ljava/lang/String;ZZLcom/prauga/pvot/designsystem/components/list/PvotListRowColors;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotRowChevron : java/lang/Enum {
+	public static final field Arrow Lcom/prauga/pvot/designsystem/components/list/PvotRowChevron;
+	public static final field Chevron Lcom/prauga/pvot/designsystem/components/list/PvotRowChevron;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/list/PvotRowChevron;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/list/PvotRowChevron;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotRowIconStyle : java/lang/Enum {
+	public static final field Contained Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;
+	public static final field Plain Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSettingsRowDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotSettingsRowDefaults;
+	public final fun getChevronSize-D9Ej5fM ()F
+	public final fun getValueMaxWidth-D9Ej5fM ()F
+	public final fun switchColors (Landroidx/compose/runtime/Composer;I)Landroidx/compose/material3/SwitchColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSettingsRowsKt {
+	public static final fun PvotPreferenceRow (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;ZLcom/prauga/pvot/designsystem/components/list/PvotRowChevron;ZLcom/prauga/pvot/designsystem/components/list/PvotListRowColors;Landroidx/compose/runtime/Composer;III)V
+	public static final fun PvotSwitchRow (Ljava/lang/String;ZLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lcom/prauga/pvot/designsystem/components/list/PvotRowIconStyle;ZLcom/prauga/pvot/designsystem/components/list/PvotListRowColors;Landroidx/compose/material3/SwitchColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSwipeAction {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;JJZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;JJZLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getIcon ()Landroidx/compose/ui/graphics/painter/Painter;
+	public final fun getLabel ()Ljava/lang/String;
+	public final fun getOnSwipe ()Lkotlin/jvm/functions/Function0;
+	public final fun getRemovesRow ()Z
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowDefaults {
+	public static final field $stable I
+	public static final field ArmedIconScale F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowDefaults;
+	public static final field ThresholdFraction F
+	public final fun action-jB83MbM (Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;JJZLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;
+	public final fun destructiveAction-jB83MbM (Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Lkotlin/jvm/functions/Function0;JJZLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;
+	public final fun getContainerColor (Landroidx/compose/runtime/Composer;I)J
+	public final fun getFlingVelocity-D9Ej5fM ()F
+	public final fun getShape ()Landroidx/compose/ui/graphics/Shape;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowKt {
+	public static final fun PvotSwipeRow-3csKH6Y (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeAction;Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowState;ZLandroidx/compose/ui/graphics/Shape;JLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPvotSwipeRowState (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/list/PvotSwipeRowState;
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotSwipeRowState {
+	public static final field $stable I
+	public fun <init> ()V
+	public final fun isDismissed ()Z
+	public final fun reset (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
 public final class com/prauga/pvot/designsystem/components/picker/PvotClockPickerKt {
@@ -135,6 +844,62 @@ public final class com/prauga/pvot/designsystem/components/picker/PvotPickerDefa
 	public final fun getTextColor-0d7_KjU ()J
 	public final fun getTextSecondaryColor-0d7_KjU ()J
 	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/picker/PvotPickerColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndicatorColor-0d7_KjU ()J
+	public final fun getTrackColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotLinearProgressDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressDefaults;
+	public static final field TrackAlpha F
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getSeekTouchHeight-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotLinearProgressKt {
+	public static final fun PvotLinearProgress-TN_CM5M (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotProportionBarColors {
+	public static final field $stable I
+	public synthetic fun <init> (Ljava/util/List;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2-0d7_KjU ()J
+	public final fun copy-4WTKRHQ (Ljava/util/List;J)Lcom/prauga/pvot/designsystem/components/progress/PvotProportionBarColors;
+	public static synthetic fun copy-4WTKRHQ$default (Lcom/prauga/pvot/designsystem/components/progress/PvotProportionBarColors;Ljava/util/List;JILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/progress/PvotProportionBarColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSegmentColors ()Ljava/util/List;
+	public final fun getTrackColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotProportionBarDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/progress/PvotProportionBarDefaults;
+	public final fun LegendDot-3J-VO9M (JLandroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getLegendDotSize-D9Ej5fM ()F
+	public final fun getTonalSteps ()Ljava/util/List;
+	public final fun tonalColors-dgg9oW8 (JJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/progress/PvotProportionBarColors;
+	public final fun tonalSteps--OWjLjI (JJ)Ljava/util/List;
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotProportionBarKt {
+	public static final fun PvotProportionBar-942rkJo (Ljava/util/List;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/components/progress/PvotProportionBarColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/slider/PvotSliderColors {
@@ -225,37 +990,68 @@ public final class com/prauga/pvot/designsystem/effects/PvotGlassBackdrop {
 }
 
 public final class com/prauga/pvot/designsystem/effects/PvotGlassBackdropKt {
+	public static final fun getLocalPvotGlassBackdrop ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun pvotGlassBackdrop (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;)Landroidx/compose/ui/Modifier;
 	public static final fun rememberPvotGlassBackdrop (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;
 }
 
 public final class com/prauga/pvot/designsystem/effects/PvotGlassDefaults {
 	public static final field $stable I
+	public static final field FrostedIntensity F
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/effects/PvotGlassDefaults;
 	public static final field LensThreshold F
 	public static final field PressedScale F
 	public static final field ShadowAlpha F
+	public static final field SolidIntensity F
 	public final fun currentIntensity (Landroidx/compose/runtime/Composer;I)F
 	public final fun defaultIntensity ()F
 	public final fun edge (Landroidx/compose/ui/Modifier;FLandroidx/compose/ui/graphics/Shape;Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/Modifier;
 	public final fun getCapsuleRadius-D9Ej5fM ()F
+	public final fun getClearStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 	public final fun getFillColor-0d7_KjU ()J
 	public final fun getFrostBlur-D9Ej5fM ()F
 	public final fun getPressedFillColor-0d7_KjU ()J
+	public final fun getRegularStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 	public final fun getRimSoftness-D9Ej5fM ()F
 	public final fun getRimWidth-D9Ej5fM ()F
 	public final fun getShadowElevation-D9Ej5fM ()F
 	public final fun getStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun getThickStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 	public final fun isBlurSupported ()Z
 	public final fun isLensSupported ()Z
+	public final fun materialFill-WaAFU9c (Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Landroidx/compose/material3/ColorScheme;)J
+	public final fun materialStyle (Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 	public final fun maxIntensity ()F
+	public final fun style (FLcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
 	public final fun style (FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun styleOf (Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;)Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+}
+
+public final class com/prauga/pvot/designsystem/effects/PvotGlassIntensity {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/effects/PvotGlassIntensity;
+	public final fun effective (FLandroidx/compose/runtime/Composer;I)F
+	public final fun isReduced (Landroidx/compose/runtime/Composer;I)Z
+}
+
+public final class com/prauga/pvot/designsystem/effects/PvotGlassIntensityKt {
+	public static final fun ProvidePvotGlassIntensity (FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;I)V
+	public static final fun getLocalPvotGlassReduced ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 }
 
 public final class com/prauga/pvot/designsystem/effects/PvotGlassKt {
 	public static final fun getLocalPvotGlassIntensity ()Landroidx/compose/runtime/ProvidableCompositionLocal;
 	public static final fun pvotGlass-d8LSEHM (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;)Landroidx/compose/ui/Modifier;
 	public static synthetic fun pvotGlass-d8LSEHM$default (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ILjava/lang/Object;)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/prauga/pvot/designsystem/effects/PvotGlassMaterial : java/lang/Enum {
+	public static final field Clear Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public static final field Regular Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public static final field Thick Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
 }
 
 public final class com/prauga/pvot/designsystem/effects/PvotGlassRimKt {
@@ -463,6 +1259,49 @@ public final class com/prauga/pvot/designsystem/navigation/PvotTabItem {
 	public fun toString ()Ljava/lang/String;
 }
 
+public final class com/prauga/pvot/designsystem/navigation/PvotTopBarColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCompactContainerColor-0d7_KjU ()J
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getTitleColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/navigation/PvotTopBarDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/navigation/PvotTopBarDefaults;
+	public final fun colors--hDc7uY (Landroidx/compose/material3/ColorScheme;JJJJ)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+	public static synthetic fun colors--hDc7uY$default (Lcom/prauga/pvot/designsystem/navigation/PvotTopBarDefaults;Landroidx/compose/material3/ColorScheme;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+	public final fun getActionSize-D9Ej5fM ()F
+	public final fun getBarHeight-D9Ej5fM ()F
+	public final fun getCompactThreshold-D9Ej5fM ()F
+	public final fun getMaterial ()Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
+	public final fun getWindowInsets (Landroidx/compose/runtime/Composer;I)Landroidx/compose/foundation/layout/WindowInsets;
+	public final fun glassColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;
+}
+
+public final class com/prauga/pvot/designsystem/navigation/PvotTopBarKt {
+	public static final fun PvotTopBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;Landroidx/compose/foundation/layout/WindowInsets;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotTopBarAction (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPvotTopBarCompact-rAjV9yQ (Landroidx/compose/foundation/lazy/LazyListState;FLandroidx/compose/runtime/Composer;II)Z
+}
+
+public final class com/prauga/pvot/designsystem/platform/PvotActivityKt {
+	public static final fun enablePvotEdgeToEdge (Landroidx/activity/ComponentActivity;)V
+	public static final fun setPvotContent (Landroidx/activity/ComponentActivity;Lkotlin/jvm/functions/Function2;)V
+}
+
 public abstract class com/prauga/pvot/designsystem/platform/PvotBaseActivity : androidx/activity/ComponentActivity {
 	public static final field $stable I
 	public fun <init> ()V
@@ -473,6 +1312,8 @@ public abstract class com/prauga/pvot/designsystem/platform/PvotBaseActivity : a
 public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotBackgroundDark ()J
 	public static final fun getPvotBackgroundLight ()J
+	public static final fun getPvotCallAnswer ()J
+	public static final fun getPvotCallEnd ()J
 	public static final fun getPvotErrorContainerDark ()J
 	public static final fun getPvotErrorContainerLight ()J
 	public static final fun getPvotErrorDark ()J
@@ -485,6 +1326,8 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotInverseSurfaceLight ()J
 	public static final fun getPvotOnBackgroundDark ()J
 	public static final fun getPvotOnBackgroundLight ()J
+	public static final fun getPvotOnCallAnswer ()J
+	public static final fun getPvotOnCallEnd ()J
 	public static final fun getPvotOnErrorContainerDark ()J
 	public static final fun getPvotOnErrorContainerLight ()J
 	public static final fun getPvotOnErrorDark ()J
@@ -497,6 +1340,10 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotOnSecondaryContainerLight ()J
 	public static final fun getPvotOnSecondaryDark ()J
 	public static final fun getPvotOnSecondaryLight ()J
+	public static final fun getPvotOnSuccessContainerDark ()J
+	public static final fun getPvotOnSuccessContainerLight ()J
+	public static final fun getPvotOnSuccessDark ()J
+	public static final fun getPvotOnSuccessLight ()J
 	public static final fun getPvotOnSurfaceDark ()J
 	public static final fun getPvotOnSurfaceLight ()J
 	public static final fun getPvotOnSurfaceVariantDark ()J
@@ -505,6 +1352,10 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotOnTertiaryContainerLight ()J
 	public static final fun getPvotOnTertiaryDark ()J
 	public static final fun getPvotOnTertiaryLight ()J
+	public static final fun getPvotOnWarningContainerDark ()J
+	public static final fun getPvotOnWarningContainerLight ()J
+	public static final fun getPvotOnWarningDark ()J
+	public static final fun getPvotOnWarningLight ()J
 	public static final fun getPvotOutlineDark ()J
 	public static final fun getPvotOutlineLight ()J
 	public static final fun getPvotOutlineVariantDark ()J
@@ -518,6 +1369,10 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotSecondaryContainerLight ()J
 	public static final fun getPvotSecondaryDark ()J
 	public static final fun getPvotSecondaryLight ()J
+	public static final fun getPvotSuccessContainerDark ()J
+	public static final fun getPvotSuccessContainerLight ()J
+	public static final fun getPvotSuccessDark ()J
+	public static final fun getPvotSuccessLight ()J
 	public static final fun getPvotSurfaceDark ()J
 	public static final fun getPvotSurfaceLight ()J
 	public static final fun getPvotSurfaceVariantDark ()J
@@ -526,6 +1381,41 @@ public final class com/prauga/pvot/designsystem/theme/ColorKt {
 	public static final fun getPvotTertiaryContainerLight ()J
 	public static final fun getPvotTertiaryDark ()J
 	public static final fun getPvotTertiaryLight ()J
+	public static final fun getPvotWarningContainerDark ()J
+	public static final fun getPvotWarningContainerLight ()J
+	public static final fun getPvotWarningDark ()J
+	public static final fun getPvotWarningLight ()J
+}
+
+public final class com/prauga/pvot/designsystem/theme/ExtendedColorsKt {
+	public static final fun getPvotDarkExtendedColors ()Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
+	public static final fun getPvotLightExtendedColors ()Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
+}
+
+public final class com/prauga/pvot/designsystem/theme/PvotExtendedColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun component7-0d7_KjU ()J
+	public final fun component8-0d7_KjU ()J
+	public final fun copy-FD3wquc (JJJJJJJJ)Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
+	public static synthetic fun copy-FD3wquc$default (Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;JJJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOnSuccess-0d7_KjU ()J
+	public final fun getOnSuccessContainer-0d7_KjU ()J
+	public final fun getOnWarning-0d7_KjU ()J
+	public final fun getOnWarningContainer-0d7_KjU ()J
+	public final fun getSuccess-0d7_KjU ()J
+	public final fun getSuccessContainer-0d7_KjU ()J
+	public final fun getWarning-0d7_KjU ()J
+	public final fun getWarningContainer-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
 }
 
 public final class com/prauga/pvot/designsystem/theme/PvotShapes {
@@ -549,6 +1439,7 @@ public final class com/prauga/pvot/designsystem/theme/PvotSpacing {
 public final class com/prauga/pvot/designsystem/theme/PvotTheme {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/theme/PvotTheme;
+	public final fun getExtendedColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
 	public final fun isDynamicColor (Landroidx/compose/runtime/Composer;I)Z
 }
 
@@ -556,12 +1447,13 @@ public final class com/prauga/pvot/designsystem/theme/PvotThemeDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/theme/PvotThemeDefaults;
 	public final fun colorScheme (ZZLandroidx/compose/runtime/Composer;II)Landroidx/compose/material3/ColorScheme;
+	public final fun extendedColors (Z)Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;
 	public final fun isDynamicColorSupported ()Z
 	public final fun usingDynamicColor (Z)Z
 }
 
 public final class com/prauga/pvot/designsystem/theme/ThemeKt {
-	public static final fun PvotAppTheme (ZZLandroidx/compose/material3/ColorScheme;Landroidx/compose/material3/Typography;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotAppTheme (ZZLandroidx/compose/material3/ColorScheme;Landroidx/compose/material3/Typography;Lcom/prauga/pvot/designsystem/theme/PvotExtendedColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
 	public static final fun getPvotDarkColorScheme ()Landroidx/compose/material3/ColorScheme;
 	public static final fun getPvotLightColorScheme ()Landroidx/compose/material3/ColorScheme;
 }

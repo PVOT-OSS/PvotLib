@@ -5,11 +5,8 @@ package com.prauga.pvot.catalog
 
 import android.os.Bundle
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -21,7 +18,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -42,7 +38,9 @@ import com.prauga.pvot.catalog.screens.CatalogScreen
 import com.prauga.pvot.catalog.screens.EmptyScreen
 import com.prauga.pvot.catalog.screens.HomeScreen
 import com.prauga.pvot.catalog.utils.PreferencesManager
-import com.prauga.pvot.designsystem.effects.LocalPvotGlassIntensity
+import com.prauga.pvot.designsystem.components.PvotScreenScaffold
+import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.ProvidePvotGlassIntensity
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.navigation.PvotTabItem
@@ -59,7 +57,6 @@ class MainActivity : PvotBaseActivity() {
             val newUi by PreferencesManager.newUiEnabled.collectAsState()
             val glassIntensity by PreferencesManager.glassIntensity.collectAsState()
             CompositionLocalProvider(
-                LocalPvotGlassIntensity provides glassIntensity,
                 LocalNewUi provides newUi,
                 LocalAppIcons provides if (newUi) NewIcons else LegacyIcons,
             ) {
@@ -67,7 +64,8 @@ class MainActivity : PvotBaseActivity() {
                     dynamicColor = dynamicColor,
                     colorScheme = catalogColorScheme(newUi, dynamicColor),
                 ) {
-                    DesignSystemShowcase()
+                    // The preference, held to the device: solid under battery saver.
+                    ProvidePvotGlassIntensity(glassIntensity) { DesignSystemShowcase() }
                 }
             }
         }
@@ -95,7 +93,6 @@ fun DesignSystemShowcase() {
     // bar. The new UI keeps the glass bar and cards over the plain background the app has always
     // had.
     val newUi = LocalNewUi.current
-    val backdrop = rememberPvotGlassBackdrop()
     val backgroundBackdrop = rememberPvotGlassBackdrop()
 
     val icons = LocalAppIcons.current
@@ -123,9 +120,16 @@ fun DesignSystemShowcase() {
             ),
         )
 
-    Scaffold(
+    // The scaffold holds the backdrop, the opaque background and the glass nav bar over it.
+    PvotScreenScaffold(
         modifier = Modifier.fillMaxSize(),
-        containerColor = Color.Transparent,
+        background = {
+            if (!newUi) {
+                LiveBackground(
+                    modifier = Modifier.fillMaxSize().pvotGlassBackdrop(backgroundBackdrop)
+                )
+            }
+        },
         bottomBar = {
             CatalogNavBar(
                 selectedTab = selectedTab,
@@ -135,25 +139,11 @@ fun DesignSystemShowcase() {
                 },
                 tabs = tabs,
                 compact = navCompact,
-                backdrop = backdrop,
+                backdrop = LocalPvotGlassBackdrop.current,
             )
         },
     ) { innerPadding ->
-        Box(
-            modifier =
-                Modifier.fillMaxSize()
-                    // The background goes inside the backdrop: glass frosts what is recorded there,
-                    // and a
-                    // backdrop with no opaque background lets the sharp content show through the
-                    // glass.
-                    .pvotGlassBackdrop(backdrop)
-                    .background(MaterialTheme.colorScheme.background)
-        ) {
-            if (!newUi) {
-                LiveBackground(
-                    modifier = Modifier.fillMaxSize().pvotGlassBackdrop(backgroundBackdrop)
-                )
-            }
+        run {
             CompositionLocalProvider(
                 LocalBackgroundBackdrop provides if (newUi) null else backgroundBackdrop
             ) {

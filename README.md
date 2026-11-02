@@ -54,7 +54,7 @@ then the libraries, for example through the version catalog:
 
 ```toml
 [versions]
-pvot = "0.1.0"
+pvot = "0.2.0-SNAPSHOT"
 
 [libraries]
 pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
@@ -308,14 +308,31 @@ Release with the AARs, their sources and the catalog APK.
 | PvotSlider | Minimal slider, with a range variant | Done |
 | PvotClockPicker | Wheel-based time picker | Done |
 | PvotDurationPicker | Wheel-based duration picker | Done |
-| PvotTopBar | Collapsible top app bar | Planned |
-| PvotCard | Styled card with elevation variants | Planned |
-| PvotButton | Primary/Secondary/Tertiary buttons | Planned |
+| PvotTopBar | Top bar whose large title folds in on scroll | Done |
+| PvotCard | Styled card with elevation variants | Done |
+| PvotGlassCard / PvotGlassIconButton / PvotGlassSurface | Glass over a backdrop, and the recipe to build your own | Done |
+| PvotScreenScaffold | The frame of a glass screen: backdrop, background, bars and overlays | Done |
+| PvotPhotoBackground (+ PvotLiveBackground / PvotGradientBackground for demos) | A blurred photo behind glass, such as a caller's | Done |
+| PvotCallButton / PvotCallActionButton | In-call toggles with labels, and the solid answer, decline and end buttons | Done |
+| PvotKeypad / PvotKeypadDisplay | Phone keypad reporting down and up, and the number with a backspace | Done |
+| PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
+| PvotSlideToAct | Slide up or down to act, as answering a call | Done |
+| PvotCapsule | A glass pill grouping floating controls | Done |
+| PvotTabRow | Text tabs with a sliding underline | Done |
+| PvotIconButton | Round icon buttons and toggles | Done |
+| PvotListGroup | Rows grouped on one card with dividers | Done |
+| PvotLinearProgress / PvotProportionBar | A seekable progress bar and a bar of shares in one hue | Done |
+| PvotButton | Filled, tonal, text and destructive buttons | Done |
 | PvotTextField | Floating-label text field | Done |
 | PvotDialog | Animated modal dialogs | Done |
+| PvotDialogContent | A dialog's card on its own, for a window the app already has | Done |
 | PvotChip | Filter and action chips | Planned |
-| PvotList | Styled list items with swipe actions | Planned |
-| PvotFAB | Extended floating action button | Planned |
+| PvotListRow | List rows, letter tiles and swipe actions (`PvotSwipeRow`) | Done |
+| PvotFastScroller | Jump through a long sectioned list, such as contacts by letter | Done |
+| PvotSwitchRow / PvotPreferenceRow | Settings rows | Done |
+| PvotSegmentedControl | Segmented control with a sliding pill | Done |
+| PvotSnackbarHost | Snackbars with Undo | Done |
+| PvotFab | Floating action button, round or extended | Done |
 | PvotBottomSheet | Bottom sheet with drag handle | Done |
 
 ### Theme (Plans)
@@ -323,7 +340,7 @@ Release with the AARs, their sources and the catalog APK.
 - Custom font integration
 - Dark/Light mode previews
 - Color palette generator
-- Semantic color tokens (success, warning, error)
+- ~~Semantic color tokens (success, warning)~~ Done: `PvotTheme.extendedColors`
 - Motion/animation tokens
 - Spacing scale tokens
 

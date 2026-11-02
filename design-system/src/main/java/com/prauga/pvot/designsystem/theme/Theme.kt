@@ -93,6 +93,10 @@ public object PvotTheme {
     /** Whether the platform's dynamic colors are in effect. */
     public val isDynamicColor: Boolean
         @Composable get() = LocalPvotDynamicColor.current
+
+    /** The success and warning roles in scope, alongside `MaterialTheme.colorScheme`. */
+    public val extendedColors: PvotExtendedColors
+        @Composable get() = LocalPvotExtendedColors.current
 }
 
 internal val LocalPvotDynamicColor = staticCompositionLocalOf { false }
@@ -128,6 +132,15 @@ public object PvotThemeDefaults {
             darkTheme -> PvotDarkColorScheme
             else -> PvotLightColorScheme
         }
+
+    /**
+     * The success and warning roles for [darkTheme]. They keep the Pvot hues under dynamic color
+     * too, since the platform supplies none.
+     *
+     * @param darkTheme Whether to resolve the dark arrangement
+     */
+    public fun extendedColors(darkTheme: Boolean): PvotExtendedColors =
+        if (darkTheme) PvotDarkExtendedColors else PvotLightExtendedColors
 }
 
 /**
@@ -146,6 +159,7 @@ public object PvotThemeDefaults {
  * @param dynamicColor Whether to prefer the platform's wallpaper-derived colors
  * @param colorScheme The Material color scheme to apply
  * @param typography The Material type scale to apply
+ * @param extendedColors The success and warning roles, read through [PvotTheme.extendedColors]
  */
 @Composable
 public fun PvotAppTheme(
@@ -153,10 +167,12 @@ public fun PvotAppTheme(
     dynamicColor: Boolean = false,
     colorScheme: ColorScheme = PvotThemeDefaults.colorScheme(darkTheme, dynamicColor),
     typography: Typography = PvotTypography,
+    extendedColors: PvotExtendedColors = PvotThemeDefaults.extendedColors(darkTheme),
     content: @Composable () -> Unit,
 ) {
     CompositionLocalProvider(
-        LocalPvotDynamicColor provides PvotThemeDefaults.usingDynamicColor(dynamicColor)
+        LocalPvotDynamicColor provides PvotThemeDefaults.usingDynamicColor(dynamicColor),
+        LocalPvotExtendedColors provides extendedColors,
     ) {
         MaterialTheme(colorScheme = colorScheme, typography = typography, content = content)
     }
