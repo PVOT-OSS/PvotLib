@@ -30,5 +30,9 @@ gradlePlugin {
             id = "pvot.android.api"
             implementationClass = "AndroidApiConventionPlugin"
         }
+        register("androidTokens") {
+            id = "pvot.android.tokens"
+            implementationClass = "AndroidTokensConventionPlugin"
+        }
     }
 }
