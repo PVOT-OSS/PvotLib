@@ -63,7 +63,6 @@ Use the Pvot component whenever one exists. Do not use the Material equivalent.
 | Settings row | `PvotSwitchRow`, `PvotPreferenceRow` | `ListItem` + `Switch` |
 | Segmented choice | `PvotSegmentedControl` | `SegmentedButton` |
 | Tabs over a list | `PvotTabRow` | `TabRow`, `PrimaryTabRow` |
-| Main navigation with an action per tab | `PvotDock` | a hand-made bar |
 | Icon-only button | `PvotIconButton` | `IconButton`, `FilledIconButton` |
 | Grouped rows on a card | `PvotListGroup` | `Card` + `HorizontalDivider` |
 | Progress, shares | `PvotLinearProgress`, `PvotProportionBar` | `LinearProgressIndicator` |

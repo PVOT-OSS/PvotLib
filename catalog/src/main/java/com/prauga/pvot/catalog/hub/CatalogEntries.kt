@@ -118,12 +118,6 @@ internal fun catalogEntries(): List<CatalogEntry> = listOf(
         page = { CallControlsPage(it) }
     ),
     CatalogEntry(
-        id = "dock", title = "Dock", group = CatalogGroup.Components,
-        summary = "Round tabs on a capsule; the selected one becomes a pill that names its action.",
-        icon = R.drawable.ic_t_layout_navbar, keywords = "dock navigation tabs bottom bar action dial search PvotDock",
-        page = { DockPage(it) }
-    ),
-    CatalogEntry(
         id = "capsule", title = "Icon buttons and capsule", group = CatalogGroup.Components,
         summary = "Round icon buttons, grouped on a glass capsule, and the end pill with its label inside.",
         icon = R.drawable.ic_t_microphone_off, keywords = "icon button round toggle capsule call controls end PvotIconButton PvotCapsule",

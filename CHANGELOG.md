@@ -11,8 +11,6 @@ together under one version.
 - Call buttons answer in a vivid green and end in a vivid red, the same in light and dark
   (`PvotCallAnswer`, `PvotCallEnd`), so they read at a glance; `PvotCallActionButtonDefaults.themeColors()`
   keeps the theme's success and error colors.
-- `PvotDock`: a tab dips and springs back as it is selected, its icon turns into the action's
-  icon and back, and the pill grows with a little overshoot. `PvotDockDefaults.SelectDip` sets the dip.
 - `LocalPvotGlassIntensity` 0 now means **solid**: an opaque surface with no blur, which costs
   nothing to draw. The frosted blur that 0 used to mean is `PvotGlassDefaults.FrostedIntensity`
   (0.1); `defaultIntensity()` returns it where the device blurs but has no lens. An app that
@@ -71,9 +69,7 @@ together under one version.
     list row to the call screen, with a ring and a badge.
   - `components`: `PvotSlideToAct`, `PvotSlideTarget`, `PvotSlideDecision` and
     `PvotSlideToActDefaults` (`decide`, `isTouchExplorationEnabled`): slide up or down to act.
-  - `components`: `PvotCapsule` (a glass pill grouping floating controls), `PvotDock`,
-    `PvotDockItem`, `PvotDockAction`, `PvotDockColors` and `PvotDockDefaults` (round tabs whose
-    selected tab becomes a pill naming its action and runs it), `PvotTabRow` with `*Colors` and
+  - `components`: `PvotCapsule` (a glass pill grouping floating controls), `PvotTabRow` with `*Colors` and
     `*Defaults` (text tabs with a sliding underline).
   - `components.button`: `PvotIconButton` with `*Colors` and `*Defaults` (round icon buttons and
     toggles, tonal, filled or plain).

@@ -18,7 +18,7 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
 ├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotDialogContent, PvotBottomSheet,
-│   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule, PvotDock,
+│   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule,
 │   │             PvotTabRow
 │   ├── call/     PvotCallButton, PvotCallActionButton, PvotCallAction, their *Colors and *Defaults
 │   ├── keypad/   PvotKeypad, PvotKeypadKey, PvotKeypadColors, PvotKeypadDisplay, their *Defaults
@@ -315,7 +315,6 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotKeypad` | `components.keypad` | Twelve round keys reporting down and up (tones while held), with keyboard haptics, long presses and TalkBack labels such as "2, ABC" |
 | `PvotKeypadDisplay` | `components.keypad` | The number above a keypad with a backspace that clears when held; a slot for an app's own text field |
 | `PvotCapsule` | `components` | A pill grouping a row of floating controls; glass over a backdrop, solid otherwise. The container of the dock and of a call's controls |
-| `PvotDock` | `components` | The main navigation as round tabs on a capsule; the selected tab becomes a pill naming its action ("Dial", "Search", "Add") and runs it when tapped again. TalkBack reads the action as the tab's click label |
 | `PvotTabRow` | `components` | Text tabs with an underline that slides to the selected tab, sharing the width or scrolling; for switching what a list shows |
 | `PvotIconButton` | `components.button` | A round icon button, tonal, filled or plain, at 36, 48 or 56dp; a toggle with `checked` reads as a switch and ticks its haptic |
 | `PvotListGroup` | `components.list` | Rows on one card with inset hairlines between them, under a title; rows in a group use `PvotRowIconStyle.Plain` and `PvotRowChevron.Arrow` |
@@ -353,7 +352,6 @@ default comes from its `*Defaults` object:
 | Avatar | `PvotAvatarDefaults.Small` to `.Hero`, `.RingWidth` | parameters of `PvotAvatar` |
 | Call buttons | `PvotCallButtonDefaults.colors()` (tonal), `.glassColors()`; `PvotCallActionButtonDefaults.colors(action)` | a `PvotCallButtonColors` or `PvotCallActionButtonColors` |
 | Keypad | `PvotKeypadDefaults.keys()`, `.KeySize`; `PvotKeypadDisplayDefaults` | `keys(digits, zeroLongPressLabel, oneLongPressLabel)` or a list of `PvotKeypadKey` |
-| Dock | `PvotDockDefaults.ItemSize`, `.Height`, `.ContentClearance`, `.colors()` | items, colors |
 | Tab row | `PvotTabRowDefaults.TabHeight`, `.IndicatorHeight`, `.colors()` | colors, `scrollable` |
 | Icon button | `PvotIconButtonDefaults.Size`, `.LargeSize`, `.SmallSize`, `.tonalColors()`, `.filledColors()`, `.plainColors()` | size, colors |
 | List group | `PvotListGroupDefaults.DividerInset`, `.colors()` | `dividerInset`, colors |

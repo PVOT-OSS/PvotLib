@@ -312,7 +312,7 @@ Release with the AARs, their sources and the catalog APK.
 | PvotKeypad / PvotKeypadDisplay | Phone keypad reporting down and up, and the number with a backspace | Done |
 | PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
 | PvotSlideToAct | Slide up or down to act, as answering a call | Done |
-| PvotDock / PvotCapsule | Round tabs on a capsule whose selected tab names its action | Done |
+| PvotCapsule | A glass pill grouping floating controls | Done |
 | PvotTabRow | Text tabs with a sliding underline | Done |
 | PvotIconButton | Round icon buttons and toggles | Done |
 | PvotListGroup | Rows grouped on one card with dividers | Done |

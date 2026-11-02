@@ -31,9 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.designsystem.components.PvotCapsule
-import com.prauga.pvot.designsystem.components.PvotDock
-import com.prauga.pvot.designsystem.components.PvotDockAction
-import com.prauga.pvot.designsystem.components.PvotDockItem
 import com.prauga.pvot.designsystem.components.PvotTabRow
 import com.prauga.pvot.designsystem.components.button.PvotIconButton
 import com.prauga.pvot.designsystem.components.button.PvotIconButtonDefaults
@@ -49,44 +46,6 @@ import com.prauga.pvot.designsystem.components.progress.PvotProportionBar
 import com.prauga.pvot.designsystem.components.progress.PvotProportionBarDefaults
 import com.prauga.pvot.designsystem.theme.PvotShapes
 import com.prauga.pvot.designsystem.theme.PvotSpacing
-
-// ───────────────────────────── Dock ─────────────────────────────
-
-@Composable
-internal fun DockPage(onBack: () -> Unit) {
-    val send = rememberSnackbarSender()
-    var tab by remember { mutableIntStateOf(0) }
-    var withVoicemail by remember { mutableStateOf(true) }
-    DetailPage(
-        title = "Dock",
-        summary = "The main navigation as a capsule of round tabs. The selected tab becomes a pill that " +
-            "names what it does; tap it again to do it. A tab without an action stays a filled circle.",
-        onBack = onBack,
-        code = "PvotDock(\n    items = listOf(\n" +
-            "        PvotDockItem(keypad, \"Keypad\", PvotDockAction(phone, \"Dial\", ::dial)),\n" +
-            "        PvotDockItem(history, \"Recents\", PvotDockAction(search, \"Search\", ::search)),\n" +
-            "        PvotDockItem(people, \"Contacts\", PvotDockAction(addUser, \"Add\", ::add)),\n    ),\n" +
-            "    selectedIndex = tab,\n    onSelect = { tab = it }\n)"
-    ) {
-        val items = buildList {
-            add(PvotDockItem(painterResource(R.drawable.ic_t_dialpad), "Keypad",
-                PvotDockAction(painterResource(R.drawable.ic_t_phone), "Dial") { send("Dial") }))
-            add(PvotDockItem(painterResource(R.drawable.ic_t_history), "Recents",
-                PvotDockAction(painterResource(R.drawable.ic_t_search), "Search") { send("Search") }, badgeCount = 3))
-            add(PvotDockItem(painterResource(R.drawable.ic_t_user), "Contacts",
-                PvotDockAction(painterResource(R.drawable.ic_t_user_plus), "Add") { send("Add contact") }))
-            if (withVoicemail) add(PvotDockItem(painterResource(R.drawable.ic_t_call_voicemail), "Voicemail"))
-        }
-        DemoSection(
-            title = "Tabs and their actions",
-            caption = "Tap a circle to switch; tap the pill to act. Voicemail has no action.",
-            framed = false
-        ) {
-            PvotDock(items = items, selectedIndex = tab.coerceAtMost(items.lastIndex), onSelect = { tab = it })
-            OptionSwitch("Voicemail tab", withVoicemail, { withVoicemail = it })
-        }
-    }
-}
 
 // ───────────────────────────── Tab row ─────────────────────────────
 
