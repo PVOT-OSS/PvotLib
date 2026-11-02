@@ -84,4 +84,19 @@
     <!-- Content Descriptions -->
     <string name="cd_avatar">%1$s avatar</string>
     <string name="cd_preview">%1$s preview</string>
+
+    <string name="views_demo_toolbar_title">Conversations</string>
+    <string name="views_demo_send">Send</string>
+    <string name="views_demo_archive">Archive</string>
+    <string name="views_demo_block">Block</string>
+    <string name="views_demo_cancel">Cancel</string>
+    <string name="views_demo_chip_unread">Unread</string>
+    <string name="views_demo_chip_starred">Starred</string>
+    <string name="views_demo_chip_groups">Groups</string>
+    <string name="views_demo_card_title">Soft filled card</string>
+    <string name="views_demo_card_body">A MaterialCardView picks up the Pvot card: 16dp corners, surface variant at half alpha, no stroke, no shadow.</string>
+    <string name="views_demo_switch">Night mode</string>
+    <string name="views_demo_checkbox">Delivery reports</string>
+    <string name="views_demo_input_hint">Message</string>
+    <string name="views_demo_fab">Compose</string>
 </resources>
