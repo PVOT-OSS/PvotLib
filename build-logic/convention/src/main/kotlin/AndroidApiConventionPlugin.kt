@@ -37,6 +37,7 @@ class AndroidApiConventionPlugin : Plugin<Project> {
                                     ),
                                     "",
                                 )
+                                .trimEnd() + "\n"
                         )
                     }
                 }
