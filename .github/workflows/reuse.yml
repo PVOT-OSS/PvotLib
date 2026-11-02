@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+
+name: REUSE
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  reuse:
+    uses: PVOT-OSS/workflows/.github/workflows/reuse.yml@main
