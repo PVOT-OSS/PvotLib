@@ -119,7 +119,7 @@ rather than hand-styling it in the app.
 
 If the wrapper's Gradle distribution cannot be downloaded, a compatible Gradle already in
 `~/.gradle/wrapper/dists` can run the same tasks. Do not edit the wrapper properties to work around it.
-Min SDK is 27; compile SDK is 37.1.
+Min SDK is 27 (24 for `design-system-views`, so XML apps on older Android can use it); compile SDK is 37.1.
 
 ## Where things are
 

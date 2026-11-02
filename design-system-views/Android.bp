@@ -10,7 +10,7 @@ android_library {
     manifest: "src/main/AndroidManifest.xml",
 
     sdk_version: "36",
-    min_sdk_version: "27",
+    min_sdk_version: "24",
 
     static_libs: [
         "com.google.android.material_material",
