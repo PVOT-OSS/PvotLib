@@ -99,4 +99,10 @@
     <string name="views_demo_checkbox">Delivery reports</string>
     <string name="views_demo_input_hint">Message</string>
     <string name="views_demo_fab">Compose</string>
+    <string name="views_demo_alert">AlertDialog</string>
+    <string name="views_demo_material_alert">Material dialog</string>
+    <string name="views_demo_dialog_title">Delete conversation?</string>
+    <string name="views_demo_dialog_message">Its messages and attachments are removed from this device.</string>
+    <string name="views_demo_dialog_delete">Delete</string>
+    <string name="views_demo_dialog_archive">Archive instead</string>
 </resources>

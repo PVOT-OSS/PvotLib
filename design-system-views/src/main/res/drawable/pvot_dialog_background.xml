@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="@dimen/pvot_spacing_l"
+    android:insetTop="@dimen/pvot_spacing_l"
+    android:insetRight="@dimen/pvot_spacing_l"
+    android:insetBottom="@dimen/pvot_spacing_l">
+    <shape android:shape="rectangle">
+        <corners android:radius="@dimen/pvot_corner_overlay" />
+        <solid android:color="?attr/colorSurfaceVariant" />
+    </shape>
+</inset>

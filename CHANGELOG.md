@@ -106,7 +106,9 @@ together under one version.
   spacing and durations are generated from the Kotlin tokens by `tokensDump`; `tokensCheck` fails
   the build when they drift. Builds in AOSP as `PvotDesignSystemViews`. Its minimum SDK is 24, below
   the other libraries' 27, so apps that still support Android 7 can use it. Floating action buttons
-  are pill-shaped in the primary color, like `PvotFab`.
+  are pill-shaped in the primary color, like `PvotFab`. Alert dialogs (AppCompat and
+  `MaterialAlertDialogBuilder`, and any dialog on `PvotTheme.Dialog`) use the `PvotDialog` surface and
+  pill actions: a filled primary positive button, soft neutral negative and neutral buttons.
 - `catalog`: an "XML theme" page inflating stock Material Components widgets under `PvotTheme`.
 - `design-system`:
   - `effects`: glass. `Modifier.pvotGlass` draws an element as clear glass over a

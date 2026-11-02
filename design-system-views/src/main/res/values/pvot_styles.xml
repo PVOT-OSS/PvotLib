@@ -53,4 +53,58 @@
         <item name="shapeAppearance">@style/PvotShapeAppearance.Pill</item>
     </style>
 
+    <style name="PvotWidget.Button.Dialog" parent="Widget.Material3.Button">
+        <item name="android:minHeight">@dimen/pvot_touch_target</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/pvot_spacing_s</item>
+        <item name="android:layout_marginStart">@dimen/pvot_spacing_s</item>
+        <item name="android:layout_marginTop">@dimen/pvot_spacing_xs</item>
+        <item name="android:layout_marginBottom">@dimen/pvot_spacing_xs</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="backgroundTint">@color/pvot_dialog_action_primary</item>
+        <item name="android:textColor">@color/pvot_dialog_action_on_primary</item>
+    </style>
+
+    <style name="PvotWidget.Button.Dialog.Neutral" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">@dimen/pvot_touch_target</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:layout_marginLeft">@dimen/pvot_spacing_s</item>
+        <item name="android:layout_marginStart">@dimen/pvot_spacing_s</item>
+        <item name="android:layout_marginTop">@dimen/pvot_spacing_xs</item>
+        <item name="android:layout_marginBottom">@dimen/pvot_spacing_xs</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="backgroundTint">@color/pvot_dialog_action_neutral</item>
+        <item name="android:textColor">@color/pvot_dialog_action_on_neutral</item>
+    </style>
+
+    <style name="PvotWidget.ButtonBar.AlertDialog" parent="Widget.AppCompat.ButtonBar">
+        <item name="android:paddingLeft">@dimen/pvot_spacing_m</item>
+        <item name="android:paddingRight">@dimen/pvot_spacing_m</item>
+        <item name="android:paddingBottom">@dimen/pvot_spacing_m</item>
+    </style>
+
+    <style name="PvotWidget.MaterialAlertDialog" parent="MaterialAlertDialog.Material3">
+        <item name="backgroundTint">?attr/colorSurfaceVariant</item>
+    </style>
+
+    <style name="PvotThemeOverlay.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+        <item name="alertDialogStyle">@style/PvotWidget.MaterialAlertDialog</item>
+        <item name="buttonBarStyle">@style/Widget.AppCompat.ButtonBar</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+    </style>
+
+    <style name="PvotThemeOverlay.Dialog.Alert" parent="ThemeOverlay.Material3.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
+        <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+    </style>
+
 </resources>

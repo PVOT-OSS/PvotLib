@@ -23,6 +23,8 @@
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
         <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
         <item name="extendedFloatingActionButtonStyle">@style/PvotWidget.ExtendedFloatingActionButton</item>
+        <item name="alertDialogTheme">@style/PvotThemeOverlay.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/PvotThemeOverlay.MaterialAlertDialog</item>
     </style>
 
     <style name="PvotTheme.Bars.Dark" parent="PvotTheme.Base.Dark" />
@@ -43,6 +45,8 @@
         <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
         <item name="floatingActionButtonStyle">@style/PvotWidget.FloatingActionButton</item>
         <item name="extendedFloatingActionButtonStyle">@style/PvotWidget.ExtendedFloatingActionButton</item>
+        <item name="alertDialogTheme">@style/PvotThemeOverlay.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/PvotThemeOverlay.MaterialAlertDialog</item>
     </style>
 
     <style name="PvotTheme" parent="PvotTheme.Light" />
@@ -56,6 +60,13 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
+        <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="alertDialogTheme">@style/PvotThemeOverlay.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/PvotThemeOverlay.MaterialAlertDialog</item>
     </style>
 
     <style name="PvotTheme.Dark.Dialog" parent="PvotTheme.Base.Dark.Dialog">
@@ -67,6 +78,13 @@
         <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
         <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
         <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="android:windowBackground">@drawable/pvot_dialog_background</item>
+        <item name="buttonBarStyle">@style/PvotWidget.ButtonBar.AlertDialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PvotWidget.Button.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="buttonBarNeutralButtonStyle">@style/PvotWidget.Button.Dialog.Neutral</item>
+        <item name="alertDialogTheme">@style/PvotThemeOverlay.Dialog.Alert</item>
+        <item name="materialAlertDialogTheme">@style/PvotThemeOverlay.MaterialAlertDialog</item>
     </style>
 
     <style name="PvotTheme.Dialog" parent="PvotTheme.Light.Dialog" />
