@@ -36,16 +36,16 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build design-system
-        run: ./gradlew :design-system:assembleDebug
+        run: ./gradlew :design-system:assembleDebug :core-ui:assembleDebug :design-system-views:assembleDebug
 
       - name: Check the public API
-        run: ./gradlew apiCheck
+        run: ./gradlew apiCheck tokensCheck
 
       - name: Build catalog
         run: ./gradlew :catalog:assembleDebug
 
       - name: Publish to the local Maven repository
-        run: ./gradlew :design-system:publishToMavenLocal :core-ui:publishToMavenLocal
+        run: ./gradlew :design-system:publishToMavenLocal :core-ui:publishToMavenLocal :design-system-views:publishToMavenLocal
 
       - name: Upload design-system AAR
         uses: actions/upload-artifact@v4

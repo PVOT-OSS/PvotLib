@@ -52,7 +52,7 @@ jobs:
 
       - name: Refuse to overwrite a released version
         run: |
-          for lib in design-system core-ui; do
+          for lib in design-system core-ui design-system-views; do
             if [ -d "pages/maven/com/prauga/pvot/$lib/${{ steps.version.outputs.version }}" ]; then
               echo "$lib ${{ steps.version.outputs.version }} is already published" >&2
               exit 1
@@ -62,7 +62,8 @@ jobs:
       - name: Publish into the Maven repository
         run: |
           ./gradlew :design-system:publishReleasePublicationToReleaseRepository \
-            :core-ui:publishReleasePublicationToReleaseRepository -PreleaseRepo="$PWD/pages/maven"
+            :core-ui:publishReleasePublicationToReleaseRepository \
+            :design-system-views:publishReleasePublicationToReleaseRepository -PreleaseRepo="$PWD/pages/maven"
 
       - name: Push the Maven repository
         working-directory: pages
@@ -86,7 +87,7 @@ jobs:
             found { print }
           ' CHANGELOG.md > notes.md
           assets=()
-          for lib in design-system core-ui; do
+          for lib in design-system core-ui design-system-views; do
             cp "$lib/build/outputs/aar/$lib-release.aar" "$lib-$version.aar"
             cp "pages/maven/com/prauga/pvot/$lib/$version/$lib-$version-sources.jar" .
             assets+=("$lib-$version.aar" "$lib-$version-sources.jar")

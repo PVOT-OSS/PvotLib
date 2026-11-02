@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<!-- Generated from design-system by tokensDump. Do not edit. -->
+<resources>
+    <color name="pvot_primary_light">#FF5A4BFF</color>
+    <color name="pvot_on_primary_light">#FFFFFFFF</color>
+    <color name="pvot_primary_container_light">#FFDDD8FF</color>
+    <color name="pvot_on_primary_container_light">#FF160062</color>
+    <color name="pvot_primary_dark">#FF8577FF</color>
+    <color name="pvot_on_primary_dark">#FF0E0033</color>
+    <color name="pvot_primary_container_dark">#FF3B2DB8</color>
+    <color name="pvot_on_primary_container_dark">#FFE4E0FF</color>
+    <color name="pvot_secondary_light">#FF1F6FFF</color>
+    <color name="pvot_on_secondary_light">#FFFFFFFF</color>
+    <color name="pvot_secondary_container_light">#FFD6E4FF</color>
+    <color name="pvot_on_secondary_container_light">#FF001B4D</color>
+    <color name="pvot_secondary_dark">#FF6FA3FF</color>
+    <color name="pvot_on_secondary_dark">#FF00123A</color>
+    <color name="pvot_secondary_container_dark">#FF0F3FA8</color>
+    <color name="pvot_on_secondary_container_dark">#FFD6E4FF</color>
+    <color name="pvot_tertiary_light">#FFE5287A</color>
+    <color name="pvot_on_tertiary_light">#FFFFFFFF</color>
+    <color name="pvot_tertiary_container_light">#FFFFD9E6</color>
+    <color name="pvot_on_tertiary_container_light">#FF40001B</color>
+    <color name="pvot_tertiary_dark">#FFFF6BA6</color>
+    <color name="pvot_on_tertiary_dark">#FF3F001B</color>
+    <color name="pvot_tertiary_container_dark">#FFA8104F</color>
+    <color name="pvot_on_tertiary_container_dark">#FFFFD9E6</color>
+    <color name="pvot_error_light">#FFBA1A1A</color>
+    <color name="pvot_on_error_light">#FFFFFFFF</color>
+    <color name="pvot_error_container_light">#FFFFDAD6</color>
+    <color name="pvot_on_error_container_light">#FF410002</color>
+    <color name="pvot_error_dark">#FFFFB4AB</color>
+    <color name="pvot_on_error_dark">#FF690005</color>
+    <color name="pvot_error_container_dark">#FF93000A</color>
+    <color name="pvot_on_error_container_dark">#FFFFDAD6</color>
+    <color name="pvot_background_light">#FFFFFFFF</color>
+    <color name="pvot_on_background_light">#FF1C1B1F</color>
+    <color name="pvot_surface_light">#FFFFFFFF</color>
+    <color name="pvot_on_surface_light">#FF1C1B1F</color>
+    <color name="pvot_surface_variant_light">#FFEEE9FF</color>
+    <color name="pvot_on_surface_variant_light">#FF5A5478</color>
+    <color name="pvot_background_dark">#FF000000</color>
+    <color name="pvot_on_background_dark">#FFE6E1E6</color>
+    <color name="pvot_surface_dark">#FF000000</color>
+    <color name="pvot_on_surface_dark">#FFE6E1E6</color>
+    <color name="pvot_surface_variant_dark">#FF231F36</color>
+    <color name="pvot_on_surface_variant_dark">#FFB9B3D6</color>
+    <color name="pvot_outline_light">#FF7A757F</color>
+    <color name="pvot_outline_variant_light">#FFCAC4CF</color>
+    <color name="pvot_outline_dark">#FF948F99</color>
+    <color name="pvot_outline_variant_dark">#FF49454E</color>
+    <color name="pvot_inverse_surface_light">#FF313033</color>
+    <color name="pvot_inverse_on_surface_light">#FFF4EFF4</color>
+    <color name="pvot_inverse_primary_light">#FF8577FF</color>
+    <color name="pvot_inverse_surface_dark">#FFE6E1E6</color>
+    <color name="pvot_inverse_on_surface_dark">#FF313033</color>
+    <color name="pvot_inverse_primary_dark">#FF5A4BFF</color>
+    <color name="pvot_scrim">#FF000000</color>
+    <color name="pvot_success_light">#FF137A3F</color>
+    <color name="pvot_on_success_light">#FFFFFFFF</color>
+    <color name="pvot_success_container_light">#FFB9F0C8</color>
+    <color name="pvot_on_success_container_light">#FF002110</color>
+    <color name="pvot_success_dark">#FF5FD48A</color>
+    <color name="pvot_on_success_dark">#FF00391A</color>
+    <color name="pvot_success_container_dark">#FF005A2C</color>
+    <color name="pvot_on_success_container_dark">#FFB9F0C8</color>
+    <color name="pvot_warning_light">#FF8A5A00</color>
+    <color name="pvot_on_warning_light">#FFFFFFFF</color>
+    <color name="pvot_warning_container_light">#FFFFDEA6</color>
+    <color name="pvot_on_warning_container_light">#FF2A1800</color>
+    <color name="pvot_warning_dark">#FFF5C451</color>
+    <color name="pvot_on_warning_dark">#FF402D00</color>
+    <color name="pvot_warning_container_dark">#FF634100</color>
+    <color name="pvot_on_warning_container_dark">#FFFFDEA6</color>
+    <color name="pvot_call_end">#FFE5372B</color>
+    <color name="pvot_on_call_end">#FFFFFFFF</color>
+    <color name="pvot_call_answer">#FF1FA855</color>
+    <color name="pvot_on_call_answer">#FFFFFFFF</color>
+
+    <dimen name="pvot_corner_small">8dp</dimen>
+    <dimen name="pvot_corner_card">16dp</dimen>
+    <dimen name="pvot_corner_selection">20dp</dimen>
+
+    <dimen name="pvot_spacing_xs">4dp</dimen>
+    <dimen name="pvot_spacing_s">8dp</dimen>
+    <dimen name="pvot_spacing_m">12dp</dimen>
+    <dimen name="pvot_spacing_l">16dp</dimen>
+
+    <integer name="pvot_duration_short">200</integer>
+    <integer name="pvot_duration_medium">240</integer>
+    <integer name="pvot_duration_long">260</integer>
+
+    <style name="PvotTheme.Base.Light" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/pvot_primary_light</item>
+        <item name="colorOnPrimary">@color/pvot_on_primary_light</item>
+        <item name="colorPrimaryContainer">@color/pvot_primary_container_light</item>
+        <item name="colorOnPrimaryContainer">@color/pvot_on_primary_container_light</item>
+        <item name="colorSecondary">@color/pvot_secondary_light</item>
+        <item name="colorOnSecondary">@color/pvot_on_secondary_light</item>
+        <item name="colorSecondaryContainer">@color/pvot_secondary_container_light</item>
+        <item name="colorOnSecondaryContainer">@color/pvot_on_secondary_container_light</item>
+        <item name="colorTertiary">@color/pvot_tertiary_light</item>
+        <item name="colorOnTertiary">@color/pvot_on_tertiary_light</item>
+        <item name="colorTertiaryContainer">@color/pvot_tertiary_container_light</item>
+        <item name="colorOnTertiaryContainer">@color/pvot_on_tertiary_container_light</item>
+        <item name="colorError">@color/pvot_error_light</item>
+        <item name="colorOnError">@color/pvot_on_error_light</item>
+        <item name="colorErrorContainer">@color/pvot_error_container_light</item>
+        <item name="colorOnErrorContainer">@color/pvot_on_error_container_light</item>
+        <item name="android:colorBackground">@color/pvot_background_light</item>
+        <item name="colorOnBackground">@color/pvot_on_background_light</item>
+        <item name="colorSurface">@color/pvot_surface_light</item>
+        <item name="colorOnSurface">@color/pvot_on_surface_light</item>
+        <item name="colorSurfaceVariant">@color/pvot_surface_variant_light</item>
+        <item name="colorOnSurfaceVariant">@color/pvot_on_surface_variant_light</item>
+        <item name="colorOutline">@color/pvot_outline_light</item>
+        <item name="colorOutlineVariant">@color/pvot_outline_variant_light</item>
+        <item name="colorSurfaceInverse">@color/pvot_inverse_surface_light</item>
+        <item name="colorOnSurfaceInverse">@color/pvot_inverse_on_surface_light</item>
+        <item name="colorPrimaryInverse">@color/pvot_inverse_primary_light</item>
+    </style>
+
+    <style name="PvotTheme.Base.Dark" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/pvot_primary_dark</item>
+        <item name="colorOnPrimary">@color/pvot_on_primary_dark</item>
+        <item name="colorPrimaryContainer">@color/pvot_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/pvot_on_primary_container_dark</item>
+        <item name="colorSecondary">@color/pvot_secondary_dark</item>
+        <item name="colorOnSecondary">@color/pvot_on_secondary_dark</item>
+        <item name="colorSecondaryContainer">@color/pvot_secondary_container_dark</item>
+        <item name="colorOnSecondaryContainer">@color/pvot_on_secondary_container_dark</item>
+        <item name="colorTertiary">@color/pvot_tertiary_dark</item>
+        <item name="colorOnTertiary">@color/pvot_on_tertiary_dark</item>
+        <item name="colorTertiaryContainer">@color/pvot_tertiary_container_dark</item>
+        <item name="colorOnTertiaryContainer">@color/pvot_on_tertiary_container_dark</item>
+        <item name="colorError">@color/pvot_error_dark</item>
+        <item name="colorOnError">@color/pvot_on_error_dark</item>
+        <item name="colorErrorContainer">@color/pvot_error_container_dark</item>
+        <item name="colorOnErrorContainer">@color/pvot_on_error_container_dark</item>
+        <item name="android:colorBackground">@color/pvot_background_dark</item>
+        <item name="colorOnBackground">@color/pvot_on_background_dark</item>
+        <item name="colorSurface">@color/pvot_surface_dark</item>
+        <item name="colorOnSurface">@color/pvot_on_surface_dark</item>
+        <item name="colorSurfaceVariant">@color/pvot_surface_variant_dark</item>
+        <item name="colorOnSurfaceVariant">@color/pvot_on_surface_variant_dark</item>
+        <item name="colorOutline">@color/pvot_outline_dark</item>
+        <item name="colorOutlineVariant">@color/pvot_outline_variant_dark</item>
+        <item name="colorSurfaceInverse">@color/pvot_inverse_surface_dark</item>
+        <item name="colorOnSurfaceInverse">@color/pvot_inverse_on_surface_dark</item>
+        <item name="colorPrimaryInverse">@color/pvot_inverse_primary_dark</item>
+    </style>
+
+    <style name="PvotTheme.Base.Light.Dialog" parent="Theme.Material3.Light.Dialog">
+        <item name="colorPrimary">@color/pvot_primary_light</item>
+        <item name="colorOnPrimary">@color/pvot_on_primary_light</item>
+        <item name="colorPrimaryContainer">@color/pvot_primary_container_light</item>
+        <item name="colorOnPrimaryContainer">@color/pvot_on_primary_container_light</item>
+        <item name="colorSecondary">@color/pvot_secondary_light</item>
+        <item name="colorOnSecondary">@color/pvot_on_secondary_light</item>
+        <item name="colorSecondaryContainer">@color/pvot_secondary_container_light</item>
+        <item name="colorOnSecondaryContainer">@color/pvot_on_secondary_container_light</item>
+        <item name="colorTertiary">@color/pvot_tertiary_light</item>
+        <item name="colorOnTertiary">@color/pvot_on_tertiary_light</item>
+        <item name="colorTertiaryContainer">@color/pvot_tertiary_container_light</item>
+        <item name="colorOnTertiaryContainer">@color/pvot_on_tertiary_container_light</item>
+        <item name="colorError">@color/pvot_error_light</item>
+        <item name="colorOnError">@color/pvot_on_error_light</item>
+        <item name="colorErrorContainer">@color/pvot_error_container_light</item>
+        <item name="colorOnErrorContainer">@color/pvot_on_error_container_light</item>
+        <item name="android:colorBackground">@color/pvot_background_light</item>
+        <item name="colorOnBackground">@color/pvot_on_background_light</item>
+        <item name="colorSurface">@color/pvot_surface_light</item>
+        <item name="colorOnSurface">@color/pvot_on_surface_light</item>
+        <item name="colorSurfaceVariant">@color/pvot_surface_variant_light</item>
+        <item name="colorOnSurfaceVariant">@color/pvot_on_surface_variant_light</item>
+        <item name="colorOutline">@color/pvot_outline_light</item>
+        <item name="colorOutlineVariant">@color/pvot_outline_variant_light</item>
+        <item name="colorSurfaceInverse">@color/pvot_inverse_surface_light</item>
+        <item name="colorOnSurfaceInverse">@color/pvot_inverse_on_surface_light</item>
+        <item name="colorPrimaryInverse">@color/pvot_inverse_primary_light</item>
+    </style>
+
+    <style name="PvotTheme.Base.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
+        <item name="colorPrimary">@color/pvot_primary_dark</item>
+        <item name="colorOnPrimary">@color/pvot_on_primary_dark</item>
+        <item name="colorPrimaryContainer">@color/pvot_primary_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/pvot_on_primary_container_dark</item>
+        <item name="colorSecondary">@color/pvot_secondary_dark</item>
+        <item name="colorOnSecondary">@color/pvot_on_secondary_dark</item>
+        <item name="colorSecondaryContainer">@color/pvot_secondary_container_dark</item>
+        <item name="colorOnSecondaryContainer">@color/pvot_on_secondary_container_dark</item>
+        <item name="colorTertiary">@color/pvot_tertiary_dark</item>
+        <item name="colorOnTertiary">@color/pvot_on_tertiary_dark</item>
+        <item name="colorTertiaryContainer">@color/pvot_tertiary_container_dark</item>
+        <item name="colorOnTertiaryContainer">@color/pvot_on_tertiary_container_dark</item>
+        <item name="colorError">@color/pvot_error_dark</item>
+        <item name="colorOnError">@color/pvot_on_error_dark</item>
+        <item name="colorErrorContainer">@color/pvot_error_container_dark</item>
+        <item name="colorOnErrorContainer">@color/pvot_on_error_container_dark</item>
+        <item name="android:colorBackground">@color/pvot_background_dark</item>
+        <item name="colorOnBackground">@color/pvot_on_background_dark</item>
+        <item name="colorSurface">@color/pvot_surface_dark</item>
+        <item name="colorOnSurface">@color/pvot_on_surface_dark</item>
+        <item name="colorSurfaceVariant">@color/pvot_surface_variant_dark</item>
+        <item name="colorOnSurfaceVariant">@color/pvot_on_surface_variant_dark</item>
+        <item name="colorOutline">@color/pvot_outline_dark</item>
+        <item name="colorOutlineVariant">@color/pvot_outline_variant_dark</item>
+        <item name="colorSurfaceInverse">@color/pvot_inverse_surface_dark</item>
+        <item name="colorOnSurfaceInverse">@color/pvot_inverse_on_surface_dark</item>
+        <item name="colorPrimaryInverse">@color/pvot_inverse_primary_dark</item>
+    </style>
+</resources>

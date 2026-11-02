@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <style name="PvotTheme.Light" parent="PvotTheme.Base.Light">
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/PvotShapeAppearance.Card</item>
+        <item name="shapeAppearanceCornerLarge">@style/PvotShapeAppearance.Selection</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
+        <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
+        <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
+        <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
+    </style>
+
+    <style name="PvotTheme.Dark" parent="PvotTheme.Base.Dark">
+        <item name="android:windowBackground">?android:attr/colorBackground</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/PvotShapeAppearance.Card</item>
+        <item name="shapeAppearanceCornerLarge">@style/PvotShapeAppearance.Selection</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
+        <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
+        <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+        <item name="toolbarStyle">@style/Widget.Material3.Toolbar.Surface</item>
+        <item name="appBarLayoutStyle">@style/PvotWidget.AppBarLayout</item>
+    </style>
+
+    <style name="PvotTheme" parent="PvotTheme.Light" />
+
+    <style name="PvotTheme.Light.Dialog" parent="PvotTheme.Base.Light.Dialog">
+        <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/PvotShapeAppearance.Card</item>
+        <item name="shapeAppearanceCornerLarge">@style/PvotShapeAppearance.Selection</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
+        <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
+        <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+    </style>
+
+    <style name="PvotTheme.Dark.Dialog" parent="PvotTheme.Base.Dark.Dialog">
+        <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
+        <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/PvotShapeAppearance.Card</item>
+        <item name="shapeAppearanceCornerLarge">@style/PvotShapeAppearance.Selection</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/PvotShapeAppearance.Overlay</item>
+        <item name="textAppearanceBodyLarge">@style/PvotTextAppearance.BodyLarge</item>
+        <item name="materialCardViewStyle">@style/PvotWidget.CardView</item>
+    </style>
+
+    <style name="PvotTheme.Dialog" parent="PvotTheme.Light.Dialog" />
+
+</resources>

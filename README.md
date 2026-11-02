@@ -19,6 +19,7 @@ PvotLib/
 ├── build-logic/      # Convention plugins: SDK levels, Compose
 ├── catalog/          # Catalog app demonstrating components
 ├── core-ui/          # UiState and loading/error/empty content (com.prauga.pvot.coreui)
+├── design-system-views/  # PvotTheme for XML layouts and Material Components (com.prauga.pvot.designsystem.views)
 ├── design-system/    # Reusable library module
 │   └── src/main/java/com/prauga/pvot/designsystem/
 │       ├── theme/        # PvotAppTheme, PvotTheme, colors, type
@@ -59,6 +60,7 @@ pvot = "0.2.0-SNAPSHOT"
 [libraries]
 pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
 pvot-core-ui = { group = "com.prauga.pvot", name = "core-ui", version.ref = "pvot" }
+pvot-design-system-views = { group = "com.prauga.pvot", name = "design-system-views", version.ref = "pvot" }
 ```
 
 ```kotlin
@@ -69,10 +71,12 @@ dependencies {
 }
 ```
 
-Compose UI, Material 3 and Activity Compose come with them.
+Compose UI, Material 3 and Activity Compose come with them. `design-system-views` is for apps with
+XML layouts: it brings Material Components for Android and `PvotTheme`, with no Compose dependency
+(see GUIDE section 9).
 
 **As an AAR.** Each [release](https://github.com/PVOT-OSS/PvotLib/releases) has
-`design-system-<version>.aar` and `core-ui-<version>.aar` attached. A bare AAR doesn't bring its
+`design-system-<version>.aar`, `core-ui-<version>.aar` and `design-system-views-<version>.aar` attached. A bare AAR doesn't bring its
 dependencies, so also add the Compose BOM, `androidx.compose.ui:ui`, `ui-graphics`, `material3` and
 `androidx.activity:activity-compose`.
 
@@ -334,6 +338,7 @@ Release with the AARs, their sources and the catalog APK.
 | PvotSnackbarHost | Snackbars with Undo | Done |
 | PvotFab | Floating action button, round or extended | Done |
 | PvotBottomSheet | Bottom sheet with drag handle | Done |
+| PvotTheme (XML) | Material Components theme and tokens for View-based apps (`design-system-views`) | Done |
 
 ### Theme (Plans)
 

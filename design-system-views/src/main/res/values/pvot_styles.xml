@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2026 Saalim Quadri <danascape@gmail.com>
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+
+    <style name="PvotShapeAppearance.Small" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">@dimen/pvot_corner_small</item>
+    </style>
+
+    <style name="PvotShapeAppearance.Card" parent="ShapeAppearance.Material3.Corner.Medium">
+        <item name="cornerSize">@dimen/pvot_corner_card</item>
+    </style>
+
+    <style name="PvotShapeAppearance.Selection" parent="ShapeAppearance.Material3.Corner.Large">
+        <item name="cornerSize">@dimen/pvot_corner_selection</item>
+    </style>
+
+    <style name="PvotShapeAppearance.Overlay" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
+        <item name="cornerSize">@dimen/pvot_corner_overlay</item>
+    </style>
+
+    <style name="PvotShapeAppearance.Pill" parent="ShapeAppearance.Material3.Corner.Full" />
+
+    <style name="PvotTextAppearance.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="android:textSize">16sp</item>
+        <item name="lineHeight">24sp</item>
+        <item name="android:letterSpacing">0.03125</item>
+    </style>
+
+    <style name="PvotWidget.CardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/pvot_card_container</item>
+        <item name="shapeAppearance">@style/PvotShapeAppearance.Card</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+
+    <style name="PvotWidget.AppBarLayout" parent="Widget.Material3.AppBarLayout">
+        <item name="liftOnScroll">false</item>
+    </style>
+
+</resources>

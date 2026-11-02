@@ -73,6 +73,12 @@ Use the Pvot component whenever one exists. Do not use the Material equivalent.
 | Progress, shares | `PvotLinearProgress`, `PvotProportionBar` | `LinearProgressIndicator` |
 | Snackbar | `PvotSnackbarHost` | `SnackbarHost` |
 
+**XML apps.** A View-based app (Messages, Phone) parents its theme on `PvotTheme` from
+`design-system-views` and keeps its layouts; Material Components widgets restyle on their own. Only
+screens being reworked move to Compose, through a `ComposeView` under `PvotAppTheme`. The XML tokens
+are generated: after changing `Color.kt`, `Shape.kt`, `Spacing.kt` or `PvotDurations.kt` run
+`./gradlew tokensDump` and commit `pvot_tokens.xml`; `tokensCheck` fails CI otherwise.
+
 Not built yet (chips, checkboxes, radio buttons, circular progress): use the Material 3
 component, which `PvotAppTheme` already styles, and keep it to default parameters so a Pvot version
 can replace it cleanly. If a screen needs one badly, say so and propose adding it to the library
@@ -120,6 +126,7 @@ Min SDK is 27; compile SDK is 37.1.
 ```
 design-system/   theme, effects, motion, components, navigation, platform
 core-ui/         UiState and loading / error / empty content
+design-system-views/  PvotTheme and the tokens as XML resources, for View-based apps (no Compose)
 catalog/         the catalog app; hub/ holds the pages, legacy/ the pre-redesign UI
 docs/            GUIDE.md plus the two playbooks above
 ```
