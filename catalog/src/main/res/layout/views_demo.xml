@@ -179,6 +179,32 @@
         android:indeterminate="true" />
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/pvot_spacing_m"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/pvot_spacing_l"
+        android:paddingEnd="@dimen/pvot_spacing_l">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/views_demo_alert"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/pvot_spacing_s"
+            android:layout_weight="1"
+            android:text="@string/views_demo_alert" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/views_demo_material_alert"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/views_demo_material_alert" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
