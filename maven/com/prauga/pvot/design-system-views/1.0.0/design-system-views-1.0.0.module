@@ -1,0 +1,96 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.prauga.pvot",
+    "module": "design-system-views",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.6.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.14.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "design-system-views-1.0.0.aar",
+          "url": "design-system-views-1.0.0.aar",
+          "size": 9139,
+          "sha512": "ebd4e806e7cddcb9d3080178d3a37eaee03fda9fda7713b399eb029ab3013d769b64bc98101dfcb31e6f8efd4c0bcf8d4598215b673e47c9023c7bd5c995b5e2",
+          "sha256": "c5d1e3d050379f7a26f629327cc6ce47cf76f43bb7074753efca5f35bbc31740",
+          "sha1": "fc0e5304405c15e24f64f890514e66a627632fdf",
+          "md5": "4099fd268389edbcd01054fe14e5194f"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.android.material",
+          "module": "material",
+          "version": {
+            "requires": "1.14.0"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "design-system-views-1.0.0.aar",
+          "url": "design-system-views-1.0.0.aar",
+          "size": 9139,
+          "sha512": "ebd4e806e7cddcb9d3080178d3a37eaee03fda9fda7713b399eb029ab3013d769b64bc98101dfcb31e6f8efd4c0bcf8d4598215b673e47c9023c7bd5c995b5e2",
+          "sha256": "c5d1e3d050379f7a26f629327cc6ce47cf76f43bb7074753efca5f35bbc31740",
+          "sha1": "fc0e5304405c15e24f64f890514e66a627632fdf",
+          "md5": "4099fd268389edbcd01054fe14e5194f"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "design-system-views-1.0.0-sources.jar",
+          "url": "design-system-views-1.0.0-sources.jar",
+          "size": 261,
+          "sha512": "1487e5a20c9e4d74f298e07c42e96a61be11b7a768c3fbc199ee138cd68e1fc2267d1cfe3f11f288acc05df755315344d052cc5f6f751f126ab4fe1caa5125ea",
+          "sha256": "c6deada2fac53b8ea6523dbda77597b128006674616f140f04df23264c6d1aa3",
+          "sha1": "2ad14aed781c4a73ed4dbb421966d408a0a06686",
+          "md5": "f43436d6bec321290f6af228ad602604"
+        }
+      ]
+    }
+  ]
+}

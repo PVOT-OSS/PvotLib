@@ -1,0 +1,165 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.prauga.pvot",
+    "module": "design-system",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.6.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.activity",
+          "module": "activity-compose",
+          "version": {
+            "requires": "1.12.2"
+          }
+        },
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "design-system-1.0.0.aar",
+          "url": "design-system-1.0.0.aar",
+          "size": 813410,
+          "sha512": "6dc3748ba38d969a568befbdb5fe23ad12f75d86068076d284dcc7912540a0b5a5db45c2ceb9201473b5170cfc26f78c04868a425dea8b8937edd94f26c2de68",
+          "sha256": "d7b5f865f3a33abb273932e8af7b02fbada24adc0888f1b38e045290c3cc7012",
+          "sha1": "96ef9fb7d6ace818ceac24b5b597f723c62d13b3",
+          "md5": "a1ca21882c5bf9fc9a50096d45095152"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-tooling-preview"
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.17.0"
+          }
+        },
+        {
+          "group": "androidx.activity",
+          "module": "activity-compose",
+          "version": {
+            "requires": "1.12.2"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "design-system-1.0.0.aar",
+          "url": "design-system-1.0.0.aar",
+          "size": 813410,
+          "sha512": "6dc3748ba38d969a568befbdb5fe23ad12f75d86068076d284dcc7912540a0b5a5db45c2ceb9201473b5170cfc26f78c04868a425dea8b8937edd94f26c2de68",
+          "sha256": "d7b5f865f3a33abb273932e8af7b02fbada24adc0888f1b38e045290c3cc7012",
+          "sha1": "96ef9fb7d6ace818ceac24b5b597f723c62d13b3",
+          "md5": "a1ca21882c5bf9fc9a50096d45095152"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "design-system-1.0.0-sources.jar",
+          "url": "design-system-1.0.0-sources.jar",
+          "size": 139018,
+          "sha512": "c26114e5d1aa68e132e3b6f23e01c194aae6b80b797f70747d4f863e27c383f19049cb00f770ff70cc39d66747721626c2c4258d7351551d1470b81660bee1b6",
+          "sha256": "094f52fb8fb892b2d6d811d003b7d05655824b7640c42ed7629bc7b99d025682",
+          "sha1": "248034a64c13628732ab4c3a083e529754938449",
+          "md5": "846ac0e7bf5e914f4a1ac5dccdafdd20"
+        }
+      ]
+    }
+  ]
+}

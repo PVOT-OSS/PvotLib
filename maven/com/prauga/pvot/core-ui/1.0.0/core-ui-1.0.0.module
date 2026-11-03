@@ -1,0 +1,151 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.prauga.pvot",
+    "module": "core-ui",
+    "version": "1.0.0",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.6.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "releaseVariantReleaseApiPublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-api"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "core-ui-1.0.0.aar",
+          "url": "core-ui-1.0.0.aar",
+          "size": 25099,
+          "sha512": "9e4bdeba7a5703ec816fe8f30cbf8b25926ac2fe0ba16f6dfe2ee37bab4089bcb0dae306da55c3803cb71a188cd3ae991a110844d474cef30f283e3b162fa786",
+          "sha256": "faf0248175d70c213d505230f18ecfc9cef941945416333e16ab8ff024a21b91",
+          "sha1": "dcfe16186510b42111ba1231d87f55249cfa34ae",
+          "md5": "4513ff0441b8f241e65cc3aa4c219c84"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseRuntimePublication",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.libraryelements": "aar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "dependencies": [
+        {
+          "group": "androidx.compose",
+          "module": "compose-bom",
+          "version": {
+            "requires": "2026.02.01"
+          },
+          "attributes": {
+            "org.gradle.category": "platform"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-tooling-preview"
+        },
+        {
+          "group": "androidx.core",
+          "module": "core-ktx",
+          "version": {
+            "requires": "1.17.0"
+          }
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui"
+        },
+        {
+          "group": "androidx.compose.ui",
+          "module": "ui-graphics"
+        },
+        {
+          "group": "androidx.compose.material3",
+          "module": "material3"
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib",
+          "version": {
+            "requires": "2.4.21"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "core-ui-1.0.0.aar",
+          "url": "core-ui-1.0.0.aar",
+          "size": 25099,
+          "sha512": "9e4bdeba7a5703ec816fe8f30cbf8b25926ac2fe0ba16f6dfe2ee37bab4089bcb0dae306da55c3803cb71a188cd3ae991a110844d474cef30f283e3b162fa786",
+          "sha256": "faf0248175d70c213d505230f18ecfc9cef941945416333e16ab8ff024a21b91",
+          "sha1": "dcfe16186510b42111ba1231d87f55249cfa34ae",
+          "md5": "4513ff0441b8f241e65cc3aa4c219c84"
+        }
+      ]
+    },
+    {
+      "name": "releaseVariantReleaseSourcePublication",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "core-ui-1.0.0-sources.jar",
+          "url": "core-ui-1.0.0-sources.jar",
+          "size": 4511,
+          "sha512": "dd78bf51cb0be6bce0024913d5cb0bf846fc411de78a1ed575c7661c7b0dfee5a26e5edd8e5c898b2f5c2713d2a322dce896be3fa114a99298eecdfb89831b95",
+          "sha256": "a9311209a230d7309a20319c1f1d1c1b194ef624da915edcdd8fba5ca61a865e",
+          "sha1": "143f01069e6eff50d98f5fb97f971d8c9e45a8ef",
+          "md5": "39d4d1a10aaeb82cd44b855026699ef5"
+        }
+      ]
+    }
+  ]
+}
