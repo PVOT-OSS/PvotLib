@@ -6,39 +6,12 @@ SPDX-License-Identifier: Apache-2.0
 # Changelog
 
 PvotLib follows [semantic versioning](https://semver.org): a major version may break the API, minor
-versions add to it, and patch versions only fix things. `design-system` and `core-ui` are released
-together under one version.
+versions add to it, and patch versions only fix things. `design-system`, `core-ui` and
+`design-system-views` are released together under one version.
 
-## Unreleased
+## 1.0.0 (2026-11-03)
 
-### Changed
-- `PvotCallActionButton` gives haptic feedback: a confirm for Answer, a reject for Decline and End.
-- Call buttons answer in a vivid green and end in a vivid red, the same in light and dark
-  (`PvotCallAnswer`, `PvotCallEnd`), so they read at a glance; `PvotCallActionButtonDefaults.themeColors()`
-  keeps the theme's success and error colors.
-- `LocalPvotGlassIntensity` 0 now means **solid**: an opaque surface with no blur, which costs
-  nothing to draw. The frosted blur that 0 used to mean is `PvotGlassDefaults.FrostedIntensity`
-  (0.1); `defaultIntensity()` returns it where the device blurs but has no lens. An app that
-  persisted 0 for the frosted look should store `FrostedIntensity` instead.
-- `PvotAppTheme` takes `extendedColors`, `PvotTopBar` takes `backdrop` and `material`, and
-  `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton` default their `backdrop` to
-  `LocalPvotGlassBackdrop`: source-compatible, binary-incompatible, like the nav bar's `backdrop`
-  before.
-- The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
-  and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
-  adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
-- `PvotSwipeRow` takes `thresholdFraction` and `dragResistance`
-  (`PvotSwipeRowDefaults.DragResistance`), so a list can make its swipes heavier and harder to set
-  off by accident; the defaults keep today's feel. Source-compatible, binary-incompatible.
-
-### Fixed
-- `PvotSwipeRow`: no slivers of the action's color at the row's corners while it slides.
-- `PvotSwipeRow` no longer leaves a thin arc of the action's color at the row's corners after a
-  short swipe springs back: the row settles exactly in place, and the action's color fills only
-  the gap the row leaves, never under it.
-- The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
-  compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
-  whole shader, so the glass drew nothing and the content behind showed through sharp.
+The first published release.
 
 ### Added
 - `design-system`, the glass floating layer:
@@ -154,31 +127,7 @@ together under one version.
     - Icons `pvot_ic_arrow_left`, `pvot_ic_chevron_right`, `pvot_ic_x` and `pvot_ic_user` (Tabler)
       and the strings `pvot_top_bar_back` and `pvot_snackbar_dismiss`.
 - `core-ui`: `PvotEmptyContent` takes an optional `icon`, `actionLabel` and `onAction`, and
-  centers its message. Existing calls compile unchanged, and the old signature is kept, hidden,
-  so code compiled against 0.1.0 still links.
-
-### Changed
-- `PvotNavBar` takes a `backdrop`: given one, the bar is glass over it, with
-  `PvotNavBarDefaults.glassColors()` and a softer shadow. A new parameter, so code compiled
-  against 0.1.0 must be recompiled.
-
-## 0.1.0 (unreleased)
-
-The first published release.
-
-### Changed
-- A more vivid palette: saturated violet primary, electric-blue secondary, pink tertiary and
-  tinted surface variants.
-- `PvotNavBar` is simpler: no chip behind unselected items, a solid primary pill for the
-  selected one, a smaller bar and softer shadow. `PvotNavBarDefaults.themeColors()` now always
-  derives from the color scheme.
-- `PvotNavBar` is a little bigger (68dp bar, 52dp items, 24dp icons) and takes `compact`: it
-  animates down to a shorter bar of icon-only circles. The catalog compacts it while the user
-  swipes up through a list and restores it on the way back.
-- `PvotNavBar` items open and close with one eased motion (no bounce), and dragging along the
-  bar previews the item under the finger and selects it on release.
-
-### Added
+  centers its message. Existing calls compile unchanged.
 - `components`: `PvotDialog` (with `PvotDialogAction`, `PvotDialogActionStyle`, `PvotDialogDefaults`)
   and `PvotBottomSheet` (with `PvotSheetItem`, `PvotBottomSheetDefaults`). Both are driven by a
   `visible` flag, so they animate out as well as in.
@@ -208,3 +157,44 @@ The first published release.
 - [docs/GUIDE.md](docs/GUIDE.md): every token, motion spec, component and library rule.
 - Published to the Maven repository at https://pvot-oss.github.io/PvotLib/maven as
   `com.prauga.pvot:design-system` and `com.prauga.pvot:core-ui`.
+
+### Changed
+- `PvotCallActionButton` gives haptic feedback: a confirm for Answer, a reject for Decline and End.
+- Call buttons answer in a vivid green and end in a vivid red, the same in light and dark
+  (`PvotCallAnswer`, `PvotCallEnd`), so they read at a glance; `PvotCallActionButtonDefaults.themeColors()`
+  keeps the theme's success and error colors.
+- `LocalPvotGlassIntensity` 0 now means **solid**: an opaque surface with no blur, which costs
+  nothing to draw. The frosted blur that 0 used to mean is `PvotGlassDefaults.FrostedIntensity`
+  (0.1); `defaultIntensity()` returns it where the device blurs but has no lens. An app that
+  persisted 0 for the frosted look should store `FrostedIntensity` instead.
+- `PvotAppTheme` takes `extendedColors`, `PvotTopBar` takes `backdrop` and `material`, and
+  `PvotNavBar`, `PvotGlassCard` and `PvotGlassIconButton` default their `backdrop` to
+  `LocalPvotGlassBackdrop`: source-compatible, binary-incompatible, like the nav bar's `backdrop`
+  before.
+- The toolchain moves to Android Gradle Plugin 9.5.0, Kotlin 2.4.21 and Java 21 (library bytecode
+  and CI), so apps can adopt libraries that require them, such as SceneView for AR. Kotlin 2.4
+  adds a no-argument constructor to `PvotGlassStyle` and `PvotNavBarSizes` in the recorded API.
+- `PvotSwipeRow` takes `thresholdFraction` and `dragResistance`
+  (`PvotSwipeRowDefaults.DragResistance`), so a list can make its swipes heavier and harder to set
+  off by accident; the defaults keep today's feel. Source-compatible, binary-incompatible.
+- `PvotNavBar` takes a `backdrop`: given one, the bar is glass over it, with
+  `PvotNavBarDefaults.glassColors()` and a softer shadow.
+- A more vivid palette: saturated violet primary, electric-blue secondary, pink tertiary and
+  tinted surface variants.
+- `PvotNavBar` is simpler: no chip behind unselected items, a solid primary pill for the
+  selected one, a smaller bar and softer shadow. `PvotNavBarDefaults.themeColors()` now always
+  derives from the color scheme.
+- `PvotNavBar` is a little bigger (68dp bar, 52dp items, 24dp icons) and takes `compact`: it
+  animates down to a shorter bar of icon-only circles. The catalog compacts it while the user
+  swipes up through a list and restores it on the way back.
+- `PvotNavBar` items open and close with one eased motion (no bounce), and dragging along the
+  bar previews the item under the finger and selects it on release.
+
+### Fixed
+- `PvotSwipeRow`: no slivers of the action's color at the row's corners while it slides.
+- `PvotSwipeRow` no longer leaves a thin arc of the action's color at the row's corners after a
+  short swipe springs back: the row settles exactly in place, and the action's color fills only
+  the gap the row leaves, never under it.
+- The glass lens shader declared a variable named `smooth`, a reserved word in GLSL. Devices that
+  compile AGSL through a GLSL front end (many Android 15 builds, and the emulator) rejected the
+  whole shader, so the glass drew nothing and the content behind showed through sharp.

@@ -49,7 +49,7 @@ dependencies {
 }
 ```
 
-Components added after 0.1.0 (dialog, sheet, slider, text field, new nav bar behavior) need a release
+Components added after 1.0.0 need a release
 that contains them or a source include (`include(":design-system")`). Check CHANGELOG.
 
 - App-level notices: add `THIRD_PARTY_NOTICES.md` crediting Tabler Icons (MIT) once icons are used,

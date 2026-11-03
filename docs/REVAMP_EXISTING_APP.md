@@ -39,7 +39,7 @@ to. Get a nod on anything ambiguous before starting.
 ## 1. Add the dependency
 
 From the Maven repository (preferred) or as a source include, see README "Installation". Components
-added after 0.1.0 only exist in a newer release or when including from source; check CHANGELOG.
+added after 1.0.0 only exist in a newer release or when including from source; check CHANGELOG.
 
 ```kotlin
 // libs.versions.toml

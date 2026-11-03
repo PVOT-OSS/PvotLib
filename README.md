@@ -55,7 +55,7 @@ then the libraries, for example through the version catalog:
 
 ```toml
 [versions]
-pvot = "0.2.0-SNAPSHOT"
+pvot = "1.0.0"
 
 [libraries]
 pvot-design-system = { group = "com.prauga.pvot", name = "design-system", version.ref = "pvot" }
@@ -296,7 +296,7 @@ PvotDurationPicker(
 
 1. Set `version` in `gradle.properties`, and turn the changelog's "unreleased" heading into that
    version's date.
-2. Commit, then tag and push: `git tag v0.1.0 && git push origin v0.1.0`.
+2. Commit, then tag and push: `git tag v1.0.0 && git push origin v1.0.0`.
 
 The release workflow checks the tag matches the version, builds and tests, adds both libraries to
 the Maven repository on GitHub Pages (never overwriting a released version), and creates a GitHub
