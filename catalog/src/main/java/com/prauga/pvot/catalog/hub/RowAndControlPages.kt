@@ -408,7 +408,8 @@ internal fun TopBarPage(onBack: () -> Unit) {
         title = "Top bar",
         summary =
             "Back, title and actions. Expanded, the title sits large under the bar; scroll the " +
-                "list and it folds into the bar, which takes a fill of its own.",
+                "list and it folds into the bar, which takes a fill of its own, until the list " +
+                "is back at the top. In a scaffold the content keeps the expanded bar's padding.",
         onBack = onBack,
         code =
             "val listState = rememberLazyListState()\nPvotTopBar(\n    title = \"Settings\",\n    onBack = ::finish,\n" +

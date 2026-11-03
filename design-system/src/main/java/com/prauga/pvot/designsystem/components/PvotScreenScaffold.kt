@@ -31,6 +31,8 @@ import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
+import com.prauga.pvot.designsystem.navigation.LocalPvotTopBarFold
+import com.prauga.pvot.designsystem.navigation.PvotTopBarFold
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /** Defaults for [PvotScreenScaffold]. */
@@ -48,8 +50,10 @@ public object PvotScreenScaffoldDefaults {
  * It wires what every glass screen otherwise repeats: the backdrop, the opaque background inside
  * it, [LocalPvotGlassBackdrop] for the chrome, and the padding that keeps the content clear of the
  * top bar. Content scrolls under the bars, which is what makes the glass worth drawing; the padding
- * is for the first item, not a frame. Inside [content] the local is null, since glass inside its
- * own backdrop shows only its fill; glass that belongs with the content goes in [overlay].
+ * is for the first item, not a frame. It is the top bar's expanded height and stays so while a
+ * `PvotTopBar` folds: the compact bar floats over the content instead of pushing it about mid
+ * scroll. Inside [content] the local is null, since glass inside its own backdrop shows only its
+ * fill; glass that belongs with the content goes in [overlay].
  *
  * ```
  * PvotScreenScaffold(
@@ -91,10 +95,16 @@ public fun PvotScreenScaffold(
     val density = LocalDensity.current
     var topBarHeight by remember { mutableIntStateOf(0) }
     var bottomBarHeight by remember { mutableIntStateOf(0) }
+    val topBarFold = remember { PvotTopBarFold() }
     // A screen with no top bar still clears the status bar; a top bar already pads itself by it.
     val statusBar = WindowInsets.statusBars.getTop(density)
     val contentPadding =
-        with(density) { PaddingValues(top = maxOf(topBarHeight, statusBar).toDp()) }
+        with(density) {
+            PaddingValues(
+                top =
+                    pvotScaffoldTopPadding(topBarHeight, topBarFold.foldedHeight, statusBar).toDp()
+            )
+        }
     val aboveBottomBar = with(density) { bottomBarHeight.toDp() }
 
     Box(modifier.fillMaxSize()) {
@@ -123,7 +133,7 @@ public fun PvotScreenScaffold(
                             traversalIndex = -1f
                         }
             ) {
-                topBar()
+                CompositionLocalProvider(LocalPvotTopBarFold provides topBarFold) { topBar() }
             }
             Box(
                 modifier =
@@ -158,3 +168,10 @@ public fun PvotScreenScaffold(
         }
     }
 }
+
+/**
+ * The content's top padding: the top bar as measured plus whatever a `PvotTopBar` has folded away,
+ * so a folding bar pads by its expanded height throughout; never less than the status bar.
+ */
+internal fun pvotScaffoldTopPadding(topBarHeight: Int, foldedHeight: Int, statusBar: Int): Int =
+    maxOf(topBarHeight + foldedHeight, statusBar)
