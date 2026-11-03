@@ -9,6 +9,17 @@ PvotLib follows [semantic versioning](https://semver.org): a major version may b
 versions add to it, and patch versions only fix things. `design-system`, `core-ui` and
 `design-system-views` are released together under one version.
 
+## Unreleased
+
+### Fixed
+- `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
+  `PvotTopBar` folds and unfolds: the compact bar floats over the content instead of moving the
+  first item under the finger, which jumped the hero card on screens such as call details. A bar
+  that is compact for good pads by its compact height, as before.
+- `rememberPvotTopBarCompact` has hysteresis: the bar folds once the list scrolls past the
+  threshold and unfolds only once the list is back at the top, so a list that stops near the
+  threshold no longer flaps the bar.
+
 ## 1.0.0 (2026-11-03)
 
 The first published release.

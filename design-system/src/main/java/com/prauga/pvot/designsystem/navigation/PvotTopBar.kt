@@ -27,10 +27,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -137,8 +145,56 @@ public object PvotTopBarDefaults {
 }
 
 /**
+ * How much of a [PvotTopBar] is folded away, in pixels: 0 while expanded, the large title's height
+ * once compact, in between while it animates. The scaffold provides one to its top bar slot and
+ * adds it to the bar's measured height, so the content's padding stays the bar's expanded height
+ * whatever the fold does. A bar that has never been expanded, because it is compact for good or was
+ * restored compact, reports nothing until it first unfolds: it has no expanded height to keep the
+ * content clear of. A bar outside a scaffold reports to nobody.
+ */
+@Stable
+internal class PvotTopBarFold {
+    /** Pixels of the bar folded away right now, once the bar has been expanded. */
+    var foldedHeight: Int by mutableIntStateOf(0)
+        private set
+
+    private var expandedOnce = false
+
+    /** The large title measured [titleHeight] tall and was laid out [laidOutHeight] tall. */
+    fun report(titleHeight: Int, laidOutHeight: Int) {
+        if (laidOutHeight >= titleHeight) expandedOnce = true
+        foldedHeight = if (expandedOnce) titleHeight - laidOutHeight else 0
+    }
+}
+
+/** The fold the enclosing scaffold listens to, or null outside one. */
+internal val LocalPvotTopBarFold: ProvidableCompositionLocal<PvotTopBarFold?> = compositionLocalOf {
+    null
+}
+
+/** The large title's laid-out height at [progress] (0 expanded, 1 compact) of its [fullHeight]. */
+internal fun pvotTopBarTitleHeight(fullHeight: Int, progress: Float): Int =
+    (fullHeight * (1f - progress)).roundToInt()
+
+/**
+ * Whether the bar should be compact given where the list is, with hysteresis: a bar that is
+ * expanded folds once the list scrolls past [thresholdPx]; a bar that is compact unfolds only once
+ * the list is back at the very top. Scrolling to and fro around the threshold never flaps the bar.
+ */
+internal fun pvotTopBarCompact(
+    compact: Boolean,
+    firstVisibleItemIndex: Int,
+    firstVisibleItemScrollOffset: Int,
+    thresholdPx: Float,
+): Boolean =
+    if (compact) firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > 0
+    else firstVisibleItemIndex > 0 || firstVisibleItemScrollOffset > thresholdPx
+
+/**
  * Whether [state] has scrolled past [threshold], for driving [PvotTopBar]'s `compact`. It only
- * changes when the answer does, so reading it does not recompose on every scrolled pixel.
+ * changes when the answer does, so reading it does not recompose on every scrolled pixel. Once
+ * compact, the bar stays so until the list is back at the top, so a list that stops just past the
+ * threshold does not fold and unfold under the finger.
  *
  * @param state The scroll state of the list under the bar
  * @param threshold How far the list scrolls before the bar compacts
@@ -149,12 +205,23 @@ public fun rememberPvotTopBarCompact(
     threshold: Dp = PvotTopBarDefaults.CompactThreshold,
 ): Boolean {
     val thresholdPx = with(LocalDensity.current) { threshold.toPx() }
-    val compact by
+    var compact by
         remember(state, thresholdPx) {
-            derivedStateOf {
-                state.firstVisibleItemIndex > 0 || state.firstVisibleItemScrollOffset > thresholdPx
-            }
+            mutableStateOf(
+                pvotTopBarCompact(
+                    compact = false,
+                    firstVisibleItemIndex = state.firstVisibleItemIndex,
+                    firstVisibleItemScrollOffset = state.firstVisibleItemScrollOffset,
+                    thresholdPx = thresholdPx,
+                )
+            )
         }
+    LaunchedEffect(state, thresholdPx) {
+        snapshotFlow { state.firstVisibleItemIndex to state.firstVisibleItemScrollOffset }
+            .collect { (index, offset) ->
+                compact = pvotTopBarCompact(compact, index, offset, thresholdPx)
+            }
+    }
     return compact
 }
 
@@ -164,7 +231,8 @@ public fun rememberPvotTopBarCompact(
  * Expanded, the title sits large under the bar, on the screen's own background. Compact, the large
  * title folds away into the bar and the bar takes a fill of its own, so the content scrolling under
  * it stays apart. Drive [compact] from the list with [rememberPvotTopBarCompact]. The bar pads
- * itself below the status bar.
+ * itself below the status bar. Inside a `PvotScreenScaffold` the content's padding stays the bar's
+ * expanded height while it folds, so the fold never moves the content.
  *
  * Over a [backdrop] the compact bar is glass: the content scrolling under it shows through,
  * frosted, with a hairline along its bottom edge. While expanded the title sits straight on the
@@ -250,6 +318,7 @@ private fun TopBarColumn(
     progress: State<Float>,
     actions: @Composable RowScope.() -> Unit,
 ) {
+    val fold = LocalPvotTopBarFold.current
     Column(
         modifier =
             Modifier.fillMaxWidth()
@@ -307,7 +376,9 @@ private fun TopBarColumn(
                     .clipToBounds()
                     .layout { measurable, constraints ->
                         val placeable = measurable.measure(constraints)
-                        val height = (placeable.height * (1f - progress.value)).roundToInt()
+                        val height = pvotTopBarTitleHeight(placeable.height, progress.value)
+                        // Tell the scaffold what folded away, so its padding does not follow.
+                        fold?.report(titleHeight = placeable.height, laidOutHeight = height)
                         layout(placeable.width, height) { placeable.place(0, 0) }
                     }
                     .graphicsLayer { alpha = 1f - progress.value }
