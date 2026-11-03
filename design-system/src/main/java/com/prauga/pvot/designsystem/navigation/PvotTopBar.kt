@@ -148,12 +148,23 @@ public object PvotTopBarDefaults {
  * How much of a [PvotTopBar] is folded away, in pixels: 0 while expanded, the large title's height
  * once compact, in between while it animates. The scaffold provides one to its top bar slot and
  * adds it to the bar's measured height, so the content's padding stays the bar's expanded height
- * whatever the fold does. A bar outside a scaffold reports to nobody.
+ * whatever the fold does. A bar that has never been expanded, because it is compact for good or was
+ * restored compact, reports nothing until it first unfolds: it has no expanded height to keep the
+ * content clear of. A bar outside a scaffold reports to nobody.
  */
 @Stable
 internal class PvotTopBarFold {
-    /** Pixels of the bar folded away right now. */
+    /** Pixels of the bar folded away right now, once the bar has been expanded. */
     var foldedHeight: Int by mutableIntStateOf(0)
+        private set
+
+    private var expandedOnce = false
+
+    /** The large title measured [titleHeight] tall and was laid out [laidOutHeight] tall. */
+    fun report(titleHeight: Int, laidOutHeight: Int) {
+        if (laidOutHeight >= titleHeight) expandedOnce = true
+        foldedHeight = if (expandedOnce) titleHeight - laidOutHeight else 0
+    }
 }
 
 /** The fold the enclosing scaffold listens to, or null outside one. */
@@ -367,7 +378,7 @@ private fun TopBarColumn(
                         val placeable = measurable.measure(constraints)
                         val height = pvotTopBarTitleHeight(placeable.height, progress.value)
                         // Tell the scaffold what folded away, so its padding does not follow.
-                        fold?.foldedHeight = placeable.height - height
+                        fold?.report(titleHeight = placeable.height, laidOutHeight = height)
                         layout(placeable.width, height) { placeable.place(0, 0) }
                     }
                     .graphicsLayer { alpha = 1f - progress.value }

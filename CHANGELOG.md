@@ -14,7 +14,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ### Fixed
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
   `PvotTopBar` folds and unfolds: the compact bar floats over the content instead of moving the
-  first item under the finger, which jumped the hero card on screens such as call details.
+  first item under the finger, which jumped the hero card on screens such as call details. A bar
+  that is compact for good pads by its compact height, as before.
 - `rememberPvotTopBarCompact` has hysteresis: the bar folds once the list scrolls past the
   threshold and unfolds only once the list is back at the top, so a list that stops near the
   threshold no longer flaps the bar.

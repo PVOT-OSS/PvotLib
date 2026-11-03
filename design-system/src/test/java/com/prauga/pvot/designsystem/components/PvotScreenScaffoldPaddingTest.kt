@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.designsystem.components
 
+import com.prauga.pvot.designsystem.navigation.PvotTopBarFold
 import com.prauga.pvot.designsystem.navigation.pvotTopBarTitleHeight
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -17,17 +18,16 @@ class PvotScreenScaffoldPaddingTest {
     private val row = 64
     private val title = 60
 
+    private val fold = PvotTopBarFold()
+
     /**
      * The bar as the scaffold measures it, and what the title reports folded away, at [progress].
      */
     private fun paddingAt(progress: Float): Int {
         val laidOut = pvotTopBarTitleHeight(title, progress)
+        fold.report(titleHeight = title, laidOutHeight = laidOut)
         val measuredBar = statusBar + row + laidOut
-        return pvotScaffoldTopPadding(
-            measuredBar,
-            foldedHeight = title - laidOut,
-            statusBar = statusBar,
-        )
+        return pvotScaffoldTopPadding(measuredBar, fold.foldedHeight, statusBar)
     }
 
     @Test
@@ -44,6 +44,24 @@ class PvotScreenScaffoldPaddingTest {
 
     @Test
     fun thePaddingStaysTheExpandedBarOnceCompact() {
+        paddingAt(0f)
+        assertEquals(148, paddingAt(1f))
+    }
+
+    @Test
+    fun aBarCompactFromTheStartPadsByItsCompactHeight() {
+        assertEquals(88, paddingAt(1f))
+        assertEquals(88, paddingAt(1f))
+    }
+
+    @Test
+    fun aBarRestoredCompactFollowsItsFirstUnfoldThenHolds() {
+        assertEquals(88, paddingAt(1f))
+        // Unfolding for the first time, the padding grows with the bar, as there was no expanded
+        // height to hold; once expanded, the fold holds it there.
+        assertEquals(118, paddingAt(0.5f))
+        assertEquals(148, paddingAt(0f))
+        assertEquals(148, paddingAt(0.5f))
         assertEquals(148, paddingAt(1f))
     }
 
