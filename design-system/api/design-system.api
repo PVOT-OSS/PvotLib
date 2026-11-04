@@ -427,6 +427,61 @@ public final class com/prauga/pvot/designsystem/components/button/PvotIconButton
 	public static final fun PvotIconButton-Ltcujgc (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FLjava/lang/Boolean;ZFLcom/prauga/pvot/designsystem/components/button/PvotIconButtonColors;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/calendar/PvotDateHeaderDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/calendar/PvotDateHeaderDefaults;
+	public final fun getDayStyle (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
+	public final fun getLabelStyle (Landroidx/compose/runtime/Composer;I)Landroidx/compose/ui/text/TextStyle;
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotDateHeaderKt {
+	public static final fun PvotDateHeader (Ljava/time/LocalDate;Landroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/util/Locale;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotDayStripColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun copy-t635Npw (JJJJJ)Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;
+	public static synthetic fun copy-t635Npw$default (Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;JJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContent-0d7_KjU ()J
+	public final fun getOutline-0d7_KjU ()J
+	public final fun getSelectedContainer-0d7_KjU ()J
+	public final fun getSelectedContent-0d7_KjU ()J
+	public final fun getTodayOutline-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotDayStripDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripDefaults;
+	public final fun colors (Landroidx/compose/material3/ColorScheme;)Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;
+	public final fun getDayHeight-D9Ej5fM ()F
+	public final fun getSwipeThreshold-D9Ej5fM ()F
+	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotDayStripKt {
+	public static final fun PvotDayStrip (Ljava/util/List;Ljava/time/LocalDate;Ljava/time/LocalDate;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function1;Lcom/prauga/pvot/designsystem/components/calendar/PvotDayStripColors;Ljava/util/Locale;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotEventCardDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/calendar/PvotEventCardDefaults;
+	public final fun containerColor-WaAFU9c (Landroidx/compose/runtime/Composer;I)J
+	public final fun getAccentWidth-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/calendar/PvotEventCardKt {
+	public static final fun PvotEventCard-r4T5wow (Ljava/lang/String;Lkotlin/jvm/functions/Function0;JLandroidx/compose/ui/Modifier;Ljava/lang/String;Ljava/util/List;ZZJLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/call/PvotCallAction : java/lang/Enum {
 	public static final field Answer Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
 	public static final field Decline Lcom/prauga/pvot/designsystem/components/call/PvotCallAction;
@@ -588,6 +643,18 @@ public final class com/prauga/pvot/designsystem/components/list/PvotAvatarDefaul
 
 public final class com/prauga/pvot/designsystem/components/list/PvotAvatarKt {
 	public static final fun PvotAvatar-msPkQVw (Ljava/lang/String;Landroidx/compose/ui/Modifier;Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/Object;FLandroidx/compose/ui/graphics/Color;Ljava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotAvatarStackDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/list/PvotAvatarStackDefaults;
+	public static final field MaxShown I
+	public static final field Overlap F
+	public final fun getSize-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/list/PvotAvatarStackKt {
+	public static final fun PvotAvatarStack-FyETyZw (Ljava/util/List;Landroidx/compose/ui/Modifier;FIJLjava/lang/String;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollSection {
