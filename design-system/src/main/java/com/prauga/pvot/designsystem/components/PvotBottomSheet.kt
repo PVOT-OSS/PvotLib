@@ -152,7 +152,7 @@ public fun PvotBottomSheet(
 @Composable
 internal fun PvotSheetHandle(
     verticalPadding: Dp = PvotSpacing.M,
-    width: Dp = PvotBottomSheetDefaults.HandleWidth
+    width: Dp = PvotBottomSheetDefaults.HandleWidth,
 ) {
     Box(
         modifier =
