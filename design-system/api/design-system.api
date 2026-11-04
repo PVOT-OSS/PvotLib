@@ -597,6 +597,196 @@ public final class com/prauga/pvot/designsystem/components/call/PvotCallButtonKt
 	public static final fun PvotCallButton (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/Boolean;ZLkotlin/jvm/functions/Function0;ZLjava/lang/String;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/components/call/PvotCallButtonColors;Landroidx/compose/runtime/Composer;III)V
 }
 
+public final class com/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAccentColor-0d7_KjU ()J
+	public final fun getChoiceColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getSelectedChoiceColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotAdjustmentSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentSheetDefaults;
+	public static final field Ticks I
+	public final fun colors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;
+	public final fun getChoiceHeight-D9Ej5fM ()F
+	public final fun getCornerRadius-D9Ej5fM ()F
+	public final fun getHeight-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotAdjustmentSheetKt {
+	public static final fun PvotAdjustmentSheet (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotChoiceRow (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotRuler (FLkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ILjava/lang/String;Ljava/lang/String;Lcom/prauga/pvot/designsystem/components/camera/PvotAdjustmentColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotCameraGlassDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotCameraGlassDefaults;
+	public final fun getFillColor-0d7_KjU ()J
+	public final fun getPanelStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun getStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotControlPanelDefaults {
+	public static final field $stable I
+	public static final field Columns I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotControlPanelDefaults;
+	public final fun getCornerRadius-D9Ej5fM ()F
+	public final fun getIconContainerSize-D9Ej5fM ()F
+	public final fun getTileHeight-D9Ej5fM ()F
+	public final fun tileColors-ro_MJ88 (JJJJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/camera/PvotControlTileColors;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotControlPanelKt {
+	public static final fun PvotControlPanel (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;ILcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotControlTile (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZZLjava/lang/String;Lcom/prauga/pvot/designsystem/components/camera/PvotControlTileColors;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotControlTileColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun copy-jRlVdoo (JJJJ)Lcom/prauga/pvot/designsystem/components/camera/PvotControlTileColors;
+	public static synthetic fun copy-jRlVdoo$default (Lcom/prauga/pvot/designsystem/components/camera/PvotControlTileColors;JJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotControlTileColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveContainerColor-0d7_KjU ()J
+	public final fun getActiveContentColor-0d7_KjU ()J
+	public final fun getContainerColor-0d7_KjU ()J
+	public final fun getContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotGlassChipDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotGlassChipDefaults;
+	public final fun getContentPadding ()Landroidx/compose/foundation/layout/PaddingValues;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getMinWidth-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotGlassChipKt {
+	public static final fun PvotGlassChip-wK_Y8yA (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function0;ZFJLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getSelectedContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotModeSelectorDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorDefaults;
+	public final fun colors-dgg9oW8 (JJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors;
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getIndicatorStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun getItemPadding-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotModeSelectorKt {
+	public static final fun PvotModeSelector (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;ZLcom/prauga/pvot/designsystem/components/camera/PvotModeSelectorColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun copy-ysEtTa8 (JJJ)Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;
+	public static synthetic fun copy-ysEtTa8$default (Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;JJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLockColor-0d7_KjU ()J
+	public final fun getPhotoColor-0d7_KjU ()J
+	public final fun getRecordColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotShutterButtonDefaults {
+	public static final field $stable I
+	public static final field HoldTimeoutMillis J
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonDefaults;
+	public final fun colors-ysEtTa8 (JJJ)Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;
+	public static synthetic fun colors-ysEtTa8$default (Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonDefaults;JJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;
+	public final fun getCoreSize-D9Ej5fM ()F
+	public final fun getLockDistance-D9Ej5fM ()F
+	public final fun getRecordingCoreSize-D9Ej5fM ()F
+	public final fun getSize-D9Ej5fM ()F
+	public final fun getSlideDistance-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotShutterButtonKt {
+	public static final fun PvotShutterButton (Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;Lkotlin/jvm/functions/Function0;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;ZZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/components/camera/PvotShutterButtonColors;Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotShutterState : java/lang/Enum {
+	public static final field Photo Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;
+	public static final field Recording Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;
+	public static final field Video Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/camera/PvotShutterState;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun copy--OWjLjI (JJ)Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;
+	public static synthetic fun copy--OWjLjI$default (Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;JJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getContentColor-0d7_KjU ()J
+	public final fun getSelectedContentColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotZoomSelectorDefaults {
+	public static final field $stable I
+	public static final field HoldTimeoutMillis J
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorDefaults;
+	public final fun colors-dgg9oW8 (JJLandroidx/compose/runtime/Composer;II)Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;
+	public final fun getDialHeight-D9Ej5fM ()F
+	public final fun getDialWidth-D9Ej5fM ()F
+	public final fun getDoublingDistance-D9Ej5fM ()F
+	public final fun getItemSize-D9Ej5fM ()F
+	public final fun getSelectedItemSize-D9Ej5fM ()F
+	public final fun getSelectedStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+	public final fun getSpacing-D9Ej5fM ()F
+	public final fun getStyle ()Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;
+}
+
+public final class com/prauga/pvot/designsystem/components/camera/PvotZoomSelectorKt {
+	public static final fun PvotZoomDial (FLkotlin/ranges/ClosedFloatingPointRange;Ljava/lang/String;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Ljava/util/List;Lkotlin/jvm/functions/Function1;Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;Lcom/prauga/pvot/designsystem/effects/PvotGlassStyle;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotZoomSelector (Ljava/util/List;ILjava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Lkotlin/jvm/functions/Function0;Lcom/prauga/pvot/designsystem/components/camera/PvotZoomSelectorColors;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class com/prauga/pvot/designsystem/components/keypad/PvotKeypadColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
