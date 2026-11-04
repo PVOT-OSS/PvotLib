@@ -112,6 +112,18 @@ internal fun catalogEntries(): List<CatalogEntry> =
             page = { CalendarPage(it) },
         ),
         CatalogEntry(
+            id = "camera",
+            title = "Camera",
+            group = CatalogGroup.Components,
+            summary = "Shutter, lens row and zoom dial, modes, control panel and sheets on glass.",
+            icon = R.drawable.ic_t_camera,
+            keywords =
+                "camera shutter zoom lens dial mode exposure timer PvotShutterButton PvotZoomSelector " +
+                    "PvotZoomDial PvotModeSelector PvotControlPanel PvotControlTile PvotAdjustmentSheet " +
+                    "PvotRuler PvotChoiceRow PvotGlassChip",
+            page = { CameraPage(it) },
+        ),
+        CatalogEntry(
             id = "text-fields",
             title = "Text fields",
             group = CatalogGroup.Components,
