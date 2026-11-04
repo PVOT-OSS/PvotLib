@@ -64,7 +64,7 @@ public enum class PvotSheetDetent {
     Medium,
 
     /** The sheet fills the space it is given. */
-    Expanded
+    Expanded,
 }
 
 /** Defaults for [PvotPersistentSheet]. */
@@ -105,7 +105,8 @@ public object PvotPersistentSheetDefaults {
 @Stable
 public class PvotPersistentSheetState internal constructor(initialDetent: PvotSheetDetent) {
 
-    internal val draggable: AnchoredDraggableState<PvotSheetDetent> = AnchoredDraggableState(initialDetent)
+    internal val draggable: AnchoredDraggableState<PvotSheetDetent> =
+        AnchoredDraggableState(initialDetent)
 
     /** The detent the sheet rests at, or is closest to while it moves. */
     public val currentDetent: PvotSheetDetent
@@ -133,10 +134,11 @@ public class PvotPersistentSheetState internal constructor(initialDetent: PvotSh
     }
 
     internal companion object {
-        val Saver: Saver<PvotPersistentSheetState, String> = Saver(
-            save = { it.currentDetent.name },
-            restore = { PvotPersistentSheetState(PvotSheetDetent.valueOf(it)) }
-        )
+        val Saver: Saver<PvotPersistentSheetState, String> =
+            Saver(
+                save = { it.currentDetent.name },
+                restore = { PvotPersistentSheetState(PvotSheetDetent.valueOf(it)) },
+            )
     }
 }
 
@@ -148,19 +150,20 @@ public class PvotPersistentSheetState internal constructor(initialDetent: PvotSh
 @Composable
 public fun rememberPvotPersistentSheetState(
     initialDetent: PvotSheetDetent = PvotSheetDetent.Collapsed
-): PvotPersistentSheetState = rememberSaveable(saver = PvotPersistentSheetState.Saver) {
-    PvotPersistentSheetState(initialDetent)
-}
+): PvotPersistentSheetState =
+    rememberSaveable(saver = PvotPersistentSheetState.Saver) {
+        PvotPersistentSheetState(initialDetent)
+    }
 
 /**
- * A bottom sheet that stays on screen over content that remains usable, like the search panel of
- * a map. It rests at three detents: [collapsed][PvotSheetDetent.Collapsed], showing only
- * [peekHeight]; [medium][PvotSheetDetent.Medium]; and [expanded][PvotSheetDetent.Expanded],
- * filling the space it is given. Drag it, or fling it, and it springs to the nearest detent.
+ * A bottom sheet that stays on screen over content that remains usable, like the search panel of a
+ * map. It rests at three detents: [collapsed][PvotSheetDetent.Collapsed], showing only
+ * [peekHeight]; [medium][PvotSheetDetent.Medium]; and [expanded][PvotSheetDetent.Expanded], filling
+ * the space it is given. Drag it, or fling it, and it springs to the nearest detent.
  *
- * Nothing behind it is dimmed or blocked. It fills its parent, so place it last in a `Box` over
- * the content; pad the parent or pass `Modifier.statusBarsPadding()` to keep the expanded sheet
- * below the status bar. The content does not scroll inside the sheet.
+ * Nothing behind it is dimmed or blocked. It fills its parent, so place it last in a `Box` over the
+ * content; pad the parent or pass `Modifier.statusBarsPadding()` to keep the expanded sheet below
+ * the status bar. The content does not scroll inside the sheet.
  *
  * With [floating] the sheet is glass over [backdrop]. Collapsed it is a capsule inset from the
  * edges and kept above the bottom [windowInsets], in the same glass as a [PvotGlassCard], like a
@@ -174,8 +177,8 @@ public fun rememberPvotPersistentSheetState(
  * @param windowInsets Insets the sheet keeps clear of at the bottom, the navigation bar by default
  * @param floating Whether the sheet floats as an inset card of glass rather than filling the width
  * @param backdrop The content behind a [floating] sheet, marked with
- * [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
- * glass tint alone
+ *   [pvotGlassBackdrop][com.prauga.pvot.designsystem.effects.pvotGlassBackdrop], or null for the
+ *   glass tint alone
  * @param containerColor Fill of the sheet when it is not [floating]
  * @param content The sheet's content, below the drag handle
  */
@@ -189,24 +192,27 @@ public fun PvotPersistentSheet(
     floating: Boolean = false,
     backdrop: PvotGlassBackdrop? = null,
     containerColor: Color = PvotPersistentSheetDefaults.containerColor,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     val density = LocalDensity.current
     val scope = rememberCoroutineScope()
     val margin = if (floating) PvotPersistentSheetDefaults.FloatingMargin else 0.dp
-    val bottomGap = if (floating) windowInsets.getBottom(density) + with(density) { margin.toPx() } else 0f
-    val peek = with(density) { peekHeight.toPx() } + if (floating) bottomGap else windowInsets.getBottom(density).toFloat()
+    val bottomGap =
+        if (floating) windowInsets.getBottom(density) + with(density) { margin.toPx() } else 0f
+    val peek =
+        with(density) { peekHeight.toPx() } +
+            if (floating) bottomGap else windowInsets.getBottom(density).toFloat()
     val flingBehavior = AnchoredDraggableDefaults.flingBehavior(state.draggable)
-    val actionLabels = mapOf(
-        PvotSheetDetent.Collapsed to stringResource(R.string.pvot_sheet_action_collapse),
-        PvotSheetDetent.Medium to stringResource(R.string.pvot_sheet_action_medium),
-        PvotSheetDetent.Expanded to stringResource(R.string.pvot_sheet_action_expand)
-    )
+    val actionLabels =
+        mapOf(
+            PvotSheetDetent.Collapsed to stringResource(R.string.pvot_sheet_action_collapse),
+            PvotSheetDetent.Medium to stringResource(R.string.pvot_sheet_action_medium),
+            PvotSheetDetent.Expanded to stringResource(R.string.pvot_sheet_action_expand),
+        )
 
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .onSizeChanged { size ->
+        modifier =
+            modifier.fillMaxSize().onSizeChanged { size ->
                 val height = size.height.toFloat()
                 val top = with(density) { margin.toPx() }
                 state.draggable.updateAnchors(
@@ -217,67 +223,76 @@ public fun PvotPersistentSheet(
                     }
                 )
             },
-        contentAlignment = Alignment.TopCenter
+        contentAlignment = Alignment.TopCenter,
     ) {
-        val surface = if (floating) {
-            val progress = state.openProgress()
-            val radius = lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, progress)
-            val outline = PvotPersistentSheetDefaults.floatingOutlineColor
-            Modifier
-                .glassSurface(
-                    backdrop = backdrop,
-                    cornerRadius = radius,
-                    intensity = PvotGlassDefaults.currentIntensity() * (1f - progress)
-                )
-                .border(
-                    PvotPersistentSheetDefaults.FloatingOutlineWidth,
-                    outline.copy(alpha = outline.alpha * progress),
-                    RoundedCornerShape(radius)
-                )
-        } else {
-            Modifier
-                .clip(PvotPersistentSheetDefaults.Shape)
-                .background(containerColor)
-        }
+        val surface =
+            if (floating) {
+                val progress = state.openProgress()
+                val radius =
+                    lerp(peekHeight / 2, PvotPersistentSheetDefaults.FloatingCornerRadius, progress)
+                val outline = PvotPersistentSheetDefaults.floatingOutlineColor
+                Modifier.glassSurface(
+                        backdrop = backdrop,
+                        cornerRadius = radius,
+                        intensity = PvotGlassDefaults.currentIntensity() * (1f - progress),
+                    )
+                    .border(
+                        PvotPersistentSheetDefaults.FloatingOutlineWidth,
+                        outline.copy(alpha = outline.alpha * progress),
+                        RoundedCornerShape(radius),
+                    )
+            } else {
+                Modifier.clip(PvotPersistentSheetDefaults.Shape).background(containerColor)
+            }
         Column(
-            modifier = Modifier
-                .widthIn(max = PvotBottomSheetDefaults.MaxWidth)
-                .layout { measurable, constraints ->
-                    val offset = state.offset
-                    val detached = 1f - state.openProgress()
-                    val side = (margin.toPx() * detached).roundToInt()
-                    val top = if (offset.isNaN()) constraints.maxHeight else offset.roundToInt()
-                    val height = (constraints.maxHeight - top - (bottomGap * detached).roundToInt()).coerceAtLeast(0)
-                    val width = (constraints.maxWidth - 2 * side).coerceAtLeast(0)
-                    val placeable = measurable.measure(Constraints.fixed(width, height))
-                    layout(constraints.maxWidth, constraints.maxHeight) { placeable.place(side, top) }
-                }
-                .then(surface)
-                .anchoredDraggable(
-                    state = state.draggable,
-                    orientation = Orientation.Vertical,
-                    flingBehavior = flingBehavior
-                )
-                .semantics {
-                    customActions = PvotSheetDetent.entries
-                        .filter { it != state.currentDetent }
-                        .map { detent ->
-                            CustomAccessibilityAction(actionLabels.getValue(detent)) {
-                                scope.launch { state.animateTo(detent) }
-                                true
-                            }
+            modifier =
+                Modifier.widthIn(max = PvotBottomSheetDefaults.MaxWidth)
+                    .layout { measurable, constraints ->
+                        val offset = state.offset
+                        val detached = 1f - state.openProgress()
+                        val side = (margin.toPx() * detached).roundToInt()
+                        val top = if (offset.isNaN()) constraints.maxHeight else offset.roundToInt()
+                        val height =
+                            (constraints.maxHeight - top - (bottomGap * detached).roundToInt())
+                                .coerceAtLeast(0)
+                        val width = (constraints.maxWidth - 2 * side).coerceAtLeast(0)
+                        val placeable = measurable.measure(Constraints.fixed(width, height))
+                        layout(constraints.maxWidth, constraints.maxHeight) {
+                            placeable.place(side, top)
                         }
-                }
-                .then(if (floating) Modifier else Modifier.windowInsetsPadding(windowInsets))
-                .padding(horizontal = PvotSpacing.L),
-            horizontalAlignment = Alignment.CenterHorizontally
+                    }
+                    .then(surface)
+                    .anchoredDraggable(
+                        state = state.draggable,
+                        orientation = Orientation.Vertical,
+                        flingBehavior = flingBehavior,
+                    )
+                    .semantics {
+                        customActions =
+                            PvotSheetDetent.entries
+                                .filter { it != state.currentDetent }
+                                .map { detent ->
+                                    CustomAccessibilityAction(actionLabels.getValue(detent)) {
+                                        scope.launch { state.animateTo(detent) }
+                                        true
+                                    }
+                                }
+                    }
+                    .then(if (floating) Modifier else Modifier.windowInsetsPadding(windowInsets))
+                    .padding(horizontal = PvotSpacing.L),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (floating) {
-                PvotSheetHandle(verticalPadding = PvotSpacing.XS, width = PvotPersistentSheetDefaults.FloatingHandleWidth)
+                PvotSheetHandle(
+                    verticalPadding = PvotSpacing.XS,
+                    width = PvotPersistentSheetDefaults.FloatingHandleWidth,
+                )
             } else {
                 PvotSheetHandle()
             }
-            CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
+            CompositionLocalProvider(
+                LocalContentColor provides MaterialTheme.colorScheme.onSurface
+            ) {
                 Column(modifier = Modifier.fillMaxWidth(), content = content)
             }
         }
