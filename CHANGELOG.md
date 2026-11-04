@@ -16,6 +16,12 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   the agenda pieces in `components.calendar`: `PvotDateHeader`, `PvotDayStrip` (with
   `PvotDayStripColors`) and `PvotEventCard`, each with its `*Defaults`. Shown on the catalog's
   Calendar page. They come from the PVOT Calendar app's Compose rework.
+- `design-system`: camera controls in `components.camera`, on glass over a live preview:
+  `PvotShutterButton` (`PvotShutterState`, hold to record, slide right to lock, slide left for a
+  burst), `PvotZoomSelector` and `PvotZoomDial`, `PvotModeSelector`, `PvotControlPanel` with
+  `PvotControlTile`, `PvotAdjustmentSheet` with `PvotRuler` and `PvotChoiceRow`, and `PvotGlassChip`,
+  each with its `*Colors` and `*Defaults`, plus `PvotCameraGlassDefaults`. Shown on the catalog's
+  Camera page. They come from the PVOT Camera app's Compose screen.
 
 ### Fixed
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a

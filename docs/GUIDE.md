@@ -317,6 +317,12 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotDateHeader` | `components.calendar` | A date as a screen's hero: the day large, month and year over the weekday, an optional second line such as another calendar's date |
 | `PvotDayStrip` | `components.calendar` | Days as tall pills to pick from: selected filled, today outlined, a dot on busy days, swipe for the next days |
 | `PvotEventCard` | `components.calendar` | An event on a `PvotCard`: accent bar in the event's color, title, time, guests as a `PvotAvatarStack`, an action slot such as Join |
+| `PvotShutterButton` | `components.camera` | A shutter on glass: disc for `Photo`/`Video`, stop square for `Recording`; optional hold (slide right to lock) and slide-left gestures |
+| `PvotZoomSelector` | `components.camera` | Lens or zoom stops as glass circles, the selected one larger with the live zoom; hold or drag to adjust, with `PvotZoomDial` for the value on a log ruler |
+| `PvotModeSelector` | `components.camera` | Capture modes as labels with a glass pill that slides to the selected one |
+| `PvotControlPanel` | `components.camera` | A glass grid of `PvotControlTile`s (icon in a circle, label, badge, lit when active) |
+| `PvotAdjustmentSheet` | `components.camera` | A glass sheet for one setting with a title and close button, holding a `PvotRuler` or `PvotChoiceRow` |
+| `PvotGlassChip` | `components.camera` | A small glass label or button over a preview: format, recording timer, status |
 | `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. Offered to TalkBack as actions |
 | `PvotFastScroller` | `components.list` | Over the end edge of a long list of `PvotFastScrollSection`s: a thumb while scrolling, and a drag along the edge jumps by section with a label bubble and a haptic tick. Hidden when the list fits and from TalkBack |
 | `PvotSwitchRow` | `components.list` | Settings row with a switch; the whole row toggles |
@@ -363,6 +369,7 @@ default comes from its `*Defaults` object:
 | Avatar | `PvotAvatarDefaults.Small` to `.Hero`, `.RingWidth` | parameters of `PvotAvatar` |
 | Day strip | `PvotDayStripDefaults.themeColors()`, `.DayHeight` | `PvotDayStripDefaults.colors(colorScheme)` or a `PvotDayStripColors` |
 | Event card | `PvotEventCardDefaults.containerColor()`, `.AccentWidth` | `containerColor` of `PvotEventCard` |
+| Camera controls | `PvotCameraGlassDefaults.Style`, `.PanelStyle`; `PvotShutterButtonDefaults.colors()`, `PvotZoomSelectorDefaults.colors()`, `PvotModeSelectorDefaults.colors()`, `PvotControlPanelDefaults.tileColors()`, `PvotAdjustmentSheetDefaults.colors()` | a `style`, or the component's `*Colors` |
 | Call buttons | `PvotCallButtonDefaults.colors()` (tonal), `.glassColors()`; `PvotCallActionButtonDefaults.colors(action)` | a `PvotCallButtonColors` or `PvotCallActionButtonColors` |
 | Keypad | `PvotKeypadDefaults.keys()`, `.KeySize`; `PvotKeypadDisplayDefaults` | `keys(digits, zeroLongPressLabel, oneLongPressLabel)` or a list of `PvotKeypadKey` |
 | Tab row | `PvotTabRowDefaults.TabHeight`, `.IndicatorHeight`, `.colors()` | colors, `scrollable` |

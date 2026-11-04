@@ -322,6 +322,7 @@ Release with the AARs, their sources and the catalog APK.
 | PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
 | PvotAvatarStack | Overlapping avatars with a "+n" count | Done |
 | PvotDateHeader / PvotDayStrip / PvotEventCard | Agenda pieces: date hero, day picker strip, event card | Done |
+| PvotShutterButton / PvotZoomSelector / PvotModeSelector / PvotControlPanel / PvotAdjustmentSheet | Camera controls on glass over a live preview | Done |
 | PvotSlideToAct | Slide up or down to act, as answering a call | Done |
 | PvotCapsule | A glass pill grouping floating controls | Done |
 | PvotTabRow | Text tabs with a sliding underline | Done |
