@@ -29,7 +29,7 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 │   ├── keypad/   PvotKeypad, PvotKeypadKey, PvotKeypadColors, PvotKeypadDisplay, their *Defaults
 │   ├── progress/ PvotLinearProgress, PvotProportionBar, their *Colors and *Defaults
 │   ├── button/   PvotButton, PvotButtonStyle, PvotFab, PvotIconButton, their *Colors and *Defaults
-│   ├── list/     PvotListRow, PvotLetterTile, PvotAvatar, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotListGroup, PvotFastScroller
+│   ├── list/     PvotListRow, PvotLetterTile, PvotAvatar, PvotAvatarStack, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotListGroup, PvotFastScroller
 │   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
 │   ├── textfield/ PvotTextField, PvotTextFieldColors, PvotTextFieldDefaults
 │   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
@@ -313,6 +313,10 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotListRow` | `components.list` | Leading slot (avatar, `PvotLetterTile`, icon), title, supporting text, trailing slot; optional `onClick`, `onLongClick` and `selected`. A slot overload takes rich title and supporting text |
 | `PvotLetterTile` | `components.list` | Round tile with a name's first letter, colored by a stable key; a person icon when there is no letter |
 | `PvotAvatar` | `components.list` | A person's photo from any `Painter`, or their `PvotLetterTile`; sizes from a list row to the call screen, an optional state-color ring and a badge slot. Decorative unless described |
+| `PvotAvatarStack` | `components.list` | People as overlapping `PvotAvatar`s, then "+n"; ringed in the color behind it and read out as one label |
+| `PvotDateHeader` | `components.calendar` | A date as a screen's hero: the day large, month and year over the weekday, an optional second line such as another calendar's date |
+| `PvotDayStrip` | `components.calendar` | Days as tall pills to pick from: selected filled, today outlined, a dot on busy days, swipe for the next days |
+| `PvotEventCard` | `components.calendar` | An event on a `PvotCard`: accent bar in the event's color, title, time, guests as a `PvotAvatarStack`, an action slot such as Join |
 | `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. Offered to TalkBack as actions |
 | `PvotFastScroller` | `components.list` | Over the end edge of a long list of `PvotFastScrollSection`s: a thumb while scrolling, and a drag along the edge jumps by section with a label bubble and a haptic tick. Hidden when the list fits and from TalkBack |
 | `PvotSwitchRow` | `components.list` | Settings row with a switch; the whole row toggles |
@@ -357,6 +361,8 @@ default comes from its `*Defaults` object:
 | Top bar colors | `PvotTopBarDefaults.themeColors()`, or `.glassColors()` over a backdrop; `.windowInsets` (status bar); `.Material` | `PvotTopBarDefaults.colors(colorScheme, ...)` |
 | Row colors (list, switch, preference) | `PvotListRowDefaults.themeColors()` | `PvotListRowDefaults.colors(colorScheme, ...)`; switch: `PvotSettingsRowDefaults.switchColors()` |
 | Avatar | `PvotAvatarDefaults.Small` to `.Hero`, `.RingWidth` | parameters of `PvotAvatar` |
+| Day strip | `PvotDayStripDefaults.themeColors()`, `.DayHeight` | `PvotDayStripDefaults.colors(colorScheme)` or a `PvotDayStripColors` |
+| Event card | `PvotEventCardDefaults.containerColor()`, `.AccentWidth` | `containerColor` of `PvotEventCard` |
 | Call buttons | `PvotCallButtonDefaults.colors()` (tonal), `.glassColors()`; `PvotCallActionButtonDefaults.colors(action)` | a `PvotCallButtonColors` or `PvotCallActionButtonColors` |
 | Keypad | `PvotKeypadDefaults.keys()`, `.KeySize`; `PvotKeypadDisplayDefaults` | `keys(digits, zeroLongPressLabel, oneLongPressLabel)` or a list of `PvotKeypadKey` |
 | Tab row | `PvotTabRowDefaults.TabHeight`, `.IndicatorHeight`, `.colors()` | colors, `scrollable` |
