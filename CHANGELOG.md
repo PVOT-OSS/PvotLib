@@ -11,6 +11,12 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 
 ## Unreleased
 
+### Added
+- `design-system`: `PvotAvatarStack` (`components.list`), overlapping avatars with a "+n" count, and
+  the agenda pieces in `components.calendar`: `PvotDateHeader`, `PvotDayStrip` (with
+  `PvotDayStripColors`) and `PvotEventCard`, each with its `*Defaults`. Shown on the catalog's
+  Calendar page. They come from the PVOT Calendar app's Compose rework.
+
 ### Fixed
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
   `PvotTopBar` folds and unfolds: the compact bar floats over the content instead of moving the

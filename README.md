@@ -320,6 +320,8 @@ Release with the AARs, their sources and the catalog APK.
 | PvotCallButton / PvotCallActionButton | In-call toggles with labels, and the solid answer, decline and end buttons | Done |
 | PvotKeypad / PvotKeypadDisplay | Phone keypad reporting down and up, and the number with a backspace | Done |
 | PvotAvatar | A person's photo or letter tile, with a ring and a badge | Done |
+| PvotAvatarStack | Overlapping avatars with a "+n" count | Done |
+| PvotDateHeader / PvotDayStrip / PvotEventCard | Agenda pieces: date hero, day picker strip, event card | Done |
 | PvotSlideToAct | Slide up or down to act, as answering a call | Done |
 | PvotCapsule | A glass pill grouping floating controls | Done |
 | PvotTabRow | Text tabs with a sliding underline | Done |
