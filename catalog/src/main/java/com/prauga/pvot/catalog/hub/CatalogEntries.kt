@@ -102,6 +102,16 @@ internal fun catalogEntries(): List<CatalogEntry> =
             page = { PickersPage(it) },
         ),
         CatalogEntry(
+            id = "calendar",
+            title = "Calendar",
+            group = CatalogGroup.Components,
+            summary = "Date header, day strip, event cards and avatar stacks.",
+            icon = R.drawable.ic_t_calendar,
+            keywords =
+                "date day week agenda event guests PvotDateHeader PvotDayStrip PvotEventCard PvotAvatarStack",
+            page = { CalendarPage(it) },
+        ),
+        CatalogEntry(
             id = "text-fields",
             title = "Text fields",
             group = CatalogGroup.Components,
