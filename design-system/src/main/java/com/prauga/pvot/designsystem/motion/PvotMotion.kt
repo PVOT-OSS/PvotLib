@@ -42,4 +42,20 @@ public object PvotMotion {
     /** Springy overshoot for playful state changes, such as a nav item growing into its pill. */
     public fun <T> bounceSpring(): SpringSpec<T> =
         spring(dampingRatio = 0.6f, stiffness = Spring.StiffnessMedium)
+
+    /**
+     * How long a touch rests on a control before the control owns it rather than the list it is in:
+     * a quick swipe that starts on the control still scrolls, a press held this long, or a drag
+     * already under way along it, keeps the touch.
+     */
+    public const val TouchHoldMillis: Long = 150
+
+    /** A selection sliding to the item picked: firm, and settles without a bounce. */
+    public fun <T> slideSpring(): SpringSpec<T> = spring(dampingRatio = 0.92f, stiffness = 1024f)
+
+    /** A selection following the finger: stiffer than [slideSpring], so it keeps up. */
+    public fun <T> followSpring(): SpringSpec<T> = spring(dampingRatio = 0.94f, stiffness = 2500f)
+
+    /** A thumb or selection lifting into a lens while held, and settling back when let go. */
+    public fun <T> liftSpring(): SpringSpec<T> = spring(dampingRatio = 0.92f, stiffness = 676f)
 }

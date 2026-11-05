@@ -65,7 +65,9 @@ Use the Pvot component whenever one exists. Do not use the Material equivalent.
 | List item | `PvotListRow`, `PvotLetterTile` | `ListItem` |
 | Swipe actions | `PvotSwipeRow` | `SwipeToDismissBox` |
 | Fast scroll through a sectioned list | `PvotFastScroller` | a hand-made scrollbar |
+| Switch | `PvotSwitch` | `Switch` |
 | Settings row | `PvotSwitchRow`, `PvotPreferenceRow` | `ListItem` + `Switch` |
+| Menu | `PvotMenu` + `PvotMenuItem` | `DropdownMenu`, `PopupMenu` |
 | Segmented choice | `PvotSegmentedControl` | `SegmentedButton` |
 | Tabs over a list | `PvotTabRow` | `TabRow`, `PrimaryTabRow` |
 | Icon-only button | `PvotIconButton` | `IconButton`, `FilledIconButton` |

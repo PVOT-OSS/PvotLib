@@ -13,10 +13,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectableGroup
@@ -31,26 +34,33 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.DefaultShadowColor
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import com.prauga.pvot.designsystem.effects.LocalPvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.pvotGlass
+import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.pvotGlassRim
 import com.prauga.pvot.designsystem.motion.PvotDurations
+import com.prauga.pvot.designsystem.motion.PvotMotion
 import com.prauga.pvot.designsystem.theme.PvotSpacing
+import kotlin.math.roundToInt
 
 /**
  * A floating bottom navigation bar with an item that opens into a pill when selected.
  *
- * Dragging a finger along the bar previews each item it passes over, and lifting the finger selects
- * the item it ended on.
+ * Dragging a finger along the bar lifts a lens that follows it and previews each item it passes
+ * over, and lifting the finger selects the item it ended on.
  *
  * When a tab is expanded, its content resolves as:
  * - icon: [expandedIconRes], else [PvotTabItem.expandedIconRes], else [PvotTabItem.iconRes]
@@ -193,36 +203,106 @@ public fun PvotNavBar(
             shadowElevation = 0.dp,
         ) {
             CompositionLocalProvider(LocalNavBarState provides state) {
-                Row(
+                Box(
                     modifier =
                         Modifier.barWidthModifier(sizes)
                             .height(barHeight)
-                            .selectableGroup()
                             // Before the gestures, so their coordinates match the items' bounds.
                             .padding(horizontal = sizes.contentPaddingHorizontal)
                             .pointerInput(state) {
                                 detectHorizontalDragGestures(
                                     onDragStart = { offset ->
+                                        state.fingerX = offset.x
                                         state.hovered = state.entryAt(offset.x)
                                     },
                                     onDragEnd = {
                                         state.hovered?.takeIf { !it.selected }?.onClick?.invoke()
                                         state.hovered = null
+                                        state.fingerX = Float.NaN
                                     },
-                                    onDragCancel = { state.hovered = null },
+                                    onDragCancel = {
+                                        state.hovered = null
+                                        state.fingerX = Float.NaN
+                                    },
                                 ) { change, _ ->
+                                    state.fingerX = change.position.x
                                     state.entryAt(change.position.x)?.let { state.hovered = it }
                                     change.consume()
                                 }
-                            },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement =
-                        Arrangement.spacedBy(sizes.itemSpacing, Alignment.CenterHorizontally),
-                    content = content,
-                )
+                            }
+                ) {
+                    Row(
+                        modifier =
+                            Modifier.barWidthModifier(sizes)
+                                .fillMaxHeight()
+                                .selectableGroup()
+                                .pvotGlassBackdrop(state.lensBackdrop),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement =
+                            Arrangement.spacedBy(sizes.itemSpacing, Alignment.CenterHorizontally),
+                        content = content,
+                    )
+                    Box(modifier = Modifier.matchParentSize()) { NavLens(state) }
+                }
             }
         }
     }
+}
+
+@Composable
+private fun NavLens(state: NavBarState) {
+    val hovered = state.hovered
+    val active = state.active ?: return
+    val bounds = active.bounds
+    if (bounds == Rect.Zero) return
+    val dragging = hovered != null
+    val lift by
+        animateFloatAsState(
+            targetValue = if (dragging) 1f else 0f,
+            animationSpec = PvotMotion.liftSpring(),
+            label = "navLensLift",
+        )
+    val fingerX = state.fingerX
+    val centerTarget =
+        if (dragging && !fingerX.isNaN()) {
+            val half = bounds.width / 2f
+            val left = state.entries.minOf { it.bounds.left } + half
+            val right = state.entries.maxOf { it.bounds.right } - half
+            if (left <= right) fingerX.coerceIn(left, right) else bounds.center.x
+        } else {
+            bounds.center.x
+        }
+    val centerX by
+        animateFloatAsState(
+            targetValue = centerTarget,
+            animationSpec = if (dragging) PvotMotion.followSpring() else PvotMotion.slideSpring(),
+            label = "navLensX",
+        )
+    val width by animateFloatAsState(bounds.width, PvotMotion.slideSpring(), label = "navLensWidth")
+    val height by
+        animateFloatAsState(bounds.height, PvotMotion.slideSpring(), label = "navLensHeight")
+    if (lift <= 0f) return
+    val grow = PvotNavBarDefaults.LensGrow
+    val density = LocalDensity.current
+    val lensWidth = with(density) { width.toDp() } + grow.width * lift
+    val lensHeight = with(density) { height.toDp() } + grow.height * lift
+    Box(
+        modifier =
+            Modifier.offset {
+                    IntOffset(
+                        (centerX - lensWidth.toPx() / 2f).roundToInt(),
+                        (bounds.center.y - lensHeight.toPx() / 2f).roundToInt(),
+                    )
+                }
+                .size(lensWidth, lensHeight)
+                .graphicsLayer { alpha = lift }
+                .pvotGlass(
+                    state.lensBackdrop,
+                    PvotGlassDefaults.CapsuleRadius,
+                    PvotGlassDefaults.lensStyle(lift, PvotGlassDefaults.LabelLensStyle),
+                )
+                .pvotGlassRim(alpha = lift)
+    )
 }
 
 private fun Modifier.barWidthModifier(sizes: PvotNavBarSizes): Modifier =

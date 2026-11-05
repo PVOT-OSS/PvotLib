@@ -20,7 +20,7 @@ specs, each component, and the rules for working on the libraries. To add PvotLi
 ```
 design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
-├── effects/      pvotPressScale, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
+├── effects/      pvotPressScale, pvotGlassPress, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
 ├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotDialogContent, PvotBottomSheet,
 │   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule,
@@ -160,9 +160,26 @@ style is the Material default.
 | `RevealRise` | 12dp |
 | `PressedScale` | 0.97 |
 | `PressSpring` / `pressSpring()` | damping 0.55, `StiffnessMediumLow`: settles with some life |
+| `TouchHoldMillis` | 150: a touch resting this long on a control belongs to it, not the list |
+| `slideSpring()` | damping 0.92, stiffness 1024: a selection sliding to the item picked |
+| `followSpring()` | damping 0.94, stiffness 2500: a selection keeping up with the finger |
+| `liftSpring()` | damping 0.92, stiffness 676: a thumb lifting into a lens and settling back |
 
 **Press feedback:** `Modifier.pvotPressScale(interactionSource)` scales an element to
 `PressedScale` on `PressSpring` while pressed. `PvotCard` applies it when it has an `onClick`.
+Glass controls use `Modifier.pvotGlassPress(cornerRadius)` instead: the longer side grows by
+`PvotGlassDefaults.PressGrow` (so a round button and a wide pill swell alike), the element
+stretches a little toward a drag and follows it by up to `PressFollow`, a soft light shows at the
+point of touch, and on release it springs back past its size on `ReleaseSpring`.
+`pvotGlassSurface` applies it when it has an `onClick`.
+
+**Lift to lens:** a thumb or selection held under the finger lifts into a lens over its track
+(`liftSpring`), follows the finger (`followSpring`), and settles where it is let go
+(`slideSpring`). `PvotSegmentedControl`, `PvotNavBar`, `PvotSlider` and `PvotSwitch` do this; the
+lens is `pvotGlass` over the control's own content marked as a `pvotGlassBackdrop`, in
+`PvotGlassDefaults.lensStyle(lift)`. A quick swipe up or down that starts on such a control still
+scrolls the list; a press that rests `TouchHoldMillis`, or a drag already under way along the
+control, keeps the touch.
 
 **Entrances:** `Modifier.pvotReveal(index)` fades and rises an item into place, delayed by
 `index × StaggerStepMillis` up to `MaxStaggeredItems`, so long lists never wait.
@@ -227,7 +244,15 @@ turns its cards back into plain cards.
 `PvotGlassStyle` holds every value of the effect, tuned for a glass 46dp across and scaled with
 the glass's shorter side; `PvotGlassDefaults` holds the tint, the rim's width,
 `CapsuleRadius`, and the press and shadow values of the glass components. The glass can't show
-other windows or the wallpaper.
+other windows or the wallpaper. The knobs that matter most, as on the catalog's Glass playground
+page: **bend** (`strength`, with `band`: how far the rim pulls what lies just inside it out to the edge),
+**dispersion** (`aberration`: how far red and blue split there), **frost** (`blur`), **rim**
+(`glow`, with `darkGlow`), **dome** (how far the middle swells what is under it, for a lens) and
+**saturation** (how much more vivid what shows through is, 1.5 by default, as iOS draws it). On a
+light theme `style(intensity)` swaps the faint default tint for `LightThemeFillColor` and lifts
+the rim's light by `LightThemeGlowGain`, since both vanish against a light background.
+`LensStyle` and `LabelLensStyle` are the looks of a lifted thumb and of a lifted selection over
+labels; `lensStyle(lift)` scales them in with the lift.
 
 **Materials:** `PvotGlassMaterial` says how much a glass hides what is behind it. Pick it by what
 sits on the glass, not by taste: text is readable only on `Regular` (a surface tint at about half
@@ -301,11 +326,11 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotDialogContent` | `components` | The card of a `PvotDialog` alone, without window, scrim or animation, for a dialog whose window comes from elsewhere, such as an `android.app.Dialog` that keeps platform window flags |
 | `PvotBottomSheet` | `components` | Modal sheet with a slim handle, optional title and scrolling content; `PvotSheetItem` rows. Driven by `visible` |
 | `PvotTextField` | `components.textfield` | Soft filled field: floating label, focus ring, validation shake, animated supporting text, counter, icons, multiline |
-| `PvotSlider` | `components.slider` | Minimal slider: slim track, round thumb, tap to jump, optional snapping steps |
+| `PvotSlider` | `components.slider` | Minimal slider: slim track, round thumb that lifts into a lens under the finger, tap to jump, optional snapping steps |
 | `PvotRangeSlider` | `components.slider` | Two-thumb version of `PvotSlider` for choosing a span |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
-| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
+| `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar lifts a lens that follows the finger, previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
 | `PvotTopBar` | `navigation` | Back button, title and actions; the large title folds into the bar when `compact`, driven by `rememberPvotTopBarCompact(listState)`; over a `backdrop` the compact bar is glass. `PvotTopBarAction` for its icon buttons |
 | `PvotButton` | `components.button` | Pill button in four `PvotButtonStyle`s: `Filled`, `Tonal`, `Text`, `Destructive`; optional icon |
@@ -325,7 +350,9 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotGlassChip` | `components.camera` | A small glass label or button over a preview: format, recording timer, status |
 | `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. Offered to TalkBack as actions |
 | `PvotFastScroller` | `components.list` | Over the end edge of a long list of `PvotFastScrollSection`s: a thumb while scrolling, and a drag along the edge jumps by section with a label bubble and a haptic tick. Hidden when the list fits and from TalkBack |
-| `PvotSwitchRow` | `components.list` | Settings row with a switch; the whole row toggles |
+| `PvotSwitch` | `components` | A pill track and a round thumb; tap to toggle, or hold the thumb, which lifts into a lens, and slide it |
+| `PvotMenu` | `components` | A round button whose menu grows out of it; tap an item, or press the button and slide onto one to pick it; `PvotMenuItem`, `PvotMenuSeparator` |
+| `PvotSwitchRow` | `components.list` | Settings row with a `PvotSwitch`; the whole row toggles |
 | `PvotPreferenceRow` | `components.list` | Settings row with a summary, the current value and a chevron |
 | `PvotCallButton` | `components.call` | Call control: round button with its label under it as one target; with `checked` a toggle that morphs to a primary rounded square, reads as a switch and ticks a haptic; a `badge` dot for more choices |
 | `PvotCallActionButton` | `components.call` | Answer, decline or end: solid success or error color, never glass; a circle, or a pill with `EndWidth` |
@@ -338,7 +365,7 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotLinearProgress` | `components.progress` | A thin rounded progress bar, read at draw time; with `onSeek` it takes taps and drags and TalkBack can set it |
 | `PvotProportionBar` | `components.progress` | A bar of shares whose parts are tonal steps of one hue (`PvotProportionBarDefaults.tonalColors`), with legend dots in the same colors |
 | `PvotSlideToAct` | `components` | A puck slid up or down to act, flung or past a distance, springing back otherwise; haptics at the threshold, the target's color past halfway, each target a TalkBack action. `PvotSlideToActDefaults.decide` is the pure decision |
-| `PvotSegmentedControl` | `components` | Exclusive choices with a pill that slides to the selected one |
+| `PvotSegmentedControl` | `components` | Exclusive choices with a pill that slides to the selected one; held, it lifts into a lens and follows the finger |
 | `PvotSnackbarHost`, `PvotSnackbar` | `components` | Snackbars of a `SnackbarHostState`, with an action such as Undo and an optional close button |
 | `PvotLoadingContent` | `core-ui` | Indeterminate progress indicator for `UiState.Loading` |
 | `PvotErrorContent` | `core-ui` | Title, message and retry button for `UiState.Error` |
@@ -358,6 +385,10 @@ default comes from its `*Defaults` object:
 | Card | `PvotCardDefaults.shape`, `.colors()`, `.elevation()` | parameters of `PvotCard` |
 | Glass card | `PvotGlassCardDefaults.CornerRadius`, `.ContentPadding`, `PvotGlassDefaults.Style` | parameters of `PvotGlassCard` |
 | Glass materials | `PvotGlassDefaults.ClearStyle`, `.RegularStyle`, `.ThickStyle`; `.materialStyle(material)` (tinted, for a glass component's `style`); `.style(intensity, material)` | a `PvotGlassStyle` of your own as `base` |
+| Lenses | `PvotGlassDefaults.LensStyle`, `.LabelLensStyle`, `.lensStyle(lift, base)` | `base` |
+| Glass press | `PvotGlassDefaults.PressGrow`, `.PressStretch`, `.PressFollow`, `.PressHighlightColor`, `.PressSpring`, `.ReleaseSpring` | parameters of `Modifier.pvotGlassPress` |
+| Switch colors | `PvotSwitchDefaults.themeColors()` | `PvotSwitchDefaults.colors(colorScheme, ...)` |
+| Menu colors | `PvotMenuDefaults.themeColors()` | `PvotMenuDefaults.colors(colorScheme, ...)` |
 | Backgrounds | `PvotBackgroundDefaults.colors()`, `.motion()`, `.PhotoScrimAlpha`, `.PhotoBlurRadius` | parameters of each background |
 | Scaffold | `PvotScreenScaffoldDefaults.FloatingActionMargin` | slots of `PvotScreenScaffold` |
 | Skeleton | `PvotSkeletonDefaults.Shape`, `.baseColor`, `.highlightColor` | parameters of `PvotSkeleton` |
