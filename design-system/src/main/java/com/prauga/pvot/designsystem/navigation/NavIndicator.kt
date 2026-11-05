@@ -5,11 +5,13 @@ package com.prauga.pvot.designsystem.navigation
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.geometry.Rect
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 
 /** One item as the bar sees it: where it sits in the bar's item row and what tapping it does. */
 @Stable
@@ -32,6 +34,12 @@ internal class NavBarState {
 
     /** The item under the finger during a drag, or null when not dragging. */
     var hovered by mutableStateOf<NavItemEntry?>(null)
+
+    /** Where the finger is along the item row during a drag, or NaN when not dragging. */
+    var fingerX by mutableFloatStateOf(Float.NaN)
+
+    /** The item row, which the lens lifted during a drag refracts. */
+    val lensBackdrop = PvotGlassBackdrop()
 
     /** The item the indicator sits behind: the hovered one, else the selected one. */
     val active: NavItemEntry?

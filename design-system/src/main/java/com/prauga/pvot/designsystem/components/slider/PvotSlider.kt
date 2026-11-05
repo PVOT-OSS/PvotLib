@@ -9,15 +9,22 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitHorizontalTouchSlopOrCancellation
 import androidx.compose.foundation.gestures.horizontalDrag
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -33,7 +40,14 @@ import androidx.compose.ui.semantics.disabled
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.setProgress
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
+import com.prauga.pvot.designsystem.effects.pvotGlass
+import com.prauga.pvot.designsystem.effects.pvotGlassBackdrop
+import com.prauga.pvot.designsystem.effects.pvotGlassRim
+import com.prauga.pvot.designsystem.effects.rememberPvotGlassBackdrop
 import com.prauga.pvot.designsystem.motion.PvotMotion
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -41,10 +55,11 @@ import kotlin.math.roundToInt
 /**
  * A minimal slider: a slim rounded track, one round thumb and nothing else.
  *
- * Touch anywhere on the track to jump there, or drag. The thumb swells slightly under the finger on
- * a spring. With [steps] the value snaps to evenly spaced stops, marked by dots, and the device
- * ticks as each is crossed. A horizontal drag claims the gesture, so a slider inside a scrolling
- * list never fights the list's own vertical scroll.
+ * Touch anywhere on the track to jump there, or drag. Under the finger the thumb lifts into a lens
+ * that swells the track beneath it, and settles back when let go. With [steps] the value snaps to
+ * evenly spaced stops, marked by dots, and the device ticks as each is crossed. A horizontal drag
+ * claims the gesture, so a slider inside a scrolling list never fights the list's own vertical
+ * scroll.
  *
  * @param value The current value, within [valueRange]
  * @param onValueChange Called as the user moves the thumb, with the new value
@@ -74,14 +89,15 @@ public fun PvotSlider(
     var pressed by remember { mutableStateOf(false) }
 
     val fraction = valueRange.toFraction(value, steps)
-    val thumbScale by
+    val lift by
         animateFloatAsState(
-            targetValue = if (pressed) PvotSliderDefaults.PressedThumbScale else 1f,
-            animationSpec = PvotMotion.PressSpring,
-            label = "pvotSliderThumb",
+            targetValue = if (pressed) 1f else 0f,
+            animationSpec = PvotMotion.liftSpring(),
+            label = "pvotSliderLift",
         )
+    val backdrop = rememberPvotGlassBackdrop()
 
-    Box(
+    BoxWithConstraints(
         modifier =
             modifier
                 .fillMaxWidth()
@@ -141,42 +157,24 @@ public fun PvotSlider(
                         currentOnFinished?.invoke()
                     }
                 }
-                .drawWithCache {
-                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                    val trackH = PvotSliderDefaults.TrackHeight.toPx()
-                    val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
-                    onDrawBehind {
-                        val alpha = if (enabled) 1f else DisabledAlpha
-                        val centerY = size.height / 2f
-                        val usable = size.width - thumbPx
-                        val thumbX = thumbPx / 2f + fraction * usable
-                        drawTrack(
-                            colors.inactiveTrackColor.scaled(alpha),
-                            0f,
-                            size.width,
-                            centerY,
-                            trackH,
-                        )
-                        drawTrack(
-                            colors.activeTrackColor.scaled(alpha),
-                            0f,
-                            thumbX,
-                            centerY,
-                            trackH,
-                        )
-                        drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
-                            if (x <= thumbX) colors.activeTickColor.scaled(alpha)
-                            else colors.tickColor.scaled(alpha)
-                        }
-                        drawThumb(
-                            colors.thumbColor.scaled(alpha),
-                            thumbX,
-                            centerY,
-                            thumbPx / 2f * thumbScale,
-                        )
-                    }
-                }
-    )
+    ) {
+        val alpha = if (enabled) 1f else DisabledAlpha
+        Track(colors, alpha, steps, backdrop) { thumbPx, usable ->
+            val thumbX = thumbPx / 2f + fraction * usable
+            drawTrack(colors.activeTrackColor.scaled(alpha), 0f, thumbX, size.height / 2f)
+            drawTicks(steps, thumbPx, usable) { x ->
+                if (x <= thumbX) colors.activeTickColor.scaled(alpha)
+                else colors.tickColor.scaled(alpha)
+            }
+        }
+        Thumb(
+            constraints.maxWidth.toFloat(),
+            fraction,
+            lift,
+            colors.thumbColor.scaled(alpha),
+            backdrop,
+        )
+    }
 }
 
 /**
@@ -215,20 +213,21 @@ public fun PvotRangeSlider(
 
     val startFraction = valueRange.toFraction(value.start, steps)
     val endFraction = valueRange.toFraction(value.endInclusive, steps)
-    val startScale by
+    val startLift by
         animateFloatAsState(
-            targetValue = if (pressedThumb == 0) PvotSliderDefaults.PressedThumbScale else 1f,
-            animationSpec = PvotMotion.PressSpring,
-            label = "pvotRangeStartThumb",
+            targetValue = if (pressedThumb == 0) 1f else 0f,
+            animationSpec = PvotMotion.liftSpring(),
+            label = "pvotRangeStartLift",
         )
-    val endScale by
+    val endLift by
         animateFloatAsState(
-            targetValue = if (pressedThumb == 1) PvotSliderDefaults.PressedThumbScale else 1f,
-            animationSpec = PvotMotion.PressSpring,
-            label = "pvotRangeEndThumb",
+            targetValue = if (pressedThumb == 1) 1f else 0f,
+            animationSpec = PvotMotion.liftSpring(),
+            label = "pvotRangeEndLift",
         )
+    val backdrop = rememberPvotGlassBackdrop()
 
-    Box(
+    BoxWithConstraints(
         modifier =
             modifier
                 .fillMaxWidth()
@@ -302,48 +301,90 @@ public fun PvotRangeSlider(
                         currentOnFinished?.invoke()
                     }
                 }
-                .drawWithCache {
-                    val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
-                    val trackH = PvotSliderDefaults.TrackHeight.toPx()
-                    val tickR = PvotSliderDefaults.TickSize.toPx() / 2f
-                    onDrawBehind {
-                        val alpha = if (enabled) 1f else DisabledAlpha
-                        val centerY = size.height / 2f
-                        val usable = size.width - thumbPx
-                        val startX = thumbPx / 2f + startFraction * usable
-                        val endX = thumbPx / 2f + endFraction * usable
-                        drawTrack(
-                            colors.inactiveTrackColor.scaled(alpha),
-                            0f,
-                            size.width,
-                            centerY,
-                            trackH,
-                        )
-                        drawTrack(
-                            colors.activeTrackColor.scaled(alpha),
-                            startX,
-                            endX,
-                            centerY,
-                            trackH,
-                        )
-                        drawTicks(steps, thumbPx, usable, centerY, tickR) { x ->
-                            if (x in startX..endX) colors.activeTickColor.scaled(alpha)
-                            else colors.tickColor.scaled(alpha)
-                        }
-                        drawThumb(
-                            colors.thumbColor.scaled(alpha),
-                            startX,
-                            centerY,
-                            thumbPx / 2f * startScale,
-                        )
-                        drawThumb(
-                            colors.thumbColor.scaled(alpha),
-                            endX,
-                            centerY,
-                            thumbPx / 2f * endScale,
-                        )
-                    }
+    ) {
+        val alpha = if (enabled) 1f else DisabledAlpha
+        Track(colors, alpha, steps, backdrop) { thumbPx, usable ->
+            val startX = thumbPx / 2f + startFraction * usable
+            val endX = thumbPx / 2f + endFraction * usable
+            drawTrack(colors.activeTrackColor.scaled(alpha), startX, endX, size.height / 2f)
+            drawTicks(steps, thumbPx, usable) { x ->
+                if (x in startX..endX) colors.activeTickColor.scaled(alpha)
+                else colors.tickColor.scaled(alpha)
+            }
+        }
+        val width = constraints.maxWidth.toFloat()
+        Thumb(width, startFraction, startLift, colors.thumbColor.scaled(alpha), backdrop)
+        Thumb(width, endFraction, endLift, colors.thumbColor.scaled(alpha), backdrop)
+    }
+}
+
+@Composable
+private fun Track(
+    colors: PvotSliderColors,
+    alpha: Float,
+    steps: Int,
+    backdrop: PvotGlassBackdrop,
+    active: DrawScope.(thumbPx: Float, usable: Float) -> Unit,
+) {
+    Box(
+        modifier =
+            Modifier.fillMaxSize().pvotGlassBackdrop(backdrop).drawWithCache {
+                val thumbPx = PvotSliderDefaults.ThumbSize.toPx()
+                onDrawBehind {
+                    val usable = size.width - thumbPx
+                    drawTrack(
+                        colors.inactiveTrackColor.scaled(alpha),
+                        0f,
+                        size.width,
+                        size.height / 2f,
+                    )
+                    active(thumbPx, usable)
                 }
+            }
+    )
+}
+
+@Composable
+private fun BoxScope.Thumb(
+    maxWidthPx: Float,
+    fraction: Float,
+    lift: Float,
+    color: Color,
+    backdrop: PvotGlassBackdrop,
+) {
+    val thumb = PvotSliderDefaults.ThumbSize
+    val diameter = thumb * (1f + (PvotSliderDefaults.LiftedThumbScale - 1f) * lift)
+    val face = 1f - PvotSliderDefaults.LiftedFaceFade * lift
+    Box(
+        modifier =
+            Modifier.align(Alignment.CenterStart)
+                .offset {
+                    val thumbPx = thumb.toPx()
+                    val centerX = thumbPx / 2f + fraction * (maxWidthPx - thumbPx)
+                    IntOffset((centerX - diameter.toPx() / 2f).roundToInt(), 0)
+                }
+                .size(diameter)
+                .then(
+                    if (lift > 0f) {
+                        Modifier.pvotGlass(
+                            backdrop,
+                            PvotGlassDefaults.CapsuleRadius,
+                            PvotGlassDefaults.lensStyle(lift),
+                        )
+                    } else {
+                        Modifier
+                    }
+                )
+                .drawBehind {
+                    val radius = size.minDimension / 2f
+                    drawCircle(
+                        Color.Black.copy(alpha = 0.18f * face),
+                        radius + 1.5.dp.toPx(),
+                        center + Offset(0f, 0.5.dp.toPx()),
+                    )
+                    drawCircle(color.copy(alpha = color.alpha * face), radius)
+                }
+                .then(if (lift > 0f) Modifier.pvotGlassRim(alpha = lift) else Modifier)
     )
 }
 
@@ -363,14 +404,9 @@ private fun ClosedFloatingPointRange<Float>.fromFraction(fraction: Float): Float
 private fun ClosedFloatingPointRange<Float>.snap(fraction: Float, steps: Int): Float =
     if (steps > 0) (fraction * (steps + 1)).roundToInt() / (steps + 1).toFloat() else fraction
 
-private fun DrawScope.drawTrack(
-    color: Color,
-    fromX: Float,
-    toX: Float,
-    centerY: Float,
-    height: Float,
-) {
+private fun DrawScope.drawTrack(color: Color, fromX: Float, toX: Float, centerY: Float) {
     if (toX <= fromX) return
+    val height = PvotSliderDefaults.TrackHeight.toPx()
     drawRoundRect(
         color = color,
         topLeft = Offset(fromX, centerY - height / 2f),
@@ -383,23 +419,13 @@ private fun DrawScope.drawTicks(
     steps: Int,
     thumbPx: Float,
     usable: Float,
-    centerY: Float,
-    radius: Float,
     colorAt: (x: Float) -> Color,
 ) {
     if (steps <= 0) return
+    val radius = PvotSliderDefaults.TickSize.toPx() / 2f
+    val centerY = size.height / 2f
     for (i in 1..steps) {
         val x = thumbPx / 2f + usable * i / (steps + 1)
         drawCircle(colorAt(x), radius, Offset(x, centerY))
     }
-}
-
-private fun DrawScope.drawThumb(color: Color, x: Float, centerY: Float, radius: Float) {
-    // A faint halo keeps the thumb readable where it sits on the same-colored track.
-    drawCircle(
-        Color.Black.copy(alpha = 0.18f),
-        radius + 1.5.dp.toPx(),
-        Offset(x, centerY + 0.5.dp.toPx()),
-    )
-    drawCircle(color, radius, Offset(x, centerY))
 }

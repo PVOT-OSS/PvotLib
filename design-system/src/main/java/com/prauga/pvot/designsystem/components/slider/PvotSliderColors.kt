@@ -47,6 +47,12 @@ public object PvotSliderDefaults {
     /** How much larger the thumb gets while pressed. */
     public const val PressedThumbScale: Float = 1.2f
 
+    /** How much larger the thumb is once lifted into a lens under the finger. */
+    public const val LiftedThumbScale: Float = 1.6f
+
+    /** How much of the thumb's fill fades out once lifted, so the track shows through the lens. */
+    public const val LiftedFaceFade: Float = 0.85f
+
     /** Slider colors derived from [colorScheme], each overridable. */
     public fun colors(
         colorScheme: ColorScheme,

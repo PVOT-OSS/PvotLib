@@ -12,6 +12,27 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotSwitch` (`components`), a pill switch whose thumb lifts into a lens under
+  the finger and slides; `PvotSwitchRow` now ends with one. `PvotMenu` (`components`), a round
+  button whose menu grows out of it, with `PvotMenuItem` and `PvotMenuSeparator`; tap an item, or
+  press the button and slide onto one to pick it. Each with its `*Colors` and `*Defaults`; shown on
+  the catalog's Settings rows and Menu pages.
+- `design-system`: lift to lens. Held, the pill of `PvotSegmentedControl` and the item under a drag
+  along `PvotNavBar` lift into a lens over their labels and follow the finger; the thumbs of
+  `PvotSlider` and `PvotRangeSlider` lift into a lens that swells the track. A quick swipe up or
+  down that starts on a segmented control or switch still scrolls the list it is in.
+  `PvotMotion.TouchHoldMillis`, `slideSpring()`, `followSpring()` and `liftSpring()` carry the
+  timing.
+- `design-system`: `Modifier.pvotGlassPress`, the press feel of every glass control: the longer side
+  grows by a fixed `PvotGlassDefaults.PressGrow`, the control stretches toward a drag and follows
+  it a little, a soft light shows at the point of touch, and it springs back past its size on
+  release. `pvotGlassSurface` uses it in place of `pvotPressScale`.
+- `design-system`: `PvotGlassStyle.dome` (the middle swells what is under it, for a lens) and
+  `PvotGlassStyle.saturation` (what shows through is more vivid, 1.5 by default);
+  `PvotGlassDefaults.LensStyle`, `LabelLensStyle` and `lensStyle(lift)`; `LightThemeFillColor`,
+  `LightThemeGlowGain` and `themeFillColor()`, which `style(intensity)` applies on a light theme.
+- `catalog`: a Glass playground page with the bend, dispersion, frost, rim, dome and saturation of a
+  pane you can drag over the background, and the material and lens presets.
 - `design-system`: `PvotAvatarStack` (`components.list`), overlapping avatars with a "+n" count, and
   the agenda pieces in `components.calendar`: `PvotDateHeader`, `PvotDayStrip` (with
   `PvotDayStripColors`) and `PvotEventCard`, each with its `*Defaults`. Shown on the catalog's
@@ -22,6 +43,20 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   `PvotControlTile`, `PvotAdjustmentSheet` with `PvotRuler` and `PvotChoiceRow`, and `PvotGlassChip`,
   each with its `*Colors` and `*Defaults`, plus `PvotCameraGlassDefaults`. Shown on the catalog's
   Camera page. They come from the PVOT Camera app's Compose screen.
+
+### Changed
+- The glass bends the other way, as iOS does: the rim pulls what lies just inside it out to the
+  edge, as a drop of water does, instead of showing what lies outside. The default
+  `PvotGlassStyle` follows Glisse's measured defaults: the bend reaches 0.45 of the shorter side,
+  a slight split (red furthest out), no blur, no mirror and a faint rim light (0.13), over a dark
+  grey tint at a little over half strength (white on a light theme), saturated 1.5x. Set
+  `PvotGlassStyle.saturation` to 1, `blur` to 5.dp and `reflection` to 0.85f for the old look.
+  `Regular` and `Thick` keep their blur.
+- Glass controls swell under the finger by a fixed amount of their longer side and overshoot on
+  release (`pvotGlassPress`), instead of the uniform 1.04 scale.
+- `PvotSwitchRow`'s `switchColors` is a `PvotSwitchColors` and `PvotSettingsRowDefaults.switchColors()`
+  returns one, now that the row ends with a `PvotSwitch` rather than the Material switch.
+- The press, lift and drag feel is adapted from Glisse (MIT), credited in `THIRD_PARTY_NOTICES.md`.
 
 ### Fixed
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
