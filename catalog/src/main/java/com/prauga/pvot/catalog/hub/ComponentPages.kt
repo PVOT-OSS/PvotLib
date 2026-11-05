@@ -104,7 +104,8 @@ internal fun NavBarPage(onBack: () -> Unit) {
         title = "Navigation bar",
         summary =
             "A floating bar of bare icons; the selected one opens into a pill. Drag a finger " +
-                "along the bar to preview items and lift to select. Compact mode shrinks it to icons.",
+                "along the bar and a lens follows it, previewing items; lift to select. Compact " +
+                "mode shrinks it to icons.",
         onBack = onBack,
         code =
             "PvotNavBar(\n    selectedTab = selectedTab,\n    onTabClick = { selectedTab = it },\n" +
@@ -440,7 +441,8 @@ internal fun SliderPage(onBack: () -> Unit) {
         title = "Slider",
         summary =
             "Pvot's own slider: a slim track and one round thumb. Touch anywhere to jump, " +
-                "drag to scrub. It replaces the Material slider everywhere in Pvot.",
+                "drag to scrub; under the finger the thumb lifts into a lens that swells the " +
+                "track. It replaces the Material slider everywhere in Pvot.",
         onBack = onBack,
         code =
             "var value by remember { mutableFloatStateOf(0.4f) }\n" +

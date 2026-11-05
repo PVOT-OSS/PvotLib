@@ -7,6 +7,8 @@ package com.prauga.pvot.designsystem.effects
 import android.graphics.RuntimeShader
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.border
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.isSpecified
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.RenderEffect
 import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.graphics.asComposeRenderEffect
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
@@ -53,7 +57,8 @@ import kotlin.math.min
  *
  * @param referenceSize The shorter side the other sizes are tuned for
  * @param band How far in from the edge the rim reaches: the bend, reflection and light
- * @param strength How far out the bend reads at the very edge
+ * @param strength How far in the bend reads at the very edge: the rim shows what lies that far
+ *   inside it, pulled out to the edge, as a drop of water does
  * @param aberration How far apart red and blue split at the edge
  * @param edgeBlur How much the rim is softened, strongest at the edge
  * @param blur How much what shows through is frosted, middle and rim alike
@@ -67,33 +72,41 @@ import kotlin.math.min
  * @param frost The blur, in dp, of a glass at the frosted end of [PvotGlassDefaults.style]; it does
  *   not scale with the glass's size
  * @param frostMix How far the blur is [frost] rather than [blur], 0 to 1
+ * @param dome How far the middle magnifies what is under it, as the pull at the very edge: 0 for a
+ *   flat pane whose middle shows the content as it is, more for a drop of water that swells it, as
+ *   a lifted thumb does over its track
+ * @param saturation How much more vivid what shows through is, 1 for as it is; glass makes the
+ *   colors behind it richer
  */
 @Immutable
 public data class PvotGlassStyle(
     val referenceSize: Dp = 46.dp,
     val band: Dp = 12.dp,
-    val strength: Dp = 11.dp,
-    val aberration: Dp = 3.dp,
+    val strength: Dp = 21.dp,
+    val aberration: Dp = 2.dp,
     val edgeBlur: Dp = 2.5.dp,
-    val blur: Dp = 5.dp,
-    val reflection: Float = 0.85f,
+    val blur: Dp = 0.dp,
+    val reflection: Float = 0f,
     val mirrorScale: Float = 1f,
-    val glow: Float = 0.22f,
+    val glow: Float = 0.13f,
     val darkGlow: Float = 0.35f,
     val vividSpread: Dp = 11.dp,
-    val vividMix: Float = 1f,
+    val vividMix: Float = 0f,
     val fillColor: Color = PvotGlassDefaults.FillColor,
     val frost: Dp = PvotGlassDefaults.FrostBlur,
     val frostMix: Float = 0f,
+    val dome: Dp = 0.dp,
+    val saturation: Float = PvotGlassDefaults.Saturation,
 ) {
-    /** Whether the edge lens (the bend, split, reflection and light) has anything to draw. */
+    /** Whether the edge lens (the bend, split, reflection, light and dome) has anything to draw. */
     internal val lensActive: Boolean
         get() =
             strength.value > 0f ||
                 aberration.value > 0f ||
                 reflection > 0f ||
                 glow > 0f ||
-                vividMix > 0f
+                vividMix > 0f ||
+                dome.value > 0f
 }
 
 /**
@@ -113,8 +126,32 @@ public object PvotGlassDefaults {
     /** A corner radius that rounds the glass into a capsule, or a circle if it is square. */
     public val CapsuleRadius: Dp = Dp.Infinity
 
-    /** The glass's tint: a faint white haze, so what shows through is a little brighter. */
-    public val FillColor: Color = Color(0x0AFFFFFF)
+    /**
+     * The glass's tint on a dark theme: a dark grey at a little over half strength, so the glass
+     * has a body of its own and what bends at its rim stands out against it.
+     */
+    public val FillColor: Color = Color(0x9E282828)
+
+    /**
+     * The glass's tint on a light theme: white at a little over half strength, for the same body
+     * over a light background.
+     */
+    public val LightThemeFillColor: Color = Color(0x99FFFFFF)
+
+    /** How much more vivid what shows through the glass is, as iOS draws it. */
+    public const val Saturation: Float = 1.5f
+
+    /**
+     * How much brighter the rim's light is on a light theme, where a faint light vanishes against
+     * the background.
+     */
+    public const val LightThemeGlowGain: Float = 1.6f
+
+    /** The glass's tint for the theme in scope: [LightThemeFillColor] on a light theme. */
+    @Composable
+    public fun themeFillColor(): Color =
+        if (MaterialTheme.colorScheme.background.luminance() > 0.5f) LightThemeFillColor
+        else FillColor
 
     /** The glass's default look. */
     public val Style: PvotGlassStyle = PvotGlassStyle()
@@ -164,19 +201,61 @@ public object PvotGlassDefaults {
     /** The look of [PvotGlassMaterial.Clear]: [Style], a faint haze and a light blur. */
     public val ClearStyle: PvotGlassStyle = Style
 
-    /** The look of [PvotGlassMaterial.Regular]: a deeper blur and a softer bend. */
-    public val RegularStyle: PvotGlassStyle =
-        Style.copy(blur = 10.dp, strength = 8.dp, glow = 0.18f)
+    /**
+     * The look of a lens: a thumb or a selection lifted off its track while held. No blur, so what
+     * is under it stays sharp, a dome that swells it, a firmer bend at the edge and a wider color
+     * split, as a drop of water over the track.
+     */
+    public val LensStyle: PvotGlassStyle =
+        Style.copy(
+            band = 8.dp,
+            dome = 5.dp,
+            strength = 24.dp,
+            aberration = 5.dp,
+            glow = 0.3f,
+            fillColor = Color(0x14FFFFFF),
+        )
+
+    /**
+     * The look of a lens over labels, such as a tab bar's selection: a light bend at the edge with
+     * a strong split, so what crosses the rim fringes into color, softened a little, and no dome.
+     */
+    public val LabelLensStyle: PvotGlassStyle =
+        Style.copy(
+            band = 8.dp,
+            edgeBlur = 2.dp,
+            strength = 9.dp,
+            aberration = 4.dp,
+            glow = 0.3f,
+            fillColor = Color(0x14FFFFFF),
+        )
+
+    /**
+     * [LensStyle] at [lift], from 0 (a thumb at rest: nothing but its face) to 1 (the lens fully
+     * lifted), for a glass that grows into a lens while held.
+     *
+     * @param lift How far the thumb is lifted, 0 to 1
+     * @param base The style of the fully lifted lens
+     */
+    public fun lensStyle(lift: Float, base: PvotGlassStyle = LensStyle): PvotGlassStyle {
+        val l = lift.coerceIn(0f, 1f)
+        return base.copy(
+            strength = base.strength * l,
+            aberration = base.aberration * l,
+            dome = base.dome * l,
+            reflection = base.reflection * l,
+            glow = base.glow * l,
+            vividMix = base.vividMix * l,
+            fillColor = base.fillColor.copy(alpha = base.fillColor.alpha * l),
+        )
+    }
+
+    /** The look of [PvotGlassMaterial.Regular]: a blur behind the glass and a softer bend. */
+    public val RegularStyle: PvotGlassStyle = Style.copy(blur = 10.dp, strength = 15.dp)
 
     /** The look of [PvotGlassMaterial.Thick]: the deepest blur, with the lens held back. */
     public val ThickStyle: PvotGlassStyle =
-        Style.copy(
-            blur = 18.dp,
-            strength = 5.dp,
-            aberration = 1.5.dp,
-            reflection = 0.5f,
-            vividMix = 0.5f,
-        )
+        Style.copy(blur = 18.dp, strength = 9.dp, aberration = 1.dp)
 
     /** The style of [material] at full intensity, before its tint is applied. */
     public fun styleOf(material: PvotGlassMaterial): PvotGlassStyle =
@@ -253,22 +332,26 @@ public object PvotGlassDefaults {
         if (i <= SolidIntensity) {
             return solidStyle(base, surface)
         }
+        val light = MaterialTheme.colorScheme.background.luminance() > 0.5f
         val lens = if (i < LensThreshold || !isLensSupported) 0f else i
         val frost = surface.copy(alpha = FrostFillAlpha)
+        val tint = if (light && base.fillColor == FillColor) LightThemeFillColor else base.fillColor
+        val glowGain = if (light) LightThemeGlowGain else 1f
         return base.copy(
             strength = base.strength * lens,
             aberration = base.aberration * lens,
             edgeBlur = base.edgeBlur * lens,
             vividSpread = base.vividSpread * lens,
             reflection = base.reflection * lens,
-            glow = base.glow * lens,
+            glow = (base.glow * glowGain * lens).coerceAtMost(1f),
             darkGlow = base.darkGlow * lens,
             vividMix = base.vividMix * lens,
+            dome = base.dome * lens,
             // Without a blur there is nothing to frost, so the glass is a nearly opaque surface:
             // anything less lets the content behind it show through, sharp.
             fillColor =
                 if (isBlurSupported) {
-                    lerp(frost, base.fillColor, i)
+                    lerp(frost, tint, i)
                 } else {
                     surface.copy(alpha = NoBlurFillAlpha)
                 },
@@ -288,6 +371,8 @@ public object PvotGlassDefaults {
             glow = 0f,
             darkGlow = 0f,
             vividMix = 0f,
+            dome = 0.dp,
+            saturation = 1f,
             fillColor = surface.copy(alpha = NoBlurFillAlpha),
             frost = 0.dp,
             frostMix = 1f,
@@ -339,6 +424,30 @@ public object PvotGlassDefaults {
     /** How much a glass control swells while it is pressed. */
     public const val PressedScale: Float = 1.04f
 
+    /** How much a glass control's longer side grows while pressed, see [pvotGlassPress]. */
+    public val PressGrow: Dp = 15.dp
+
+    /** How much a pressed glass control stretches toward a drag. */
+    public val PressStretch: Dp = 6.dp
+
+    /** How far a pressed glass control follows a drag before it holds back. */
+    public val PressFollow: Dp = 8.dp
+
+    /** The light at the point of touch on a pressed glass control. */
+    public val PressHighlightColor: Color = Color(0x12FFFFFF)
+
+    /** How far the light at the point of touch reaches. */
+    public val HighlightRadius: Dp = 120.dp
+
+    /** How long the light at the point of touch takes to fade once the finger lifts. */
+    public const val HighlightFadeMillis: Int = 220
+
+    /** How a glass control swells under the finger: firm, settles quickly. */
+    public val PressSpring: SpringSpec<Float> = spring(dampingRatio = 0.6f, stiffness = 515f)
+
+    /** How a glass control springs back when let go: loose enough to overshoot its size. */
+    public val ReleaseSpring: SpringSpec<Float> = spring(dampingRatio = 0.37f, stiffness = 250f)
+
     /** Elevation of the shadow that lifts glass controls off the content behind them. */
     public val ShadowElevation: Dp = 12.dp
 
@@ -347,9 +456,11 @@ public object PvotGlassDefaults {
 }
 
 /**
- * Draws this element's background as glass over [backdrop]: what lies behind shows through frosted,
- * and a soft rim along the edge bends it in from just outside, with a slight red and blue split, a
- * mirrored copy of what lies outside the edge, and a soft light in place of a border.
+ * Draws this element's background as glass over [backdrop]: what lies behind shows through, a
+ * little more vivid and frosted if the style says so, and a soft rim along the edge pulls what lies
+ * just inside it out to the edge, as a drop of water does, with a slight red and blue split and a
+ * soft light in place of a border. With a [PvotGlassStyle.dome] the middle swells what is under it
+ * too.
  *
  * The rim needs Android 13, the frost Android 12; before them the glass is its tint alone. Only
  * what is drawn in [backdrop] shows through, not other windows or the wallpaper.
@@ -520,6 +631,7 @@ private class GlassNode(
         val aberration = style.aberration.toPx() * scale
         val edgeBlur = style.edgeBlur.toPx() * scale
         val vividSpread = style.vividSpread.toPx() * scale
+        val dome = style.dome.toPx() * scale
         val blur = lerp(style.blur.toPx() * scale, style.frost.toPx(), style.frostMix)
         margin =
             ceil(
@@ -529,7 +641,9 @@ private class GlassNode(
                     ) + blur * 2
                 )
                 .toInt() + 2
-        frost?.renderEffect = if (blur > 0f) BlurEffect(blur, blur, TileMode.Clamp) else null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            frost?.renderEffect = frostEffect(blur, style.saturation)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && style.lensActive) {
             setLensUniforms(
                 radius,
@@ -540,8 +654,27 @@ private class GlassNode(
                 aberration,
                 edgeBlur,
                 vividSpread,
+                dome,
             )
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun frostEffect(blur: Float, saturation: Float): RenderEffect? {
+        val blurred = if (blur > 0f) BlurEffect(blur, blur, TileMode.Clamp) else null
+        if (saturation == 1f) return blurred
+        val matrix = ColorMatrix().apply { setToSaturation(saturation) }
+        val filter = android.graphics.ColorMatrixColorFilter(matrix.values)
+        val saturated =
+            if (blurred != null) {
+                android.graphics.RenderEffect.createColorFilterEffect(
+                    filter,
+                    blurred.asAndroidRenderEffect(),
+                )
+            } else {
+                android.graphics.RenderEffect.createColorFilterEffect(filter)
+            }
+        return saturated.asComposeRenderEffect()
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -554,6 +687,7 @@ private class GlassNode(
         aberration: Float,
         edgeBlur: Float,
         vividSpread: Float,
+        dome: Float,
     ) {
         val shader = lensShader ?: return
         shader.setFloatUniform("origin", margin.toFloat(), margin.toFloat())
@@ -569,6 +703,7 @@ private class GlassNode(
         shader.setFloatUniform("glow", style.glow)
         shader.setFloatUniform("darkGlow", style.darkGlow)
         shader.setFloatUniform("vividMix", style.vividMix)
+        shader.setFloatUniform("dome", dome)
         lens?.renderEffect =
             android.graphics.RenderEffect.createRuntimeShaderEffect(shader, "content")
                 .asComposeRenderEffect()
@@ -591,6 +726,7 @@ uniform float glow;
 uniform float darkGlow;
 uniform float vividSpread;
 uniform float vividMix;
+uniform float dome;
 
 // Distance from p to the edge of a rounded rect of half-size b, corner r, centred
 // at 0: negative inside.
@@ -601,8 +737,8 @@ float roundRect(float2 p, float2 b, float r) {
 
 half4 split(float2 at, float2 apart) {
     half4 c = content.eval(at);
-    half4 red = content.eval(at + apart);
-    half4 blue = content.eval(at - apart);
+    half4 red = content.eval(at - apart);
+    half4 blue = content.eval(at + apart);
     return half4(red.r, c.g, blue.b, max(c.a, max(red.a, blue.a)));
 }
 
@@ -614,12 +750,20 @@ float vividness(half4 c) {
     return clamp((hi - lo) / max(hi, 0.25) * c.a, 0.0, 1.0);
 }
 
+float2 swell(float2 p, float2 halfSize) {
+    if (dome <= 0.0) return float2(0.0);
+    float2 q = p / max(halfSize, float2(1.0));
+    float r = min(length(q), 1.0);
+    return -q * (dome * r);
+}
+
 half4 main(float2 coord) {
     float2 halfSize = size * 0.5;
     float2 p = coord - origin - halfSize;
     if (roundRect(p, halfSize, radius) >= 0.0) {
         return content.eval(coord);
     }
+    float2 domed = swell(p, halfSize);
     // The band is laid out against the same shape with its corners rounded at least
     // as much as the band is deep: against the glass's own corners, a band deeper
     // than they are round would meet itself at each inner corner in a sharp diagonal
@@ -631,7 +775,7 @@ half4 main(float2 coord) {
     // 1 at the edge, 0 from band in.
     float t = clamp(1.0 + d / band, 0.0, 1.0);
     if (t <= 0.0) {
-        return content.eval(coord);
+        return content.eval(coord + domed);
     }
     // The outward normal: the distance's gradient.
     float2 n = float2(
@@ -648,7 +792,7 @@ half4 main(float2 coord) {
     float2 apart = n * (aberration * ease);
 
     // The bend.
-    float2 at = coord + n * (strength * ease);
+    float2 at = coord + domed - n * (strength * ease);
     float soft = edgeBlur * ramp;
     half4 bent = split(at, apart) * 0.4
         + split(at + tangent * soft, apart) * 0.15

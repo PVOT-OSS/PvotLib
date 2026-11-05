@@ -34,14 +34,14 @@ import com.prauga.pvot.designsystem.effects.PvotGlassBackdrop
 import com.prauga.pvot.designsystem.effects.PvotGlassDefaults
 import com.prauga.pvot.designsystem.effects.PvotGlassStyle
 import com.prauga.pvot.designsystem.effects.pvotGlass
+import com.prauga.pvot.designsystem.effects.pvotGlassPress
 import com.prauga.pvot.designsystem.effects.pvotGlassRim
-import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.motion.PvotDurations
 
 /**
  * Draws this element as a glass control over [backdrop], the way every glass component does: it
- * swells while pressed, floats on a soft shadow, keeps a hairline edge where the rim's light fades,
- * is clipped to its shape, and, with [onClick], acts as a button.
+ * swells under the finger (see [pvotGlassPress]), floats on a soft shadow, keeps a hairline edge
+ * where the rim's light fades, is clipped to its shape, and, with [onClick], acts as a button.
  *
  * Use it to build a glass control the library has no component for; [PvotGlassCard] and
  * [PvotGlassIconButton] are built on it.
@@ -115,7 +115,7 @@ internal fun Modifier.glassSurface(
         )
     var modifier = this
     if (onClick != null) {
-        modifier = modifier.pvotPressScale(source, PvotGlassDefaults.PressedScale)
+        modifier = modifier.pvotGlassPress(cornerRadius, enabled)
     }
     if (backdrop != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         val shadowColor = Color.Black.copy(alpha = PvotGlassDefaults.ShadowAlpha)

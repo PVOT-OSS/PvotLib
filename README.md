@@ -338,8 +338,10 @@ Release with the AARs, their sources and the catalog APK.
 | PvotChip | Filter and action chips | Planned |
 | PvotListRow | List rows, letter tiles and swipe actions (`PvotSwipeRow`) | Done |
 | PvotFastScroller | Jump through a long sectioned list, such as contacts by letter | Done |
+| PvotSwitch | Switch whose thumb lifts into a lens and slides | Done |
 | PvotSwitchRow / PvotPreferenceRow | Settings rows | Done |
-| PvotSegmentedControl | Segmented control with a sliding pill | Done |
+| PvotSegmentedControl | Segmented control with a pill that lifts into a lens and follows a drag | Done |
+| PvotMenu | Menu that grows out of its button; press and slide to pick | Done |
 | PvotSnackbarHost | Snackbars with Undo | Done |
 | PvotFab | Floating action button, round or extended | Done |
 | PvotBottomSheet | Bottom sheet with drag handle | Done |

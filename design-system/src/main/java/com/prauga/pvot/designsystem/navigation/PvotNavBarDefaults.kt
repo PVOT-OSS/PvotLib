@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
 /** Defaults for [PvotNavBar] and its items. */
@@ -20,6 +22,9 @@ public object PvotNavBarDefaults {
 
     /** Gap between an item's icon and its label. */
     public val IconTextGap: Dp = PvotSpacing.S
+
+    /** How much wider and taller than the item under it the lens is while a drag holds it. */
+    public val LensGrow: DpSize = DpSize(24.dp, 16.dp)
 
     /** Start of the brand gradient behind a selected item. */
     public val GradientStart: Color = Color(0xFF7A6BFF)

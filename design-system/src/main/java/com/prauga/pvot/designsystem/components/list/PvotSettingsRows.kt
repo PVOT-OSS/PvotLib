@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchColors
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,6 +23,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.R
+import com.prauga.pvot.designsystem.components.PvotSwitch
+import com.prauga.pvot.designsystem.components.PvotSwitchColors
+import com.prauga.pvot.designsystem.components.PvotSwitchDefaults
 import com.prauga.pvot.designsystem.effects.pvotPressScale
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 
@@ -38,8 +38,8 @@ public object PvotSettingsRowDefaults {
     /** Size of the chevron at the end of a [PvotPreferenceRow]. */
     public val ChevronSize: Dp = 20.dp
 
-    /** Colors of the switch in a [PvotSwitchRow], the theme's own switch. */
-    @Composable public fun switchColors(): SwitchColors = SwitchDefaults.colors()
+    /** Colors of the switch in a [PvotSwitchRow]: [PvotSwitchDefaults.themeColors]. */
+    @Composable public fun switchColors(): PvotSwitchColors = PvotSwitchDefaults.themeColors()
 }
 
 /**
@@ -70,7 +70,7 @@ public fun PvotSwitchRow(
     iconStyle: PvotRowIconStyle = PvotRowIconStyle.Contained,
     enabled: Boolean = true,
     colors: PvotListRowColors = PvotListRowDefaults.themeColors(),
-    switchColors: SwitchColors = PvotSettingsRowDefaults.switchColors(),
+    switchColors: PvotSwitchColors = PvotSettingsRowDefaults.switchColors(),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     PvotRowLayout(
@@ -91,7 +91,7 @@ public fun PvotSwitchRow(
         leading = icon?.let { { PvotRowIcon(colors, it, iconStyle) } },
         trailing = {
             // The row toggles; the switch only shows the state, so it takes no clicks of its own.
-            Switch(
+            PvotSwitch(
                 checked = checked,
                 onCheckedChange = null,
                 enabled = enabled,

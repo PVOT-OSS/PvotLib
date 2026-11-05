@@ -293,14 +293,19 @@ internal fun SettingsRowsPage(onBack: () -> Unit) {
     DetailPage(
         title = "Settings rows",
         summary =
-            "PvotSwitchRow turns something on or off; the whole row toggles. PvotPreferenceRow " +
-                "opens something, with the current value and a chevron.",
+            "PvotSwitch toggles on a tap, or by holding its thumb, which lifts into a lens, and " +
+                "sliding it. PvotSwitchRow puts one at the end of a row that toggles as a whole. " +
+                "PvotPreferenceRow opens something, with the current value and a chevron.",
         onBack = onBack,
         code =
-            "PvotSwitchRow(\n    title = \"Vibrate for calls\",\n    checked = vibrate,\n    onCheckedChange = { vibrate = it }\n)\n" +
+            "PvotSwitch(checked = on, onCheckedChange = { on = it })\n" +
+                "PvotSwitchRow(\n    title = \"Vibrate for calls\",\n    checked = vibrate,\n    onCheckedChange = { vibrate = it }\n)\n" +
                 "PvotPreferenceRow(\n    title = \"Ringtone\",\n    value = tone,\n    onClick = { openPicker() }\n)",
     ) {
-        DemoSection(title = "Switches", framed = false) {
+        DemoSection(title = "Switch", caption = "Tap, or hold the thumb and slide it") {
+            SwitchDemo()
+        }
+        DemoSection(title = "Switch rows", framed = false) {
             GlassPanelColumn {
                 PvotSwitchRow(
                     title = "Vibrate for calls",
@@ -466,8 +471,9 @@ internal fun SegmentedControlPage(onBack: () -> Unit) {
     DetailPage(
         title = "Segmented control",
         summary =
-            "Mutually exclusive choices with a pill that slides to the selected one. Segments share " +
-                "the width; selecting ticks the haptics.",
+            "Mutually exclusive choices with a pill that slides to the selected one. Hold it and " +
+                "the pill lifts into a lens that follows the finger; let go to pick. Segments " +
+                "share the width; picking ticks the haptics.",
         onBack = onBack,
         code =
             "PvotSegmentedControl(\n    options = listOf(\"All\", \"Missed\"),\n    selectedIndex = filter,\n" +
