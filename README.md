@@ -7,6 +7,8 @@ SPDX-License-Identifier: Apache-2.0
 
 A Jetpack Compose design system library for building consistent Android applications.
 
+[![Exodus Privacy](https://img.shields.io/badge/Exodus-0%20trackers-brightgreen)](https://reports.exodus-privacy.eu.org/en/reports/com.prauga.pvot/latest/)
+
 <p align="center">
   <img src="assets/1.png" width="300" alt="PvotNavBar Home"/>
   <img src="assets/2.png" width="300" alt="PvotNavBar Settings"/>
