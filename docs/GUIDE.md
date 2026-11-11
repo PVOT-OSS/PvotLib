@@ -469,6 +469,7 @@ For dynamic color parity with `PvotAppTheme(dynamicColor = true)`, call
 | `PvotSpacing.XS` ... `L` | `@dimen/pvot_spacing_xs` ... `pvot_spacing_l`; `pvot_spacing_section` (28dp), `pvot_touch_target` (48dp) |
 | `PvotDurations.Short` / `Medium` / `Long` | `@integer/pvot_duration_short` / `_medium` / `_long` |
 | `PvotMotion.Settle` | `@interpolator/pvot_settle` |
+| `PvotFontFamily` | `@font/pvot_lenia_sans`, set as the theme's `android:fontFamily` and `fontFamily`, which wins over the font of every text appearance |
 | `PvotTypography.bodyLarge` | `PvotTextAppearance.BodyLarge`, set as `textAppearanceBodyLarge` |
 | `PvotCardDefaults` | `PvotWidget.CardView`, set as `materialCardViewStyle` (16dp, surface variant at half alpha, no stroke or shadow) |
 | `PvotFabDefaults` | `PvotWidget.FloatingActionButton` / `.ExtendedFloatingActionButton`, set as `floatingActionButtonStyle` / `extendedFloatingActionButtonStyle` (pill, primary, 6dp shadow) |
