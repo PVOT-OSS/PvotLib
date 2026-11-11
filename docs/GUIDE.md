@@ -122,8 +122,11 @@ directly; see [Components](#6-components).
 
 ## 3. Typography
 
-`PvotTypography` overrides `bodyLarge` (16sp / 24sp, 0.5sp tracking, normal weight); every other
-style is the Material default.
+Pvot is set in **Lenia Sans** (Lettertype Studio), bundled as `PvotFontFamily` in the four weights
+the scale and the components use: regular, medium, semibold and bold. Every `PvotTypography` style
+uses it. `bodyLarge` also changes its metrics (16sp / 24sp, 0.5sp tracking, normal weight); every
+other size and weight is the Material default. An app that passes its own `typography` to
+`PvotAppTheme` can start from `PvotFontFamily` to keep the typeface.
 
 ## 4. Shape & spacing
 

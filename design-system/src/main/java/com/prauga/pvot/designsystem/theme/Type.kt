@@ -26,16 +26,33 @@ public val PvotFontFamily: FontFamily =
 /**
  * The Pvot type scale.
  *
- * Only the styles Pvot overrides are set; the rest fall back to the Material defaults.
+ * Every style is set in Lenia Sans, see [PvotFontFamily]. Only `bodyLarge` changes its metrics; the
+ * other sizes and weights are the Material defaults.
  */
 public val PvotTypography: Typography =
-    Typography(
-        bodyLarge =
-            TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.5.sp,
-            )
-    )
+    with(Typography()) {
+        Typography(
+            displayLarge = displayLarge.copy(fontFamily = PvotFontFamily),
+            displayMedium = displayMedium.copy(fontFamily = PvotFontFamily),
+            displaySmall = displaySmall.copy(fontFamily = PvotFontFamily),
+            headlineLarge = headlineLarge.copy(fontFamily = PvotFontFamily),
+            headlineMedium = headlineMedium.copy(fontFamily = PvotFontFamily),
+            headlineSmall = headlineSmall.copy(fontFamily = PvotFontFamily),
+            titleLarge = titleLarge.copy(fontFamily = PvotFontFamily),
+            titleMedium = titleMedium.copy(fontFamily = PvotFontFamily),
+            titleSmall = titleSmall.copy(fontFamily = PvotFontFamily),
+            bodyLarge =
+                TextStyle(
+                    fontFamily = PvotFontFamily,
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 16.sp,
+                    lineHeight = 24.sp,
+                    letterSpacing = 0.5.sp,
+                ),
+            bodyMedium = bodyMedium.copy(fontFamily = PvotFontFamily),
+            bodySmall = bodySmall.copy(fontFamily = PvotFontFamily),
+            labelLarge = labelLarge.copy(fontFamily = PvotFontFamily),
+            labelMedium = labelMedium.copy(fontFamily = PvotFontFamily),
+            labelSmall = labelSmall.copy(fontFamily = PvotFontFamily),
+        )
+    }
