@@ -1753,5 +1753,6 @@ public final class com/prauga/pvot/designsystem/theme/ThemeKt {
 }
 
 public final class com/prauga/pvot/designsystem/theme/TypeKt {
+	public static final fun getPvotFontFamily ()Landroidx/compose/ui/text/font/FontFamily;
 	public static final fun getPvotTypography ()Landroidx/compose/material3/Typography;
 }
