@@ -8,6 +8,8 @@
     <style name="PvotTheme.Bars.Light" parent="PvotTheme.Base.Light" />
 
     <style name="PvotTheme.Light" parent="PvotTheme.Bars.Light">
+        <item name="android:fontFamily">@font/pvot_lenia_sans</item>
+        <item name="fontFamily">@font/pvot_lenia_sans</item>
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
@@ -31,6 +33,8 @@
     <style name="PvotTheme.Bars.Dark" parent="PvotTheme.Base.Dark" />
 
     <style name="PvotTheme.Dark" parent="PvotTheme.Bars.Dark">
+        <item name="android:fontFamily">@font/pvot_lenia_sans</item>
+        <item name="fontFamily">@font/pvot_lenia_sans</item>
         <item name="android:windowBackground">?android:attr/colorBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">false</item>
@@ -54,6 +58,8 @@
     <style name="PvotTheme" parent="PvotTheme.Light" />
 
     <style name="PvotTheme.Light.Dialog" parent="PvotTheme.Base.Light.Dialog">
+        <item name="android:fontFamily">@font/pvot_lenia_sans</item>
+        <item name="fontFamily">@font/pvot_lenia_sans</item>
         <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
         <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
         <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>
@@ -75,6 +81,8 @@
     </style>
 
     <style name="PvotTheme.Dark.Dialog" parent="PvotTheme.Base.Dark.Dialog">
+        <item name="android:fontFamily">@font/pvot_lenia_sans</item>
+        <item name="fontFamily">@font/pvot_lenia_sans</item>
         <item name="android:textColorTertiary">@color/pvot_text_tertiary</item>
         <item name="shapeAppearanceCornerExtraSmall">@style/PvotShapeAppearance.Small</item>
         <item name="shapeAppearanceCornerSmall">@style/PvotShapeAppearance.Small</item>

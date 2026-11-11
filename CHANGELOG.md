@@ -23,6 +23,13 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   each with its `*Colors` and `*Defaults`, plus `PvotCameraGlassDefaults`. Shown on the catalog's
   Camera page. They come from the PVOT Camera app's Compose screen.
 
+### Changed
+- `design-system`: the type scale is set in Lenia Sans. `PvotFontFamily` (new, `theme`) bundles its
+  regular, medium, semibold and bold cuts, and every `PvotTypography` style uses it; sizes and
+  weights are unchanged. Apps on `PvotAppTheme` pick it up with no change.
+- `design-system-views`: `PvotTheme` sets Lenia Sans as its `fontFamily`, so View screens match the
+  Compose ones.
+
 ### Fixed
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
   `PvotTopBar` folds and unfolds: the compact bar floats over the content instead of moving the
