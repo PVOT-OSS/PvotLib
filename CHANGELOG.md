@@ -12,6 +12,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotFastScroller` takes a `LazyGridState` too, for a grid split into sections
+  such as photos by month, and its bubble widens into a pill to fit a label longer than a letter,
+  such as "Nov 2026".
 - `design-system`: `PvotSwipeRow` takes `endButtons`: a swipe toward the start uncovers round
   buttons, such as History and Delete, and the row stands open on them as a card in
   `openContainerColor`, as in iOS Recents. Tap a button to run it; swipe on past
