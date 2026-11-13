@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Icon
@@ -48,6 +49,8 @@ import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.changedToUpIgnoreConsumed
@@ -126,6 +129,7 @@ public enum class PvotMenuAlign {
  * @param highlightColor Fill behind the item under the finger
  * @param triggerColor Fill of the trigger button when it is not glass
  * @param triggerContentColor Icon color of the trigger button
+ * @param titleColor Color of the menu's title; unspecified dims [contentColor]
  */
 @Immutable
 public data class PvotMenuColors(
@@ -136,6 +140,7 @@ public data class PvotMenuColors(
     val highlightColor: Color,
     val triggerColor: Color,
     val triggerContentColor: Color,
+    val titleColor: Color = Color.Unspecified,
 )
 
 /** Defaults for [PvotMenu]. */
@@ -146,6 +151,9 @@ public object PvotMenuDefaults {
 
     /** Height of one item. */
     public val ItemHeight: Dp = 48.dp
+
+    /** Height of the title above the items. */
+    public val TitleHeight: Dp = 36.dp
 
     /** Corner radius of the open menu. */
     public val CornerRadius: Dp = 20.dp
@@ -178,6 +186,7 @@ public object PvotMenuDefaults {
         highlightColor: Color = colorScheme.onSurface.copy(alpha = 0.08f),
         triggerColor: Color = colorScheme.surfaceContainerHighest,
         triggerContentColor: Color = colorScheme.onSurface,
+        titleColor: Color = colorScheme.onSurfaceVariant,
     ): PvotMenuColors =
         PvotMenuColors(
             containerColor = containerColor,
@@ -187,6 +196,7 @@ public object PvotMenuDefaults {
             highlightColor = highlightColor,
             triggerColor = triggerColor,
             triggerContentColor = triggerContentColor,
+            titleColor = titleColor,
         )
 
     /** Menu colors from the theme's color scheme. */
@@ -215,6 +225,7 @@ private enum class MenuPhase {
  * @param contentDescription What the button opens, for TalkBack, such as "More options"
  * @param modifier Modifier for the button
  * @param icon The button's icon; three dots by default
+ * @param title A line above the items saying what they are for, or null for none
  * @param align Which edge of the button the menu opens along
  * @param enabled Whether the button responds to touch
  * @param backdrop The content behind the button, or null for a tonal button
@@ -226,6 +237,46 @@ public fun PvotMenu(
     contentDescription: String,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = R.drawable.pvot_ic_dots,
+    title: String? = null,
+    align: PvotMenuAlign = PvotMenuAlign.End,
+    enabled: Boolean = true,
+    backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
+    colors: PvotMenuColors = PvotMenuDefaults.themeColors(),
+) {
+    PvotMenu(
+        entries = entries,
+        contentDescription = contentDescription,
+        icon = painterResource(icon),
+        modifier = modifier,
+        title = title,
+        align = align,
+        enabled = enabled,
+        backdrop = backdrop,
+        colors = colors,
+    )
+}
+
+/**
+ * A [PvotMenu] whose button shows [icon], a painter, for a trigger built from one such as a swipe
+ * row's end button.
+ *
+ * @param entries The menu's items and separators, in order
+ * @param contentDescription What the button opens, for TalkBack
+ * @param icon The button's icon
+ * @param modifier Modifier for the button
+ * @param title A line above the items saying what they are for, or null for none
+ * @param align Which edge of the button the menu opens along
+ * @param enabled Whether the button responds to touch
+ * @param backdrop The content behind the button, or null for a tonal button
+ * @param colors The menu's colors
+ */
+@Composable
+public fun PvotMenu(
+    entries: List<PvotMenuEntry>,
+    contentDescription: String,
+    icon: Painter,
+    modifier: Modifier = Modifier,
+    title: String? = null,
     align: PvotMenuAlign = PvotMenuAlign.End,
     enabled: Boolean = true,
     backdrop: PvotGlassBackdrop? = LocalPvotGlassBackdrop.current,
@@ -353,7 +404,7 @@ public fun PvotMenu(
         contentAlignment = Alignment.Center,
     ) {
         Icon(
-            painter = painterResource(icon),
+            painter = icon,
             contentDescription = null,
             tint = colors.triggerContentColor,
             modifier = Modifier.size(PvotIconButtonDefaultsIconSize),
@@ -399,6 +450,7 @@ public fun PvotMenu(
         ) {
             MenuCard(
                 entries = entries,
+                title = title,
                 colors = colors,
                 morph = morph.value,
                 fromSize = triggerSize,
@@ -416,6 +468,7 @@ private val PvotIconButtonDefaultsIconSize: Dp = 24.dp
 @Composable
 private fun MenuCard(
     entries: List<PvotMenuEntry>,
+    title: String?,
     colors: PvotMenuColors,
     morph: Float,
     fromSize: IntSize,
@@ -480,6 +533,19 @@ private fun MenuCard(
                         alpha = focus
                     }
         ) {
+            if (title != null) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.titleColor.takeOrElse { colors.contentColor.copy(alpha = 0.6f) },
+                    maxLines = 1,
+                    modifier =
+                        Modifier.fillMaxWidth()
+                            .height(PvotMenuDefaults.TitleHeight)
+                            .wrapContentHeight(Alignment.CenterVertically)
+                            .padding(horizontal = PvotSpacing.L),
+                )
+            }
             entries.forEachIndexed { index, entry ->
                 when (entry) {
                     PvotMenuSeparator ->

@@ -108,7 +108,8 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuAlign : java/
 
 public final class com/prauga/pvot/designsystem/components/PvotMenuColors {
 	public static final field $stable I
-	public synthetic fun <init> (JJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public synthetic fun <init> (JJJJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1-0d7_KjU ()J
 	public final fun component2-0d7_KjU ()J
 	public final fun component3-0d7_KjU ()J
@@ -116,14 +117,16 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuColors {
 	public final fun component5-0d7_KjU ()J
 	public final fun component6-0d7_KjU ()J
 	public final fun component7-0d7_KjU ()J
-	public final fun copy-4JmcsL4 (JJJJJJJ)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
-	public static synthetic fun copy-4JmcsL4$default (Lcom/prauga/pvot/designsystem/components/PvotMenuColors;JJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
+	public final fun component8-0d7_KjU ()J
+	public final fun copy-FD3wquc (JJJJJJJJ)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
+	public static synthetic fun copy-FD3wquc$default (Lcom/prauga/pvot/designsystem/components/PvotMenuColors;JJJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getContainerColor-0d7_KjU ()J
 	public final fun getContentColor-0d7_KjU ()J
 	public final fun getDestructiveColor-0d7_KjU ()J
 	public final fun getHighlightColor-0d7_KjU ()J
 	public final fun getSeparatorColor-0d7_KjU ()J
+	public final fun getTitleColor-0d7_KjU ()J
 	public final fun getTriggerColor-0d7_KjU ()J
 	public final fun getTriggerContentColor-0d7_KjU ()J
 	public fun hashCode ()I
@@ -134,14 +137,15 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuDefaults {
 	public static final field $stable I
 	public static final field DisabledAlpha F
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotMenuDefaults;
-	public final fun colors-zoLT1gQ (Landroidx/compose/material3/ColorScheme;JJJJJJJ)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
-	public static synthetic fun colors-zoLT1gQ$default (Lcom/prauga/pvot/designsystem/components/PvotMenuDefaults;Landroidx/compose/material3/ColorScheme;JJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
+	public final fun colors-iLRpYWo (Landroidx/compose/material3/ColorScheme;JJJJJJJJ)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
+	public static synthetic fun colors-iLRpYWo$default (Lcom/prauga/pvot/designsystem/components/PvotMenuDefaults;Landroidx/compose/material3/ColorScheme;JJJJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
 	public final fun getCornerRadius-D9Ej5fM ()F
 	public final fun getIconSize-D9Ej5fM ()F
 	public final fun getItemHeight-D9Ej5fM ()F
 	public final fun getMaterial ()Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;
 	public final fun getOpeningBlur-D9Ej5fM ()F
 	public final fun getShadowElevation-D9Ej5fM ()F
+	public final fun getTitleHeight-D9Ej5fM ()F
 	public final fun getTriggerSize-D9Ej5fM ()F
 	public final fun getWidth-D9Ej5fM ()F
 	public final fun themeColors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotMenuColors;
@@ -172,7 +176,8 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuItem : com/pr
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotMenuKt {
-	public static final fun PvotMenu (Ljava/util/List;Ljava/lang/String;Landroidx/compose/ui/Modifier;ILcom/prauga/pvot/designsystem/components/PvotMenuAlign;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/components/PvotMenuColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotMenu (Ljava/util/List;Ljava/lang/String;Landroidx/compose/ui/Modifier;ILjava/lang/String;Lcom/prauga/pvot/designsystem/components/PvotMenuAlign;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/components/PvotMenuColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotMenu (Ljava/util/List;Ljava/lang/String;Landroidx/compose/ui/graphics/painter/Painter;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lcom/prauga/pvot/designsystem/components/PvotMenuAlign;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/components/PvotMenuColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotMenuSeparator : com/prauga/pvot/designsystem/components/PvotMenuEntry {

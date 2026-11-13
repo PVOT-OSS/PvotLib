@@ -12,6 +12,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotMenu` takes a `title`, a dimmed line above the items
+  (`PvotMenuColors.titleColor`, `PvotMenuDefaults.TitleHeight`), and an overload takes its icon as a
+  `Painter`.
 - `design-system`: `PvotSwitch` (`components`), a pill switch whose thumb lifts into a lens under
   the finger and slides; `PvotSwitchRow` now ends with one. `PvotMenu` (`components`), a round
   button whose menu grows out of it, with `PvotMenuItem` and `PvotMenuSeparator`; tap an item, or
