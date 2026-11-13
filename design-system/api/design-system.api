@@ -1054,6 +1054,7 @@ public final class com/prauga/pvot/designsystem/components/list/PvotFastScroller
 
 public final class com/prauga/pvot/designsystem/components/list/PvotFastScrollerKt {
 	public static final fun PvotFastScroller (Landroidx/compose/foundation/lazy/LazyListState;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotFastScroller (Landroidx/compose/foundation/lazy/grid/LazyGridState;Ljava/util/List;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/list/PvotFastScrollerColors;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/list/PvotLetterTileColors {
