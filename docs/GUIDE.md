@@ -348,7 +348,7 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotControlPanel` | `components.camera` | A glass grid of `PvotControlTile`s (icon in a circle, label, badge, lit when active) |
 | `PvotAdjustmentSheet` | `components.camera` | A glass sheet for one setting with a title and close button, holding a `PvotRuler` or `PvotChoiceRow` |
 | `PvotGlassChip` | `components.camera` | A small glass label or button over a preview: format, recording timer, status |
-| `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. Offered to TalkBack as actions |
+| `PvotSwipeRow` | `components.list` | Slides sideways to reveal a start and an end `PvotSwipeAction`; removing actions slide the row off for Undo, others spring back. With `endButtons` it stands open on round buttons instead, one row at a time. Offered to TalkBack as actions |
 | `PvotFastScroller` | `components.list` | Over the end edge of a long list of `PvotFastScrollSection`s: a thumb while scrolling, and a drag along the edge jumps by section with a label bubble and a haptic tick. Hidden when the list fits and from TalkBack |
 | `PvotSwitch` | `components` | A pill track and a round thumb; tap to toggle, or hold the thumb, which lifts into a lens, and slide it |
 | `PvotMenu` | `components` | A round button whose menu grows out of it; tap an item, or press the button and slide onto one to pick it; `PvotMenuItem`, `PvotMenuSeparator` |

@@ -60,4 +60,26 @@ class PvotSwipeRowStateTest {
         assertEquals(0f, state.offset, 0f)
         assertEquals(false, state.isDismissed)
     }
+
+    @Test
+    fun aCloseShutsARowOpenOnItsButtons() = runBlocking {
+        state.draggableState.dispatchRawDelta(-200f)
+        state.isOpen = true
+        OpenSwipeRow.opened(state)
+        withContext(clock) { state.close() }
+        assertEquals(0f, state.offset, 0f)
+        assertEquals(false, state.isOpen)
+        assertEquals(null, OpenSwipeRow.state)
+    }
+
+    @Test
+    fun openingARowAsksTheOpenOneToClose() {
+        val other = PvotSwipeRowState()
+        OpenSwipeRow.opened(state)
+        OpenSwipeRow.opened(other)
+        assertEquals(true, state.closeRequested)
+        assertEquals(false, other.closeRequested)
+        assertEquals(other, OpenSwipeRow.state)
+        OpenSwipeRow.closed(other)
+    }
 }
