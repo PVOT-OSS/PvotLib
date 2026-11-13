@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.GlassPanel
+import com.prauga.pvot.designsystem.components.PvotMenuItem
 import com.prauga.pvot.designsystem.components.PvotSegmentedControl
 import com.prauga.pvot.designsystem.components.button.PvotButton
 import com.prauga.pvot.designsystem.components.button.PvotButtonStyle
@@ -209,19 +210,39 @@ private fun GlassPanelColumn(content: @Composable () -> Unit) {
 @Composable
 internal fun SwipeRowPage(onBack: () -> Unit) {
     val people = remember { mutableStateListOf(*People.toTypedArray()) }
+    val recents = remember { mutableStateListOf(*People.toTypedArray()) }
     val snackbar = LocalCatalogSnackbar.current
     val send = rememberSnackbarSender()
     val scope = rememberCoroutineScope()
+    fun removeWithUndo(list: MutableList<String>, name: String) {
+        val index = list.indexOf(name)
+        list.remove(name)
+        scope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            val result =
+                snackbar.showSnackbar(
+                    message = "$name deleted",
+                    actionLabel = "Undo",
+                    duration = SnackbarDuration.Short,
+                )
+            if (result == SnackbarResult.ActionPerformed && name !in list) {
+                list.add(index.coerceAtMost(list.size), name)
+            }
+        }
+    }
     DetailPage(
         title = "Swipe row",
         summary =
             "Swipe toward the end to call, toward the start to delete. Past the threshold the icon " +
-                "swells and the phone ticks. Delete slides the row away and offers Undo; Call springs back.",
+                "swells and the phone ticks. Delete slides the row away and offers Undo; Call springs back. " +
+                "With end buttons, a swipe toward the start stops open on round buttons instead.",
         onBack = onBack,
         code =
             "key(entry.id) {\n    PvotSwipeRow(\n        startAction = PvotSwipeRowDefaults.action(\"Call\", phone, { call(entry) }),\n" +
                 "        endAction = PvotSwipeRowDefaults.destructiveAction(\"Delete\", trash, {\n" +
-                "            remove(entry); showUndo(entry)\n        })\n    ) { PvotListRow(entry.name, ...) }\n}",
+                "            remove(entry); showUndo(entry)\n        })\n    ) { PvotListRow(entry.name, ...) }\n}\n\n" +
+                "PvotSwipeRow(\n    endButtons = listOf(\n        PvotSwipeRowDefaults.action(\"Callback reminder\", clock, {}, menu = reminders),\n" +
+                "        PvotSwipeRowDefaults.destructiveAction(\"Delete\", trash, { remove(entry) }),\n    )\n) { ... }",
     ) {
         DemoSection(
             title = "Call log",
@@ -241,25 +262,7 @@ internal fun SwipeRowPage(onBack: () -> Unit) {
                             PvotSwipeRowDefaults.destructiveAction(
                                 label = "Delete",
                                 icon = painterResource(R.drawable.ic_t_trash),
-                                onSwipe = {
-                                    val index = people.indexOf(name)
-                                    people.remove(name)
-                                    scope.launch {
-                                        snackbar.currentSnackbarData?.dismiss()
-                                        val result =
-                                            snackbar.showSnackbar(
-                                                message = "$name deleted",
-                                                actionLabel = "Undo",
-                                                duration = SnackbarDuration.Short,
-                                            )
-                                        if (
-                                            result == SnackbarResult.ActionPerformed &&
-                                                name !in people
-                                        ) {
-                                            people.add(index.coerceAtMost(people.size), name)
-                                        }
-                                    }
-                                },
+                                onSwipe = { removeWithUndo(people, name) },
                             ),
                     ) {
                         PvotListRow(
@@ -275,6 +278,71 @@ internal fun SwipeRowPage(onBack: () -> Unit) {
                 PvotButton(
                     text = "Restore all",
                     onClick = { people.addAll(People) },
+                    style = PvotButtonStyle.Text,
+                )
+            }
+        }
+        DemoSection(
+            title = "Recents",
+            caption =
+                "Swipe toward the start to stand a row open on a callback reminder and Delete; swipe all the way to delete",
+            framed = false,
+        ) {
+            recents.toList().forEach { name ->
+                key(name) {
+                    PvotSwipeRow(
+                        startAction =
+                            PvotSwipeRowDefaults.action(
+                                label = "Call",
+                                icon = painterResource(R.drawable.ic_t_phone),
+                                onSwipe = { send("Calling $name") },
+                            ),
+                        endButtons =
+                            listOf(
+                                PvotSwipeRowDefaults.action(
+                                    label = "Callback reminder",
+                                    icon = painterResource(R.drawable.ic_t_history),
+                                    onSwipe = {},
+                                    menu =
+                                        listOf(
+                                            PvotMenuItem(
+                                                "Remind me in 1 hour",
+                                                { send("Reminder for $name in 1 hour") },
+                                            ),
+                                            PvotMenuItem(
+                                                "Remind me tonight",
+                                                { send("Reminder for $name tonight") },
+                                            ),
+                                            PvotMenuItem(
+                                                "Remind me tomorrow",
+                                                { send("Reminder for $name tomorrow") },
+                                            ),
+                                            PvotMenuItem(
+                                                "Remind me later…",
+                                                { send("Pick a time for $name") },
+                                            ),
+                                        ),
+                                ),
+                                PvotSwipeRowDefaults.destructiveAction(
+                                    label = "Delete",
+                                    icon = painterResource(R.drawable.ic_t_trash),
+                                    onSwipe = { removeWithUndo(recents, name) },
+                                ),
+                            ),
+                    ) {
+                        PvotListRow(
+                            title = name,
+                            supportingText = "Mobile · Today",
+                            leading = { PvotLetterTile(name) },
+                            onClick = { send("Calling $name") },
+                        )
+                    }
+                }
+            }
+            if (recents.isEmpty()) {
+                PvotButton(
+                    text = "Restore all",
+                    onClick = { recents.addAll(People) },
                     style = PvotButtonStyle.Text,
                 )
             }
