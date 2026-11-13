@@ -12,6 +12,13 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotSwipeRow` takes `endButtons`: a swipe toward the start uncovers round
+  buttons, such as History and Delete, and the row stands open on them as a card in
+  `openContainerColor`, as in iOS Recents. Tap a button to run it; swipe on past
+  `PvotSwipeRowDefaults.FullSwipeFraction` to run the last one. One row stands open at a time, and
+  tapping a row or scrolling shuts it. An end button whose `PvotSwipeAction` has a `menu` opens it
+  as a `PvotMenu` titled with its label, such as a callback reminder's times. `PvotSwipeRowState`
+  gains `isOpen` and `close()`; shown on the catalog's Swipe row page.
 - `design-system`: `PvotMenu` takes a `title`, a dimmed line above the items
   (`PvotMenuColors.titleColor`, `PvotMenuDefaults.TitleHeight`), and an overload takes its icon as a
   `Painter`.
