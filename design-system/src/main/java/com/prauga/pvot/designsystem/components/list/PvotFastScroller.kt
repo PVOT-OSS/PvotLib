@@ -14,12 +14,14 @@ import androidx.compose.foundation.gestures.drag
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -92,7 +94,7 @@ public object PvotFastScrollerDefaults {
     /** Width of the thumb while the finger is on the scroller. */
     public val ActiveThumbWidth: Dp = 8.dp
 
-    /** Diameter of the bubble. */
+    /** Height of the bubble, and its width for a short label. */
     public val BubbleSize: Dp = 64.dp
 
     /** How long the thumb stays after the list stops, in milliseconds. */
@@ -133,8 +135,83 @@ public fun PvotFastScroller(
     modifier: Modifier = Modifier,
     colors: PvotFastScrollerColors = PvotFastScrollerDefaults.themeColors(),
 ) {
-    val scrollable by
-        remember(state) { derivedStateOf { state.canScrollForward || state.canScrollBackward } }
+    FastScroller(remember(state) { ListTarget(state) }, sections, modifier, colors)
+}
+
+/**
+ * A fast scroller for a long grid split into sections, such as photos by month.
+ *
+ * It behaves as the list overload: place it over the end edge of the grid. A section's index is the
+ * index of its first grid item. Labels may be longer than a letter, such as "Nov 2026"; the bubble
+ * widens to fit.
+ *
+ * @param state The state of the grid the scroller moves
+ * @param sections The grid's sections, in grid order
+ * @param modifier Modifier for the scroller; give it the grid's height
+ * @param colors The scroller's colors
+ */
+@Composable
+public fun PvotFastScroller(
+    state: LazyGridState,
+    sections: List<PvotFastScrollSection>,
+    modifier: Modifier = Modifier,
+    colors: PvotFastScrollerColors = PvotFastScrollerDefaults.themeColors(),
+) {
+    FastScroller(remember(state) { GridTarget(state) }, sections, modifier, colors)
+}
+
+private interface FastScrollTarget {
+    val canScroll: Boolean
+    val isScrollInProgress: Boolean
+    val fraction: Float
+
+    suspend fun scrollToItem(index: Int)
+}
+
+private class ListTarget(private val state: LazyListState) : FastScrollTarget {
+    override val canScroll: Boolean
+        get() = state.canScrollForward || state.canScrollBackward
+
+    override val isScrollInProgress: Boolean
+        get() = state.isScrollInProgress
+
+    override val fraction: Float
+        get() {
+            val info = state.layoutInfo
+            val hidden = info.totalItemsCount - info.visibleItemsInfo.size
+            return if (hidden <= 0) 0f
+            else (state.firstVisibleItemIndex.toFloat() / hidden).coerceIn(0f, 1f)
+        }
+
+    override suspend fun scrollToItem(index: Int) = state.scrollToItem(index)
+}
+
+private class GridTarget(private val state: LazyGridState) : FastScrollTarget {
+    override val canScroll: Boolean
+        get() = state.canScrollForward || state.canScrollBackward
+
+    override val isScrollInProgress: Boolean
+        get() = state.isScrollInProgress
+
+    override val fraction: Float
+        get() {
+            val info = state.layoutInfo
+            val hidden = info.totalItemsCount - info.visibleItemsInfo.size
+            return if (hidden <= 0) 0f
+            else (state.firstVisibleItemIndex.toFloat() / hidden).coerceIn(0f, 1f)
+        }
+
+    override suspend fun scrollToItem(index: Int) = state.scrollToItem(index)
+}
+
+@Composable
+private fun FastScroller(
+    state: FastScrollTarget,
+    sections: List<PvotFastScrollSection>,
+    modifier: Modifier,
+    colors: PvotFastScrollerColors,
+) {
+    val scrollable by remember(state) { derivedStateOf { state.canScroll } }
     if (!scrollable || sections.isEmpty()) return
 
     var dragging by remember { mutableStateOf(false) }
@@ -144,15 +221,7 @@ public fun PvotFastScroller(
     val haptics = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
 
-    val listFraction by
-        remember(state) {
-            derivedStateOf {
-                val info = state.layoutInfo
-                val hidden = info.totalItemsCount - info.visibleItemsInfo.size
-                if (hidden <= 0) 0f
-                else (state.firstVisibleItemIndex.toFloat() / hidden).coerceIn(0f, 1f)
-            }
-        }
+    val listFraction by remember(state) { derivedStateOf { state.fraction } }
     val shown = dragging || state.isScrollInProgress
     val alpha by
         animateFloatAsState(
@@ -211,8 +280,10 @@ public fun PvotFastScroller(
                     Modifier.align(Alignment.TopEnd)
                         .offset { IntOffset(0, (centerY - bubblePx / 2).roundToInt()) }
                         .padding(end = PvotFastScrollerDefaults.TouchWidth + PvotSpacing.S)
-                        .size(PvotFastScrollerDefaults.BubbleSize)
-                        .background(colors.bubbleContainerColor, CircleShape),
+                        .height(PvotFastScrollerDefaults.BubbleSize)
+                        .widthIn(min = PvotFastScrollerDefaults.BubbleSize)
+                        .background(colors.bubbleContainerColor, PvotShapes.Pill)
+                        .padding(horizontal = PvotSpacing.L),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
