@@ -3,6 +3,8 @@
 
 package com.prauga.pvot.designsystem.components.calendar
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -54,6 +56,7 @@ public object PvotDateHeaderDefaults {
  * @param secondary An extra line under the weekday, or null for none
  * @param locale Locale for the month and weekday names
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 public fun PvotDateHeader(
     date: LocalDate,

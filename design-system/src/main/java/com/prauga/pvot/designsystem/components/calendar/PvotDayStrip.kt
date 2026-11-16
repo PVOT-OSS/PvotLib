@@ -3,6 +3,8 @@
 
 package com.prauga.pvot.designsystem.components.calendar
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -99,6 +101,7 @@ public object PvotDayStripDefaults {
  * @param colors Colors of the days
  * @param locale Locale for the weekday names and the spoken dates
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 public fun PvotDayStrip(
     days: List<LocalDate>,

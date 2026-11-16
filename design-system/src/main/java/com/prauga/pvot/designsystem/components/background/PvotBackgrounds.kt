@@ -3,7 +3,6 @@
 
 package com.prauga.pvot.designsystem.components.background
 
-import android.animation.ValueAnimator
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,9 +23,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.effects.PvotGlassIntensity
+import com.prauga.pvot.designsystem.motion.animatorsEnabled
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -90,7 +91,7 @@ public object PvotBackgroundDefaults {
      */
     @Composable
     public fun motion(): PvotBackgroundMotion =
-        if (!ValueAnimator.areAnimatorsEnabled() || PvotGlassIntensity.isReduced()) {
+        if (!LocalContext.current.animatorsEnabled() || PvotGlassIntensity.isReduced()) {
             PvotBackgroundMotion.Still
         } else {
             PvotBackgroundMotion.Slow

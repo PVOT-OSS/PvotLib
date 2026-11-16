@@ -3,6 +3,8 @@
 
 package com.prauga.pvot.designsystem.components.picker
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import java.time.LocalTime
  * @param modifier Modifier for the picker container
  * @param colors Color configuration for the wheels
  */
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 public fun PvotClockPicker(
     time: LocalTime,
@@ -44,6 +47,7 @@ public fun PvotClockPicker(
     widthDp = 360,
     heightDp = 200,
 )
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun PvotClockPickerPreview() {
     PvotAppTheme {

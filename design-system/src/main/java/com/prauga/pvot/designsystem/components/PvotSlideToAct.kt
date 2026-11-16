@@ -3,7 +3,6 @@
 
 package com.prauga.pvot.designsystem.components
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.view.accessibility.AccessibilityManager
 import androidx.compose.animation.animateColorAsState
@@ -42,6 +41,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -56,6 +56,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.prauga.pvot.designsystem.motion.PvotDurations
 import com.prauga.pvot.designsystem.motion.PvotMotion
+import com.prauga.pvot.designsystem.motion.animatorsEnabled
 import com.prauga.pvot.designsystem.theme.PvotSpacing
 import com.prauga.pvot.designsystem.theme.PvotTheme
 import kotlin.math.abs
@@ -207,7 +208,7 @@ public fun PvotSlideToAct(
     val currentUp by rememberUpdatedState(up)
     val currentDown by rememberUpdatedState(down)
     val progress by rememberUpdatedState(onProgress)
-    val animate = nudge && ValueAnimator.areAnimatorsEnabled()
+    val animate = nudge && LocalContext.current.animatorsEnabled()
     val nudgeOffset =
         if (animate) {
             val value by

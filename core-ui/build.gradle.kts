@@ -10,6 +10,7 @@ plugins {
 
 android {
     namespace = "com.prauga.pvot.coreui"
+    defaultConfig { minSdk = 24 }
     publishing { singleVariant("release") { withSourcesJar() } }
 }
 

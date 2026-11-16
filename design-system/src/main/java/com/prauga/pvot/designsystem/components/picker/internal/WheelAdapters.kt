@@ -3,6 +3,8 @@
 
 package com.prauga.pvot.designsystem.components.picker.internal
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.prauga.pvot.designsystem.R
 import java.time.LocalTime
 import java.util.Locale
@@ -16,6 +18,7 @@ private fun twoDigits(value: Int): String = String.format(Locale.getDefault(), "
 private fun plain(value: Int): String = value.toString(10)
 
 /** Converts a [LocalTime] to wheel configurations for hour and minute selection. */
+@RequiresApi(Build.VERSION_CODES.O)
 internal fun LocalTime.toWheelConfigs(): List<WheelConfig> =
     listOf(
         WheelConfig(
@@ -35,6 +38,7 @@ internal fun LocalTime.toWheelConfigs(): List<WheelConfig> =
     )
 
 /** Converts wheel values back to a [LocalTime]. */
+@RequiresApi(Build.VERSION_CODES.O)
 internal fun wheelValuesToLocalTime(values: List<Int>): LocalTime {
     require(values.size >= 2) { "Need at least hour and minute values" }
     return LocalTime.of(values[0], values[1])

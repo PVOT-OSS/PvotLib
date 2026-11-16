@@ -4,7 +4,6 @@
 
 package com.prauga.pvot.designsystem.effects
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Matrix
 import android.hardware.Sensor
@@ -14,6 +13,7 @@ import android.hardware.SensorManager
 import android.os.Handler
 import android.os.Looper
 import android.view.Choreographer
+import com.prauga.pvot.designsystem.motion.animatorsEnabled
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.exp
@@ -154,7 +154,7 @@ internal object TiltLight {
 
     fun addListener(context: Context, listener: Runnable) {
         if (listener in listeners) return
-        if (!ValueAnimator.areAnimatorsEnabled()) return
+        if (!context.animatorsEnabled()) return
         listeners += listener
         if (listeners.size == 1) start(context.applicationContext)
     }

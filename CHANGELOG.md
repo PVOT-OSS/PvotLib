@@ -75,6 +75,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   Camera page. They come from the PVOT Camera app's Compose screen.
 
 ### Changed
+- `design-system` and `core-ui`: minimum SDK 24 (was 27), so apps that still support Android 7 can
+  use their components. `PvotClockPicker`, `PvotDateHeader` and `PvotDayStrip` need API 26 (`java.time`) and
+  say so with `@RequiresApi`; reduced motion is read from the animator scale below Android 8.
 - The glass bends the other way, as iOS does: the rim pulls what lies just inside it out to the
   edge, as a drop of water does, instead of showing what lies outside. The default
   `PvotGlassStyle` follows Glisse's measured defaults: the bend reaches 0.45 of the shorter side,
