@@ -59,6 +59,7 @@ import com.prauga.pvot.coreui.PvotLoadingContent
 import com.prauga.pvot.coreui.PvotSectionHeader
 import com.prauga.pvot.designsystem.components.PvotBottomSheet
 import com.prauga.pvot.designsystem.components.PvotCard
+import com.prauga.pvot.designsystem.components.PvotChoiceSheet
 import com.prauga.pvot.designsystem.components.PvotDialog
 import com.prauga.pvot.designsystem.components.PvotDialogAction
 import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
@@ -69,6 +70,7 @@ import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
+import com.prauga.pvot.designsystem.components.picker.PvotTimePickerDialog
 import com.prauga.pvot.designsystem.components.rememberPvotPersistentSheetState
 import com.prauga.pvot.designsystem.components.slider.PvotRangeSlider
 import com.prauga.pvot.designsystem.components.slider.PvotSlider
@@ -300,6 +302,7 @@ internal fun SkeletonPage(onBack: () -> Unit) {
 internal fun PickersPage(onBack: () -> Unit) {
     var time by remember { mutableStateOf(LocalTime.of(7, 30)) }
     var duration by remember { mutableStateOf(25.minutes) }
+    var timeDialog by remember { mutableStateOf(false) }
     DetailPage(
         title = "Pickers",
         summary =
@@ -315,8 +318,11 @@ internal fun PickersPage(onBack: () -> Unit) {
             caption = "Selected ${time.format(DateTimeFormatter.ofPattern("HH:mm"))}",
         ) {
             PvotClockPicker(time = time, onTimeChange = { time = it })
-            TextButton(onClick = { time = LocalTime.now().withSecond(0).withNano(0) }) {
-                Text("Set to now")
+            Row(horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)) {
+                TextButton(onClick = { time = LocalTime.now().withSecond(0).withNano(0) }) {
+                    Text("Set to now")
+                }
+                TextButton(onClick = { timeDialog = true }) { Text("In a dialog") }
             }
         }
         DemoSection(
@@ -335,6 +341,15 @@ internal fun PickersPage(onBack: () -> Unit) {
             }
         }
     }
+    PvotTimePickerDialog(
+        visible = timeDialog,
+        initial = time,
+        onDismiss = { timeDialog = false },
+        onConfirm = {
+            time = it
+            timeDialog = false
+        },
+    )
 }
 
 // ───────────────────────────── State content ─────────────────────────────
@@ -514,6 +529,8 @@ internal fun OverlaysPage(onBack: () -> Unit) {
     var rename by remember { mutableStateOf(false) }
     var actions by remember { mutableStateOf(false) }
     var filters by remember { mutableStateOf(false) }
+    var choosing by remember { mutableStateOf(false) }
+    var choice by remember { mutableIntStateOf(1) }
     var name by remember { mutableStateOf("Morning routine") }
     var draft by remember { mutableStateOf(name) }
     var radius by remember { mutableFloatStateOf(5f) }
@@ -580,6 +597,9 @@ internal fun OverlaysPage(onBack: () -> Unit) {
             }
             OutlinedButton(onClick = { filters = true }, modifier = Modifier.fillMaxWidth()) {
                 Text("With controls")
+            }
+            OutlinedButton(onClick = { choosing = true }, modifier = Modifier.fillMaxWidth()) {
+                Text("Choice: ${SnoozeChoices[choice]}")
             }
         }
         DemoSection(
@@ -658,6 +678,17 @@ internal fun OverlaysPage(onBack: () -> Unit) {
         PvotDialogAction("Cancel", onClick = { rename = false })
     }
 
+    PvotChoiceSheet(
+        visible = choosing,
+        title = "Snooze length",
+        entries = SnoozeChoices,
+        selected = choice,
+        onDismiss = { choosing = false },
+        onSelect = {
+            choice = it
+            choosing = false
+        },
+    )
     PvotBottomSheet(visible = actions, onDismissRequest = { actions = false }, title = "Share") {
         listOf(
                 Triple("Copy link", "Anyone with it can view", R.drawable.ic_t_copy),
@@ -934,3 +965,5 @@ internal fun GlassPage(onBack: () -> Unit) {
         }
     }
 }
+
+private val SnoozeChoices = listOf("5 minutes", "10 minutes", "15 minutes", "30 minutes")
