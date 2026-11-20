@@ -8,10 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -78,7 +82,7 @@ public object PvotScreenScaffoldDefaults {
  * @param snackbarHost The snackbar host above the bottom bar
  * @param overlay Sheets, dialogs and anything else drawn last, over everything
  * @param content The screen, given the padding that clears the top bar, or the status bar when
- *   there is no top bar
+ *   there is no top bar; it is already kept clear of a camera cutout or navigation bar at the sides
  */
 @Composable
 public fun PvotScreenScaffold(
@@ -119,7 +123,14 @@ public fun PvotScreenScaffold(
         ) {
             background()
             CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
-                content(contentPadding)
+                Box(
+                    Modifier.fillMaxSize()
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                        )
+                ) {
+                    content(contentPadding)
+                }
             }
         }
         CompositionLocalProvider(LocalPvotGlassBackdrop provides backdrop) {
