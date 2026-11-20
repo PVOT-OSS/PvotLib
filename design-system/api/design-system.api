@@ -1372,6 +1372,18 @@ public final class com/prauga/pvot/designsystem/components/progress/PvotLinearPr
 	public static final fun PvotLinearProgress-TN_CM5M (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/components/progress/PvotLinearProgressColors;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/progress/PvotProgressRingDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/progress/PvotProgressRingDefaults;
+	public static final field StrokeFraction F
+	public static final field TrackAlpha F
+	public final fun color-WaAFU9c (Landroidx/compose/runtime/Composer;I)J
+}
+
+public final class com/prauga/pvot/designsystem/components/progress/PvotProgressRingKt {
+	public static final fun PvotProgressRing-T042LqI (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;JFLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/progress/PvotProportionBarColors {
 	public static final field $stable I
 	public synthetic fun <init> (Ljava/util/List;JLkotlin/jvm/internal/DefaultConstructorMarker;)V
