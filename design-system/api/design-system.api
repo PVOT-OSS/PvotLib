@@ -17,6 +17,12 @@ public final class com/prauga/pvot/designsystem/adaptive/PvotHinge {
 	public final fun getSeparating ()Z
 }
 
+public final class com/prauga/pvot/designsystem/adaptive/PvotPanesKt {
+	public static final fun PvotCenteredContent-uFdPcIQ (Landroidx/compose/ui/Modifier;FLkotlin/jvm/functions/Function2;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotTabletopSplit (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotTwoPane-FJfuzF0 (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;FFLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/adaptive/PvotWindowLayout {
 	public static final field $stable I
 	public fun <init> (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;)V
