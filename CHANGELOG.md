@@ -12,6 +12,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotTopBar` takes `inlineTitle`: the large title sits in the bar beside the
+  actions instead of under them, for a tab or another top-level screen; it never folds, and
+  `compact` only gives the bar its fill. Shown on the catalog's Top bar page.
 - `design-system`: adaptive layouts in a new `adaptive` package. `rememberPvotWindowLayout()` gives
   the window's `PvotWindowWidth` (compact, medium, expanded) and the fold as a `PvotHinge`, with
   `tabletop`, `book` and `twoPane`. `PvotTwoPane` puts two panes side by side and meets the hinge
