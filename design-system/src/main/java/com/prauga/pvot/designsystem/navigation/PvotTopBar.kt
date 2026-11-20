@@ -249,6 +249,9 @@ public fun rememberPvotTopBarCompact(
  * @param material How much the glass is frosted, only meaningful with [backdrop]
  * @param colors The bar's colors
  * @param windowInsets The insets the bar pads itself by
+ * @param inlineTitle Whether the large title sits in the bar beside the actions instead of under
+ *   them, for a top-level screen such as a tab; the title then never folds, and [compact] only
+ *   gives the bar its fill
  * @param actions The screen's actions at the end of the bar, typically [PvotTopBarAction]s
  */
 @Composable
@@ -263,6 +266,7 @@ public fun PvotTopBar(
         if (backdrop != null) PvotTopBarDefaults.glassColors()
         else PvotTopBarDefaults.themeColors(),
     windowInsets: WindowInsets = PvotTopBarDefaults.windowInsets,
+    inlineTitle: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     // 0 is expanded, 1 compact. Read only in layout and draw, so the fold costs no recomposition.
@@ -303,7 +307,16 @@ public fun PvotTopBar(
                     )
                 }
             }
-            TopBarColumn(title, onBack, compact, colors, windowInsets, progress, actions)
+            TopBarColumn(
+                title,
+                onBack,
+                compact,
+                inlineTitle,
+                colors,
+                windowInsets,
+                progress,
+                actions,
+            )
         }
     }
 }
@@ -313,6 +326,7 @@ private fun TopBarColumn(
     title: String,
     onBack: (() -> Unit)?,
     compact: Boolean,
+    inlineTitle: Boolean,
     colors: PvotTopBarColors,
     windowInsets: WindowInsets,
     progress: State<Float>,
@@ -348,6 +362,17 @@ private fun TopBarColumn(
                     Modifier.weight(1f)
                         .padding(horizontal = if (onBack != null) PvotSpacing.XS else PvotSpacing.M)
             ) {
+                if (inlineTitle) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = colors.titleColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.semantics { heading() },
+                    )
+                    return@Box
+                }
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
@@ -365,6 +390,7 @@ private fun TopBarColumn(
             }
             actions()
         }
+        if (inlineTitle) return@Column
         Text(
             text = title,
             style = MaterialTheme.typography.headlineMedium,

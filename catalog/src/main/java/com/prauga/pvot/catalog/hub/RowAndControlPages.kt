@@ -479,6 +479,7 @@ internal fun PvotButtonPage(onBack: () -> Unit) {
 @Composable
 internal fun TopBarPage(onBack: () -> Unit) {
     var showBack by remember { mutableStateOf(true) }
+    var inline by remember { mutableStateOf(false) }
     var subScreen by remember { mutableStateOf(false) }
     val send = rememberSnackbarSender()
     if (subScreen) {
@@ -510,6 +511,11 @@ internal fun TopBarPage(onBack: () -> Unit) {
                 checked = showBack,
                 onCheckedChange = { showBack = it },
             )
+            OptionSwitch(
+                label = "Title beside the actions",
+                checked = inline,
+                onCheckedChange = { inline = it },
+            )
             val listState = rememberLazyListState()
             Column(
                 modifier =
@@ -523,6 +529,7 @@ internal fun TopBarPage(onBack: () -> Unit) {
                     onBack = if (showBack) ({ send("Back") }) else null,
                     compact = rememberPvotTopBarCompact(listState),
                     windowInsets = WindowInsets(0),
+                    inlineTitle = inline,
                     actions = {
                         PvotTopBarAction(
                             icon = painterResource(R.drawable.ic_t_search),
