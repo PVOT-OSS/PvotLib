@@ -22,7 +22,7 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
 ├── effects/      pvotPressScale, pvotGlassPress, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
-├── adaptive/     rememberPvotWindowLayout, PvotWindowLayout, PvotWindowWidth, PvotHinge, PvotTwoPane,
+├── adaptive/     rememberPvotWindowLayout, PvotWindowLayout, PvotWindowWidth, PvotWindowHeight, PvotHinge, PvotTwoPane,
 │                 PvotTabletopSplit, PvotCenteredContent, PvotAdaptiveDefaults
 ├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotDialogContent, PvotBottomSheet,
 │   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule,
@@ -417,7 +417,7 @@ default comes from its `*Defaults` object:
 | Icon button | `PvotIconButtonDefaults.Size`, `.LargeSize`, `.SmallSize`, `.tonalColors()`, `.filledColors()`, `.plainColors()` | size, colors |
 | List group | `PvotListGroupDefaults.DividerInset`, `.colors()` | `dividerInset`, colors |
 | Progress | `PvotLinearProgressDefaults.Height`, `.colors()`; `PvotProportionBarDefaults.Height`, `.tonalColors(base, track)`; `PvotProgressRingDefaults.StrokeFraction`, `.color()` | colors |
-| Adaptive | `PvotAdaptiveDefaults.MediumWidth`, `.ExpandedWidth`, `.ContentMaxWidth`, `.PaneGap`, `.FirstPaneWeight` | `firstWeight`, `gap`, `maxWidth` |
+| Adaptive | `PvotAdaptiveDefaults.MediumWidth`, `.ExpandedWidth`, `.MediumHeight`, `.ExpandedHeight`, `.ContentMaxWidth`, `.PaneGap`, `.FirstPaneWeight` | `firstWeight`, `gap`, `maxWidth` |
 | Keypad keys | `PvotKeypadDefaults.flatColors()`, `.filledColors()` | colors |
 | Slide to act | `PvotSlideToActDefaults.UpDistance`, `.DownDistance`, `.FlingVelocity`, `.PuckSize` | a `PvotSlideTarget` per end |
 | Letter tile | `PvotLetterTileDefaults.themePalette()`, the container roles | `PvotLetterTileDefaults.palette(colorScheme)` or a list of `PvotLetterTileColors` |
