@@ -56,6 +56,17 @@ internal fun catalogEntries(): List<CatalogEntry> =
             page = { BackgroundsPage(it) },
         ),
         CatalogEntry(
+            id = "adaptive",
+            title = "Adaptive layouts",
+            group = CatalogGroup.Foundations,
+            summary = "Window size, folds, two panes, tabletop and a centred column.",
+            icon = R.drawable.ic_t_layout_columns,
+            keywords =
+                "tablet foldable hinge pane window size class PvotTwoPane PvotTabletopSplit " +
+                    "PvotCenteredContent rememberPvotWindowLayout",
+            page = { AdaptivePage(it) },
+        ),
+        CatalogEntry(
             id = "icons",
             title = "Icons",
             group = CatalogGroup.Foundations,
