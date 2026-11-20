@@ -87,6 +87,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 - The press, lift and drag feel is adapted from Glisse (MIT), credited in `THIRD_PARTY_NOTICES.md`.
 
 ### Fixed
+- `design-system`: in landscape, `PvotScreenScaffold` keeps its content and `PvotTopBar` its title
+  and actions clear of a camera cutout or a navigation bar at the side of the screen
+  (`WindowInsets.safeDrawing`); backgrounds and the top bar's fill still reach the edges.
 - `PvotScreenScaffold` keeps its content padding at the top bar's expanded height while a
   `PvotTopBar` folds and unfolds: the compact bar floats over the content instead of moving the
   first item under the finger, which jumped the hero card on screens such as call details. A bar

@@ -12,11 +12,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material3.ColorScheme
@@ -103,9 +107,16 @@ public object PvotTopBarDefaults {
     /** How far a list scrolls before [rememberPvotTopBarCompact] reports it compact. */
     public val CompactThreshold: Dp = 8.dp
 
-    /** The insets the bar pads itself by, the status bar by default. */
+    /**
+     * The insets the bar pads itself by: the status bar, and at the sides a camera cutout or a
+     * navigation bar, so the title and actions stay clear of them in landscape.
+     */
     public val windowInsets: WindowInsets
-        @Composable get() = WindowInsets.statusBars
+        @Composable
+        get() =
+            WindowInsets.statusBars.union(
+                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+            )
 
     /** Bar colors derived from [colorScheme], each overridable. */
     public fun colors(
