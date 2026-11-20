@@ -31,6 +31,18 @@ public enum class PvotWindowWidth {
     Expanded,
 }
 
+/** How tall the window is, in the breakpoints of [PvotAdaptiveDefaults]. */
+public enum class PvotWindowHeight {
+    /** A phone on its side: little room above and below the content. */
+    Compact,
+
+    /** Most phones upright and tablets on their side. */
+    Medium,
+
+    /** A tablet upright or a tall desktop window. */
+    Expanded,
+}
+
 /**
  * The fold of a foldable device, as the window sees it.
  *
@@ -54,9 +66,15 @@ public class PvotHinge(
  *
  * @param width How wide the window is
  * @param hinge The fold, or null on a device without one or while it lies flat in no posture
+ * @param height How tall the window is; when [PvotWindowHeight.Compact], keep bars slim and size
+ *   content to the height as well as the width
  */
 @Immutable
-public data class PvotWindowLayout(val width: PvotWindowWidth, val hinge: PvotHinge?) {
+public data class PvotWindowLayout(
+    val width: PvotWindowWidth,
+    val hinge: PvotHinge?,
+    val height: PvotWindowHeight = PvotWindowHeight.Medium,
+) {
 
     /** Half folded with the hinge across: the top half stands up, the bottom half lies flat. */
     public val tabletop: Boolean
@@ -80,6 +98,12 @@ public object PvotAdaptiveDefaults {
     /** Narrowest window that counts as [PvotWindowWidth.Expanded]. */
     public val ExpandedWidth: Dp = 840.dp
 
+    /** Shortest window that counts as [PvotWindowHeight.Medium]. */
+    public val MediumHeight: Dp = 480.dp
+
+    /** Shortest window that counts as [PvotWindowHeight.Expanded]. */
+    public val ExpandedHeight: Dp = 900.dp
+
     /** Widest a single column of content grows on a wide window. */
     public val ContentMaxWidth: Dp = 640.dp
 
@@ -91,13 +115,15 @@ public object PvotAdaptiveDefaults {
 }
 
 /**
- * The current window's [PvotWindowLayout]. The width follows the window as it resizes; the hinge
+ * The current window's [PvotWindowLayout]. The size follows the window as it resizes; the hinge
  * comes from Jetpack WindowManager and is null outside an activity.
  */
 @Composable
 public fun rememberPvotWindowLayout(): PvotWindowLayout {
     val activity = LocalActivity.current
-    val widthDp = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.width.toDp() }
+    val size = LocalWindowInfo.current.containerSize
+    val widthDp = with(LocalDensity.current) { size.width.toDp() }
+    val heightDp = with(LocalDensity.current) { size.height.toDp() }
     val hinges =
         remember(activity) {
             if (activity == null) {
@@ -122,5 +148,11 @@ public fun rememberPvotWindowLayout(): PvotWindowLayout {
             widthDp >= PvotAdaptiveDefaults.MediumWidth -> PvotWindowWidth.Medium
             else -> PvotWindowWidth.Compact
         }
-    return PvotWindowLayout(width, hinge)
+    val height =
+        when {
+            heightDp >= PvotAdaptiveDefaults.ExpandedHeight -> PvotWindowHeight.Expanded
+            heightDp >= PvotAdaptiveDefaults.MediumHeight -> PvotWindowHeight.Medium
+            else -> PvotWindowHeight.Compact
+        }
+    return PvotWindowLayout(width, hinge, height)
 }

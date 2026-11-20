@@ -51,7 +51,7 @@ internal fun AdaptivePage(onBack: () -> Unit) {
         DemoSection(
             title = "This window",
             caption =
-                "${layout.width} width · $posture · " +
+                "${layout.width} width · ${layout.height} height · $posture · " +
                     if (layout.twoPane) "two panes" else "one column",
         ) {
             Text(

@@ -3,7 +3,9 @@ public final class com/prauga/pvot/designsystem/adaptive/PvotAdaptiveDefaults {
 	public static final field FirstPaneWeight F
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/adaptive/PvotAdaptiveDefaults;
 	public final fun getContentMaxWidth-D9Ej5fM ()F
+	public final fun getExpandedHeight-D9Ej5fM ()F
 	public final fun getExpandedWidth-D9Ej5fM ()F
+	public final fun getMediumHeight-D9Ej5fM ()F
 	public final fun getMediumWidth-D9Ej5fM ()F
 	public final fun getPaneGap-D9Ej5fM ()F
 }
@@ -23,15 +25,27 @@ public final class com/prauga/pvot/designsystem/adaptive/PvotPanesKt {
 	public static final fun PvotTwoPane-FJfuzF0 (Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Landroidx/compose/ui/Modifier;FFLandroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/adaptive/PvotWindowHeight : java/lang/Enum {
+	public static final field Compact Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+	public static final field Expanded Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+	public static final field Medium Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+}
+
 public final class com/prauga/pvot/designsystem/adaptive/PvotWindowLayout {
 	public static final field $stable I
-	public fun <init> (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;)V
+	public fun <init> (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;)V
+	public synthetic fun <init> (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun component1 ()Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
 	public final fun component2 ()Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;
-	public final fun copy (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
-	public static synthetic fun copy$default (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;ILjava/lang/Object;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
+	public final fun component3 ()Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
+	public final fun copy (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
+	public static synthetic fun copy$default (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;ILjava/lang/Object;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getBook ()Z
+	public final fun getHeight ()Lcom/prauga/pvot/designsystem/adaptive/PvotWindowHeight;
 	public final fun getHinge ()Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;
 	public final fun getTabletop ()Z
 	public final fun getTwoPane ()Z

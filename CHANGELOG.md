@@ -17,9 +17,10 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   `compact` only gives the bar its fill. Shown on the catalog's Top bar page.
 - `design-system`: adaptive layouts in a new `adaptive` package. `rememberPvotWindowLayout()` gives
   the window's `PvotWindowWidth` (compact, medium, expanded) and the fold as a `PvotHinge`, with
-  `tabletop`, `book` and `twoPane`. `PvotTwoPane` puts two panes side by side and meets the hinge
-  of a book-folded device, `PvotTabletopSplit` puts content above a half-folded hinge and controls
-  below, and `PvotCenteredContent` keeps a single column readable on a tablet. Depends on
+  `tabletop`, `book` and `twoPane`, and its `PvotWindowHeight`, compact for a phone on its side.
+  `PvotTwoPane` puts two panes side by side and meets the hinge of a book-folded device,
+  `PvotTabletopSplit` puts content above a half-folded hinge and controls below, and
+  `PvotCenteredContent` keeps a single column readable on a tablet. Depends on
   `androidx.window:window` 1.5.0 (`androidx.window_window` in `Android.bp`). Shown on the catalog's
   Adaptive layouts page.
 - `design-system`: `PvotSubScreen`, a screen below the tabs with a back button and a title that folds
