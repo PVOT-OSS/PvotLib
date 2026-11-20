@@ -3,6 +3,7 @@
 
 package com.prauga.pvot.catalog.hub
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
@@ -40,6 +42,7 @@ import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.designsystem.components.PvotMenuItem
 import com.prauga.pvot.designsystem.components.PvotSegmentedControl
+import com.prauga.pvot.designsystem.components.PvotSubScreen
 import com.prauga.pvot.designsystem.components.button.PvotButton
 import com.prauga.pvot.designsystem.components.button.PvotButtonStyle
 import com.prauga.pvot.designsystem.components.button.PvotFab
@@ -476,7 +479,17 @@ internal fun PvotButtonPage(onBack: () -> Unit) {
 @Composable
 internal fun TopBarPage(onBack: () -> Unit) {
     var showBack by remember { mutableStateOf(true) }
+    var subScreen by remember { mutableStateOf(false) }
     val send = rememberSnackbarSender()
+    if (subScreen) {
+        BackHandler { subScreen = false }
+        PvotSubScreen(title = "Display", onBack = { subScreen = false }) {
+            items((1..20).toList()) { index ->
+                PvotListRow(title = "Setting $index", supportingText = "Detail", onClick = {})
+            }
+        }
+        return
+    }
     DetailPage(
         title = "Top bar",
         summary =
@@ -487,7 +500,9 @@ internal fun TopBarPage(onBack: () -> Unit) {
         code =
             "val listState = rememberLazyListState()\nPvotTopBar(\n    title = \"Settings\",\n    onBack = ::finish,\n" +
                 "    compact = rememberPvotTopBarCompact(listState),\n    actions = {\n" +
-                "        PvotTopBarAction(searchIcon, \"Search\", onClick = { search() })\n    }\n)",
+                "        PvotTopBarAction(searchIcon, \"Search\", onClick = { search() })\n    }\n)\n\n" +
+                "PvotSubScreen(title = \"Display\", onBack = ::finish) {\n" +
+                "    items(settings) { PvotListRow(title = it.name, onClick = { open(it) }) }\n}",
     ) {
         DemoSection(title = "Scroll to compact", caption = "Scroll the list inside the frame") {
             OptionSwitch(
@@ -525,6 +540,14 @@ internal fun TopBarPage(onBack: () -> Unit) {
                         )
                     }
                 }
+            }
+        }
+        DemoSection(
+            title = "Sub-screen",
+            caption = "A whole screen below the tabs: this bar, a back button and a list",
+        ) {
+            Button(onClick = { subScreen = true }, modifier = Modifier.fillMaxWidth()) {
+                Text("Open a sub-screen")
             }
         }
     }

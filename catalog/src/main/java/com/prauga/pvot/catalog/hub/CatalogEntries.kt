@@ -109,7 +109,8 @@ internal fun catalogEntries(): List<CatalogEntry> =
             group = CatalogGroup.Components,
             summary = "Wheel pickers for a time of day and a duration.",
             icon = R.drawable.ic_t_player_play,
-            keywords = "time clock duration wheel PvotClockPicker PvotDurationPicker",
+            keywords =
+                "time clock duration wheel dialog PvotClockPicker PvotDurationPicker PvotTimePickerDialog",
             page = { PickersPage(it) },
         ),
         CatalogEntry(
@@ -159,7 +160,7 @@ internal fun catalogEntries(): List<CatalogEntry> =
             summary = "Animated dialogs and bottom sheets with actions and controls.",
             icon = R.drawable.ic_t_message_circle,
             keywords =
-                "dialog sheet modal persistent snackbar toast alert PvotDialog PvotBottomSheet PvotPersistentSheet",
+                "dialog sheet modal persistent snackbar toast alert choice PvotDialog PvotBottomSheet PvotPersistentSheet PvotChoiceSheet",
             page = { OverlaysPage(it) },
         ),
         CatalogEntry(
@@ -186,7 +187,8 @@ internal fun catalogEntries(): List<CatalogEntry> =
             group = CatalogGroup.Components,
             summary = "Back, title and actions; the large title folds in on scroll.",
             icon = R.drawable.ic_t_layout_navbar,
-            keywords = "toolbar app bar header back collapse PvotTopBar",
+            keywords =
+                "toolbar app bar header back collapse sub-screen settings PvotTopBar PvotSubScreen",
             page = { TopBarPage(it) },
         ),
         CatalogEntry(
@@ -307,10 +309,10 @@ internal fun catalogEntries(): List<CatalogEntry> =
             id = "pvot-progress",
             title = "Progress bars",
             group = CatalogGroup.Components,
-            summary = "A thin bar that can seek, and a bar of shares in one hue.",
+            summary = "A thin bar that can seek, a ring, and a bar of shares in one hue.",
             icon = R.drawable.ic_t_loader_2,
             keywords =
-                "progress bar seek proportion share legend PvotLinearProgress PvotProportionBar",
+                "progress bar ring circle seek proportion share legend PvotLinearProgress PvotProgressRing PvotProportionBar",
             page = { PvotProgressPage(it) },
         ),
         CatalogEntry(

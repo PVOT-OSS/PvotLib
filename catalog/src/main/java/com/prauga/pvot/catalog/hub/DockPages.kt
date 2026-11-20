@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import com.prauga.pvot.catalog.R
 import com.prauga.pvot.designsystem.components.PvotCapsule
 import com.prauga.pvot.designsystem.components.PvotTabRow
@@ -42,10 +43,12 @@ import com.prauga.pvot.designsystem.components.list.PvotRowChevron
 import com.prauga.pvot.designsystem.components.list.PvotRowIconStyle
 import com.prauga.pvot.designsystem.components.list.PvotSwitchRow
 import com.prauga.pvot.designsystem.components.progress.PvotLinearProgress
+import com.prauga.pvot.designsystem.components.progress.PvotProgressRing
 import com.prauga.pvot.designsystem.components.progress.PvotProportionBar
 import com.prauga.pvot.designsystem.components.progress.PvotProportionBarDefaults
 import com.prauga.pvot.designsystem.theme.PvotShapes
 import com.prauga.pvot.designsystem.theme.PvotSpacing
+import com.prauga.pvot.designsystem.theme.PvotTheme
 
 // ───────────────────────────── Tab row ─────────────────────────────
 
@@ -160,11 +163,13 @@ internal fun PvotProgressPage(onBack: () -> Unit) {
     DetailPage(
         title = "Progress bars",
         summary =
-            "A thin bar for how far along something is, which can seek, and a bar split into " +
-                "shares whose parts are tonal steps of one hue.",
+            "A thin bar for how far along something is, which can seek, a ring with content " +
+                "inside, and a bar split into shares whose parts are tonal steps of one hue.",
         onBack = onBack,
         code =
             "PvotLinearProgress(progress = { position }, onSeek = player::seekTo)\n" +
+                "PvotProgressRing(progress = { elapsed / lap }, color = ringColor) {\n" +
+                "    Text(formatElapsed(elapsed))\n}\n" +
                 "PvotProportionBar(segments = listOf(incoming, outgoing, missed))",
     ) {
         DemoSection(
@@ -189,6 +194,20 @@ internal fun PvotProgressPage(onBack: () -> Unit) {
                     progress = { position },
                     onSeek = { position = it },
                     modifier = Modifier.weight(1f),
+                )
+            }
+        }
+        DemoSection(title = "Ring", caption = "Paused, it turns amber") {
+            PvotProgressRing(
+                progress = { position },
+                color =
+                    if (playing) MaterialTheme.colorScheme.primary
+                    else PvotTheme.extendedColors.warning,
+                modifier = Modifier.width(RingSize),
+            ) {
+                Text(
+                    text = "${"%.0f".format(position * 100)}%",
+                    style = MaterialTheme.typography.headlineMedium,
                 )
             }
         }
@@ -318,3 +337,5 @@ internal fun CapsulePage(onBack: () -> Unit) {
         }
     }
 }
+
+private val RingSize = 200.dp
