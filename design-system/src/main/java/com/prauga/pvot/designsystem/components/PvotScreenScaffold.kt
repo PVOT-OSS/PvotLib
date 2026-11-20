@@ -81,8 +81,11 @@ public object PvotScreenScaffoldDefaults {
  * @param floatingAction The floating action above the bottom bar's end; typically a `PvotFab`
  * @param snackbarHost The snackbar host above the bottom bar
  * @param overlay Sheets, dialogs and anything else drawn last, over everything
+ * @param fullBleedContent Whether the content runs under a camera cutout or navigation bar at the
+ *   sides, as a photo grid does; it then keeps its own text and controls clear of them
  * @param content The screen, given the padding that clears the top bar, or the status bar when
- *   there is no top bar; it is already kept clear of a camera cutout or navigation bar at the sides
+ *   there is no top bar; unless [fullBleedContent], it is already kept clear of a camera cutout or
+ *   navigation bar at the sides
  */
 @Composable
 public fun PvotScreenScaffold(
@@ -94,6 +97,7 @@ public fun PvotScreenScaffold(
     floatingAction: @Composable () -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
     overlay: @Composable BoxScope.() -> Unit = {},
+    fullBleedContent: Boolean = false,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -124,10 +128,14 @@ public fun PvotScreenScaffold(
             background()
             CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
                 Box(
-                    Modifier.fillMaxSize()
-                        .windowInsetsPadding(
-                            WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                        )
+                    if (fullBleedContent) {
+                        Modifier.fillMaxSize()
+                    } else {
+                        Modifier.fillMaxSize()
+                            .windowInsetsPadding(
+                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                            )
+                    }
                 ) {
                     content(contentPadding)
                 }
