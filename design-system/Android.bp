@@ -29,6 +29,7 @@ android_library {
         "androidx.compose.ui_ui-unit",
         "androidx.compose.ui_ui-util",
         "androidx.core_core-ktx",
+        "androidx.window_window",
         "kotlin-stdlib",
     ],
 }
