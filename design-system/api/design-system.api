@@ -95,6 +95,16 @@ public final class com/prauga/pvot/designsystem/components/PvotCardKt {
 	public static final fun PvotCard (Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/graphics/Shape;Landroidx/compose/material3/CardColors;Landroidx/compose/material3/CardElevation;Landroidx/compose/foundation/BorderStroke;Landroidx/compose/foundation/interaction/MutableInteractionSource;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotChoiceSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotChoiceSheetDefaults;
+	public static final field MaxHeightFraction F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotChoiceSheetKt {
+	public static final fun PvotChoiceSheet (ZLjava/lang/String;Ljava/util/List;ILkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotDialogActionStyle : java/lang/Enum {
 	public static final field Destructive Lcom/prauga/pvot/designsystem/components/PvotDialogActionStyle;
 	public static final field Neutral Lcom/prauga/pvot/designsystem/components/PvotDialogActionStyle;
