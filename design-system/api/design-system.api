@@ -1,3 +1,52 @@
+public final class com/prauga/pvot/designsystem/adaptive/PvotAdaptiveDefaults {
+	public static final field $stable I
+	public static final field FirstPaneWeight F
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/adaptive/PvotAdaptiveDefaults;
+	public final fun getContentMaxWidth-D9Ej5fM ()F
+	public final fun getExpandedWidth-D9Ej5fM ()F
+	public final fun getMediumWidth-D9Ej5fM ()F
+	public final fun getPaneGap-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/adaptive/PvotHinge {
+	public static final field $stable I
+	public fun <init> (Landroid/graphics/Rect;ZZZ)V
+	public final fun getBounds ()Landroid/graphics/Rect;
+	public final fun getHalfOpened ()Z
+	public final fun getHorizontal ()Z
+	public final fun getSeparating ()Z
+}
+
+public final class com/prauga/pvot/designsystem/adaptive/PvotWindowLayout {
+	public static final field $stable I
+	public fun <init> (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;)V
+	public final fun component1 ()Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public final fun component2 ()Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;
+	public final fun copy (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
+	public static synthetic fun copy$default (Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;ILjava/lang/Object;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBook ()Z
+	public final fun getHinge ()Lcom/prauga/pvot/designsystem/adaptive/PvotHinge;
+	public final fun getTabletop ()Z
+	public final fun getTwoPane ()Z
+	public final fun getWidth ()Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/adaptive/PvotWindowLayoutKt {
+	public static final fun rememberPvotWindowLayout (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowLayout;
+}
+
+public final class com/prauga/pvot/designsystem/adaptive/PvotWindowWidth : java/lang/Enum {
+	public static final field Compact Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public static final field Expanded Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public static final field Medium Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/adaptive/PvotWindowWidth;
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotBottomSheetDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotBottomSheetDefaults;

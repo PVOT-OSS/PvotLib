@@ -16,9 +16,11 @@ coil = "3.0.4"
 kotlinxSerialization = "1.7.3"
 binaryCompatibilityValidator = "0.18.1"
 material = "1.14.0"
+window = "1.5.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-window = { group = "androidx.window", name = "window", version.ref = "window" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

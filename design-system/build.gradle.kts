@@ -17,6 +17,7 @@ kotlin { explicitApi() }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.window)
     api(libs.androidx.activity.compose)
     api(platform(libs.androidx.compose.bom))
     api(libs.androidx.compose.ui)
