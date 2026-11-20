@@ -12,6 +12,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo
+  grid run under a side camera cutout or navigation bar while it keeps its own text clear of them.
 - `design-system`: `PvotTopBar` takes `inlineTitle`: the large title sits in the bar beside the
   actions instead of under them, for a tab or another top-level screen; it never folds, and
   `compact` only gives the bar its fill. Shown on the catalog's Top bar page.
