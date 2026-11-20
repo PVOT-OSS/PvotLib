@@ -87,6 +87,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 - The press, lift and drag feel is adapted from Glisse (MIT), credited in `THIRD_PARTY_NOTICES.md`.
 
 ### Fixed
+- `design-system`: a tap on `PvotSwitch` or `PvotSegmentedControl` inside a clickable parent, such
+  as a card that opens on tap, no longer also clicks the parent.
 - `design-system`: in landscape, `PvotScreenScaffold` keeps its content and `PvotTopBar` its title
   and actions clear of a camera cutout or a navigation bar at the side of the screen
   (`WindowInsets.safeDrawing`); backgrounds and the top bar's fill still reach the edges.

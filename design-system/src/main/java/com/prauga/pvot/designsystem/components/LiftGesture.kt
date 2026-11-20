@@ -34,6 +34,7 @@ internal suspend fun PointerInputScope.detectLiftGesture(
                 return@awaitEachGesture
             }
             if (change.changedToUpIgnoreConsumed()) {
+                change.consume()
                 onRelease(change.position, moved)
                 return@awaitEachGesture
             }
