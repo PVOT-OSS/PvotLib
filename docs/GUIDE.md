@@ -22,15 +22,17 @@ design-system/src/main/java/com/prauga/pvot/designsystem/
 ├── theme/        PvotAppTheme, PvotTheme, PvotThemeDefaults, palette, PvotTypography, PvotShapes, PvotSpacing
 ├── effects/      pvotPressScale, pvotGlassPress, pvotGlass, pvotGlassBackdrop, pvotGlassRim, PvotGlassStyle, PvotGlassDefaults
 ├── motion/       PvotMotion, PvotDurations, pvotReveal
+├── adaptive/     rememberPvotWindowLayout, PvotWindowLayout, PvotWindowWidth, PvotHinge, PvotTwoPane,
+│                 PvotTabletopSplit, PvotCenteredContent, PvotAdaptiveDefaults
 ├── components/   PvotCard, PvotGlassCard, PvotGlassIconButton, PvotScreen, PvotSkeleton, PvotDialog, PvotDialogContent, PvotBottomSheet,
 │   │             PvotSegmentedControl, PvotSnackbarHost, PvotSnackbar, PvotSlideToAct, PvotCapsule,
-│   │             PvotTabRow
+│   │             PvotTabRow, PvotSubScreen, PvotChoiceSheet
 │   ├── call/     PvotCallButton, PvotCallActionButton, PvotCallAction, their *Colors and *Defaults
 │   ├── keypad/   PvotKeypad, PvotKeypadKey, PvotKeypadColors, PvotKeypadDisplay, their *Defaults
-│   ├── progress/ PvotLinearProgress, PvotProportionBar, their *Colors and *Defaults
+│   ├── progress/ PvotLinearProgress, PvotProportionBar, PvotProgressRing, their *Colors and *Defaults
 │   ├── button/   PvotButton, PvotButtonStyle, PvotFab, PvotIconButton, their *Colors and *Defaults
 │   ├── list/     PvotListRow, PvotLetterTile, PvotAvatar, PvotAvatarStack, PvotSwipeRow, PvotSwipeAction, PvotSwitchRow, PvotPreferenceRow, PvotListGroup, PvotFastScroller
-│   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotPickerColors, PvotPickerDefaults
+│   ├── picker/   PvotClockPicker, PvotDurationPicker, PvotTimePickerDialog, PvotPickerColors, PvotPickerDefaults
 │   ├── textfield/ PvotTextField, PvotTextFieldColors, PvotTextFieldDefaults
 │   └── slider/   PvotSlider, PvotRangeSlider, PvotSliderColors, PvotSliderDefaults
 ├── navigation/   PvotNavBar, PvotNavBarItem, PvotTabItem, PvotNavBarColors, PvotNavBarSizes, PvotNavBarDefaults,
@@ -43,6 +45,7 @@ core-ui/src/main/java/com/prauga/pvot/coreui/
 
 Packages are layered: `theme` → `effects` → `motion` → `components`, `navigation` → `platform`.
 A package only imports from the layers before it; `theme` imports nothing from the library.
+`adaptive` imports nothing from the library either, so any layer may use it.
 `core-ui` doesn't depend on `design-system`.
 
 ---
@@ -325,10 +328,13 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotDialog` | `components` | Centered dialog that eases in and out over its own scrim; icon, title (optional), message, optional content and stacked `PvotDialogAction` buttons. Driven by `visible` |
 | `PvotDialogContent` | `components` | The card of a `PvotDialog` alone, without window, scrim or animation, for a dialog whose window comes from elsewhere, such as an `android.app.Dialog` that keeps platform window flags |
 | `PvotBottomSheet` | `components` | Modal sheet with a slim handle, optional title and scrolling content; `PvotSheetItem` rows. Driven by `visible` |
+| `PvotChoiceSheet` | `components` | A `PvotBottomSheet` for picking one of a list of values, such as a setting's: the current one checked and scrolled into view |
+| `PvotSubScreen` | `components` | A screen below the tabs, such as settings: `PvotTopBar` with back and a large title that folds on scroll, over a `PvotScreen` list that clears the system navigation bar |
 | `PvotTextField` | `components.textfield` | Soft filled field: floating label, focus ring, validation shake, animated supporting text, counter, icons, multiline |
 | `PvotSlider` | `components.slider` | Minimal slider: slim track, round thumb that lifts into a lens under the finger, tap to jump, optional snapping steps |
 | `PvotRangeSlider` | `components.slider` | Two-thumb version of `PvotSlider` for choosing a span |
 | `PvotClockPicker` | `components.picker` | Wheel picker for a `LocalTime` (hours, minutes) |
+| `PvotTimePickerDialog` | `components.picker` | A `PvotClockPicker` in a `PvotDialog` with OK and Cancel |
 | `PvotDurationPicker` | `components.picker` | Wheel picker for a `Duration` under 24h (hours, minutes, seconds) |
 | `PvotNavBar` | `navigation` | Floating bottom bar; selected tab opens into a filled pill; dragging along the bar lifts a lens that follows the finger, previews and selects; `compact` shrinks it to icons. Takes a list of `PvotTabItem` or a slot of `PvotNavBarItem`; pass a `backdrop` to make it glass |
 | `PvotNavBarItem` | `navigation` | One item for the slot overload of `PvotNavBar` |
@@ -363,6 +369,10 @@ Scaffold(bottomBar = { PvotNavBar(selectedTab, onTabClick, tabs, backdrop = back
 | `PvotIconButton` | `components.button` | A round icon button, tonal, filled or plain, at 36, 48 or 56dp; a toggle with `checked` reads as a switch and ticks its haptic |
 | `PvotListGroup` | `components.list` | Rows on one card with inset hairlines between them, under a title; rows in a group use `PvotRowIconStyle.Plain` and `PvotRowChevron.Arrow` |
 | `PvotLinearProgress` | `components.progress` | A thin rounded progress bar, read at draw time; with `onSeek` it takes taps and drags and TalkBack can set it |
+| `PvotProgressRing` | `components.progress` | A round progress ring with content in its middle, such as a stopwatch's time; read at draw time, and a change of `color` animates |
+| `PvotTwoPane` | `adaptive` | Two panes side by side, meeting at the hinge of a book-folded device; show it when `rememberPvotWindowLayout().twoPane` |
+| `PvotTabletopSplit` | `adaptive` | Content above the hinge of a half-folded device and controls below; show it when `.tabletop` |
+| `PvotCenteredContent` | `adaptive` | A single column capped at `PvotAdaptiveDefaults.ContentMaxWidth` and centred, so it doesn't stretch across a tablet |
 | `PvotProportionBar` | `components.progress` | A bar of shares whose parts are tonal steps of one hue (`PvotProportionBarDefaults.tonalColors`), with legend dots in the same colors |
 | `PvotSlideToAct` | `components` | A puck slid up or down to act, flung or past a distance, springing back otherwise; haptics at the threshold, the target's color past halfway, each target a TalkBack action. `PvotSlideToActDefaults.decide` is the pure decision |
 | `PvotSegmentedControl` | `components` | Exclusive choices with a pill that slides to the selected one; held, it lifts into a lens and follows the finger |
@@ -406,7 +416,8 @@ default comes from its `*Defaults` object:
 | Tab row | `PvotTabRowDefaults.TabHeight`, `.IndicatorHeight`, `.colors()` | colors, `scrollable` |
 | Icon button | `PvotIconButtonDefaults.Size`, `.LargeSize`, `.SmallSize`, `.tonalColors()`, `.filledColors()`, `.plainColors()` | size, colors |
 | List group | `PvotListGroupDefaults.DividerInset`, `.colors()` | `dividerInset`, colors |
-| Progress | `PvotLinearProgressDefaults.Height`, `.colors()`; `PvotProportionBarDefaults.Height`, `.tonalColors(base, track)` | colors |
+| Progress | `PvotLinearProgressDefaults.Height`, `.colors()`; `PvotProportionBarDefaults.Height`, `.tonalColors(base, track)`; `PvotProgressRingDefaults.StrokeFraction`, `.color()` | colors |
+| Adaptive | `PvotAdaptiveDefaults.MediumWidth`, `.ExpandedWidth`, `.ContentMaxWidth`, `.PaneGap`, `.FirstPaneWeight` | `firstWeight`, `gap`, `maxWidth` |
 | Keypad keys | `PvotKeypadDefaults.flatColors()`, `.filledColors()` | colors |
 | Slide to act | `PvotSlideToActDefaults.UpDistance`, `.DownDistance`, `.FlingVelocity`, `.PuckSize` | a `PvotSlideTarget` per end |
 | Letter tile | `PvotLetterTileDefaults.themePalette()`, the container roles | `PvotLetterTileDefaults.palette(colorScheme)` or a list of `PvotLetterTileColors` |

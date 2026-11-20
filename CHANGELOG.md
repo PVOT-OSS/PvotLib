@@ -12,6 +12,17 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: adaptive layouts in a new `adaptive` package. `rememberPvotWindowLayout()` gives
+  the window's `PvotWindowWidth` (compact, medium, expanded) and the fold as a `PvotHinge`, with
+  `tabletop`, `book` and `twoPane`. `PvotTwoPane` puts two panes side by side and meets the hinge
+  of a book-folded device, `PvotTabletopSplit` puts content above a half-folded hinge and controls
+  below, and `PvotCenteredContent` keeps a single column readable on a tablet. Depends on
+  `androidx.window:window` 1.5.0 (`androidx.window_window` in `Android.bp`). Shown on the catalog's
+  Adaptive layouts page.
+- `design-system`: `PvotSubScreen`, a screen below the tabs with a back button and a title that folds
+  on scroll; `PvotChoiceSheet`, a sheet for picking one value from a list; `PvotTimePickerDialog`, a
+  `PvotClockPicker` in a dialog; `PvotProgressRing`, a round progress ring with content inside. Each
+  is shown on its catalog page. New icon `pvot_ic_check`.
 - `design-system`: `PvotFastScroller` takes a `LazyGridState` too, for a grid split into sections
   such as photos by month, and its bubble widens into a pill to fit a label longer than a letter,
   such as "Nov 2026".
