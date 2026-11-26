@@ -1702,7 +1702,9 @@ public final class com/prauga/pvot/designsystem/motion/PvotPageTransitions {
 	public static final field $stable I
 	public static final field DurationMillis I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/motion/PvotPageTransitions;
+	public final fun dismissSheet ()Landroidx/compose/animation/ContentTransform;
 	public final fun pop ()Landroidx/compose/animation/ContentTransform;
+	public final fun presentSheet ()Landroidx/compose/animation/ContentTransform;
 	public final fun push ()Landroidx/compose/animation/ContentTransform;
 }
 

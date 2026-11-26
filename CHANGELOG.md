@@ -23,6 +23,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   button) without a focus ring, sized to sit beside a `PvotGlassIconButton`.
 - `design-system`: `PvotTopBar` takes `subtitle`, a muted line under the large title (an account,
   when it last updated); when the bar folds it shows as a second line under the compact title.
+- `design-system`: `PvotPageTransitions.presentSheet()` and `dismissSheet()` for a page that slides
+  up over the current one, like a compose sheet.
 - `design-system`: `PvotPageTransitions.push()` and `pop()` in `motion`: a pushed page slides in
   over the current one, which shifts a quarter aside; `pop()` reverses it and suits predictive back.
 - `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo
