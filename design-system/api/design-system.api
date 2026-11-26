@@ -173,7 +173,7 @@ public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceDefau
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceKt {
-	public static final fun PvotGlassSurface-yBXNGS4 (Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Alignment;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotGlassSurface-3oyFwYc (Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Alignment;Landroidx/compose/foundation/layout/PaddingValues;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun pvotGlassSurface-bHDYGmc (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/semantics/Role;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
 
@@ -264,6 +264,22 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuSeparator : c
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotMenuSeparator;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPageSheetDefaults;
+	public final fun getTopGap-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetKt {
+	public static final fun PvotPageSheet (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/PvotPageSheetState;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPvotPageSheetState (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotPageSheetState;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetState {
+	public static final field $stable I
+	public final fun hide (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
@@ -291,6 +307,10 @@ public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetSt
 	public final fun snapTo (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotPullToRefreshBoxKt {
+	public static final fun PvotPullToRefreshBox (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotScreenDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotScreenDefaults;
@@ -312,7 +332,19 @@ public final class com/prauga/pvot/designsystem/components/PvotScreenScaffoldDef
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotScreenScaffoldKt {
-	public static final fun PvotScreenScaffold (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotScreenScaffold (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;ZZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSearchFieldDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotSearchFieldDefaults;
+	public final fun getClearTouchSize-D9Ej5fM ()F
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getIconSize-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSearchFieldKt {
+	public static final fun PvotSearchField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotSegmentedControlColors {
@@ -1682,6 +1714,16 @@ public final class com/prauga/pvot/designsystem/motion/PvotMotion {
 	public final fun slideSpring ()Landroidx/compose/animation/core/SpringSpec;
 }
 
+public final class com/prauga/pvot/designsystem/motion/PvotPageTransitions {
+	public static final field $stable I
+	public static final field DurationMillis I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/motion/PvotPageTransitions;
+	public final fun dismissSheet ()Landroidx/compose/animation/ContentTransform;
+	public final fun pop ()Landroidx/compose/animation/ContentTransform;
+	public final fun presentSheet ()Landroidx/compose/animation/ContentTransform;
+	public final fun push ()Landroidx/compose/animation/ContentTransform;
+}
+
 public final class com/prauga/pvot/designsystem/motion/PvotRevealKt {
 	public static final fun pvotReveal-AFY4PWA (Landroidx/compose/ui/Modifier;IFIIILandroidx/compose/animation/core/Easing;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
@@ -1848,7 +1890,7 @@ public final class com/prauga/pvot/designsystem/navigation/PvotTopBarDefaults {
 }
 
 public final class com/prauga/pvot/designsystem/navigation/PvotTopBarKt {
-	public static final fun PvotTopBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;Landroidx/compose/foundation/layout/WindowInsets;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotTopBar (Ljava/lang/String;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function0;ZLcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lcom/prauga/pvot/designsystem/effects/PvotGlassMaterial;Lcom/prauga/pvot/designsystem/navigation/PvotTopBarColors;Landroidx/compose/foundation/layout/WindowInsets;ZLjava/lang/String;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun PvotTopBarAction (Landroidx/compose/ui/graphics/painter/Painter;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;ZLandroidx/compose/runtime/Composer;II)V
 	public static final fun rememberPvotTopBarCompact-rAjV9yQ (Landroidx/compose/foundation/lazy/LazyListState;FLandroidx/compose/runtime/Composer;II)Z
 }

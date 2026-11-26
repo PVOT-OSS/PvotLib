@@ -263,6 +263,8 @@ public fun rememberPvotTopBarCompact(
  * @param inlineTitle Whether the large title sits in the bar beside the actions instead of under
  *   them, for a top-level screen such as a tab; the title then never folds, and [compact] only
  *   gives the bar its fill
+ * @param subtitle A line under the large title, such as an account or when it last updated; it
+ *   folds away with the large title and shows under the compact title instead
  * @param actions The screen's actions at the end of the bar, typically [PvotTopBarAction]s
  */
 @Composable
@@ -278,6 +280,7 @@ public fun PvotTopBar(
         else PvotTopBarDefaults.themeColors(),
     windowInsets: WindowInsets = PvotTopBarDefaults.windowInsets,
     inlineTitle: Boolean = false,
+    subtitle: String? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     // 0 is expanded, 1 compact. Read only in layout and draw, so the fold costs no recomposition.
@@ -320,6 +323,7 @@ public fun PvotTopBar(
             }
             TopBarColumn(
                 title,
+                subtitle,
                 onBack,
                 compact,
                 inlineTitle,
@@ -335,6 +339,7 @@ public fun PvotTopBar(
 @Composable
 private fun TopBarColumn(
     title: String,
+    subtitle: String?,
     onBack: (() -> Unit)?,
     compact: Boolean,
     inlineTitle: Boolean,
@@ -384,30 +389,37 @@ private fun TopBarColumn(
                     )
                     return@Box
                 }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = colors.titleColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
                     modifier =
                         Modifier.graphicsLayer { alpha = progress.value }
                             // One title for TalkBack: this one only once the large one has gone.
-                            .then(
-                                if (compact) Modifier.semantics { heading() }
-                                else Modifier.clearAndSetSemantics {}
-                            ),
-                )
+                            .then(if (compact) Modifier else Modifier.clearAndSetSemantics {})
+                ) {
+                    Text(
+                        text = title,
+                        style =
+                            if (subtitle == null) MaterialTheme.typography.titleLarge
+                            else MaterialTheme.typography.titleMedium,
+                        color = colors.titleColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.semantics { heading() },
+                    )
+                    if (subtitle != null) {
+                        Text(
+                            text = subtitle,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
             }
             actions()
         }
         if (inlineTitle) return@Column
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineMedium,
-            color = colors.titleColor,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
+        Column(
             modifier =
                 Modifier.fillMaxWidth()
                     .clipToBounds()
@@ -420,11 +432,26 @@ private fun TopBarColumn(
                     }
                     .graphicsLayer { alpha = 1f - progress.value }
                     .padding(start = PvotSpacing.L, end = PvotSpacing.L, bottom = PvotSpacing.M)
-                    .then(
-                        if (compact) Modifier.clearAndSetSemantics {}
-                        else Modifier.semantics { heading() }
-                    ),
-        )
+                    .then(if (compact) Modifier.clearAndSetSemantics {} else Modifier)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.headlineMedium,
+                color = colors.titleColor,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.semantics { heading() },
+            )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
     }
 }
 

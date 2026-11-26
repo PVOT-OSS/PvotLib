@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -83,6 +84,9 @@ public object PvotScreenScaffoldDefaults {
  * @param overlay Sheets, dialogs and anything else drawn last, over everything
  * @param fullBleedContent Whether the content runs under a camera cutout or navigation bar at the
  *   sides, as a photo grid does; it then keeps its own text and controls clear of them
+ * @param sampleContent Whether the chrome's glass frosts the content under it. Pass false when the
+ *   content hosts a WebView: it draws through a native callback that runs once per frame, so
+ *   copying it into the glass crashes the render thread. The glass then shows its tint alone
  * @param content The screen, given the padding that clears the top bar, or the status bar when
  *   there is no top bar; unless [fullBleedContent], it is already kept clear of a camera cutout or
  *   navigation bar at the sides
@@ -98,6 +102,7 @@ public fun PvotScreenScaffold(
     snackbarHost: @Composable () -> Unit = {},
     overlay: @Composable BoxScope.() -> Unit = {},
     fullBleedContent: Boolean = false,
+    sampleContent: Boolean = true,
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -115,75 +120,81 @@ public fun PvotScreenScaffold(
         }
     val aboveBottomBar = with(density) { bottomBarHeight.toDp() }
 
-    Box(modifier.fillMaxSize()) {
-        Box(
-            modifier =
-                Modifier.fillMaxSize()
-                    // The background goes inside the backdrop: glass frosts what is recorded there,
-                    // and a backdrop without an opaque background lets the content show through
-                    // sharp.
-                    .pvotGlassBackdrop(backdrop)
-                    .background(MaterialTheme.colorScheme.background)
-        ) {
-            background()
-            CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
-                Box(
-                    if (fullBleedContent) {
-                        Modifier.fillMaxSize()
-                    } else {
-                        Modifier.fillMaxSize()
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                            )
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
+        Box(modifier.fillMaxSize()) {
+            Box(
+                modifier =
+                    Modifier.fillMaxSize()
+                        // The background goes inside the backdrop: glass frosts what is
+                        // recorded there, and a backdrop without an opaque background lets the
+                        // content show through sharp.
+                        .then(if (sampleContent) Modifier.pvotGlassBackdrop(backdrop) else Modifier)
+                        .background(MaterialTheme.colorScheme.background)
+            ) {
+                background()
+                CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
+                    Box(
+                        if (fullBleedContent) {
+                            Modifier.fillMaxSize()
+                        } else {
+                            Modifier.fillMaxSize()
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                                )
+                        }
+                    ) {
+                        content(contentPadding)
                     }
-                ) {
-                    content(contentPadding)
                 }
             }
-        }
-        CompositionLocalProvider(LocalPvotGlassBackdrop provides backdrop) {
-            Box(
-                modifier =
-                    Modifier.align(Alignment.TopCenter)
-                        .onSizeChanged { topBarHeight = it.height }
-                        // TalkBack reads the top bar before the content it floats over.
-                        .semantics {
-                            isTraversalGroup = true
-                            traversalIndex = -1f
-                        }
+            CompositionLocalProvider(
+                LocalPvotGlassBackdrop provides backdrop.takeIf { sampleContent }
             ) {
-                CompositionLocalProvider(LocalPvotTopBarFold provides topBarFold) { topBar() }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.TopCenter)
+                            .onSizeChanged { topBarHeight = it.height }
+                            // TalkBack reads the top bar before the content it floats over.
+                            .semantics {
+                                isTraversalGroup = true
+                                traversalIndex = -1f
+                            }
+                ) {
+                    CompositionLocalProvider(LocalPvotTopBarFold provides topBarFold) { topBar() }
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomCenter)
+                            .onSizeChanged { bottomBarHeight = it.height }
+                            .semantics { isTraversalGroup = true }
+                ) {
+                    bottomBar()
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomEnd)
+                            .padding(bottom = aboveBottomBar)
+                            .then(
+                                if (bottomBarHeight == 0) Modifier.navigationBarsPadding()
+                                else Modifier
+                            )
+                            .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
+                ) {
+                    floatingAction()
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomCenter)
+                            .padding(bottom = aboveBottomBar)
+                            .then(
+                                if (bottomBarHeight == 0) Modifier.navigationBarsPadding()
+                                else Modifier
+                            )
+                ) {
+                    snackbarHost()
+                }
+                overlay()
             }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomCenter)
-                        .onSizeChanged { bottomBarHeight = it.height }
-                        .semantics { isTraversalGroup = true }
-            ) {
-                bottomBar()
-            }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomEnd)
-                        .padding(bottom = aboveBottomBar)
-                        .then(
-                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
-                        )
-                        .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
-            ) {
-                floatingAction()
-            }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomCenter)
-                        .padding(bottom = aboveBottomBar)
-                        .then(
-                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
-                        )
-            ) {
-                snackbarHost()
-            }
-            overlay()
         }
     }
 }

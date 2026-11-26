@@ -10,7 +10,7 @@ class AndroidTokensConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             val designSystem =
-                rootProject.layout.projectDirectory.dir(
+                isolated.rootProject.projectDirectory.dir(
                     "design-system/src/main/java/com/prauga/pvot/designsystem"
                 )
             val themeDir = designSystem.dir("theme")

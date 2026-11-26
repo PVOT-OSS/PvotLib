@@ -25,6 +25,8 @@
 
     <!-- Top bar: spoken label of the back button -->
     <string name="pvot_top_bar_back">Back</string>
+    <string name="pvot_search_placeholder">Search</string>
+    <string name="pvot_search_clear">Clear search</string>
 
     <!-- Snackbar: spoken label of the close button -->
     <string name="pvot_snackbar_dismiss">Dismiss</string>

@@ -11,7 +11,27 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 
 ## Unreleased
 
+### Changed
+- `design-system`: `PvotScreenScaffold` and `PvotGlassSurface` give their content the theme's
+  `onSurface` as content color (a `contentColor` parameter on the glass surface), so text and icons
+  without their own color stay readable in dark mode.
+
 ### Added
+- `design-system`: `PvotScreenScaffold` takes `sampleContent`; pass false for content that hosts a
+  WebView, which crashes the render thread when the chrome's glass copies it. The glass then shows
+  its tint alone.
+- `design-system`: `PvotPageSheet` and `rememberPvotPageSheetState()`, a nearly full-height modal
+  sheet with a drag handle, such as a compose sheet, that the app can animate closed.
+- `design-system`: `PvotPullToRefreshBox`, pull-to-refresh with a themed spinner that can sit
+  below a floating top bar.
+- `design-system`: `PvotSearchField`, a search field on a glass capsule (search icon, query, clear
+  button) without a focus ring, sized to sit beside a `PvotGlassIconButton`.
+- `design-system`: `PvotTopBar` takes `subtitle`, a muted line under the large title (an account,
+  when it last updated); when the bar folds it shows as a second line under the compact title.
+- `design-system`: `PvotPageTransitions.presentSheet()` and `dismissSheet()` for a page that slides
+  up over the current one, like a compose sheet.
+- `design-system`: `PvotPageTransitions.push()` and `pop()` in `motion`: a pushed page slides in
+  over the current one, which shifts a quarter aside; `pop()` reverses it and suits predictive back.
 - `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo
   grid run under a side camera cutout or navigation bar while it keeps its own text clear of them.
 - `design-system`: `PvotTopBar` takes `inlineTitle`: the large title sits in the bar beside the
