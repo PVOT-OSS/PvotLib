@@ -17,6 +17,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   without their own color stay readable in dark mode.
 
 ### Added
+- `design-system`: `PvotPageSheet` and `rememberPvotPageSheetState()`, a nearly full-height modal
+  sheet with a drag handle, such as a compose sheet, that the app can animate closed.
 - `design-system`: `PvotPullToRefreshBox`, pull-to-refresh with a themed spinner that can sit
   below a floating top bar.
 - `design-system`: `PvotSearchField`, a search field on a glass capsule (search icon, query, clear

@@ -264,6 +264,22 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuSeparator : c
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotMenuSeparator;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPageSheetDefaults;
+	public final fun getTopGap-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetKt {
+	public static final fun PvotPageSheet (Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/components/PvotPageSheetState;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun rememberPvotPageSheetState (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotPageSheetState;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotPageSheetState {
+	public static final field $stable I
+	public final fun hide (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
