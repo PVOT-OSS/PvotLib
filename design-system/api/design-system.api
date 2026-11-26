@@ -291,6 +291,10 @@ public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetSt
 	public final fun snapTo (Lcom/prauga/pvot/designsystem/components/PvotSheetDetent;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotPullToRefreshBoxKt {
+	public static final fun PvotPullToRefreshBox (ZLkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotScreenDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotScreenDefaults;
