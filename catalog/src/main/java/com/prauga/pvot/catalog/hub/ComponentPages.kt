@@ -64,6 +64,7 @@ import com.prauga.pvot.designsystem.components.PvotDialog
 import com.prauga.pvot.designsystem.components.PvotDialogAction
 import com.prauga.pvot.designsystem.components.PvotDialogActionStyle
 import com.prauga.pvot.designsystem.components.PvotDialogContent
+import com.prauga.pvot.designsystem.components.PvotOnboardingSheet
 import com.prauga.pvot.designsystem.components.PvotPersistentSheet
 import com.prauga.pvot.designsystem.components.PvotSheetDetent
 import com.prauga.pvot.designsystem.components.PvotSheetItem
@@ -264,6 +265,81 @@ private fun CardBody(title: String, body: String) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
+    }
+}
+
+private val DemoWords =
+    listOf(
+        "abandon",
+        "ability",
+        "able",
+        "about",
+        "above",
+        "absent",
+        "absorb",
+        "abstract",
+        "absurd",
+        "abuse",
+        "access",
+        "accident",
+    )
+
+@Composable
+private fun OnboardingDemo(
+    visible: Boolean,
+    step: Int,
+    onStep: (Int) -> Unit,
+    onClose: () -> Unit,
+) {
+    val icon: @Composable () -> Unit = {
+        Icon(painterResource(R.drawable.ic_t_check), null, modifier = Modifier.size(56.dp))
+    }
+    when (step) {
+        0 ->
+            PvotOnboardingSheet(
+                visible = visible,
+                title = "Back up this phone",
+                message =
+                    "Your photos, contacts and apps are saved to a drive you choose, encrypted with a key only you hold.",
+                icon = icon,
+                primaryActionLabel = "Continue",
+                onPrimaryAction = { onStep(1) },
+                secondaryActionLabel = "Not now",
+                onSecondaryAction = onClose,
+                onDismissRequest = onClose,
+            )
+        1 ->
+            PvotOnboardingSheet(
+                visible = visible,
+                title = "Save your recovery phrase",
+                message =
+                    "Write these 12 words down. They are the only way to open your backup on a new phone.",
+                primaryActionLabel = "I saved it",
+                onPrimaryAction = { onStep(2) },
+                dismissible = false,
+            ) {
+                DemoWords.chunked(3).forEachIndexed { row, words ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(PvotSpacing.S)) {
+                        words.forEachIndexed { column, word ->
+                            Text(
+                                text = "${row * 3 + column + 1}. $word",
+                                style = MaterialTheme.typography.bodyLarge,
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+                    }
+                }
+            }
+        else ->
+            PvotOnboardingSheet(
+                visible = visible,
+                title = "You're all set",
+                message = "The first backup starts the next time this phone is charging.",
+                icon = icon,
+                primaryActionLabel = "Done",
+                onPrimaryAction = onClose,
+                onDismissRequest = onClose,
+            )
     }
 }
 
@@ -563,6 +639,8 @@ internal fun SliderPage(onBack: () -> Unit) {
 @Composable
 internal fun OverlaysPage(onBack: () -> Unit) {
     var alert by remember { mutableStateOf(false) }
+    var onboarding by remember { mutableStateOf(false) }
+    var onboardingStep by remember { mutableIntStateOf(0) }
     var destructive by remember { mutableStateOf(false) }
     var rename by remember { mutableStateOf(false) }
     var actions by remember { mutableStateOf(false) }
@@ -639,6 +717,25 @@ internal fun OverlaysPage(onBack: () -> Unit) {
             OutlinedButton(onClick = { choosing = true }, modifier = Modifier.fillMaxWidth()) {
                 Text("Choice: ${SnoozeChoices[choice]}")
             }
+        }
+        DemoSection(
+            title = "Onboarding sheet",
+            caption = "One sheet steps through a setup flow; the second step can't be dismissed",
+        ) {
+            TextButton(
+                onClick = {
+                    onboardingStep = 0
+                    onboarding = true
+                }
+            ) {
+                Text("Start setup")
+            }
+            OnboardingDemo(
+                visible = onboarding,
+                step = onboardingStep,
+                onStep = { onboardingStep = it },
+                onClose = { onboarding = false },
+            )
         }
         DemoSection(
             title = "Persistent sheet",

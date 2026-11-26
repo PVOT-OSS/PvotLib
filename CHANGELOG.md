@@ -12,6 +12,10 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotOnboardingSheet`, a full-height sheet for one step of a setup flow (icon,
+  title, message, content and pinned buttons); a flow changes its title and content to move between
+  steps, and `dismissible = false` keeps a step that must be finished open. Shown on the catalog's
+  Dialogs & sheets page.
 - `design-system`: `PvotTileGrid`, a card of equal tiles (icon, title, value) with an optional header
   row of a `PvotStatusDot`, a title and an action such as "See all". Shown on the catalog's Card page.
 - `design-system`: `PvotStatusDot` and `PvotStatus` (good, warning, error, neutral): a small dot in the

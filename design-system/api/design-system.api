@@ -264,6 +264,17 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuSeparator : c
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotMenuSeparator;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotOnboardingSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotOnboardingSheetDefaults;
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getMaxContentHeight-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotOnboardingSheetKt {
+	public static final fun PvotOnboardingSheet (ZLjava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
