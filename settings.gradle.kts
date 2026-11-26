@@ -26,7 +26,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "What's in Pvot"
+rootProject.name = "PvotLib"
 
 include(":catalog")
 
