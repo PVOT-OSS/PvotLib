@@ -12,6 +12,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotStatusDot` and `PvotStatus` (good, warning, error, neutral): a small dot in the
+  theme's success, warning, error or outline color that marks a state beside its label. Shown on the
+  catalog's List row page.
 - `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo
   grid run under a side camera cutout or navigation bar while it keeps its own text clear of them.
 - `design-system`: `PvotTopBar` takes `inlineTitle`: the large title sits in the bar beside the

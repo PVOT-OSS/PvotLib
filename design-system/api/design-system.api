@@ -453,6 +453,27 @@ public final class com/prauga/pvot/designsystem/components/PvotSnackbarKt {
 	public static final fun PvotSnackbarHost (Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotStatus : java/lang/Enum {
+	public static final field Error Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Good Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Neutral Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Warning Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/PvotStatus;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotStatusDotDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotStatusDotDefaults;
+	public final fun color-XeAY9LY (Lcom/prauga/pvot/designsystem/components/PvotStatus;Landroidx/compose/runtime/Composer;I)J
+	public final fun getSize-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotStatusDotKt {
+	public static final fun PvotStatusDot-6a0pyJM (Lcom/prauga/pvot/designsystem/components/PvotStatus;Landroidx/compose/ui/Modifier;FLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotSubScreenKt {
 	public static final fun PvotSubScreen (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/foundation/lazy/LazyListState;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
