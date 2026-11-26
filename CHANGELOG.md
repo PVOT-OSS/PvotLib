@@ -12,6 +12,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotTopBar` takes `subtitle`, a muted line under the large title (an account,
+  when it last updated) that folds away with it.
 - `design-system`: `PvotPageTransitions.push()` and `pop()` in `motion`: a pushed page slides in
   over the current one, which shifts a quarter aside; `pop()` reverses it and suits predictive back.
 - `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo
