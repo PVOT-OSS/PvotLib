@@ -42,6 +42,8 @@ import com.prauga.pvot.catalog.R
 import com.prauga.pvot.catalog.components.GlassPanel
 import com.prauga.pvot.designsystem.components.PvotMenuItem
 import com.prauga.pvot.designsystem.components.PvotSegmentedControl
+import com.prauga.pvot.designsystem.components.PvotStatus
+import com.prauga.pvot.designsystem.components.PvotStatusDot
 import com.prauga.pvot.designsystem.components.PvotSubScreen
 import com.prauga.pvot.designsystem.components.button.PvotButton
 import com.prauga.pvot.designsystem.components.button.PvotButtonStyle
@@ -190,6 +192,32 @@ internal fun ListRowPage(onBack: () -> Unit) {
                     leading = { Icon(painterResource(R.drawable.ic_t_x), null) },
                     onClick = {},
                     enabled = false,
+                )
+            }
+        }
+        DemoSection(
+            title = "Status dot",
+            caption = "Marks a state beside its label, never instead of it",
+        ) {
+            Column {
+                PvotListRow(
+                    title = "Backed up",
+                    supportingText = "11 hours ago",
+                    leading = { PvotStatusDot(PvotStatus.Good) },
+                )
+                PvotListRow(
+                    title = "Backup is getting old",
+                    supportingText = "4 days ago",
+                    leading = { PvotStatusDot(PvotStatus.Warning) },
+                )
+                PvotListRow(
+                    title = "Backup failed",
+                    supportingText = "Drive was removed",
+                    leading = { PvotStatusDot(PvotStatus.Error) },
+                )
+                PvotListRow(
+                    title = "Never backed up",
+                    leading = { PvotStatusDot(PvotStatus.Neutral) },
                 )
             }
         }

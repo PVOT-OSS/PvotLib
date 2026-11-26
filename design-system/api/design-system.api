@@ -264,6 +264,17 @@ public final class com/prauga/pvot/designsystem/components/PvotMenuSeparator : c
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotMenuSeparator;
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotOnboardingSheetDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotOnboardingSheetDefaults;
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getMaxContentHeight-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotOnboardingSheetKt {
+	public static final fun PvotOnboardingSheet (ZLjava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function2;ZLjava/lang/String;Lkotlin/jvm/functions/Function0;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults {
 	public static final field $stable I
 	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotPersistentSheetDefaults;
@@ -453,6 +464,27 @@ public final class com/prauga/pvot/designsystem/components/PvotSnackbarKt {
 	public static final fun PvotSnackbarHost (Landroidx/compose/material3/SnackbarHostState;Landroidx/compose/ui/Modifier;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotStatus : java/lang/Enum {
+	public static final field Error Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Good Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Neutral Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static final field Warning Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lcom/prauga/pvot/designsystem/components/PvotStatus;
+	public static fun values ()[Lcom/prauga/pvot/designsystem/components/PvotStatus;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotStatusDotDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotStatusDotDefaults;
+	public final fun color-XeAY9LY (Lcom/prauga/pvot/designsystem/components/PvotStatus;Landroidx/compose/runtime/Composer;I)J
+	public final fun getSize-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotStatusDotKt {
+	public static final fun PvotStatusDot-6a0pyJM (Lcom/prauga/pvot/designsystem/components/PvotStatus;Landroidx/compose/ui/Modifier;FLandroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotSubScreenKt {
 	public static final fun PvotSubScreen (Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/ui/Modifier;Landroidx/compose/foundation/layout/Arrangement$Vertical;Landroidx/compose/foundation/lazy/LazyListState;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
 }
@@ -523,6 +555,51 @@ public final class com/prauga/pvot/designsystem/components/PvotTabRowDefaults {
 
 public final class com/prauga/pvot/designsystem/components/PvotTabRowKt {
 	public static final fun PvotTabRow (Ljava/util/List;ILkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;ZLcom/prauga/pvot/designsystem/components/PvotTabRowColors;Landroidx/compose/runtime/Composer;II)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTileColors {
+	public static final field $stable I
+	public synthetic fun <init> (JJJJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-0d7_KjU ()J
+	public final fun component2-0d7_KjU ()J
+	public final fun component3-0d7_KjU ()J
+	public final fun component4-0d7_KjU ()J
+	public final fun component5-0d7_KjU ()J
+	public final fun component6-0d7_KjU ()J
+	public final fun copy-tNS2XkQ (JJJJJJ)Lcom/prauga/pvot/designsystem/components/PvotTileColors;
+	public static synthetic fun copy-tNS2XkQ$default (Lcom/prauga/pvot/designsystem/components/PvotTileColors;JJJJJJILjava/lang/Object;)Lcom/prauga/pvot/designsystem/components/PvotTileColors;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActionColor-0d7_KjU ()J
+	public final fun getHeaderColor-0d7_KjU ()J
+	public final fun getIconContainerColor-0d7_KjU ()J
+	public final fun getTileColor-0d7_KjU ()J
+	public final fun getTitleColor-0d7_KjU ()J
+	public final fun getValueColor-0d7_KjU ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTileGridDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotTileGridDefaults;
+	public final fun colors (Landroidx/compose/runtime/Composer;I)Lcom/prauga/pvot/designsystem/components/PvotTileColors;
+	public final fun getIconSize-D9Ej5fM ()F
+	public final fun getMinTileHeight-D9Ej5fM ()F
+	public final fun getSpacing-D9Ej5fM ()F
+	public final fun getTileShape ()Landroidx/compose/ui/graphics/Shape;
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTileGridKt {
+	public static final fun PvotTileGrid (Landroidx/compose/ui/Modifier;Ljava/lang/String;Lcom/prauga/pvot/designsystem/components/PvotStatus;Ljava/lang/String;Lkotlin/jvm/functions/Function0;ILcom/prauga/pvot/designsystem/components/PvotTileColors;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;II)V
+}
+
+public abstract interface class com/prauga/pvot/designsystem/components/PvotTileGridScope {
+	public abstract fun tile (Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun tile$default (Lcom/prauga/pvot/designsystem/components/PvotTileGridScope;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotTileGridScope$DefaultImpls {
+	public static synthetic fun tile$default (Lcom/prauga/pvot/designsystem/components/PvotTileGridScope;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
 }
 
 public final class com/prauga/pvot/designsystem/components/background/PhotoBlurKt {
