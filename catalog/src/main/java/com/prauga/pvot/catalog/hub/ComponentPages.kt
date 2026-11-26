@@ -68,6 +68,8 @@ import com.prauga.pvot.designsystem.components.PvotPersistentSheet
 import com.prauga.pvot.designsystem.components.PvotSheetDetent
 import com.prauga.pvot.designsystem.components.PvotSheetItem
 import com.prauga.pvot.designsystem.components.PvotSkeleton
+import com.prauga.pvot.designsystem.components.PvotStatus
+import com.prauga.pvot.designsystem.components.PvotTileGrid
 import com.prauga.pvot.designsystem.components.picker.PvotClockPicker
 import com.prauga.pvot.designsystem.components.picker.PvotDurationPicker
 import com.prauga.pvot.designsystem.components.picker.PvotTimePickerDialog
@@ -205,6 +207,42 @@ internal fun CardsPage(onBack: () -> Unit) {
         DemoSection(title = "Disabled", framed = false) {
             PvotCard(modifier = Modifier.fillMaxWidth(), onClick = {}, enabled = false) {
                 CardBody("A disabled card", "enabled = false mutes it and ignores taps.")
+            }
+        }
+        DemoSection(
+            title = "Tile grid",
+            caption = "Equal tiles with an icon, a title and a value",
+            framed = false,
+        ) {
+            PvotTileGrid(
+                title = "Saved in this backup",
+                status = PvotStatus.Good,
+                actionLabel = "See all",
+                onAction = {},
+            ) {
+                tile(
+                    "Photos",
+                    "9,013 items",
+                    icon = { Icon(painterResource(R.drawable.ic_t_camera), null) },
+                    onClick = {},
+                )
+                tile(
+                    "Contacts",
+                    "512 contacts",
+                    icon = { Icon(painterResource(R.drawable.ic_t_user), null) },
+                    onClick = {},
+                )
+                tile(
+                    "Messages",
+                    "594 MB",
+                    icon = { Icon(painterResource(R.drawable.ic_t_message_circle), null) },
+                )
+                tile(
+                    "Calendar",
+                    "3 calendars",
+                    icon = { Icon(painterResource(R.drawable.ic_t_calendar), null) },
+                )
+                tile("Notes", "45 items")
             }
         }
     }
