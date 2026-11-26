@@ -15,7 +15,7 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 - `design-system`: `PvotSearchField`, a search field on a glass capsule (search icon, query, clear
   button) without a focus ring, sized to sit beside a `PvotGlassIconButton`.
 - `design-system`: `PvotTopBar` takes `subtitle`, a muted line under the large title (an account,
-  when it last updated) that folds away with it.
+  when it last updated); when the bar folds it shows as a second line under the compact title.
 - `design-system`: `PvotPageTransitions.push()` and `pop()` in `motion`: a pushed page slides in
   over the current one, which shifts a quarter aside; `pop()` reverses it and suits predictive back.
 - `design-system`: `PvotScreenScaffold` takes `fullBleedContent`, letting content such as a photo

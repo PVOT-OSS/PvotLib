@@ -263,8 +263,8 @@ public fun rememberPvotTopBarCompact(
  * @param inlineTitle Whether the large title sits in the bar beside the actions instead of under
  *   them, for a top-level screen such as a tab; the title then never folds, and [compact] only
  *   gives the bar its fill
- * @param subtitle A line under the large title, such as an account or when it last updated;
- *   folds away with the large title
+ * @param subtitle A line under the large title, such as an account or when it last updated; it
+ *   folds away with the large title and shows under the compact title instead
  * @param actions The screen's actions at the end of the bar, typically [PvotTopBarAction]s
  */
 @Composable
@@ -389,20 +389,32 @@ private fun TopBarColumn(
                     )
                     return@Box
                 }
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = colors.titleColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
+                Column(
                     modifier =
                         Modifier.graphicsLayer { alpha = progress.value }
                             // One title for TalkBack: this one only once the large one has gone.
-                            .then(
-                                if (compact) Modifier.semantics { heading() }
-                                else Modifier.clearAndSetSemantics {}
-                            ),
-                )
+                            .then(if (compact) Modifier else Modifier.clearAndSetSemantics {})
+                ) {
+                    Text(
+                        text = title,
+                        style =
+                            if (subtitle == null) MaterialTheme.typography.titleLarge
+                            else MaterialTheme.typography.titleMedium,
+                        color = colors.titleColor,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.semantics { heading() },
+                    )
+                    if (subtitle != null) {
+                        Text(
+                            text = subtitle,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
+                }
             }
             actions()
         }
