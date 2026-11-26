@@ -1682,6 +1682,14 @@ public final class com/prauga/pvot/designsystem/motion/PvotMotion {
 	public final fun slideSpring ()Landroidx/compose/animation/core/SpringSpec;
 }
 
+public final class com/prauga/pvot/designsystem/motion/PvotPageTransitions {
+	public static final field $stable I
+	public static final field DurationMillis I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/motion/PvotPageTransitions;
+	public final fun pop ()Landroidx/compose/animation/ContentTransform;
+	public final fun push ()Landroidx/compose/animation/ContentTransform;
+}
+
 public final class com/prauga/pvot/designsystem/motion/PvotRevealKt {
 	public static final fun pvotReveal-AFY4PWA (Landroidx/compose/ui/Modifier;IFIIILandroidx/compose/animation/core/Easing;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
