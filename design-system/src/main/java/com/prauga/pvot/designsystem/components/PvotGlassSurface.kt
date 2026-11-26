@@ -18,6 +18,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -178,6 +181,7 @@ public object PvotGlassSurfaceDefaults {
  * @param enabled Whether the surface responds to taps
  * @param contentAlignment Where the content sits in the surface
  * @param contentPadding Padding round the content
+ * @param contentColor The color of text and icons in the content that set none of their own
  * @param content The surface's content
  */
 @Composable
@@ -191,21 +195,24 @@ public fun PvotGlassSurface(
     enabled: Boolean = true,
     contentAlignment: Alignment = Alignment.Center,
     contentPadding: PaddingValues = PvotGlassSurfaceDefaults.ContentPadding,
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     content: @Composable BoxScope.() -> Unit,
 ) {
-    Box(
-        modifier =
-            modifier
-                .pvotGlassSurface(
-                    backdrop = backdrop,
-                    cornerRadius = cornerRadius,
-                    style = style,
-                    rim = rim,
-                    onClick = onClick,
-                    enabled = enabled,
-                )
-                .padding(contentPadding),
-        contentAlignment = contentAlignment,
-        content = content,
-    )
+    CompositionLocalProvider(LocalContentColor provides contentColor) {
+        Box(
+            modifier =
+                modifier
+                    .pvotGlassSurface(
+                        backdrop = backdrop,
+                        cornerRadius = cornerRadius,
+                        style = style,
+                        rim = rim,
+                        onClick = onClick,
+                        enabled = enabled,
+                    )
+                    .padding(contentPadding),
+            contentAlignment = contentAlignment,
+            content = content,
+        )
+    }
 }

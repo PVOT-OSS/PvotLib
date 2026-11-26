@@ -11,6 +11,11 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 
 ## Unreleased
 
+### Changed
+- `design-system`: `PvotScreenScaffold` and `PvotGlassSurface` give their content the theme's
+  `onSurface` as content color (a `contentColor` parameter on the glass surface), so text and icons
+  without their own color stay readable in dark mode.
+
 ### Added
 - `design-system`: `PvotPullToRefreshBox`, pull-to-refresh with a themed spinner that can sit
   below a floating top bar.

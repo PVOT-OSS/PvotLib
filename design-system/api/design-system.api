@@ -173,7 +173,7 @@ public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceDefau
 }
 
 public final class com/prauga/pvot/designsystem/components/PvotGlassSurfaceKt {
-	public static final fun PvotGlassSurface-yBXNGS4 (Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Alignment;Landroidx/compose/foundation/layout/PaddingValues;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
+	public static final fun PvotGlassSurface-3oyFwYc (Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Landroidx/compose/ui/Modifier;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/Alignment;Landroidx/compose/foundation/layout/PaddingValues;JLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;III)V
 	public static final fun pvotGlassSurface-bHDYGmc (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;FLcom/prauga/pvot/designsystem/effects/PvotGlassStyle;ZLkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ZLandroidx/compose/ui/semantics/Role;Landroidx/compose/foundation/interaction/MutableInteractionSource;Landroidx/compose/runtime/Composer;II)Landroidx/compose/ui/Modifier;
 }
 

@@ -16,8 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -115,75 +116,77 @@ public fun PvotScreenScaffold(
         }
     val aboveBottomBar = with(density) { bottomBarHeight.toDp() }
 
-    Box(modifier.fillMaxSize()) {
-        Box(
-            modifier =
-                Modifier.fillMaxSize()
-                    // The background goes inside the backdrop: glass frosts what is recorded there,
-                    // and a backdrop without an opaque background lets the content show through
-                    // sharp.
-                    .pvotGlassBackdrop(backdrop)
-                    .background(MaterialTheme.colorScheme.background)
-        ) {
-            background()
-            CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
-                Box(
-                    if (fullBleedContent) {
-                        Modifier.fillMaxSize()
-                    } else {
-                        Modifier.fillMaxSize()
-                            .windowInsetsPadding(
-                                WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
-                            )
+    CompositionLocalProvider(LocalContentColor provides MaterialTheme.colorScheme.onSurface) {
+        Box(modifier.fillMaxSize()) {
+            Box(
+                modifier =
+                    Modifier.fillMaxSize()
+                        // The background goes inside the backdrop: glass frosts what is recorded there,
+                        // and a backdrop without an opaque background lets the content show through
+                        // sharp.
+                        .pvotGlassBackdrop(backdrop)
+                        .background(MaterialTheme.colorScheme.background)
+            ) {
+                background()
+                CompositionLocalProvider(LocalPvotGlassBackdrop provides null) {
+                    Box(
+                        if (fullBleedContent) {
+                            Modifier.fillMaxSize()
+                        } else {
+                            Modifier.fillMaxSize()
+                                .windowInsetsPadding(
+                                    WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
+                                )
+                        }
+                    ) {
+                        content(contentPadding)
                     }
-                ) {
-                    content(contentPadding)
                 }
             }
-        }
-        CompositionLocalProvider(LocalPvotGlassBackdrop provides backdrop) {
-            Box(
-                modifier =
-                    Modifier.align(Alignment.TopCenter)
-                        .onSizeChanged { topBarHeight = it.height }
-                        // TalkBack reads the top bar before the content it floats over.
-                        .semantics {
-                            isTraversalGroup = true
-                            traversalIndex = -1f
-                        }
-            ) {
-                CompositionLocalProvider(LocalPvotTopBarFold provides topBarFold) { topBar() }
+            CompositionLocalProvider(LocalPvotGlassBackdrop provides backdrop) {
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.TopCenter)
+                            .onSizeChanged { topBarHeight = it.height }
+                            // TalkBack reads the top bar before the content it floats over.
+                            .semantics {
+                                isTraversalGroup = true
+                                traversalIndex = -1f
+                            }
+                ) {
+                    CompositionLocalProvider(LocalPvotTopBarFold provides topBarFold) { topBar() }
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomCenter)
+                            .onSizeChanged { bottomBarHeight = it.height }
+                            .semantics { isTraversalGroup = true }
+                ) {
+                    bottomBar()
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomEnd)
+                            .padding(bottom = aboveBottomBar)
+                            .then(
+                                if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
+                            )
+                            .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
+                ) {
+                    floatingAction()
+                }
+                Box(
+                    modifier =
+                        Modifier.align(Alignment.BottomCenter)
+                            .padding(bottom = aboveBottomBar)
+                            .then(
+                                if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
+                            )
+                ) {
+                    snackbarHost()
+                }
+                overlay()
             }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomCenter)
-                        .onSizeChanged { bottomBarHeight = it.height }
-                        .semantics { isTraversalGroup = true }
-            ) {
-                bottomBar()
-            }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomEnd)
-                        .padding(bottom = aboveBottomBar)
-                        .then(
-                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
-                        )
-                        .padding(PvotScreenScaffoldDefaults.FloatingActionMargin)
-            ) {
-                floatingAction()
-            }
-            Box(
-                modifier =
-                    Modifier.align(Alignment.BottomCenter)
-                        .padding(bottom = aboveBottomBar)
-                        .then(
-                            if (bottomBarHeight == 0) Modifier.navigationBarsPadding() else Modifier
-                        )
-            ) {
-                snackbarHost()
-            }
-            overlay()
         }
     }
 }
