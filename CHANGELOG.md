@@ -12,6 +12,8 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
 ## Unreleased
 
 ### Added
+- `design-system`: `PvotSearchField`, a search field on a glass capsule (search icon, query, clear
+  button) without a focus ring, sized to sit beside a `PvotGlassIconButton`.
 - `design-system`: `PvotTopBar` takes `subtitle`, a muted line under the large title (an account,
   when it last updated) that folds away with it.
 - `design-system`: `PvotPageTransitions.push()` and `pop()` in `motion`: a pushed page slides in

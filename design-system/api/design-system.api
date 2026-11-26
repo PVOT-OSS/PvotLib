@@ -315,6 +315,18 @@ public final class com/prauga/pvot/designsystem/components/PvotScreenScaffoldKt 
 	public static final fun PvotScreenScaffold (Landroidx/compose/ui/Modifier;Lcom/prauga/pvot/designsystem/effects/PvotGlassBackdrop;Lkotlin/jvm/functions/Function3;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function2;Lkotlin/jvm/functions/Function3;ZLkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)V
 }
 
+public final class com/prauga/pvot/designsystem/components/PvotSearchFieldDefaults {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/prauga/pvot/designsystem/components/PvotSearchFieldDefaults;
+	public final fun getClearTouchSize-D9Ej5fM ()F
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getIconSize-D9Ej5fM ()F
+}
+
+public final class com/prauga/pvot/designsystem/components/PvotSearchFieldKt {
+	public static final fun PvotSearchField (Ljava/lang/String;Lkotlin/jvm/functions/Function1;Landroidx/compose/ui/Modifier;Ljava/lang/String;Lkotlin/jvm/functions/Function0;Landroidx/compose/runtime/Composer;II)V
+}
+
 public final class com/prauga/pvot/designsystem/components/PvotSegmentedControlColors {
 	public static final field $stable I
 	public synthetic fun <init> (JJJJLkotlin/jvm/internal/DefaultConstructorMarker;)V
