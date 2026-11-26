@@ -17,6 +17,9 @@ versions add to it, and patch versions only fix things. `design-system`, `core-u
   without their own color stay readable in dark mode.
 
 ### Added
+- `design-system`: `PvotScreenScaffold` takes `sampleContent`; pass false for content that hosts a
+  WebView, which crashes the render thread when the chrome's glass copies it. The glass then shows
+  its tint alone.
 - `design-system`: `PvotPageSheet` and `rememberPvotPageSheetState()`, a nearly full-height modal
   sheet with a drag handle, such as a compose sheet, that the app can animate closed.
 - `design-system`: `PvotPullToRefreshBox`, pull-to-refresh with a themed spinner that can sit
